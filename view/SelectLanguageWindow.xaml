@@ -1,0 +1,31 @@
+<Window x:Class="MisionesBazas.SelectLanguageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
+        Title="{x:Static language:Resources.SelectLanguage_Title}" Height="220" Width="520" WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner" Background="#6A0B0B" AllowsTransparency="False">
+
+    <Border BorderThickness="3" BorderBrush="#000" Padding="12" Background="Transparent">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button x:Name="BtnClose" Content="✕" Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Background="#2a0000" Foreground="Black" FontWeight="Bold" FontSize="18" BorderThickness="2" BorderBrush="#000"
+                    Click="BtnClose_Click" />
+
+            <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,6,0,6">
+                <TextBlock Text="{x:Static language:Resources.SelectLanguage_Title}" FontFamily="Impact" FontSize="32" Foreground="#FFF36B" HorizontalAlignment="Center" TextAlignment="Center" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Button x:Name="BtnSpanish" Width="200" Height="64" Background="#FFF36B" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" Click="BtnSpanish_Click" Margin="0,0,12,0"
+                        Content="{x:Static language:Resources.SelectLanguage_SpanishButton}" />
+                <Button x:Name="BtnEnglish" Width="200" Height="64" Background="#FFF36B" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" Click="BtnEnglish_Click" Margin="12,0,0,0"
+                        Content="{x:Static language:Resources.SelectLanguage_EnglishButton}" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
