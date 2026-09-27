@@ -177,7 +177,7 @@
     <value>* Debes ingresar una contraseña</value>
   </data>
   <data name="Register.EmptyPasswordConfirmation" xml:space="preserve">
-    <value>* Debes ingresar de nuevo la contraseÃ±a</value>
+    <value>* Debes ingresar de nuevo la contraseña</value>
   </data>
   <data name="Register.PasswordMismatch" xml:space="preserve">
     <value>* Las contraseñas no coinciden</value>
@@ -286,5 +286,44 @@
   </data>
   <data name="Profile.Email" xml:space="preserve">
     <value>Correo:</value>
+  </data>
+  <data name="ForgotPassword.Title" xml:space="preserve">
+    <value>Olvidó su contraseña</value>
+  </data>
+  <data name="ForgotPassword.Information" xml:space="preserve">
+    <value>Ingrese su correo para cambiar su contraseña</value>
+  </data>
+  <data name="ForgotPassword.Button" xml:space="preserve">
+    <value>Enviar correo</value>
+  </data>
+  <data name="RecoverPassword.Title" xml:space="preserve">
+    <value>Recuperar contraseña</value>
+  </data>
+  <data name="RecoverPassword.EmailSend" xml:space="preserve">
+    <value>Se envío un correo a tu cuenta para cambiar la contraseña.</value>
+  </data>
+  <data name="RecoverPassword.ResendCode" xml:space="preserve">
+    <value>Reenviar código</value>
+  </data>
+  <data name="RecoverPassword.Information" xml:space="preserve">
+    <value>Ingresa el código que llegó a tu correo:</value>
+  </data>
+  <data name="RecoverPassword.ConfirmButton" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ChangePassword.Title" xml:space="preserve">
+    <value>Cambiar contraseña</value>
+  </data>
+  <data name="ChangePassword.Information" xml:space="preserve">
+    <value>Ingresa tu nueva contraseña:</value>
+  </data>
+  <data name="ChangePassword.PasswordField" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="ChangePassword.ConfirmPasswordField" xml:space="preserve">
+    <value>Escriba nuevamente la contraseña</value>
+  </data>
+  <data name="ChangePassword.ConfirmButton" xml:space="preserve">
+    <value>Confirmar</value>
   </data>
 </root>
