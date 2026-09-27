@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MisionesBazas.Properties {
+namespace MisionesBazas.Properties.Langs {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace MisionesBazas.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace MisionesBazas.Properties {
         ///   Devuelve la instancia de ResourceManager almacenada en caché utilizada por esta clase.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MisionesBazas.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MisionesBazas.Properties.Langs.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace MisionesBazas.Properties {
         ///   búsquedas de recursos mediante esta clase de recurso fuertemente tipado.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Eliminar amigo.
         /// </summary>
-        internal static string FriendsBar_DeleteFriend {
+        public static string FriendsBar_DeleteFriend {
             get {
                 return ResourceManager.GetString("FriendsBar.DeleteFriend", resourceCulture);
             }
@@ -72,16 +72,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones: x Jugadores y/z.
         /// </summary>
-        internal static string FriendsBar_GameInformation {
+        public static string FriendsBar_GameInformation {
             get {
                 return ResourceManager.GetString("FriendsBar.GameInformation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a te invitÃ³ a una partida.
+        ///   Busca una cadena traducida similar a te invitó a una partida.
         /// </summary>
-        internal static string FriendsBar_GameInvitation {
+        public static string FriendsBar_GameInvitation {
             get {
                 return ResourceManager.GetString("FriendsBar.GameInvitation", resourceCulture);
             }
@@ -90,16 +90,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Desconectado.
         /// </summary>
-        internal static string FriendsBar_Offline {
+        public static string FriendsBar_Offline {
             get {
                 return ResourceManager.GetString("FriendsBar.Offline", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a En lÃ­nea.
+        ///   Busca una cadena traducida similar a En línea.
         /// </summary>
-        internal static string FriendsBar_Online {
+        public static string FriendsBar_Online {
             get {
                 return ResourceManager.GetString("FriendsBar.Online", resourceCulture);
             }
@@ -108,16 +108,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Ver perfil.
         /// </summary>
-        internal static string FriendsBar_ViewProfile {
+        public static string FriendsBar_ViewProfile {
             get {
                 return ResourceManager.GetString("FriendsBar.ViewProfile", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a AÃ±adir amigo.
+        ///   Busca una cadena traducida similar a Añadir amigo.
         /// </summary>
-        internal static string GameMenu_AddFriend {
+        public static string GameMenu_AddFriend {
             get {
                 return ResourceManager.GetString("GameMenu.AddFriend", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Crear sala.
         /// </summary>
-        internal static string GameMenu_CreateRoom {
+        public static string GameMenu_CreateRoom {
             get {
                 return ResourceManager.GetString("GameMenu.CreateRoom", resourceCulture);
             }
@@ -135,16 +135,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Amigos.
         /// </summary>
-        internal static string GameMenu_Friends {
+        public static string GameMenu_Friends {
             get {
                 return ResourceManager.GetString("GameMenu.Friends", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a CÃ³mo jugar.
+        ///   Busca una cadena traducida similar a Cómo jugar.
         /// </summary>
-        internal static string GameMenu_HowToPlay {
+        public static string GameMenu_HowToPlay {
             get {
                 return ResourceManager.GetString("GameMenu.HowToPlay", resourceCulture);
             }
@@ -153,16 +153,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Unirse a sala.
         /// </summary>
-        internal static string GameMenu_JoinRoom {
+        public static string GameMenu_JoinLobby {
             get {
-                return ResourceManager.GetString("GameMenu.JoinRoom", resourceCulture);
+                return ResourceManager.GetString("GameMenu.JoinLobby", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Busca una cadena traducida similar a Mensajes.
         /// </summary>
-        internal static string GameMenu_Messages {
+        public static string GameMenu_Messages {
             get {
                 return ResourceManager.GetString("GameMenu.Messages", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Perfil.
         /// </summary>
-        internal static string GameMenu_Profile {
+        public static string GameMenu_Profile {
             get {
                 return ResourceManager.GetString("GameMenu.Profile", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones Bazas.
         /// </summary>
-        internal static string GameMenu_Title {
+        public static string GameMenu_Title {
             get {
                 return ResourceManager.GetString("GameMenu.Title", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Entrar como invitado.
         /// </summary>
-        internal static string HomeScreen_GuestButton {
+        public static string HomeScreen_GuestButton {
             get {
                 return ResourceManager.GetString("HomeScreen.GuestButton", resourceCulture);
             }
@@ -198,16 +198,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Idioma.
         /// </summary>
-        internal static string HomeScreen_LanguageButton {
+        public static string HomeScreen_LanguageButton {
             get {
                 return ResourceManager.GetString("HomeScreen.LanguageButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Iniciar sesiÃ³n.
+        ///   Busca una cadena traducida similar a Iniciar sesión.
         /// </summary>
-        internal static string HomeScreen_LoginButton {
+        public static string HomeScreen_LoginButton {
             get {
                 return ResourceManager.GetString("HomeScreen.LoginButton", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Registrarse.
         /// </summary>
-        internal static string HomeScreen_SignUpButton {
+        public static string HomeScreen_SignUpButton {
             get {
                 return ResourceManager.GetString("HomeScreen.SignUpButton", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones Bazas.
         /// </summary>
-        internal static string HomeScreen_Title {
+        public static string HomeScreen_Title {
             get {
                 return ResourceManager.GetString("HomeScreen.Title", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Correo.
         /// </summary>
-        internal static string Login_Email {
+        public static string Login_Email {
             get {
                 return ResourceManager.GetString("Login.Email", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * Debes ingresar un correo.
         /// </summary>
-        internal static string Login_EmptyEmail {
+        public static string Login_EmptyEmail {
             get {
                 return ResourceManager.GetString("Login.EmptyEmail", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * Debes ingresar una contraseÃ±a.
         /// </summary>
-        internal static string Login_EmptyPassword {
+        public static string Login_EmptyPassword {
             get {
                 return ResourceManager.GetString("Login.EmptyPassword", resourceCulture);
             }
@@ -261,43 +261,43 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Entrar.
         /// </summary>
-        internal static string Login_Enter {
+        public static string Login_Enter {
             get {
                 return ResourceManager.GetString("Login.Enter", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Â¿OlvidÃ³ su contraseÃ±a?.
+        ///   Busca una cadena traducida similar a ¿Olvidó su contraseña?.
         /// </summary>
-        internal static string Login_ForgotPassword {
+        public static string Login_ForgotPassword {
             get {
                 return ResourceManager.GetString("Login.ForgotPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * El correo y/o la contraseÃ±a no coinciden.
+        ///   Busca una cadena traducida similar a * El correo y/o la contraseña no coinciden.
         /// </summary>
-        internal static string Login_InvalidCredentials {
+        public static string Login_InvalidCredentials {
             get {
                 return ResourceManager.GetString("Login.InvalidCredentials", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Iniciar sesiÃ³n.
+        ///   Busca una cadena traducida similar a Iniciar sesión.
         /// </summary>
-        internal static string Login_LoginTitle {
+        public static string Login_LoginTitle {
             get {
                 return ResourceManager.GetString("Login.LoginTitle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a ContraseÃ±a.
+        ///   Busca una cadena traducida similar a Contraseña.
         /// </summary>
-        internal static string Login_Password {
+        public static string Login_Password {
             get {
                 return ResourceManager.GetString("Login.Password", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones Bazas.
         /// </summary>
-        internal static string Login_Title {
+        public static string Login_Title {
             get {
                 return ResourceManager.GetString("Login.Title", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones Bazas.
         /// </summary>
-        internal static string MainWindow_Title {
+        public static string MainWindow_Title {
             get {
                 return ResourceManager.GetString("MainWindow.Title", resourceCulture);
             }
@@ -324,16 +324,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Creado desde:.
         /// </summary>
-        internal static string Profile_AccountCreation {
+        public static string Profile_AccountCreation {
             get {
                 return ResourceManager.GetString("Profile.AccountCreation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a BiografÃ­a:.
+        ///   Busca una cadena traducida similar a Biografía:.
         /// </summary>
-        internal static string Profile_Biography {
+        public static string Profile_Biography {
             get {
                 return ResourceManager.GetString("Profile.Biography", resourceCulture);
             }
@@ -342,7 +342,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a 20/09/2026.
         /// </summary>
-        internal static string Profile_Date {
+        public static string Profile_Date {
             get {
                 return ResourceManager.GetString("Profile.Date", resourceCulture);
             }
@@ -351,7 +351,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Correo:.
         /// </summary>
-        internal static string Profile_Email {
+        public static string Profile_Email {
             get {
                 return ResourceManager.GetString("Profile.Email", resourceCulture);
             }
@@ -360,16 +360,16 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Misiones completadas:.
         /// </summary>
-        internal static string Profile_Missions {
+        public static string Profile_Missions {
             get {
                 return ResourceManager.GetString("Profile.Missions", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Escriba nuevamente la contraseÃ±a.
+        ///   Busca una cadena traducida similar a Escriba nuevamente la contraseña.
         /// </summary>
-        internal static string Register_ConfirmPassword {
+        public static string Register_ConfirmPassword {
             get {
                 return ResourceManager.GetString("Register.ConfirmPassword", resourceCulture);
             }
@@ -378,7 +378,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Correo.
         /// </summary>
-        internal static string Register_Email {
+        public static string Register_Email {
             get {
                 return ResourceManager.GetString("Register.Email", resourceCulture);
             }
@@ -387,7 +387,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * El correo ya se encuentra registrado, ingrese otro.
         /// </summary>
-        internal static string Register_EmailAlreadyRegistered {
+        public static string Register_EmailAlreadyRegistered {
             get {
                 return ResourceManager.GetString("Register.EmailAlreadyRegistered", resourceCulture);
             }
@@ -396,25 +396,25 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * Debes ingresar un correo.
         /// </summary>
-        internal static string Register_EmptyEmail {
+        public static string Register_EmptyEmail {
             get {
                 return ResourceManager.GetString("Register.EmptyEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * Debes ingresar una contraseÃ±a.
+        ///   Busca una cadena traducida similar a * Debes ingresar una contraseña.
         /// </summary>
-        internal static string Register_EmptyPassword {
+        public static string Register_EmptyPassword {
             get {
                 return ResourceManager.GetString("Register.EmptyPassword", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * Debes ingresar de nuevo la contraseÃ±a.
+        ///   Busca una cadena traducida similar a * Debes ingresar de nuevo la contraseña.
         /// </summary>
-        internal static string Register_EmptyPasswordConfirmation {
+        public static string Register_EmptyPasswordConfirmation {
             get {
                 return ResourceManager.GetString("Register.EmptyPasswordConfirmation", resourceCulture);
             }
@@ -423,7 +423,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * Debes ingresar un usuario.
         /// </summary>
-        internal static string Register_EmptyUsername {
+        public static string Register_EmptyUsername {
             get {
                 return ResourceManager.GetString("Register.EmptyUsername", resourceCulture);
             }
@@ -432,63 +432,63 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * Ingresa un correo valido.
         /// </summary>
-        internal static string Register_InvalidEmail {
+        public static string Register_InvalidEmail {
             get {
                 return ResourceManager.GetString("Register.InvalidEmail", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a ContraseÃ±a.
+        ///   Busca una cadena traducida similar a Contraseña.
         /// </summary>
-        internal static string Register_Password {
+        public static string Register_Password {
             get {
                 return ResourceManager.GetString("Register.Password", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * Las contraseÃ±as no coinciden.
+        ///   Busca una cadena traducida similar a * Las contraseñas no coinciden.
         /// </summary>
-        internal static string Register_PasswordMismatch {
+        public static string Register_PasswordMismatch {
             get {
                 return ResourceManager.GetString("Register.PasswordMismatch", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * La contraseÃ±a debe tener al menos 8 caracteres.
+        ///   Busca una cadena traducida similar a * La contraseña debe tener al menos 8 caracteres.
         /// </summary>
-        internal static string Register_PasswordRuleLength {
+        public static string Register_PasswordRuleLength {
             get {
                 return ResourceManager.GetString("Register.PasswordRuleLength", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * La contraseÃ±a debe tener al menos un nÃºmero.
+        ///   Busca una cadena traducida similar a * La contraseña debe tener al menos un número.
         /// </summary>
-        internal static string Register_PasswordRuleNumber {
+        public static string Register_PasswordRuleNumber {
             get {
                 return ResourceManager.GetString("Register.PasswordRuleNumber", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * La contraseÃ±a debe tener al menos un caracter especial.
+        ///   Busca una cadena traducida similar a * La contraseña debe tener al menos un caracter especial.
         /// </summary>
-        internal static string Register_PasswordRuleSpecialChar {
+        public static string Register_PasswordRuleSpecialChar {
             get {
                 return ResourceManager.GetString("Register.PasswordRuleSpecialChar", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a * La contraseÃ±a debe tener al menos 8 caracteres
-        ///* La contraseÃ±a debe tener al menos un caracter especial
-        ///* La contraseÃ±a debe tener al menos un nÃºmero.
+        ///   Busca una cadena traducida similar a * La contraseña debe tener al menos 8 caracteres
+        ///* La contraseña debe tener al menos un caracter especial
+        ///* La contraseña debe tener al menos un número.
         /// </summary>
-        internal static string Register_Restrictions {
+        public static string Register_Restrictions {
             get {
                 return ResourceManager.GetString("Register.Restrictions", resourceCulture);
             }
@@ -497,7 +497,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a ENTRAR.
         /// </summary>
-        internal static string Register_SubmitButton {
+        public static string Register_SubmitButton {
             get {
                 return ResourceManager.GetString("Register.SubmitButton", resourceCulture);
             }
@@ -506,7 +506,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Registro completado exitosamente..
         /// </summary>
-        internal static string Register_Success {
+        public static string Register_Success {
             get {
                 return ResourceManager.GetString("Register.Success", resourceCulture);
             }
@@ -515,7 +515,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Registrarse.
         /// </summary>
-        internal static string Register_Title {
+        public static string Register_Title {
             get {
                 return ResourceManager.GetString("Register.Title", resourceCulture);
             }
@@ -524,7 +524,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Usuario.
         /// </summary>
-        internal static string Register_Username {
+        public static string Register_Username {
             get {
                 return ResourceManager.GetString("Register.Username", resourceCulture);
             }
@@ -533,25 +533,25 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a * El nombre de usuario ya se encuentra registrado, ingrese otro.
         /// </summary>
-        internal static string Register_UsernameAlreadyRegistered {
+        public static string Register_UsernameAlreadyRegistered {
             get {
                 return ResourceManager.GetString("Register.UsernameAlreadyRegistered", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a InglÃ©s.
+        ///   Busca una cadena traducida similar a Inglés.
         /// </summary>
-        internal static string SelectLanguage_EnglishButton {
+        public static string SelectLanguage_EnglishButton {
             get {
                 return ResourceManager.GetString("SelectLanguage.EnglishButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a EspaÃ±ol.
+        ///   Busca una cadena traducida similar a Español.
         /// </summary>
-        internal static string SelectLanguage_SpanishButton {
+        public static string SelectLanguage_SpanishButton {
             get {
                 return ResourceManager.GetString("SelectLanguage.SpanishButton", resourceCulture);
             }
@@ -560,7 +560,7 @@ namespace MisionesBazas.Properties {
         /// <summary>
         ///   Busca una cadena traducida similar a Seleccionar idioma.
         /// </summary>
-        internal static string SelectLanguage_Title {
+        public static string SelectLanguage_Title {
             get {
                 return ResourceManager.GetString("SelectLanguage.Title", resourceCulture);
             }

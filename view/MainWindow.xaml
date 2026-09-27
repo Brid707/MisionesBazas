@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MisionesBazas"
+        xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
         mc:Ignorable="d"
-        Title="{Binding Source={StaticResource Loc}, Path=[MainWindow.Title]}" Height="768" Width="1365">
+        Title="{x:Static language:Resources.MainWindow_Title}" Height="768" Width="1365">
     <Grid>
         <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden" />
     </Grid>

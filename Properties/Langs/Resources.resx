@@ -118,171 +118,173 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MainWindow.Title" xml:space="preserve">
-    <value>Trick-Taking Missions</value>
+    <value>Misiones Bazas</value>
   </data>
   <data name="HomeScreen.Title" xml:space="preserve">
-    <value>Trick-Taking Missions</value>
+    <value>Misiones Bazas</value>
   </data>
   <data name="HomeScreen.LanguageButton" xml:space="preserve">
-    <value>Language</value>
+    <value>Idioma</value>
   </data>
   <data name="HomeScreen.SignUpButton" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Registrarse</value>
   </data>
   <data name="HomeScreen.LoginButton" xml:space="preserve">
-    <value>Log In</value>
+    <value>Iniciar sesión</value>
   </data>
   <data name="HomeScreen.GuestButton" xml:space="preserve">
-    <value>Play as Guest</value>
+    <value>Entrar como invitado</value>
   </data>
   <data name="SelectLanguage.Title" xml:space="preserve">
-    <value>Select language</value>
+    <value>Seleccionar idioma</value>
   </data>
   <data name="SelectLanguage.SpanishButton" xml:space="preserve">
-    <value>Spanish</value>
+    <value>Español</value>
   </data>
   <data name="SelectLanguage.EnglishButton" xml:space="preserve">
-    <value>English</value>
+    <value>Inglés</value>
   </data>
   <data name="Register.Title" xml:space="preserve">
-    <value>Sign Up</value>
+    <value>Registrarse</value>
   </data>
   <data name="Register.Restrictions" xml:space="preserve">
-    <value>* The password must be at least 8 characters&#xD;&#xA;* The password must contain at least one special character&#xD;&#xA;* The password must contain at least one number</value>
+    <value>* La contraseña debe tener al menos 8 caracteres
+* La contraseña debe tener al menos un caracter especial
+* La contraseña debe tener al menos un número</value>
   </data>
   <data name="Register.Email" xml:space="preserve">
-    <value>Email</value>
+    <value>Correo</value>
   </data>
   <data name="Register.Username" xml:space="preserve">
-    <value>Username</value>
+    <value>Usuario</value>
   </data>
   <data name="Register.Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Contraseña</value>
   </data>
   <data name="Register.ConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
+    <value>Escriba nuevamente la contraseña</value>
   </data>
   <data name="Register.SubmitButton" xml:space="preserve">
-    <value>ENTER</value>
+    <value>ENTRAR</value>
   </data>
   <data name="Register.EmptyEmail" xml:space="preserve">
-    <value>* You must enter an email</value>
+    <value>* Debes ingresar un correo</value>
   </data>
   <data name="Register.EmptyUsername" xml:space="preserve">
-    <value>* You must enter a username</value>
+    <value>* Debes ingresar un usuario</value>
   </data>
   <data name="Register.EmptyPassword" xml:space="preserve">
-    <value>* You must enter a password</value>
+    <value>* Debes ingresar una contraseña</value>
   </data>
   <data name="Register.EmptyPasswordConfirmation" xml:space="preserve">
-    <value>* You must enter the password again</value>
+    <value>* Debes ingresar de nuevo la contraseña</value>
   </data>
   <data name="Register.PasswordMismatch" xml:space="preserve">
-    <value>* Passwords do not match</value>
+    <value>* Las contraseñas no coinciden</value>
   </data>
   <data name="Register.Success" xml:space="preserve">
-    <value>Registration completed successfully.</value>
+    <value>Registro completado exitosamente.</value>
   </data>
   <data name="Register.InvalidEmail" xml:space="preserve">
-    <value>* Enter a valid email</value>
+    <value>* Ingresa un correo valido</value>
   </data>
   <data name="Register.EmailAlreadyRegistered" xml:space="preserve">
-    <value>* Email is already registered, please enter another</value>
+    <value>* El correo ya se encuentra registrado, ingrese otro</value>
   </data>
   <data name="Register.UsernameAlreadyRegistered" xml:space="preserve">
-    <value>* Username is already registered, please enter another</value>
+    <value>* El nombre de usuario ya se encuentra registrado, ingrese otro</value>
   </data>
   <data name="Register.PasswordRuleLength" xml:space="preserve">
-    <value>* The password must be at least 8 characters</value>
+    <value>* La contraseña debe tener al menos 8 caracteres</value>
   </data>
   <data name="Register.PasswordRuleSpecialChar" xml:space="preserve">
-    <value>* The password must contain at least one special character</value>
+    <value>* La contraseña debe tener al menos un caracter especial</value>
   </data>
   <data name="Register.PasswordRuleNumber" xml:space="preserve">
-    <value>* The password must contain at least one number</value>
+    <value>* La contraseña debe tener al menos un número</value>
   </data>
   <data name="Login.Title" xml:space="preserve">
-    <value>Trick-Taking Missions</value>
+    <value>Misiones Bazas</value>
   </data>
   <data name="Login.LoginTitle" xml:space="preserve">
-    <value>Login</value>
+    <value>Iniciar sesión</value>
   </data>
   <data name="Login.Email" xml:space="preserve">
-    <value>Email</value>
+    <value>Correo</value>
   </data>
   <data name="Login.Password" xml:space="preserve">
-    <value>Password</value>
+    <value>Contraseña</value>
   </data>
   <data name="Login.Enter" xml:space="preserve">
-    <value>Login</value>
+    <value>Entrar</value>
   </data>
   <data name="Login.ForgotPassword" xml:space="preserve">
-    <value>Forgot your password?</value>
+    <value>¿Olvidó su contraseña?</value>
   </data>
   <data name="Login.EmptyEmail" xml:space="preserve">
-    <value>* You must enter an email</value>
+    <value>* Debes ingresar un correo</value>
   </data>
   <data name="Login.EmptyPassword" xml:space="preserve">
-    <value>* You must enter a password</value>
+    <value>* Debes ingresar una contraseÃ±a</value>
   </data>
   <data name="Login.InvalidCredentials" xml:space="preserve">
-    <value>* The password and/or the email do not match</value>
+    <value>* El correo y/o la contraseña no coinciden</value>
   </data>
   <data name="GameMenu.Title" xml:space="preserve">
-    <value>Trick-Taking Missions</value>
+    <value>Misiones Bazas</value>
   </data>
   <data name="GameMenu.CreateRoom" xml:space="preserve">
-    <value>Create lobby</value>
+    <value>Crear sala</value>
   </data>
-  <data name="GameMenu.JoinRoom" xml:space="preserve">
-    <value>Join lobby</value>
+  <data name="GameMenu.JoinLobby" xml:space="preserve">
+    <value>Unirse a sala</value>
   </data>
   <data name="GameMenu.HowToPlay" xml:space="preserve">
-    <value>How to play</value>
+    <value>Cómo jugar</value>
   </data>
   <data name="GameMenu.Profile" xml:space="preserve">
-    <value>Profile</value>
+    <value>Perfil</value>
   </data>
   <data name="GameMenu.Friends" xml:space="preserve">
-    <value>Friends</value>
+    <value>Amigos</value>
   </data>
   <data name="GameMenu.Messages" xml:space="preserve">
-    <value>Messages</value>
+    <value>Mensajes</value>
   </data>
   <data name="GameMenu.AddFriend" xml:space="preserve">
-    <value>Add friend</value>
+    <value>Añadir amigo</value>
   </data>
   <data name="FriendsBar.Online" xml:space="preserve">
-    <value>Online</value>
+    <value>En línea</value>
   </data>
   <data name="FriendsBar.Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value>Desconectado</value>
   </data>
   <data name="FriendsBar.DeleteFriend" xml:space="preserve">
-    <value>Delete friend</value>
+    <value>Eliminar amigo</value>
   </data>
   <data name="FriendsBar.ViewProfile" xml:space="preserve">
-    <value>View profile</value>
+    <value>Ver perfil</value>
   </data>
   <data name="FriendsBar.GameInvitation" xml:space="preserve">
-    <value>invited you to a game</value>
+    <value>te invitó a una partida</value>
   </data>
   <data name="FriendsBar.GameInformation" xml:space="preserve">
-    <value>Missions: x Players y/z</value>
+    <value>Misiones: x Jugadores y/z</value>
   </data>
   <data name="Profile.AccountCreation" xml:space="preserve">
-    <value>Joined since:</value>
+    <value>Creado desde:</value>
   </data>
   <data name="Profile.Date" xml:space="preserve">
-    <value>09/20/26</value>
+    <value>20/09/2026</value>
   </data>
   <data name="Profile.Missions" xml:space="preserve">
-    <value>Missions completed:</value>
+    <value>Misiones completadas:</value>
   </data>
   <data name="Profile.Biography" xml:space="preserve">
-    <value>Biography:</value>
+    <value>Biografía:</value>
   </data>
   <data name="Profile.Email" xml:space="preserve">
-    <value>Email:</value>
+    <value>Correo:</value>
   </data>
 </root>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using MisionesBazas.Properties.Langs;
 
 namespace MisionesBazas
 {
@@ -34,8 +35,7 @@ namespace MisionesBazas
 
         private void BtnRecuperarContraseña_Click(object sender, RoutedEventArgs e)
         {
-            string message = LocalizationManager.Instance["Login.ForgotPassword"];
-            MessageBox.Show(message);
+            MessageBox.Show(Properties.Langs.Resources.Login_ForgotPassword);
         }
 
         private void BtnEntrar_Click(object sender, RoutedEventArgs e)
@@ -55,12 +55,12 @@ namespace MisionesBazas
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                MessageBox.Show(LocalizationManager.Instance["Login.EmptyEmail"]);
+                MessageBox.Show(Properties.Langs.Resources.Login_EmptyEmail);
                 txtCorreo.Focus();
             }
             else if (string.IsNullOrEmpty(password))
             {
-                MessageBox.Show(LocalizationManager.Instance["Login.EmptyPassword"]);
+                MessageBox.Show(Properties.Langs.Resources.Login_EmptyPassword);
                 txtContraseña.Focus();
             }
             else
@@ -98,7 +98,7 @@ namespace MisionesBazas
             }
             else
             {
-                MessageBox.Show(LocalizationManager.Instance["Login.InvalidCredentials"]);
+                MessageBox.Show(Properties.Langs.Resources.Login_InvalidCredentials);
                 txtContraseña.Focus();
             }
 

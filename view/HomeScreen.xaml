@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
 
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
@@ -14,7 +15,6 @@
             <ColumnDefinition Width="0.55*" />
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT: red gradient and title -->
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -26,25 +26,24 @@
             <Grid>
 
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,120" Width="500">
-                    <TextBlock x:Name="GameTitle" Text="{Binding Source={StaticResource Loc}, Path=[HomeScreen.Title]}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
+                    <TextBlock x:Name="GameTitle" Text="{x:Static language:Resources.HomeScreen_Title}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
                                FontWeight="Bold" FontSize="96" TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,6" />
 
                     <Grid Margin="0,0,0,16"/>
 
                     <Button x:Name="BtnLanguage" Width="260" Height="56"
-                            Content="{Binding Source={StaticResource Loc}, Path=[HomeScreen.LanguageButton]}"
+                            Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
                             Background="#FFF36B" Foreground="#0b0b0b" FontSize="18" FontWeight="SemiBold" BorderThickness="0"
                             HorizontalAlignment="Left" Margin="4,40,0,0" Click="BtnLanguage_Click" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- RIGHT: buttons stack -->
         <Grid Grid.Column="1" Background="Black">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                    <Button x:Name="HomePage_BtnSignUp" Width="420" Height="84" Content="{Binding Source={StaticResource Loc}, Path=[HomeScreen.SignUpButton]}" Background="#FF6B6B" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnSignUp_Click" />
-                <Button x:Name="HomePage_BtnLogin" Width="420" Height="84" Content="{Binding Source={StaticResource Loc}, Path=[HomeScreen.LoginButton]}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnLogin_Click" />
-                <Button x:Name="HomePage_BtnGuest" Width="420" Height="84" Content="{Binding Source={StaticResource Loc}, Path=[HomeScreen.GuestButton]}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Click="HomePage_BtnGuest_Click" />
+                    <Button x:Name="HomePage_BtnSignUp" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_SignUpButton}" Background="#FF6B6B" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnSignUp_Click" />
+                <Button x:Name="HomePage_BtnLogin" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_LoginButton}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnLogin_Click" />
+                <Button x:Name="HomePage_BtnGuest" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_GuestButton}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Click="HomePage_BtnGuest_Click" />
             </StackPanel>
         </Grid>
     </Grid>

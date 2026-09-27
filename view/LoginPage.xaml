@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
+	  xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="LoginPage">
 
@@ -13,7 +14,6 @@
             <ColumnDefinition Width="0.55*" />
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT: red gradient and title -->
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -24,34 +24,32 @@
             </Border.Background>
             <Grid>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,120" Width="500">
-                    <TextBlock x:Name="lblTitulo" Text="{Binding Source={StaticResource Loc}, Path=[Login.Title]}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
+                    <TextBlock x:Name="lblTitulo" Text="{x:Static language:Resources.Login_Title}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
                                FontWeight="Bold" FontSize="72" TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,6" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- RIGHT: login form -->
         <Grid Grid.Column="1" Background="Black">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Back button -->
             <Button x:Name="BtnBack" Content="←" Width="40" Height="40" Margin="12" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnBack_Click" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                <TextBlock x:Name="lblTituloInicioSesion" Text="{Binding Source={StaticResource Loc}, Path=[Login.LoginTitle]}" Foreground="#FFF36B" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,18" />
+                <TextBlock x:Name="lblTituloInicioSesion" Text="{x:Static language:Resources.Login_LoginTitle}" Foreground="#FFF36B" FontSize="32" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,18" />
 
-                <TextBlock Text="{Binding Source={StaticResource Loc}, Path=[Login.Email]}" Foreground="White" FontSize="14" Margin="6,0,0,6" />
+                <TextBlock Text="{x:Static language:Resources.Login_Email}" Foreground="White" FontSize="14" Margin="6,0,0,6" />
                 <TextBox x:Name="txtCorreo" Height="56" FontSize="18" Padding="12" Margin="0,0,0,12" />
 
-                <TextBlock Text="{Binding Source={StaticResource Loc}, Path=[Login.Password]}" Foreground="White" FontSize="14" Margin="6,0,0,6" />
+                <TextBlock Text="{x:Static language:Resources.Login_Password}" Foreground="White" FontSize="14" Margin="6,0,0,6" />
                 <PasswordBox x:Name="txtContraseña" Height="56" FontSize="18" Padding="12" Margin="0,0,0,8" />
 
-                <Button x:Name="btnRecuperarContraseña" Content="{Binding Source={StaticResource Loc}, Path=[Login.ForgotPassword]}" Height="32" Width="220" Background="Transparent" Foreground="#FFF36B" BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,12" Click="BtnRecuperarContraseña_Click" />
+                <Button x:Name="btnRecuperarContraseña" Content="{x:Static language:Resources.Login_ForgotPassword}" Height="32" Width="220" Background="Transparent" Foreground="#FFF36B" BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,12" Click="BtnRecuperarContraseña_Click" />
 
-                <Button x:Name="btnEntrar" Content="{Binding Source={StaticResource Loc}, Path=[Login.Enter]}" Height="64" Width="220" Background="#d49b2a" Foreground="Black" FontSize="22" FontWeight="Bold" Click="BtnEntrar_Click" />
+                <Button x:Name="btnEntrar" Content="{x:Static language:Resources.Login_Enter}" Height="64" Width="220" Background="#d49b2a" Foreground="Black" FontSize="22" FontWeight="Bold" Click="BtnEntrar_Click" />
             </StackPanel>
         </Grid>
     </Grid>

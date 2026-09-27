@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="Profile">
@@ -13,7 +14,6 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <!-- LEFT: Cards decoration strip -->
         <Image Grid.Column="0"
                Source="ProfileCards.png"
                Stretch="Fill"
@@ -21,9 +21,7 @@
                VerticalAlignment="Stretch"
                Width="150" />
 
-        <!-- RIGHT: Profile Content Area -->
         <Grid Grid.Column="1" Margin="30,24,40,30">
-            <!-- Top Right: Close Button -->
             <Button x:Name="BtnClose"
                     Width="50" Height="50"
                     HorizontalAlignment="Right"
@@ -42,9 +40,7 @@
                 </Grid>
             </Button>
 
-            <!-- Main Profile Data Stack -->
             <StackPanel Margin="30,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <!-- Avatar & Username -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,32">
                     <Grid Width="96" Height="96">
                         <Ellipse Fill="Black" Width="96" Height="96" />
@@ -61,18 +57,17 @@
                                Margin="28,0,0,0" />
                 </StackPanel>
 
-                <!-- Stats Row: Account Creation Date & Missions Completed -->
                 <WrapPanel Orientation="Horizontal" Margin="0,0,0,24">
                     <StackPanel Orientation="Horizontal" Margin="0,0,80,0">
                         <Label x:Name="lblCreacionCuenta"
-                               Content="{Binding Source={StaticResource Loc}, Path=[Profile.AccountCreation]}"
+                               Content="{x:Static language:Resources.Profile_AccountCreation}"
                                FontSize="24"
                                FontWeight="Normal"
                                Foreground="Black"
                                Padding="0"
                                VerticalAlignment="Center" />
                         <Label x:Name="lblFecha"
-                               Content="{Binding Source={StaticResource Loc}, Path=[Profile.Date]}"
+                               Content="{x:Static language:Resources.Profile_Date}"
                                FontSize="24"
                                FontWeight="Normal"
                                Foreground="Black"
@@ -83,7 +78,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <Label x:Name="lblMisiones"
-                               Content="{Binding Source={StaticResource Loc}, Path=[Profile.Missions]}"
+                               Content="{x:Static language:Resources.Profile_Missions}"
                                FontSize="24"
                                FontWeight="Normal"
                                Foreground="Black"
@@ -100,9 +95,8 @@
                     </StackPanel>
                 </WrapPanel>
 
-                <!-- Biography Section -->
                 <Label x:Name="lblBiografia"
-                       Content="{Binding Source={StaticResource Loc}, Path=[Profile.Biography]}"
+                       Content="{x:Static language:Resources.Profile_Biography}"
                        FontSize="24"
                        FontWeight="Normal"
                        Foreground="Black"
@@ -122,10 +116,9 @@
                          HorizontalAlignment="Left"
                          Margin="0,0,0,24" />
 
-                <!-- Email Section -->
                 <StackPanel Orientation="Horizontal">
                     <Label x:Name="lblCorreo"
-                           Content="{Binding Source={StaticResource Loc}, Path=[Profile.Email]}"
+                           Content="{x:Static language:Resources.Profile_Email}"
                            FontSize="24"
                            FontWeight="Normal"
                            Foreground="Black"

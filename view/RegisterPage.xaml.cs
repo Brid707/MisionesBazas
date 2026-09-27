@@ -76,22 +76,22 @@ namespace MisionesBazas
 
             if (string.IsNullOrWhiteSpace(request.Email))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.EmptyEmail"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_EmptyEmail);
                 Register_Email.Focus();
             }
             else if (string.IsNullOrWhiteSpace(request.Username))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.EmptyUsername"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_EmptyUsername);
                 Register_Username.Focus();
             }
             else if (string.IsNullOrEmpty(request.Password))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.EmptyPassword"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_EmptyPassword);
                 Register_Password.Focus();
             }
             else if (string.IsNullOrEmpty(request.PasswordConfirm))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.EmptyPasswordConfirmation"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_EmptyPasswordConfirmation);
                 Register_PasswordConfirm.Focus();
             }
             else
@@ -108,12 +108,12 @@ namespace MisionesBazas
 
             if (!IsValidEmailFormat(email))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.InvalidEmail"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_InvalidEmail);
                 Register_Email.Focus();
             }
             else if (HasRegisteredEmail(email))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.EmailAlreadyRegistered"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_EmailAlreadyRegistered);
                 Register_Email.Focus();
             }
             else
@@ -148,7 +148,7 @@ namespace MisionesBazas
 
             if (HasRegisteredUsername(username))
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.UsernameAlreadyRegistered"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_UsernameAlreadyRegistered);
                 Register_Username.Focus();
                 isUsernameValid = false;
             }
@@ -169,17 +169,17 @@ namespace MisionesBazas
 
             if (password.Length < 8)
             {
-                passwordErrors.Add(LocalizationManager.Instance["Register.PasswordRuleLength"]);
+                passwordErrors.Add(Properties.Langs.Resources.Register_PasswordRuleLength);
             }
 
             if (!Regex.IsMatch(password, @"[^a-zA-Z0-9]"))
             {
-                passwordErrors.Add(LocalizationManager.Instance["Register.PasswordRuleSpecialChar"]);
+                passwordErrors.Add(Properties.Langs.Resources.Register_PasswordRuleSpecialChar);
             }
 
             if (!Regex.IsMatch(password, @"[0-9]"))
             {
-                passwordErrors.Add(LocalizationManager.Instance["Register.PasswordRuleNumber"]);
+                passwordErrors.Add(Properties.Langs.Resources.Register_PasswordRuleNumber);
             }
 
             if (passwordErrors.Count > 0)
@@ -198,7 +198,7 @@ namespace MisionesBazas
 
             if (!areMatching)
             {
-                MessageBox.Show(LocalizationManager.Instance["Register.PasswordMismatch"]);
+                MessageBox.Show(Properties.Langs.Resources.Register_PasswordMismatch);
                 Register_PasswordConfirm.Focus();
             }
 
@@ -210,7 +210,7 @@ namespace MisionesBazas
             _registeredEmails.Add(email);
             _registeredUsernames.Add(username);
 
-            MessageBox.Show(LocalizationManager.Instance["Register.Success"]);
+            MessageBox.Show(Properties.Langs.Resources.Register_Success);
 
             if (NavigationService != null && NavigationService.CanGoBack)
             {

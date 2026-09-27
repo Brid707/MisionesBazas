@@ -117,21 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Profile.AccountCreation" xml:space="preserve">
-    <value>Creado desde:</value>
-  </data>
-  <data name="Profile.Date" xml:space="preserve">
-    <value>20/09/2026</value>
-  </data>
-  <data name="Profile.Missions" xml:space="preserve">
-    <value>Misiones completadas:</value>
-  </data>
-  <data name="Profile.Biography" xml:space="preserve">
-    <value>Biografía:</value>
-  </data>
-  <data name="Profile.Email" xml:space="preserve">
-    <value>Correo:</value>
-  </data>
   <data name="MainWindow.Title" xml:space="preserve">
     <value>Misiones Bazas</value>
   </data>
@@ -251,7 +236,7 @@
   <data name="GameMenu.CreateRoom" xml:space="preserve">
     <value>Crear sala</value>
   </data>
-  <data name="GameMenu.JoinRoom" xml:space="preserve">
+  <data name="GameMenu.JoinLobby" xml:space="preserve">
     <value>Unirse a sala</value>
   </data>
   <data name="GameMenu.HowToPlay" xml:space="preserve">
@@ -286,5 +271,20 @@
   </data>
   <data name="FriendsBar.GameInformation" xml:space="preserve">
     <value>Misiones: x Jugadores y/z</value>
+  </data>
+  <data name="Profile.AccountCreation" xml:space="preserve">
+    <value>Creado desde:</value>
+  </data>
+  <data name="Profile.Date" xml:space="preserve">
+    <value>20/09/2026</value>
+  </data>
+  <data name="Profile.Missions" xml:space="preserve">
+    <value>Misiones completadas:</value>
+  </data>
+  <data name="Profile.Biography" xml:space="preserve">
+    <value>Biografía:</value>
+  </data>
+  <data name="Profile.Email" xml:space="preserve">
+    <value>Correo:</value>
   </data>
 </root>

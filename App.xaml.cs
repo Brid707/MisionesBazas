@@ -12,18 +12,20 @@ namespace MisionesBazas
 {
     public partial class App : Application
     {
-        public App()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            LocalizationManager.Instance.SetCulture("es-MX");
+            var languageCode = MisionesBazas.Properties.Settings.Default.languageCode;
+            if (!string.IsNullOrEmpty(languageCode))
+            {
+                var culture = new System.Globalization.CultureInfo(languageCode);
+                Thread.CurrentThread.CurrentCulture = culture;
+                Thread.CurrentThread.CurrentUICulture = culture;
+                System.Globalization.CultureInfo.DefaultThreadCurrentCulture = culture;
+                System.Globalization.CultureInfo.DefaultThreadCurrentUICulture = culture;
+                MisionesBazas.Properties.Langs.Resources.Culture = culture;
+            }
 
-            InitializeComponent();
-        }
-
-        public static void ChangeLanguage(string language)
-        {
-            if (string.IsNullOrWhiteSpace(language)) return;
-
-            LocalizationManager.Instance.SetCulture(language);
+            base.OnStartup(e);
         }
     }
 }

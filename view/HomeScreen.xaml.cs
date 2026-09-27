@@ -16,14 +16,10 @@ namespace MisionesBazas
         {
             try
             {
-                var owner = Window.GetWindow(this);
                 var dlg = new SelectLanguageWindow();
-                if (owner != null)
-                {
-                    dlg.Owner = owner;
-                }
-
+                dlg.Owner = Window.GetWindow(this);
                 dlg.ShowDialog();
+                this.NavigationService?.Navigate(new HomeScreen());
             }
             catch (Exception ex)
             {
