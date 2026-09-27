@@ -61,6 +61,78 @@ namespace MisionesBazas.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Confirmar.
+        /// </summary>
+        public static string ChangePassword_ConfirmButton {
+            get {
+                return ResourceManager.GetString("ChangePassword.ConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Escriba nuevamente la contraseña.
+        /// </summary>
+        public static string ChangePassword_ConfirmPasswordField {
+            get {
+                return ResourceManager.GetString("ChangePassword.ConfirmPasswordField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ingresa tu nueva contraseña:.
+        /// </summary>
+        public static string ChangePassword_Information {
+            get {
+                return ResourceManager.GetString("ChangePassword.Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Contraseña.
+        /// </summary>
+        public static string ChangePassword_PasswordField {
+            get {
+                return ResourceManager.GetString("ChangePassword.PasswordField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cambiar contraseña.
+        /// </summary>
+        public static string ChangePassword_Title {
+            get {
+                return ResourceManager.GetString("ChangePassword.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Enviar correo.
+        /// </summary>
+        public static string ForgotPassword_Button {
+            get {
+                return ResourceManager.GetString("ForgotPassword.Button", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ingrese su correo para cambiar su contraseña.
+        /// </summary>
+        public static string ForgotPassword_Information {
+            get {
+                return ResourceManager.GetString("ForgotPassword.Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Olvidó su contraseña.
+        /// </summary>
+        public static string ForgotPassword_Title {
+            get {
+                return ResourceManager.GetString("ForgotPassword.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Eliminar amigo.
         /// </summary>
         public static string FriendsBar_DeleteFriend {
@@ -363,6 +435,51 @@ namespace MisionesBazas.Properties.Langs {
         public static string Profile_Missions {
             get {
                 return ResourceManager.GetString("Profile.Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Confirmar.
+        /// </summary>
+        public static string RecoverPassword_ConfirmButton {
+            get {
+                return ResourceManager.GetString("RecoverPassword.ConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se envío un correo a tu cuenta para cambiar la contraseña.
+        /// </summary>
+        public static string RecoverPassword_EmailSend {
+            get {
+                return ResourceManager.GetString("RecoverPassword.EmailSend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ingresa el código que llegó a tu correo:.
+        /// </summary>
+        public static string RecoverPassword_Information {
+            get {
+                return ResourceManager.GetString("RecoverPassword.Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Reenviar código.
+        /// </summary>
+        public static string RecoverPassword_ResendCode {
+            get {
+                return ResourceManager.GetString("RecoverPassword.ResendCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Recuperar contraseña.
+        /// </summary>
+        public static string RecoverPassword_Title {
+            get {
+                return ResourceManager.GetString("RecoverPassword.Title", resourceCulture);
             }
         }
         

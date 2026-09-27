@@ -1,8 +1,10 @@
+using MisionesBazas.Properties.Langs;
+using MisionesBazas.view;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using MisionesBazas.Properties.Langs;
 
 namespace MisionesBazas
 {
@@ -35,7 +37,17 @@ namespace MisionesBazas
 
         private void BtnRecuperarContraseña_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(Properties.Langs.Resources.Login_ForgotPassword);
+            try
+            {
+                var dlg = new ForgotPassword();
+                dlg.Owner = Window.GetWindow(this);
+                dlg.ShowDialog();
+                this.NavigationService?.Navigate(new HomeScreen());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HomeScreen] Error abriendo selector de idioma: {ex.Message}");
+            }
         }
 
         private void BtnEntrar_Click(object sender, RoutedEventArgs e)
