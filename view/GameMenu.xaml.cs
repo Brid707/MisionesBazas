@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using MisionesBazas.view;
 
 namespace MisionesBazas
 {
@@ -43,6 +44,53 @@ namespace MisionesBazas
         private void BtnVerPerfil_Click(object sender, RoutedEventArgs e)
         {
             NavigateToProfile();
+        }
+
+        private void BtnTrophy_Click(object sender, RoutedEventArgs e)
+        {
+            var owner = Window.GetWindow(this);
+            var board = new ScoreBoard();
+            if (owner != null)
+            {
+                board.Owner = owner;
+                board.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            board.ShowDialog();
+        }
+
+        private void BtnSalir_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var home = new HomeScreen();
+                if (this.NavigationService != null)
+                {
+                    this.NavigationService.Navigate(home);
+                }
+                else
+                {
+                    var window = Window.GetWindow(this);
+                    if (window is MainWindow mainWindow)
+                    {
+                        mainWindow.MainFrame.Navigate(home);
+                    }
+                    else
+                    {
+                        var win = new Window()
+                        {
+                            Title = "Home",
+                            Content = home,
+                            Width = 900,
+                            Height = 700,
+                            Owner = Window.GetWindow(this)
+                        };
+                        win.ShowDialog();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void BtnEliminarAmigo_Click(object sender, RoutedEventArgs e)
