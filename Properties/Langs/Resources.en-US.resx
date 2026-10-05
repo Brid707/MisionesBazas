@@ -326,4 +326,94 @@
   <data name="ChangePassword.ConfirmButton" xml:space="preserve">
     <value>Confirm</value>
   </data>
+  <data name="ScoreBoard.Title" xml:space="preserve">
+    <value>Score board: Highest number of experience</value>
+  </data>
+  <data name="ScoreBoard.Position" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="ScoreBoard.Experience" xml:space="preserve">
+    <value>Total experience</value>
+  </data>
+  <data name="ScoreBoard.PlayerProfile" xml:space="preserve">
+    <value>Player profile</value>
+  </data>
+  <data name="GameMenu.SignOut" xml:space="preserve">
+    <value>Sign out</value>
+  </data>
+  <data name="EnterGameCode.Title" xml:space="preserve">
+    <value>Enter the code to join the lobby</value>
+  </data>
+  <data name="EnterGameCode.JoinButton" xml:space="preserve">
+    <value>Join</value>
+  </data>
+  <data name="EnterGameCode.EmptyCode" xml:space="preserve">
+    <value>You must enter a code</value>
+  </data>
+  <data name="EnterGameCode.InvalidCode" xml:space="preserve">
+    <value>The code does not match any existing lobby</value>
+  </data>
+  <data name="EnterGameCode.LobbyAlreadyFull" xml:space="preserve">
+    <value>We're sorry, you can't join the lobby because it's already full</value>
+  </data>
+  <data name="GameMenuCode.KickedOut" xml:space="preserve">
+    <value>We're sorry, you can't join the lobby because you were kicked out</value>
+  </data>
+  <data name="GameSettings.Title" xml:space="preserve">
+    <value>Game settings</value>
+  </data>
+  <data name="GameSettings.NumberPlayers" xml:space="preserve">
+    <value>Number of players:</value>
+  </data>
+  <data name="GameSettings.Missions" xml:space="preserve">
+    <value>Number of missions:</value>
+  </data>
+  <data name="GameSettings.Privacy" xml:space="preserve">
+    <value>Lobby privacy:</value>
+  </data>
+  <data name="GameSettings.PrivateRButton" xml:space="preserve">
+    <value>Private (can join only with invitation or code)</value>
+  </data>
+  <data name="GameSettings.PublicRButton" xml:space="preserve">
+    <value>Public (friends can join)</value>
+  </data>
+  <data name="GameSettings.ConfirmButton" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Lobby.Title1" xml:space="preserve">
+    <value>Trick-Taking </value>
+  </data>
+  <data name="Lobby.Missions" xml:space="preserve">
+    <value>Number of missions: </value>
+  </data>
+  <data name="Lobby.Code" xml:space="preserve">
+    <value>Code:</value>
+  </data>
+  <data name="Lobby.SettingsButton" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Lobby.NotReadyButton" xml:space="preserve">
+    <value>Not Ready</value>
+  </data>
+  <data name="Lobby.Title2" xml:space="preserve">
+    <value>Missions</value>
+  </data>
+  <data name="Lobby.ReadyButton" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="SendFriendRequest.Title" xml:space="preserve">
+    <value>Send friend request</value>
+  </data>
+  <data name="SendFriendRequest.Information" xml:space="preserve">
+    <value>Enter the username to send the friend request:</value>
+  </data>
+  <data name="SendFriendRequest.SendButton" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SendFriendRequest.RequestsSent" xml:space="preserve">
+    <value>Sent friend request:</value>
+  </data>
+  <data name="ManageFriendRequest.Title" xml:space="preserve">
+    <value>Friend requests</value>
+  </data>
 </root>

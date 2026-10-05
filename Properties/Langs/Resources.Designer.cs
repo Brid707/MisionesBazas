@@ -106,6 +106,51 @@ namespace MisionesBazas.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Debes ingresar un código.
+        /// </summary>
+        public static string EnterGameCode_EmptyCode {
+            get {
+                return ResourceManager.GetString("EnterGameCode.EmptyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Código no asociado a ninguna sala existente.
+        /// </summary>
+        public static string EnterGameCode_InvalidCode {
+            get {
+                return ResourceManager.GetString("EnterGameCode.InvalidCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Entrar.
+        /// </summary>
+        public static string EnterGameCode_JoinButton {
+            get {
+                return ResourceManager.GetString("EnterGameCode.JoinButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lo sentimos no puedes unirte a la sala porque está llena.
+        /// </summary>
+        public static string EnterGameCode_LobbyAlreadyFull {
+            get {
+                return ResourceManager.GetString("EnterGameCode.LobbyAlreadyFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ingresa el código para ingresar a partida.
+        /// </summary>
+        public static string EnterGameCode_Title {
+            get {
+                return ResourceManager.GetString("EnterGameCode.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Enviar correo.
         /// </summary>
         public static string ForgotPassword_Button {
@@ -250,11 +295,92 @@ namespace MisionesBazas.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Salir.
+        /// </summary>
+        public static string GameMenu_SignOut {
+            get {
+                return ResourceManager.GetString("GameMenu.SignOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Misiones Bazas.
         /// </summary>
         public static string GameMenu_Title {
             get {
                 return ResourceManager.GetString("GameMenu.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Lo sentimos no puedes unirte a la sala porque te expulsaron.
+        /// </summary>
+        public static string GameMenuCode_KickedOut {
+            get {
+                return ResourceManager.GetString("GameMenuCode.KickedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Confirmar.
+        /// </summary>
+        public static string GameSettings_ConfirmButton {
+            get {
+                return ResourceManager.GetString("GameSettings.ConfirmButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Número de misiones:.
+        /// </summary>
+        public static string GameSettings_Missions {
+            get {
+                return ResourceManager.GetString("GameSettings.Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Cantidad de jugadores:.
+        /// </summary>
+        public static string GameSettings_NumberPlayers {
+            get {
+                return ResourceManager.GetString("GameSettings.NumberPlayers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Privacidad de la sala:.
+        /// </summary>
+        public static string GameSettings_Privacy {
+            get {
+                return ResourceManager.GetString("GameSettings.Privacy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Privada (solo con invitación  o código).
+        /// </summary>
+        public static string GameSettings_PrivateRButton {
+            get {
+                return ResourceManager.GetString("GameSettings.PrivateRButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Pública (los amigos pueden unirse).
+        /// </summary>
+        public static string GameSettings_PublicRButton {
+            get {
+                return ResourceManager.GetString("GameSettings.PublicRButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Configuración de la partida.
+        /// </summary>
+        public static string GameSettings_Title {
+            get {
+                return ResourceManager.GetString("GameSettings.Title", resourceCulture);
             }
         }
         
@@ -300,6 +426,69 @@ namespace MisionesBazas.Properties.Langs {
         public static string HomeScreen_Title {
             get {
                 return ResourceManager.GetString("HomeScreen.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Código:.
+        /// </summary>
+        public static string Lobby_Code {
+            get {
+                return ResourceManager.GetString("Lobby.Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Número de misiones:.
+        /// </summary>
+        public static string Lobby_Missions {
+            get {
+                return ResourceManager.GetString("Lobby.Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No Listo.
+        /// </summary>
+        public static string Lobby_NotReadyButton {
+            get {
+                return ResourceManager.GetString("Lobby.NotReadyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Listo.
+        /// </summary>
+        public static string Lobby_ReadyButton {
+            get {
+                return ResourceManager.GetString("Lobby.ReadyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Configuración.
+        /// </summary>
+        public static string Lobby_SettingsButton {
+            get {
+                return ResourceManager.GetString("Lobby.SettingsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Misiones .
+        /// </summary>
+        public static string Lobby_Title1 {
+            get {
+                return ResourceManager.GetString("Lobby.Title1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Bazas.
+        /// </summary>
+        public static string Lobby_Title2 {
+            get {
+                return ResourceManager.GetString("Lobby.Title2", resourceCulture);
             }
         }
         
@@ -390,6 +579,15 @@ namespace MisionesBazas.Properties.Langs {
         public static string MainWindow_Title {
             get {
                 return ResourceManager.GetString("MainWindow.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Solicitudes de amistad.
+        /// </summary>
+        public static string ManageFriendRequest_Title {
+            get {
+                return ResourceManager.GetString("ManageFriendRequest.Title", resourceCulture);
             }
         }
         
@@ -657,6 +855,42 @@ namespace MisionesBazas.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a Total de experiencia.
+        /// </summary>
+        public static string ScoreBoard_Experience {
+            get {
+                return ResourceManager.GetString("ScoreBoard.Experience", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Perfil del jugador.
+        /// </summary>
+        public static string ScoreBoard_PlayerProfile {
+            get {
+                return ResourceManager.GetString("ScoreBoard.PlayerProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Puesto.
+        /// </summary>
+        public static string ScoreBoard_Position {
+            get {
+                return ResourceManager.GetString("ScoreBoard.Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tabla de puntuaciones: Mayor número de experiencia.
+        /// </summary>
+        public static string ScoreBoard_Title {
+            get {
+                return ResourceManager.GetString("ScoreBoard.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Inglés.
         /// </summary>
         public static string SelectLanguage_EnglishButton {
@@ -680,6 +914,42 @@ namespace MisionesBazas.Properties.Langs {
         public static string SelectLanguage_Title {
             get {
                 return ResourceManager.GetString("SelectLanguage.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ingresa el usuario para enviar la solicitud:.
+        /// </summary>
+        public static string SendFriendRequest_Information {
+            get {
+                return ResourceManager.GetString("SendFriendRequest.Information", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Solicitudes de amistad enviadas:.
+        /// </summary>
+        public static string SendFriendRequest_RequestsSent {
+            get {
+                return ResourceManager.GetString("SendFriendRequest.RequestsSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Enviar.
+        /// </summary>
+        public static string SendFriendRequest_SendButton {
+            get {
+                return ResourceManager.GetString("SendFriendRequest.SendButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Enviar solicitud de amistad.
+        /// </summary>
+        public static string SendFriendRequest_Title {
+            get {
+                return ResourceManager.GetString("SendFriendRequest.Title", resourceCulture);
             }
         }
     }

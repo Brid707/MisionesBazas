@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="66675de8d88b4ad39a1a10c5b51b833f" Name="Diagram1">
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.AttemptCard" Width="1.5" PointX="9.75" PointY="30.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.AttemptObjective" Width="1.5" PointX="15" PointY="30.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.AttemptRulePlayer" Width="1.5" PointX="12.75" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Card" Width="1.5" PointX="7.5" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Communication" Width="1.5" PointX="12" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.DistressTransfer" Width="1.5" PointX="14.25" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.DistressUse" Width="1.5" PointX="12" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Experience" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Friendship" Width="1.5" PointX="3" PointY="23.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Game" Width="1.5" PointX="5.25" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.GameMission" Width="1.5" PointX="7.5" PointY="36" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.GamePlayer" Width="1.5" PointX="7.5" PointY="30.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.GameSystemMessage" Width="1.5" PointX="7.5" PointY="39" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Invitation" Width="1.5" PointX="3" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Lobby" Width="1.5" PointX="3" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.LobbyMessage" Width="1.5" PointX="7.5" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.LobbyPlayer" Width="1.5" PointX="5.25" PointY="31.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Mission" Width="1.5" PointX="5.25" PointY="40" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.MissionAttempt" Width="1.5" PointX="9.75" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.MissionRestriction" Width="1.5" PointX="17.75" PointY="31.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.MissionToken" Width="1.5" PointX="7.5" PointY="42.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.NormalCard" Width="1.5" PointX="9.75" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Play" Width="1.5" PointX="15" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.PlayerBlock" Width="1.5" PointX="3" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.PlayerProfile" Width="1.5" PointX="3" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.RuleDefinition" Width="1.5" PointX="10.5" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.SpecialCard" Width="1.5" PointX="9.75" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.Trick" Width="1.5" PointX="17" PointY="35" IsExpanded="true" />
+        <EntityTypeShape EntityType="MisionesBazas_Experiencia_v4Model.User" Width="1.5" PointX="0.75" PointY="26.125" IsExpanded="true" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R23_AttemptCard_MissionAttempt" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R24_AttemptCard_Card" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R25_AttemptCard_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R26_AttemptObjective_AttemptCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R37_Play_AttemptCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R38_Communication_AttemptCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R43_DistressTransfer_AttemptCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R27_AttemptObjective_NormalCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R28_AttemptObjective_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R29_AttemptRulePlayer_MissionAttempt" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R30_AttemptRulePlayer_RuleDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R31_AttemptRulePlayer_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R14_NormalCard_Card" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R15_SpecialCard_Card" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R39_Communication_NormalCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R40_Communication_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R42_DistressTransfer_DistressUse" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R44_DistressTransfer_NormalCard" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R45_DistressTransfer_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R46_DistressTransfer_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R41_DistressUse_MissionAttempt" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R49_Experience_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R02_Friendship_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R03_Friendship_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R11_Game_Lobby" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R12_GamePlayer_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R19_GameMission_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R48_GameSystemMessage_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R20_GameMission_Mission" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R21_MissionAttempt_GameMission" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R13_GamePlayer_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R22_MissionAttempt_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R33_Trick_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R34_Trick_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R36_Play_GamePlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R09_Invitation_LobbyPlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R10_Invitation_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R06_Lobby_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R07_LobbyPlayer_Lobby" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R47_LobbyMessage_LobbyPlayer" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R08_LobbyPlayer_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R16_MissionRestriction_Mission" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R18_MissionToken_Mission" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R32_Trick_MissionAttempt" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R17_MissionRestriction_RuleDefinition" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R35_Play_Trick" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R04_PlayerBlock_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R05_PlayerBlock_User" ManuallyRouted="false" />
+        <AssociationConnector Association="MisionesBazas_Experiencia_v4Model.FK_R01_PlayerProfile_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
