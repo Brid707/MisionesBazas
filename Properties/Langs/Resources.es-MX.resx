@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -387,7 +387,7 @@
     <value>Número de misiones: </value>
   </data>
   <data name="Lobby.Code" xml:space="preserve">
-    <value>Código;</value>
+    <value>Código:</value>
   </data>
   <data name="Lobby.SettingsButton" xml:space="preserve">
     <value>Configuración</value>
@@ -415,5 +415,41 @@
   </data>
   <data name="ManageFriendRequest.Title" xml:space="preserve">
     <value>Solicitudes de amistad</value>
+  </data>
+  <data name="HowToPlay.Title" xml:space="preserve">
+    <value>Cómo jugar</value>
+  </data>
+  <data name="HowToPlay.RuleA" xml:space="preserve">
+    <value>El primer turno iniciará el capitán seleccionando una carta de su mano.</value>
+  </data>
+  <data name="HowToPlay.RuleB" xml:space="preserve">
+    <value>Después el jugador siguiente en dirección de las manecillas del reloj deberá jugar una carta del mismo color (si la tiene), una carta de otro color si no tiene del mismo color jugado o su carta de rey.</value>
+  </data>
+  <data name="HowToPlay.RuleC" xml:space="preserve">
+    <value>Se repetirá el paso b hasta que se llegue al último jugador.</value>
+  </data>
+  <data name="HowToPlay.RuleD" xml:space="preserve">
+    <value>El jugador que haya jugado la carta con el número más alto del color tirado inicialmente será quien gane el truco.</value>
+  </data>
+  <data name="HowToPlay.RuleD_Sub1" xml:space="preserve">
+    <value>Las cartas de rey ganan a cualquier otra carta que no sea de rey. Estas solo perderán ante otra carta de rey según la jerarquía (espadas -&gt; corazones -&gt; tréboles -&gt; diamantes).</value>
+  </data>
+  <data name="HowToPlay.RuleE" xml:space="preserve">
+    <value>Las cartas ganadas por el jugador se moverán a su lado y no podrán volver a jugarse.</value>
+  </data>
+  <data name="HowToPlay.RuleF" xml:space="preserve">
+    <value>El número de trucos jugados son iguales a la cantidad de cartas que tiene cada jugador (para 3 jugadores se juegan 13 trucos). A excepción de que se cumplan todos los objetivos o se falle uno, si esto pasa podrá pasar a la siguiente misión o reiniciar la respectivamente.</value>
+  </data>
+  <data name="HowToPlay.RuleG" xml:space="preserve">
+    <value>Las fichas de comunicación permiten que los jugadores revelen una carta de su mano colocando la ficha sobre su carta. Las fichas no pueden ser colocadas si no se cumple una de las condiciones que se describirán. Según donde se coloque significará:</value>
+  </data>
+  <data name="HowToPlay.RuleG_Sub1" xml:space="preserve">
+    <value>Si la ficha es colocada en la parte superior de la carta significa que es la carta de ese color con el número más grande del jugador.</value>
+  </data>
+  <data name="HowToPlay.RuleG_Sub2" xml:space="preserve">
+    <value>Si la ficha es colocada en el centro de la carta significa que es la única carta del jugador de ese color.</value>
+  </data>
+  <data name="HowToPlay.RuleG_Sub3" xml:space="preserve">
+    <value>Si la ficha es colocada en la parte inferior de la carta significa que es la carta de ese color con el número más bajo del jugador.</value>
   </data>
 </root>
