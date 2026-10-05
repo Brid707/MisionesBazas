@@ -4,10 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:language="clr-namespace:MisionesBazas.Properties.Langs"
+        xmlns:local="clr-namespace:MisionesBazas"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="ScoreBoard" Height="380" Width="780" WindowStyle="None" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded">
 
     <Window.Resources>
+        <CollectionViewSource x:Key="userViewSource" d:DesignSource="{d:DesignInstance {x:Type local:User}, CreateList=True}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Position" Direction="Ascending" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
         <Style x:Key="CenteredCellStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -57,7 +65,7 @@
 
                 <StackPanel Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Width="740">
                     <DataGrid x:Name="ScoresDataGrid"
-                              ItemsSource="{Binding Scores}"
+                              ItemsSource="{Binding Source={StaticResource userViewSource}}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column"
                               IsReadOnly="True"
@@ -91,7 +99,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Missions}" Binding="{Binding MissionsCompleted}" Width="180" ElementStyle="{StaticResource CenteredCellStyle}" />
+                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Experience}" Binding="{Binding Experience.TotalXP}" Width="180" ElementStyle="{StaticResource CenteredCellStyle}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
