@@ -1,5 +1,53 @@
+## ==========================================
+## Visual Studio & .NET .gitignore
+## ==========================================
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Visual Studio temporary & cache files
 .vs/
-bin/
-obj/
-Debug/
-Release/
+.vscode/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Build log files
+*.log
+msbuild.log
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Backup & temporary files
+*.bak
+*.cache
+*.tmp
+*.temp
+*~
+
+# Entity Framework temporary files
+*.edmx.diagram.user

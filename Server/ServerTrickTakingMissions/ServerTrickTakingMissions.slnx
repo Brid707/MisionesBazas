@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../Application/Application.csproj" Id="0bd0344e-3851-4f90-a9d1-298d169f966f" />
+  <Project Path="../Host/Host.csproj" Id="26ce1c4b-e520-4c14-b7e6-9e6f5a5805c2" />
+  <Project Path="../Persistence/Persistence.csproj" Id="c36681c2-acec-4779-b280-e9b8ce8fdab7" />
+  <Project Path="../Services/Services.csproj" Id="c3ce4b74-c003-42a1-9dbd-75f8213916eb" />
+</Solution>

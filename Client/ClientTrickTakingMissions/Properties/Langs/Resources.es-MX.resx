@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainWindow_Title" xml:space="preserve">
+    <value>Misiones Bazas</value>
+  </data>
+  <data name="HomeScreen_Title" xml:space="preserve">
+    <value>Misiones Bazas</value>
+  </data>
+  <data name="HomeScreen_LanguageButton" xml:space="preserve">
+    <value>Idioma</value>
+  </data>
+  <data name="HomeScreen_SignUpButton" xml:space="preserve">
+    <value>Registrarse</value>
+  </data>
+  <data name="HomeScreen_LoginButton" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="HomeScreen_GuestButton" xml:space="preserve">
+    <value>Entrar como invitado</value>
+  </data>
+  <data name="SelectLanguage_Title" xml:space="preserve">
+    <value>Seleccionar idioma</value>
+  </data>
+  <data name="SelectLanguage_SpanishButton" xml:space="preserve">
+    <value>Español</value>
+  </data>
+  <data name="SelectLanguage_EnglishButton" xml:space="preserve">
+    <value>Inglés</value>
+  </data>
+  <data name="Register_Title" xml:space="preserve">
+    <value>Registrarse</value>
+  </data>
+  <data name="Register_Restrictions" xml:space="preserve">
+    <value>* La contraseña debe tener al menos 8 caracteres
+* La contraseña debe tener al menos un carácter especial
+* La contraseña debe tener al menos un número</value>
+  </data>
+  <data name="Register_Email" xml:space="preserve">
+    <value>Correo</value>
+  </data>
+  <data name="Register_Username" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="Register_Password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Register_ConfirmPassword" xml:space="preserve">
+    <value>Escriba nuevamente la contraseña</value>
+  </data>
+  <data name="Register_SubmitButton" xml:space="preserve">
+    <value>ENTRAR</value>
+  </data>
+  <data name="Register_EmptyEmail" xml:space="preserve">
+    <value>* Debes ingresar un correo</value>
+  </data>
+  <data name="Register_EmptyUsername" xml:space="preserve">
+    <value>* Debes ingresar un usuario</value>
+  </data>
+  <data name="Register_EmptyPassword" xml:space="preserve">
+    <value>* Debes ingresar una contraseña</value>
+  </data>
+  <data name="Register_EmptyPasswordConfirmation" xml:space="preserve">
+    <value>* Debes ingresar de nuevo la contraseña</value>
+  </data>
+  <data name="Register_PasswordMismatch" xml:space="preserve">
+    <value>* Las contraseñas no coinciden</value>
+  </data>
+  <data name="Register_Success" xml:space="preserve">
+    <value>Registro completado exitosamente.</value>
+  </data>
+  <data name="Register_InvalidEmail" xml:space="preserve">
+    <value>* Ingresa un correo valido</value>
+  </data>
+  <data name="Register_EmailAlreadyRegistered" xml:space="preserve">
+    <value>* El correo ya se encuentra registrado, ingrese otro</value>
+  </data>
+  <data name="Register_UsernameAlreadyRegistered" xml:space="preserve">
+    <value>* El nombre de usuario ya se encuentra registrado, ingrese otro</value>
+  </data>
+  <data name="Register_PasswordRuleLength" xml:space="preserve">
+    <value>* La contraseña debe tener al menos 8 caracteres</value>
+  </data>
+  <data name="Register_PasswordRuleSpecialChar" xml:space="preserve">
+    <value>* La contraseña debe tener al menos un carácter especial</value>
+  </data>
+  <data name="Register_PasswordRuleNumber" xml:space="preserve">
+    <value>* La contraseña debe tener al menos un número</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>Misiones Bazas</value>
+  </data>
+  <data name="Login_LoginTitle" xml:space="preserve">
+    <value>Iniciar sesión</value>
+  </data>
+  <data name="Login_Email" xml:space="preserve">
+    <value>Correo</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="Login_Enter" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="Login_ForgotPassword" xml:space="preserve">
+    <value>¿Olvidó su contraseña?</value>
+  </data>
+  <data name="Login_EmptyEmail" xml:space="preserve">
+    <value>* Debes ingresar un correo</value>
+  </data>
+  <data name="Login_EmptyPassword" xml:space="preserve">
+    <value>* Debes ingresar una contraseña</value>
+  </data>
+  <data name="Login_InvalidCredentials" xml:space="preserve">
+    <value>* El correo y/o la contraseña no coinciden</value>
+  </data>
+  <data name="GameMenu_Title" xml:space="preserve">
+    <value>Misiones Bazas</value>
+  </data>
+  <data name="GameMenu_CreateRoom" xml:space="preserve">
+    <value>Crear sala</value>
+  </data>
+  <data name="GameMenu_JoinLobby" xml:space="preserve">
+    <value>Unirse a sala</value>
+  </data>
+  <data name="GameMenu_HowToPlay" xml:space="preserve">
+    <value>Cómo jugar</value>
+  </data>
+  <data name="GameMenu_Profile" xml:space="preserve">
+    <value>Perfil</value>
+  </data>
+  <data name="GameMenu_Friends" xml:space="preserve">
+    <value>Amigos</value>
+  </data>
+  <data name="GameMenu_Messages" xml:space="preserve">
+    <value>Mensajes</value>
+  </data>
+  <data name="GameMenu_AddFriend" xml:space="preserve">
+    <value>Añadir amigo</value>
+  </data>
+  <data name="FriendsBar_Online" xml:space="preserve">
+    <value>En línea</value>
+  </data>
+  <data name="FriendsBar_Offline" xml:space="preserve">
+    <value>Desconectado</value>
+  </data>
+  <data name="FriendsBar_DeleteFriend" xml:space="preserve">
+    <value>Eliminar amigo</value>
+  </data>
+  <data name="FriendsBar_ViewProfile" xml:space="preserve">
+    <value>Ver perfil</value>
+  </data>
+  <data name="FriendsBar_GameInvitation" xml:space="preserve">
+    <value>te invitó a una partida</value>
+  </data>
+  <data name="FriendsBar_GameInformation" xml:space="preserve">
+    <value>Misiones: x Jugadores y/z</value>
+  </data>
+  <data name="Profile_AccountCreation" xml:space="preserve">
+    <value>Creado desde:</value>
+  </data>
+  <data name="Profile_Date" xml:space="preserve">
+    <value>20/09/2026</value>
+  </data>
+  <data name="Profile_Missions" xml:space="preserve">
+    <value>Misiones completadas:</value>
+  </data>
+  <data name="Profile_Biography" xml:space="preserve">
+    <value>Biografía:</value>
+  </data>
+  <data name="Profile_Email" xml:space="preserve">
+    <value>Correo:</value>
+  </data>
+  <data name="ForgotPassword_Title" xml:space="preserve">
+    <value>Olvidó su contraseña</value>
+  </data>
+  <data name="ForgotPassword_Information" xml:space="preserve">
+    <value>Ingrese su correo para cambiar su contraseña</value>
+  </data>
+  <data name="ForgotPassword_Button" xml:space="preserve">
+    <value>Enviar correo</value>
+  </data>
+  <data name="RecoverPassword_Title" xml:space="preserve">
+    <value>Recuperar contraseña</value>
+  </data>
+  <data name="RecoverPassword_EmailSend" xml:space="preserve">
+    <value>Se envío un correo a tu cuenta para cambiar la contraseña.</value>
+  </data>
+  <data name="RecoverPassword_ResendCode" xml:space="preserve">
+    <value>Reenviar código</value>
+  </data>
+  <data name="RecoverPassword_Information" xml:space="preserve">
+    <value>Ingresa el código que llegó a tu correo:</value>
+  </data>
+  <data name="RecoverPassword_ConfirmButton" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ChangePassword_Title" xml:space="preserve">
+    <value>Cambiar contraseña</value>
+  </data>
+  <data name="ChangePassword_Information" xml:space="preserve">
+    <value>Ingresa tu nueva contraseña:</value>
+  </data>
+  <data name="ChangePassword_PasswordField" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="ChangePassword_ConfirmPasswordField" xml:space="preserve">
+    <value>Escriba nuevamente la contraseña</value>
+  </data>
+  <data name="ChangePassword_ConfirmButton" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="ScoreBoard_Title" xml:space="preserve">
+    <value>Tabla de puntuaciones: Mayor número de experiencia</value>
+  </data>
+  <data name="ScoreBoard_Position" xml:space="preserve">
+    <value>Puesto</value>
+  </data>
+  <data name="ScoreBoard_Experience" xml:space="preserve">
+    <value>Total de experiencia</value>
+  </data>
+  <data name="ScoreBoard_PlayerProfile" xml:space="preserve">
+    <value>Perfil del jugador</value>
+  </data>
+  <data name="GameMenu_SignOut" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="EnterGameCode_Title" xml:space="preserve">
+    <value>Ingresa el código para entrar a partida</value>
+  </data>
+  <data name="EnterGameCode_JoinButton" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="EnterGameCode_EmptyCode" xml:space="preserve">
+    <value>Debes ingresar un código</value>
+  </data>
+  <data name="EnterGameCode_InvalidCode" xml:space="preserve">
+    <value>Código no asociado a ninguna sala existente</value>
+  </data>
+  <data name="EnterGameCode_LobbyAlreadyFull" xml:space="preserve">
+    <value>Lo sentimos no puedes unirte a la sala porque está llena</value>
+  </data>
+  <data name="GameMenuCode_KickedOut" xml:space="preserve">
+    <value>Lo sentimos no puedes unirte a la sala porque te expulsaron</value>
+  </data>
+  <data name="GameSettings_Title" xml:space="preserve">
+    <value>Configuración de la partida</value>
+  </data>
+  <data name="GameSettings_NumberPlayers" xml:space="preserve">
+    <value>Cantidad de jugadores:</value>
+  </data>
+  <data name="GameSettings_Missions" xml:space="preserve">
+    <value>Número de misiones:</value>
+  </data>
+  <data name="GameSettings_Privacy" xml:space="preserve">
+    <value>Privacidad de la sala:</value>
+  </data>
+  <data name="GameSettings_PrivateRButton" xml:space="preserve">
+    <value>Privada (solo con invitación  o código)</value>
+  </data>
+  <data name="GameSettings_PublicRButton" xml:space="preserve">
+    <value>Pública (los amigos pueden unirse)</value>
+  </data>
+  <data name="GameSettings_ConfirmButton" xml:space="preserve">
+    <value>Confirmar</value>
+  </data>
+  <data name="Lobby_Title1" xml:space="preserve">
+    <value>Misiones </value>
+  </data>
+  <data name="Lobby_Missions" xml:space="preserve">
+    <value>Número de misiones: </value>
+  </data>
+  <data name="Lobby_Code" xml:space="preserve">
+    <value>Código:</value>
+  </data>
+  <data name="Lobby_SettingsButton" xml:space="preserve">
+    <value>Configuración</value>
+  </data>
+  <data name="Lobby_NotReadyButton" xml:space="preserve">
+    <value>No Listo</value>
+  </data>
+  <data name="Lobby_Title2" xml:space="preserve">
+    <value>Bazas</value>
+  </data>
+  <data name="Lobby_ReadyButton" xml:space="preserve">
+    <value>Listo</value>
+  </data>
+  <data name="SendFriendRequest_Title" xml:space="preserve">
+    <value>Enviar solicitud de amistad</value>
+  </data>
+  <data name="SendFriendRequest_Information" xml:space="preserve">
+    <value>Ingresa el usuario para enviar la solicitud:</value>
+  </data>
+  <data name="SendFriendRequest_SendButton" xml:space="preserve">
+    <value>Enviar</value>
+  </data>
+  <data name="SendFriendRequest_RequestsSent" xml:space="preserve">
+    <value>Solicitudes de amistad enviadas:</value>
+  </data>
+  <data name="ManageFriendRequest_Title" xml:space="preserve">
+    <value>Solicitudes de amistad</value>
+  </data>
+  <data name="HowToPlay_Title" xml:space="preserve">
+    <value>Cómo jugar</value>
+  </data>
+  <data name="HowToPlay_RuleA" xml:space="preserve">
+    <value>El primer turno iniciará el capitán seleccionando una carta de su mano.</value>
+  </data>
+  <data name="HowToPlay_RuleB" xml:space="preserve">
+    <value>Después el jugador siguiente en dirección de las manecillas del reloj deberá jugar una carta del mismo color (si la tiene), una carta de otro color si no tiene del mismo color jugado o su carta de rey.</value>
+  </data>
+  <data name="HowToPlay_RuleC" xml:space="preserve">
+    <value>Se repetirá el paso b hasta que se llegue al último jugador.</value>
+  </data>
+  <data name="HowToPlay_RuleD" xml:space="preserve">
+    <value>El jugador que haya jugado la carta con el número más alto del color tirado inicialmente será quien gane el truco.</value>
+  </data>
+  <data name="HowToPlay_RuleD_Sub1" xml:space="preserve">
+    <value>Las cartas de rey ganan a cualquier otra carta que no sea de rey. Estas solo perderán ante otra carta de rey según la jerarquía (espadas -&gt; corazones -&gt; tréboles -&gt; diamantes).</value>
+  </data>
+  <data name="HowToPlay_RuleE" xml:space="preserve">
+    <value>Las cartas ganadas por el jugador se moverán a su lado y no podrán volver a jugarse.</value>
+  </data>
+  <data name="HowToPlay_RuleF" xml:space="preserve">
+    <value>El número de trucos jugados son iguales a la cantidad de cartas que tiene cada jugador (para 3 jugadores se juegan 13 trucos). A excepción de que se cumplan todos los objetivos o se falle uno, si esto pasa podrá pasar a la siguiente misión o reiniciar la respectivamente.</value>
+  </data>
+  <data name="HowToPlay_RuleG" xml:space="preserve">
+    <value>Las fichas de comunicación permiten que los jugadores revelen una carta de su mano colocando la ficha sobre su carta. Las fichas no pueden ser colocadas si no se cumple una de las condiciones que se describirán. Según donde se coloque significará:</value>
+  </data>
+  <data name="HowToPlay_RuleG_Sub1" xml:space="preserve">
+    <value>Si la ficha es colocada en la parte superior de la carta significa que es la carta de ese color con el número más grande del jugador.</value>
+  </data>
+  <data name="HowToPlay_RuleG_Sub2" xml:space="preserve">
+    <value>Si la ficha es colocada en el centro de la carta significa que es la única carta del jugador de ese color.</value>
+  </data>
+  <data name="HowToPlay_RuleG_Sub3" xml:space="preserve">
+    <value>Si la ficha es colocada en la parte inferior de la carta significa que es la carta de ese color con el número más bajo del jugador.</value>
+  </data>
+  <data name="Common_Error_ConnectionFailed" xml:space="preserve">
+    <value>No se pudo conectar al servidor.</value>
+  </data>
+  <data name="Common_Error_Timeout" xml:space="preserve">
+    <value>El servidor tardó demasiado en responder.</value>
+  </data>
+  <data name="Common_Error_Communication" xml:space="preserve">
+    <value>Ocurrió un error de comunicación con el servidor.</value>
+  </data>
+  <data name="Common_Error_Unexpected" xml:space="preserve">
+    <value>Ocurrió un error inesperado. Intente de nuevo.</value>
+  </data>  <data name="Common_Button_Back" xml:space="preserve">
+    <value>←</value>
+  </data>
+  <data name="Common_Button_Close" xml:space="preserve">
+    <value>✕</value>
+  </data>
+  <data name="GameMenu_Tooltip_ScoreBoard" xml:space="preserve">
+    <value>Tabla de puntuaciones</value>
+  </data>
+  <data name="ManageFriendRequest_Tooltip_Accept" xml:space="preserve">
+    <value>Aceptar solicitud</value>
+  </data>
+  <data name="ManageFriendRequest_Tooltip_Reject" xml:space="preserve">
+    <value>Rechazar solicitud</value>
+  </data>
+  <data name="ManageFriendRequest_Label_NoPendingRequests" xml:space="preserve">
+    <value>No hay solicitudes de amistad pendientes</value>
+  </data></root>
