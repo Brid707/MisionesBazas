@@ -1,14 +1,15 @@
-﻿<Page x:Class="View.Views.RegisterPage"
+<Page x:Class="View.Views.RegisterPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	  xmlns:language="clr-namespace:View.Properties.Langs"
+      xmlns:language="clr-namespace:View.Properties.Langs"
+      xmlns:styles="clr-namespace:View.Styles"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="{x:Static language:Resources.Register_Title}">
 
-    <Grid Background="Black">
+    <Grid Background="{x:Static styles:ColorPalette.PureBlackBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.45*" />
             <ColumnDefinition Width="0.55*" />
@@ -17,45 +18,70 @@
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#7a0006" Offset="0" />
-                    <GradientStop Color="#b90a0a" Offset="0.5" />
-                    <GradientStop Color="#c60b0b" Offset="1" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStartColor}"
+                                  Offset="0" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStepColor}"
+                                  Offset="0.5" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientEndColor}"
+                                  Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
             <Grid Margin="40">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="RegTitle" Text="{x:Static language:Resources.Register_Title}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
-                               FontWeight="Bold" FontSize="72" TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,12" />
+                    <TextBlock x:Name="RegTitle" Text="{x:Static language:Resources.Register_Title}"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               FontFamily="Impact, Arial Black, 'Segoe UI'"
+                               FontWeight="Bold" FontSize="72" TextWrapping="Wrap"
+                               TextAlignment="Left" Margin="0,0,0,12" />
 
-                    <TextBlock x:Name="Rules" Text="{x:Static language:Resources.Register_Restrictions}" TextWrapping="Wrap" Foreground="#FFF36B" FontSize="18" Margin="0,24,0,0" />
+                    <TextBlock x:Name="Rules" Text="{x:Static language:Resources.Register_Restrictions}"
+                               TextWrapping="Wrap"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               FontSize="18" Margin="0,24,0,0" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Background="Black">
+        <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <Button x:Name="BtnBack" Content="{x:Static language:Resources.Common_Button_Back}" Width="48" Height="48" Margin="-565,43,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnBack_Click"/>
+                <Button x:Name="BtnBack" Content="{x:Static language:Resources.Common_Button_Back}"
+                        Width="48" Height="48" Margin="-565,43,0,0" HorizontalAlignment="Left"
+                        VerticalAlignment="Top" Click="BtnBack_Click" />
             </Grid>
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                <TextBlock Text="{x:Static language:Resources.Register_Email}" Foreground="#FFF36B" FontSize="16" Margin="0,0,0,4" />
+                <TextBlock Text="{x:Static language:Resources.Register_Email}"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontSize="16" Margin="0,0,0,4" />
                 <TextBox x:Name="Register_Email" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
 
-                <TextBlock Text="{x:Static language:Resources.Register_Username}" Foreground="#FFF36B" FontSize="16" Margin="0,0,0,4" />
+                <TextBlock Text="{x:Static language:Resources.Register_Username}"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontSize="16" Margin="0,0,0,4" />
                 <TextBox x:Name="Register_Username" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
 
-                <TextBlock Text="{x:Static language:Resources.Register_Password}" Foreground="#FFF36B" FontSize="16" Margin="0,0,0,4" />
+                <TextBlock Text="{x:Static language:Resources.Register_Password}"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontSize="16" Margin="0,0,0,4" />
                 <PasswordBox x:Name="Register_Password" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
 
-                <TextBlock Text="{x:Static language:Resources.Register_ConfirmPassword}" Foreground="#FFF36B" FontSize="16" Margin="0,0,0,4" />
-                <PasswordBox x:Name="Register_PasswordConfirm" Height="50" FontSize="18" Padding="8" Margin="0,0,0,18" />
+                <TextBlock Text="{x:Static language:Resources.Register_ConfirmPassword}"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontSize="16" Margin="0,0,0,4" />
+                <PasswordBox x:Name="Register_PasswordConfirm" Height="50" FontSize="18" Padding="8"
+                             Margin="0,0,0,18" />
 
-                <Button x:Name="Register_Submit" Content="{x:Static language:Resources.Register_SubmitButton}" Height="64" Width="220" Background="#d49b2a" Foreground="Black" FontSize="22" FontWeight="Bold" Click="Register_Submit_Click" />
+                <Button x:Name="Register_Submit"
+                        Content="{x:Static language:Resources.Register_SubmitButton}"
+                        Height="64" Width="220"
+                        Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"
+                        Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        FontSize="22" FontWeight="Bold" Click="Register_Submit_Click" />
             </StackPanel>
         </Grid>
     </Grid>

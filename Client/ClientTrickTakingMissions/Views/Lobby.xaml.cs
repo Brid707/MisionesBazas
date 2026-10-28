@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace View.Views
 {
@@ -18,7 +19,7 @@ namespace View.Views
             InitializeComponent();
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -26,12 +27,20 @@ namespace View.Views
                 {
                     this.NavigationService.GoBack();
                 }
+                else if (this.NavigationService != null)
+                {
+                    this.NavigationService.Navigate(new GameMenu());
+                }
                 else
                 {
                     Window window = Window.GetWindow(this);
-                    if (window != null)
+                    if (window is MainWindow mainWindow)
                     {
-                        window.Close();
+                        mainWindow.MainFrame.Navigate(new GameMenu());
+                    }
+                    else
+                    {
+                        window?.Close();
                     }
                 }
             }
@@ -39,6 +48,22 @@ namespace View.Views
             {
                 // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
                 Debug.WriteLine($"[Lobby] Error navigating back or closing: {ex.Message}");
+            }
+        }
+
+        private void ProfileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.NavigationService != null)
+            {
+                this.NavigationService.Navigate(new Profile());
+            }
+            else
+            {
+                Window window = Window.GetWindow(this);
+                if (window is MainWindow mainWindow)
+                {
+                    mainWindow.MainFrame.Navigate(new Profile());
+                }
             }
         }
     }

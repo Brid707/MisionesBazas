@@ -6,6 +6,7 @@ namespace View.Views
 {
     /// <summary>
     /// Interaction logic for configuring match rules and game settings.
+    /// Acts as a modal dialog that returns confirmation to the parent view.
     /// </summary>
     public partial class GameSettings : Window
     {
@@ -15,9 +16,6 @@ namespace View.Views
         private const int MinimumMissionCount = 1;
         private const int MaximumMissionCount = 50;
         private const int DefaultMissionSelectionIndex = 4;
-        private const double LobbyWindowWidth = 1000;
-        private const double LobbyWindowHeight = 700;
-        private const string LobbyWindowTitle = "Lobby";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameSettings"/> class.
@@ -49,34 +47,8 @@ namespace View.Views
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Lobby lobbyPage = new Lobby();
-                Window window = Window.GetWindow(this);
-                if (window is MainWindow mainWindow)
-                {
-                    mainWindow.MainFrame.Navigate(lobbyPage);
-                }
-                else
-                {
-                    Window lobbyWindow = new Window
-                    {
-                        Title = LobbyWindowTitle,
-                        Content = lobbyPage,
-                        Width = LobbyWindowWidth,
-                        Height = LobbyWindowHeight,
-                        Owner = window
-                    };
-                    lobbyWindow.ShowDialog();
-                }
-
-                this.Close();
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[GameSettings] Error opening lobby: {ex.Message}");
-            }
+            this.DialogResult = true;
+            this.Close();
         }
     }
 }

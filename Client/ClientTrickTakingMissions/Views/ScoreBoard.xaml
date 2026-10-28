@@ -1,4 +1,4 @@
-﻿<Window x:Class="View.Views.ScoreBoard"
+<Window x:Class="View.Views.ScoreBoard"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,11 +6,15 @@
         xmlns:language="clr-namespace:View.Properties.Langs"
         xmlns:local="clr-namespace:View.Views"
         xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:styles="clr-namespace:View.Styles"
         mc:Ignorable="d"
-        Title="ScoreBoard" Height="380" Width="780" WindowStyle="None" AllowsTransparency="True" Background="Transparent" Loaded="Window_Loaded">
+        Title="ScoreBoard" Height="380" Width="780"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Loaded="Window_Loaded">
 
     <Window.Resources>
-        <CollectionViewSource x:Key="userViewSource" d:DesignSource="{d:DesignInstance {x:Type local:User}, CreateList=True}">
+        <CollectionViewSource x:Key="userViewSource"
+                              d:DesignSource="{d:DesignInstance {x:Type local:User}, CreateList=True}">
             <CollectionViewSource.SortDescriptions>
                 <scm:SortDescription PropertyName="Position" Direction="Ascending" />
             </CollectionViewSource.SortDescriptions>
@@ -24,22 +28,28 @@
         </Style>
 
         <Style x:Key="HeaderStyle" TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#7a0000" />
-            <Setter Property="Foreground" Value="#000" />
+            <Setter Property="Background"
+                    Value="{x:Static styles:ColorPalette.LobbyContainerBackgroundBrush}" />
+            <Setter Property="Foreground"
+                    Value="{x:Static styles:ColorPalette.PureBlackBrush}" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Padding" Value="6" />
-            <Setter Property="BorderBrush" Value="#000" />
+            <Setter Property="BorderBrush"
+                    Value="{x:Static styles:ColorPalette.PureBlackBrush}" />
             <Setter Property="BorderThickness" Value="0,0,0,2" />
         </Style>
     </Window.Resources>
 
-    <Border BorderBrush="#000" BorderThickness="3" CornerRadius="4" Background="Transparent" Padding="8">
+    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+            BorderThickness="3" CornerRadius="4" Background="Transparent" Padding="8">
         <Grid>
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#8B0000" Offset="0" />
-                    <GradientStop Color="#d22020" Offset="1" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.ModalAccentGradientStartColor}"
+                                  Offset="0" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.ModalAccentGradientEndColor}"
+                                  Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
 
@@ -56,10 +66,22 @@
                         <ColumnDefinition Width="48" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Grid.Column="1" Text="{x:Static language:Resources.ScoreBoard_Title}" FontFamily="Impact" FontSize="32" Foreground="#FFF36B" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="620" />
+                    <TextBlock Grid.Column="1"
+                               Text="{x:Static language:Resources.ScoreBoard_Title}"
+                               FontFamily="Impact" FontSize="32"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               HorizontalAlignment="Center" TextAlignment="Center"
+                               TextWrapping="Wrap" MaxWidth="620" />
 
-                    <Button Grid.Column="2" x:Name="BtnClose" Width="44" Height="44" HorizontalAlignment="Right" VerticalAlignment="Top" Background="#2a0000" BorderBrush="#000" BorderThickness="2" Click="BtnClose_Click">
-                        <TextBlock Text="✕" FontSize="18" Foreground="#000" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Button Grid.Column="2" x:Name="BtnClose" Width="44" Height="44"
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
+                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            BorderThickness="2" Click="BtnClose_Click">
+                        <TextBlock Text="✕" FontSize="18"
+                                   Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                   FontWeight="Bold" HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
                     </Button>
                 </Grid>
 
@@ -76,35 +98,45 @@
                               RowHeight="60"
                               Height="340"
                               GridLinesVisibility="All"
-                              BorderBrush="#000"
+                              BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                               BorderThickness="2"
                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                              HorizontalGridLinesBrush="#000"
-                              VerticalGridLinesBrush="#000"
-                              Background="#8b0000"
-                              Foreground="#000"
+                              HorizontalGridLinesBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              VerticalGridLinesBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              Background="{x:Static styles:ColorPalette.InputFieldBorderBrush}"
+                              Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                               ColumnHeaderStyle="{StaticResource HeaderStyle}">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Position}" Binding="{Binding Position}" Width="84" ElementStyle="{StaticResource CenteredCellStyle}" />
+                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Position}"
+                                                Binding="{Binding Position}" Width="84"
+                                                ElementStyle="{StaticResource CenteredCellStyle}" />
 
-                            <DataGridTemplateColumn Header="{x:Static language:Resources.ScoreBoard_PlayerProfile}" Width="*">
+                            <DataGridTemplateColumn Header="{x:Static language:Resources.ScoreBoard_PlayerProfile}"
+                                                    Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
-                                            <Ellipse Width="44" Height="44" Fill="#000" Stroke="#fff" StrokeThickness="6" />
-                                            <TextBlock Text="{Binding Username}" VerticalAlignment="Center" Margin="8,0" Foreground="#000" FontSize="16" />
+                                            <Ellipse Width="44" Height="44"
+                                                     Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                     Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                     StrokeThickness="6" />
+                                            <TextBlock Text="{Binding Username}" VerticalAlignment="Center"
+                                                       Margin="8,0"
+                                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                       FontSize="16" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
 
-                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Experience}" Binding="{Binding Experience.TotalXP}" Width="180" ElementStyle="{StaticResource CenteredCellStyle}" />
+                            <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Experience}"
+                                                Binding="{Binding Experience.TotalXP}" Width="180"
+                                                ElementStyle="{StaticResource CenteredCellStyle}" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </Grid>
         </Grid>
     </Border>
-
 </Window>

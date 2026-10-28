@@ -1,9 +1,10 @@
-﻿<Window x:Class="View.Views.ManageFriendRequest"
+<Window x:Class="View.Views.ManageFriendRequest"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:language="clr-namespace:View.Properties.Langs"
+        xmlns:styles="clr-namespace:View.Styles"
         mc:Ignorable="d"
         Title="ManageFriendRequest"
         Height="550" Width="440"
@@ -13,14 +14,18 @@
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
 
-    <Border BorderBrush="Black" BorderThickness="3">
+    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
         <Grid>
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#540003" Offset="0.0" />
-                    <GradientStop Color="#6E0005" Offset="0.25" />
-                    <GradientStop Color="#7C0107" Offset="0.6" />
-                    <GradientStop Color="#8A0B0B" Offset="1.0" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStartColor}"
+                                  Offset="0.0" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStep1Color}"
+                                  Offset="0.25" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStep2Color}"
+                                  Offset="0.6" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientEndColor}"
+                                  Offset="1.0" />
                 </LinearGradientBrush>
             </Grid.Background>
 
@@ -29,7 +34,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0,0,0,3" Background="#5A0002">
+            <Border Grid.Row="0" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    BorderThickness="0,0,0,3"
+                    Background="{x:Static styles:ColorPalette.DialogHeaderBackgroundBrush}">
                 <Grid Margin="12,10,12,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="44" />
@@ -43,7 +50,7 @@
                                Text="{x:Static language:Resources.ManageFriendRequest_Title}"
                                FontFamily="Impact, Arial Black, 'Segoe UI'"
                                FontSize="32"
-                               Foreground="#FFF36B"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
@@ -60,11 +67,12 @@
                             Cursor="Hand"
                             Click="BtnClose_Click">
                         <Grid Width="36" Height="36">
-                            <Ellipse Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                     StrokeThickness="3.5" Fill="Transparent" />
                             <TextBlock Text="✕"
                                        FontSize="18"
                                        FontWeight="Bold"
-                                       Foreground="Black"
+                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Margin="0,-1,0,0" />
@@ -76,9 +84,9 @@
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="RequestsContainer">
                     <Border x:Name="SampleRequestRow"
-                            BorderBrush="Black"
+                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                             BorderThickness="0,0,0,3"
-                            Background="#6F0004"
+                            Background="{x:Static styles:ColorPalette.RequestCardBackgroundBrush}"
                             Padding="16,12">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -89,9 +97,12 @@
                             </Grid.ColumnDefinitions>
 
                             <Grid Grid.Column="0" Width="48" Height="48">
-                                <Ellipse Fill="Black" />
-                                <Ellipse Width="16" Height="16" Fill="White" Margin="0,7,0,0" VerticalAlignment="Top" />
-                                <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40" Fill="White" />
+                                <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                                <Ellipse Width="16" Height="16"
+                                         Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                         Margin="0,7,0,0" VerticalAlignment="Top" />
+                                <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40"
+                                      Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
                             </Grid>
 
                             <TextBlock x:Name="LblSampleUsername"
@@ -99,7 +110,7 @@
                                        Text="xX_Denis_Xx"
                                        FontSize="18"
                                        FontWeight="Bold"
-                                       Foreground="Black"
+                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                        VerticalAlignment="Center"
                                        Margin="14,0,8,0"
                                        TextTrimming="CharacterEllipsis" />
@@ -114,9 +125,10 @@
                                     ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
                                     Click="BtnAcceptSample_Click">
                                 <Grid Width="36" Height="36">
-                                    <Ellipse Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                             StrokeThickness="3.5" Fill="Transparent" />
                                     <Path Data="M 9 18 L 15 24 L 27 11"
-                                          Stroke="Black"
+                                          Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                           StrokeThickness="3.5"
                                           StrokeStartLineCap="Round"
                                           StrokeEndLineCap="Round"
@@ -135,9 +147,10 @@
                                     ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
                                     Click="BtnRejectSample_Click">
                                 <Grid Width="36" Height="36">
-                                    <Ellipse Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                             StrokeThickness="3.5" Fill="Transparent" />
                                     <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
-                                          Stroke="Black"
+                                          Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                           StrokeThickness="3.5"
                                           StrokeStartLineCap="Round"
                                           StrokeEndLineCap="Round"
@@ -153,7 +166,7 @@
                                Text="{x:Static language:Resources.ManageFriendRequest_Label_NoPendingRequests}"
                                FontSize="16"
                                FontWeight="SemiBold"
-                               Foreground="#FFDDDD"
+                               Foreground="{x:Static styles:ColorPalette.EmptyStateTextBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,40,0,0"
                                Visibility="Collapsed" />

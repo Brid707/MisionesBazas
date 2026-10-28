@@ -1,15 +1,15 @@
-﻿<Page x:Class="View.Views.HomeScreen"
+<Page x:Class="View.Views.HomeScreen"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:View.Properties.Langs"
-
+      xmlns:styles="clr-namespace:View.Styles"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="HomeScreen">
 
-    <Grid Background="Black">
+    <Grid Background="{x:Static styles:ColorPalette.PureBlackBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.45*" />
             <ColumnDefinition Width="0.55*" />
@@ -18,32 +18,57 @@
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="#7a0006" Offset="0" />
-                    <GradientStop Color="#b90a0a" Offset="0.5" />
-                    <GradientStop Color="#c60b0b" Offset="1" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStartColor}"
+                                  Offset="0" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStepColor}"
+                                  Offset="0.5" />
+                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientEndColor}"
+                                  Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
             <Grid>
+                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Margin="40,0,0,120" Width="500">
+                    <TextBlock x:Name="GameTitle"
+                               Text="{x:Static language:Resources.HomeScreen_Title}"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               FontFamily="Impact, Arial Black, 'Segoe UI'"
+                               FontWeight="Bold" FontSize="96" TextWrapping="Wrap"
+                               TextAlignment="Left" Margin="0,0,0,6" />
 
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Margin="40,0,0,120" Width="500">
-                    <TextBlock x:Name="GameTitle" Text="{x:Static language:Resources.HomeScreen_Title}" Foreground="#FFF36B" FontFamily="Impact, Arial Black, 'Segoe UI'"
-                               FontWeight="Bold" FontSize="96" TextWrapping="Wrap" TextAlignment="Left" Margin="0,0,0,6" />
-
-                    <Grid Margin="0,0,0,16"/>
+                    <Grid Margin="0,0,0,16" />
 
                     <Button x:Name="BtnLanguage" Width="260" Height="56"
                             Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
-                            Background="#FFF36B" Foreground="#0b0b0b" FontSize="18" FontWeight="SemiBold" BorderThickness="0"
-                            HorizontalAlignment="Left" Margin="4,40,0,0" Click="BtnLanguage_Click" />
+                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
+                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            FontSize="18" FontWeight="SemiBold" BorderThickness="0"
+                            HorizontalAlignment="Left" Margin="4,40,0,0"
+                            Click="BtnLanguage_Click" />
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Background="Black">
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                    <Button x:Name="HomePage_BtnSignUp" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_SignUpButton}" Background="#FF6B6B" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnSignUp_Click" />
-                <Button x:Name="HomePage_BtnLogin" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_LoginButton}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36" Click="HomePage_BtnLogin_Click" />
-                <Button x:Name="HomePage_BtnGuest" Width="420" Height="84" Content="{x:Static language:Resources.HomeScreen_GuestButton}" Background="#EA4444" Foreground="#0b0b0b" FontSize="20" FontWeight="SemiBold" BorderThickness="0" Click="HomePage_BtnGuest_Click" />
+        <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
+                <Button x:Name="HomePage_BtnSignUp" Width="420" Height="84"
+                        Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
+                        Background="{x:Static styles:ColorPalette.SecondaryButtonBackgroundBrush}"
+                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
+                        Click="HomePage_BtnSignUp_Click" />
+                <Button x:Name="HomePage_BtnLogin" Width="420" Height="84"
+                        Content="{x:Static language:Resources.HomeScreen_LoginButton}"
+                        Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
+                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
+                        Click="HomePage_BtnLogin_Click" />
+                <Button x:Name="HomePage_BtnGuest" Width="420" Height="84"
+                        Content="{x:Static language:Resources.HomeScreen_GuestButton}"
+                        Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
+                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        FontSize="20" FontWeight="SemiBold" BorderThickness="0"
+                        Click="HomePage_BtnGuest_Click" />
             </StackPanel>
         </Grid>
     </Grid>
