@@ -28,7 +28,8 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_Title}"
-                               FontFamily="Impact" FontSize="28"
+                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                               FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" />
 
@@ -37,7 +38,10 @@
                             Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            FontWeight="Bold" FontSize="18" BorderThickness="2"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontWeight="Bold"
+                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                            BorderThickness="2"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                             Click="CloseButton_Click" />
                 </Grid>
@@ -53,10 +57,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="a." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="a." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleA}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -66,10 +73,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="b." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="b." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleB}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -79,10 +89,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="c." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="c." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleC}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -92,10 +105,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="d." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="d." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleD}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -105,11 +121,14 @@
                                     <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="i." FontWeight="Bold" FontSize="14"
+                                <TextBlock Grid.Column="0" Text="i." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleD_Sub1}"
-                                           FontSize="14"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -119,10 +138,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="e." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="e." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleE}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -132,10 +154,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="f." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="f." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleF}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -145,10 +170,13 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="g." FontWeight="Bold" FontSize="15"
+                                <TextBlock Grid.Column="0" Text="g." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleG}"
-                                           FontSize="15"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.BodyFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -158,11 +186,14 @@
                                     <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="i." FontWeight="Bold" FontSize="14"
+                                <TextBlock Grid.Column="0" Text="i." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub1}"
-                                           FontSize="14"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -172,11 +203,14 @@
                                     <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="ii." FontWeight="Bold" FontSize="14"
+                                <TextBlock Grid.Column="0" Text="ii." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub2}"
-                                           FontSize="14"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>
@@ -186,11 +220,14 @@
                                     <ColumnDefinition Width="24" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="iii." FontWeight="Bold" FontSize="14"
+                                <TextBlock Grid.Column="0" Text="iii." FontWeight="Bold"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub3}"
-                                           FontSize="14"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
                                            TextWrapping="Wrap" />
                             </Grid>

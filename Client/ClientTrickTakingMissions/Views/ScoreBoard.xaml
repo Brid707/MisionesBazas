@@ -25,6 +25,8 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="Padding" Value="4,0" />
+            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
+            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.FormLabelFontSize}" />
         </Style>
 
         <Style x:Key="HeaderStyle" TargetType="DataGridColumnHeader">
@@ -38,6 +40,8 @@
             <Setter Property="BorderBrush"
                     Value="{x:Static styles:ColorPalette.PureBlackBrush}" />
             <Setter Property="BorderThickness" Value="0,0,0,2" />
+            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
+            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.FormLabelFontSize}" />
         </Style>
     </Window.Resources>
 
@@ -68,7 +72,8 @@
 
                     <TextBlock Grid.Column="1"
                                Text="{x:Static language:Resources.ScoreBoard_Title}"
-                               FontFamily="Impact" FontSize="32"
+                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                               FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                HorizontalAlignment="Center" TextAlignment="Center"
                                TextWrapping="Wrap" MaxWidth="620" />
@@ -78,7 +83,9 @@
                             Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                             BorderThickness="2" Click="BtnClose_Click">
-                        <TextBlock Text="✕" FontSize="18"
+                        <TextBlock Text="✕"
+                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                    Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                    FontWeight="Bold" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
@@ -123,8 +130,9 @@
                                                      StrokeThickness="6" />
                                             <TextBlock Text="{Binding Username}" VerticalAlignment="Center"
                                                        Margin="8,0"
+                                                       FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                        Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                       FontSize="16" />
+                                                       FontSize="{x:Static styles:FontTypography.FormLabelFontSize}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

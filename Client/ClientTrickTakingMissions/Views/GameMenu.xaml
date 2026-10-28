@@ -13,10 +13,14 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStartColor}" Offset="0.0" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep1Color}" Offset="0.3" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep2Color}" Offset="0.8" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientEndColor}" Offset="1.0" />
+                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStartColor}"
+                              Offset="0.0" />
+                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep1Color}"
+                              Offset="0.3" />
+                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep2Color}"
+                              Offset="0.8" />
+                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientEndColor}"
+                              Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
 
@@ -33,9 +37,11 @@
                     Click="ProfileButton_Click"
                     ToolTip="{x:Static language:Resources.GameMenu_Profile}">
                 <Grid Width="56" Height="56">
-                    <Ellipse Fill="Black" Width="56" Height="56" />
-                    <Ellipse Fill="White" Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
-                    <Path Fill="White" Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
+                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
+                    <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                             Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
+                    <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                          Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
                 </Grid>
             </Button>
 
@@ -45,19 +51,22 @@
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
                     Click="TrophyButton_Click"
                     ToolTip="{x:Static language:Resources.GameMenu_Tooltip_ScoreBoard}">
-                <TextBlock Text="🏆" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock Text="🏆"
+                           FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Button>
 
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock x:Name="GameTitleTextBlock"
-                           Text="{x:Static language:Resources.GameMenu_Title}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                           FontFamily="Impact, Arial Black, 'Segoe UI'"
-                           FontWeight="Bold"
-                           FontSize="78"
-                           TextAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,44" />
+                <Viewbox MaxWidth="800" MaxHeight="110" HorizontalAlignment="Center" Margin="0,0,0,44">
+                    <TextBlock x:Name="GameTitleTextBlock"
+                               Text="{x:Static language:Resources.GameMenu_Title}"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                               FontWeight="Bold"
+                               FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
+                               TextAlignment="Center"
+                               HorizontalAlignment="Center" />
+                </Viewbox>
 
                 <StackPanel HorizontalAlignment="Center" Width="440">
                     <Button x:Name="CreateRoomButton"
@@ -65,7 +74,9 @@
                             Width="440" Height="72"
                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                            FontSize="22" FontWeight="SemiBold"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                            FontWeight="SemiBold"
                             BorderThickness="0" Margin="0,0,0,24"
                             Click="CreateRoomButton_Click" />
 
@@ -74,7 +85,9 @@
                             Width="440" Height="72"
                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                            FontSize="22" FontWeight="SemiBold"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                            FontWeight="SemiBold"
                             BorderThickness="0" Margin="0,0,0,24"
                             Click="JoinLobbyButton_Click" />
 
@@ -83,7 +96,9 @@
                             Width="440" Height="72"
                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                            FontSize="22" FontWeight="SemiBold"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                            FontWeight="SemiBold"
                             BorderThickness="0"
                             Click="HowToPlayButton_Click" />
 
@@ -92,14 +107,16 @@
                             Width="440" Height="72"
                             Background="{x:Static styles:ColorPalette.DangerButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                            FontSize="18" FontWeight="SemiBold"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                            FontWeight="SemiBold"
                             BorderThickness="2" Margin="0,24,0,0"
                             Click="SignOutButton_Click" />
                 </StackPanel>
             </StackPanel>
         </Grid>
 
-        <!-- Dynamic Friends Sidebar Component -->
+        <!-- Dynamic Modular Friends View -->
         <views:FriendsView Grid.Column="1" />
     </Grid>
 </Page>

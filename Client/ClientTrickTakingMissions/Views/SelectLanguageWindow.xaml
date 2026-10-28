@@ -22,13 +22,17 @@
                     Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
                     Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                     Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                    FontWeight="Bold" FontSize="18" BorderThickness="2"
+                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                    FontWeight="Bold"
+                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                    BorderThickness="2"
                     BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                     Click="BtnClose_Click" />
 
             <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,6,0,6">
                 <TextBlock Text="{x:Static language:Resources.SelectLanguage_Title}"
-                           FontFamily="Impact" FontSize="32"
+                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                            HorizontalAlignment="Center" TextAlignment="Center" />
             </StackPanel>
@@ -38,12 +42,16 @@
                 <Button x:Name="BtnSpanish" Width="200" Height="64"
                         Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                        FontSize="20" FontWeight="SemiBold" Click="BtnSpanish_Click" Margin="0,0,12,0"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                        FontWeight="SemiBold" Click="BtnSpanish_Click" Margin="0,0,12,0"
                         Content="{x:Static language:Resources.SelectLanguage_SpanishButton}" />
                 <Button x:Name="BtnEnglish" Width="200" Height="64"
                         Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                        FontSize="20" FontWeight="SemiBold" Click="BtnEnglish_Click" Margin="12,0,0,0"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                        FontWeight="SemiBold" Click="BtnEnglish_Click" Margin="12,0,0,0"
                         Content="{x:Static language:Resources.SelectLanguage_EnglishButton}" />
             </StackPanel>
         </Grid>

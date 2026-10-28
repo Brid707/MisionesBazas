@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="260">
 
-    <Border BorderBrush="Black"
+    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
             BorderThickness="3,0,0,0"
             Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}">
         <Grid>
@@ -18,8 +18,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <!-- Encabezado de Amigos -->
-            <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0,0,0,3">
+            <!-- Friends header -->
+            <Border Grid.Row="0" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    BorderThickness="0,0,0,3">
                 <Button x:Name="FriendsButton"
                         Background="Transparent"
                         BorderThickness="0"
@@ -28,19 +29,24 @@
                         ToolTip="{x:Static language:Resources.GameMenu_Friends}">
                     <Canvas Width="70" Height="50">
                         <Ellipse Canvas.Left="16" Canvas.Top="0" Width="22" Height="22"
-                                 Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                 Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                 StrokeThickness="3.5" Fill="Transparent" />
                         <Path Data="M 6 48 C 6 36 14 30 27 30 C 40 30 48 36 48 48"
-                              Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                              Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              StrokeThickness="3.5" Fill="Transparent" />
                         <Ellipse Canvas.Left="38" Canvas.Top="6" Width="18" Height="18"
-                                 Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                 Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                 StrokeThickness="3.5" Fill="Transparent" />
                         <Path Data="M 44 32 C 48 31 52 32 56 36 C 60 40 60 46 60 48"
-                              Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                              Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              StrokeThickness="3.5" Fill="Transparent" />
                     </Canvas>
                 </Button>
             </Border>
 
-            <!-- Botones de Acción (Mensajes / Solicitudes y Añadir Amigo) -->
-            <Border Grid.Row="1" BorderBrush="Black" BorderThickness="0,0,0,3">
+            <!-- Action buttons (Messages / Requests and Add Friend) -->
+            <Border Grid.Row="1" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    BorderThickness="0,0,0,3">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -56,9 +62,10 @@
                             ToolTip="{x:Static language:Resources.GameMenu_Messages}">
                         <Canvas Width="48" Height="36">
                             <Rectangle Width="46" Height="32" Canvas.Left="1" Canvas.Top="2"
-                                       Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                       Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                       StrokeThickness="3.5" Fill="Transparent" />
                             <Path Data="M 2 3 L 24 20 L 46 3"
-                                  Stroke="Black"
+                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                   StrokeThickness="3.5"
                                   Fill="Transparent" />
                         </Canvas>
@@ -73,21 +80,25 @@
                             ToolTip="{x:Static language:Resources.GameMenu_AddFriend}">
                         <Canvas Width="48" Height="36">
                             <Ellipse Canvas.Left="12" Canvas.Top="0" Width="16" Height="16"
-                                     Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                     Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                     StrokeThickness="3.5" Fill="Transparent" />
                             <Path Data="M 2 34 C 2 24 9 20 20 20 C 31 20 38 24 38 34"
-                                  Stroke="Black" StrokeThickness="3.5" Fill="Transparent" />
+                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  StrokeThickness="3.5" Fill="Transparent" />
                             <Line X1="41" Y1="14" X2="41" Y2="24"
-                                  Stroke="Black" StrokeThickness="3.5"
+                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  StrokeThickness="3.5"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
                             <Line X1="36" Y1="19" X2="46" Y2="19"
-                                  Stroke="Black" StrokeThickness="3.5"
+                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  StrokeThickness="3.5"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
                         </Canvas>
                     </Button>
                 </Grid>
             </Border>
 
-            <!-- Lista de Amigos -->
+            <!-- Friends list -->
             <Grid Grid.Row="2">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel x:Name="FriendsListStackPanel" Margin="10">
@@ -95,36 +106,41 @@
                                 CornerRadius="4" Padding="8" Margin="0,0,0,8">
                             <StackPanel>
                                 <TextBlock Text="User 1"
-                                           Foreground="White"
+                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                            FontWeight="Bold"
-                                           FontSize="14" />
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}" />
                                 <TextBlock x:Name="OnlineStatusTextBlock"
                                            Text="{x:Static language:Resources.FriendsBar_Online}"
                                            Foreground="{x:Static styles:ColorPalette.OnlineStatusTextBrush}"
-                                           FontSize="12"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SmallFontSize}"
                                            Margin="0,2,0,4" />
                                 <WrapPanel Orientation="Horizontal">
                                     <Button x:Name="ViewProfileButton"
                                             Content="{x:Static language:Resources.FriendsBar_ViewProfile}"
                                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                                            Foreground="Black"
-                                            FontSize="10"
+                                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
                                             Click="ViewProfileButton_Click" />
                                     <Button x:Name="DeleteFriendButton"
                                             Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
                                             Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
-                                            Foreground="White"
-                                            FontSize="10"
+                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
                                             Click="DeleteFriendButton_Click" />
                                     <Button x:Name="InviteFriendButton"
                                             Content="{x:Static language:Resources.FriendsBar_GameInvitation}"
                                             Background="{x:Static styles:ColorPalette.InviteButtonBackgroundBrush}"
-                                            Foreground="White"
-                                            FontSize="10"
+                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
                                             Click="InviteFriendButton_Click"

@@ -28,7 +28,8 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="1" Text="{x:Static language:Resources.GameSettings_Title}"
-                               FontFamily="Impact" FontSize="26"
+                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                               FontSize="{x:Static styles:FontTypography.MediumTitleFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" />
 
@@ -37,7 +38,10 @@
                             Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
                             Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            FontWeight="Bold" FontSize="18" BorderThickness="2"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontWeight="Bold"
+                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                            BorderThickness="2"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                             Click="CloseButton_Click" />
                 </Grid>
@@ -46,21 +50,28 @@
                       Width="360" Margin="0,12,0,0">
                     <StackPanel HorizontalAlignment="Left" Width="360">
                         <TextBlock Text="{x:Static language:Resources.GameSettings_NumberPlayers}"
-                                   FontFamily="Impact" FontSize="18"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                    Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                    Margin="0,0,0,6" />
-                        <ComboBox x:Name="PlayersComboBox" Width="160" Height="36" FontSize="16"
+                        <ComboBox x:Name="PlayersComboBox" Width="160" Height="36"
+                                  FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                  FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                   Margin="0,0,0,12" HorizontalAlignment="Left" />
 
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Missions}"
-                                   FontFamily="Impact" FontSize="18"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                    Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                    Margin="0,6,0,6" />
-                        <ComboBox x:Name="MissionsComboBox" Width="160" Height="36" FontSize="16"
+                        <ComboBox x:Name="MissionsComboBox" Width="160" Height="36"
+                                  FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                  FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                   Margin="0,0,0,12" HorizontalAlignment="Left" />
 
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Privacy}"
-                                   FontFamily="Impact" FontSize="18"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                    Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                    Margin="0,6,0,6" />
                         <StackPanel Orientation="Vertical" Margin="8,6,0,6">
@@ -69,6 +80,8 @@
                                              Width="18" Height="18" VerticalAlignment="Center" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PrivateRButton}"
                                            Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                            VerticalAlignment="Center" Margin="8,0,0,0" />
                             </StackPanel>
 
@@ -77,6 +90,8 @@
                                              Width="18" Height="18" VerticalAlignment="Center" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PublicRButton}"
                                            Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
+                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                            VerticalAlignment="Center" Margin="8,0,0,0" />
                             </StackPanel>
                         </StackPanel>
@@ -86,7 +101,9 @@
                                 Width="200" Height="48"
                                 Background="{x:Static styles:ColorPalette.SuccessAlternativeButtonBackgroundBrush}"
                                 Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,18,0,0"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                                FontWeight="SemiBold" BorderThickness="0" Margin="0,18,0,0"
                                 HorizontalAlignment="Center" Click="ConfirmButton_Click" />
                     </StackPanel>
                 </Grid>

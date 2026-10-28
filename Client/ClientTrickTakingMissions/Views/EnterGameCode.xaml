@@ -24,13 +24,17 @@
                         Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
                         Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                        FontWeight="Bold" FontSize="18" BorderThickness="2"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontWeight="Bold"
+                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                        BorderThickness="2"
                         BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                         Click="CloseButton_Click" />
 
                 <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,6,0,6">
                     <TextBlock Text="{x:Static language:Resources.EnterGameCode_Title}"
-                               FontFamily="Impact" FontSize="32"
+                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                               FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                HorizontalAlignment="Center" TextAlignment="Center" />
                 </StackPanel>
@@ -40,14 +44,18 @@
                         <TextBox x:Name="CodeTextBox" Width="640" Height="56"
                                  Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
                                  BorderBrush="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                 BorderThickness="4" Padding="8" FontSize="20" />
+                                 BorderThickness="4" Padding="8"
+                                 FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}" />
 
                         <Button x:Name="EnterButton"
                                 Content="{x:Static language:Resources.EnterGameCode_JoinButton}"
                                 Width="200" Height="52"
                                 Background="{x:Static styles:ColorPalette.SuccessAlternativeButtonBackgroundBrush}"
                                 Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,24,0,0"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                                FontWeight="SemiBold" BorderThickness="0" Margin="0,24,0,0"
                                 Click="EnterButton_Click" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Grid>

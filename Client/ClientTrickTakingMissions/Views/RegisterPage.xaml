@@ -28,16 +28,22 @@
             </Border.Background>
             <Grid Margin="40">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock x:Name="RegTitle" Text="{x:Static language:Resources.Register_Title}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                               FontFamily="Impact, Arial Black, 'Segoe UI'"
-                               FontWeight="Bold" FontSize="72" TextWrapping="Wrap"
-                               TextAlignment="Left" Margin="0,0,0,12" />
+                    <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,12">
+                        <TextBlock x:Name="RegTitle" Text="{x:Static language:Resources.Register_Title}"
+                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontWeight="Bold"
+                                   FontSize="{x:Static styles:FontTypography.DisplayTitleFontSize}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Left" />
+                    </Viewbox>
 
                     <TextBlock x:Name="Rules" Text="{x:Static language:Resources.Register_Restrictions}"
                                TextWrapping="Wrap"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                               FontSize="18" Margin="0,24,0,0" />
+                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                               FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                               Margin="0,24,0,0" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -51,37 +57,61 @@
             <Grid Grid.Row="0">
                 <Button x:Name="BtnBack" Content="{x:Static language:Resources.Common_Button_Back}"
                         Width="48" Height="48" Margin="-565,43,0,0" HorizontalAlignment="Left"
-                        VerticalAlignment="Top" Click="BtnBack_Click" />
+                        VerticalAlignment="Top"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                        Click="BtnBack_Click" />
             </Grid>
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
                 <TextBlock Text="{x:Static language:Resources.Register_Email}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                           FontSize="16" Margin="0,0,0,4" />
-                <TextBox x:Name="Register_Email" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                           Margin="0,0,0,4" />
+                <TextBox x:Name="Register_Email" Height="50"
+                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                         FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                         Padding="8" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_Username}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                           FontSize="16" Margin="0,0,0,4" />
-                <TextBox x:Name="Register_Username" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                           Margin="0,0,0,4" />
+                <TextBox x:Name="Register_Username" Height="50"
+                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                         FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                         Padding="8" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_Password}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                           FontSize="16" Margin="0,0,0,4" />
-                <PasswordBox x:Name="Register_Password" Height="50" FontSize="18" Padding="8" Margin="0,0,0,12" />
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                           Margin="0,0,0,4" />
+                <PasswordBox x:Name="Register_Password" Height="50"
+                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                             Padding="8" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_ConfirmPassword}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                           FontSize="16" Margin="0,0,0,4" />
-                <PasswordBox x:Name="Register_PasswordConfirm" Height="50" FontSize="18" Padding="8"
-                             Margin="0,0,0,18" />
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                           Margin="0,0,0,4" />
+                <PasswordBox x:Name="Register_PasswordConfirm" Height="50"
+                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                             Padding="8" Margin="0,0,0,18" />
 
                 <Button x:Name="Register_Submit"
                         Content="{x:Static language:Resources.Register_SubmitButton}"
                         Height="64" Width="220"
                         Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                        FontSize="22" FontWeight="Bold" Click="Register_Submit_Click" />
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                        FontWeight="Bold" Click="Register_Submit_Click" />
             </StackPanel>
         </Grid>
     </Grid>

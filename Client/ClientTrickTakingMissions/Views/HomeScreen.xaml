@@ -29,12 +29,16 @@
             <Grid>
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
                             Margin="40,0,0,120" Width="500">
-                    <TextBlock x:Name="GameTitle"
-                               Text="{x:Static language:Resources.HomeScreen_Title}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
-                               FontFamily="Impact, Arial Black, 'Segoe UI'"
-                               FontWeight="Bold" FontSize="96" TextWrapping="Wrap"
-                               TextAlignment="Left" Margin="0,0,0,6" />
+                    <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
+                        <TextBlock x:Name="GameTitle"
+                                   Text="{x:Static language:Resources.HomeScreen_Title}"
+                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontWeight="Bold"
+                                   FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Left" />
+                    </Viewbox>
 
                     <Grid Margin="0,0,0,16" />
 
@@ -42,7 +46,9 @@
                             Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                            FontSize="18" FontWeight="SemiBold" BorderThickness="0"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                            FontWeight="SemiBold" BorderThickness="0"
                             HorizontalAlignment="Left" Margin="4,40,0,0"
                             Click="BtnLanguage_Click" />
                 </StackPanel>
@@ -55,19 +61,25 @@
                         Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
                         Background="{x:Static styles:ColorPalette.SecondaryButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                        FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                        FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
                         Click="HomePage_BtnSignUp_Click" />
                 <Button x:Name="HomePage_BtnLogin" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_LoginButton}"
                         Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                        FontSize="20" FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                        FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
                         Click="HomePage_BtnLogin_Click" />
                 <Button x:Name="HomePage_BtnGuest" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_GuestButton}"
                         Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                        FontSize="20" FontWeight="SemiBold" BorderThickness="0"
+                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                        FontWeight="SemiBold" BorderThickness="0"
                         Click="HomePage_BtnGuest_Click" />
             </StackPanel>
         </Grid>
