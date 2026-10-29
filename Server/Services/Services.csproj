@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IUserLogin.cs" />
+    <Compile Include="Contracts\IUserLoginService.cs" />
     <Compile Include="DTO\User.cs" />
     <Compile Include="Services\UserLoginService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

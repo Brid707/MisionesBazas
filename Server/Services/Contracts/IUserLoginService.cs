@@ -6,8 +6,8 @@ namespace Services.Contracts
     /// <summary>
     /// Service contract defining user authentication and login operations.
     /// </summary>
-    [ServiceContract(CallbackContract = typeof(IUserLoginCallback))]
-    public interface IUserLogin
+    [ServiceContract(Name = "IUserLogin", CallbackContract = typeof(IUserLoginCallback))]
+    public interface IUserLoginService
     {
         /// <summary>
         /// Initiates a user login attempt asynchronously with the provided credentials.

@@ -2,24 +2,20 @@ using System;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
 using System.Linq;
+using Application.Models;
+using Application.Ports;
 using Persistence.Entities;
 
 namespace Persistence.Repository
 {
     /// <summary>
-    /// Provides data access operations for user accounts in the database.
+    /// Provides data access operations for user accounts, implementing the <see cref="IUserRepository"/> port.
     /// </summary>
-    public sealed class UserRepository
+    public sealed class UserRepository : IUserRepository
     {
-        /// <summary>
-        /// Retrieves a user from the database matching the provided email address.
-        /// </summary>
-        /// <param name="email">The email address of the user to find.</param>
-        /// <returns>The User entity if found; otherwise, null.</returns>
-        /// <exception cref="InvalidOperationException">Thrown when a database connection or execution failure occurs.</exception>
-        public User GetUserByEmail(string email)
+        public UserAccount GetUserByEmail(string email)
         {
-            User foundUser = null;
+            UserAccount foundUserAccount = null;
 
             try
             {
@@ -28,7 +24,12 @@ namespace Persistence.Repository
                     IQueryable<User> query = from user in context.User
                                              where user.Email == email
                                              select user;
-                    foundUser = query.FirstOrDefault();
+                    User foundUser = query.FirstOrDefault();
+
+                    if (foundUser != null)
+                    {
+                        foundUserAccount = MapToDomainModel(foundUser);
+                    }
                 }
             }
             catch (EntityException ex)
@@ -42,14 +43,9 @@ namespace Persistence.Repository
                 throw new InvalidOperationException("Failed to execute query in the database.", ex);
             }
 
-            return foundUser;
+            return foundUserAccount;
         }
 
-        /// <summary>
-        /// Updates the last login timestamp for the specified user to UTC now.
-        /// </summary>
-        /// <param name="userId">The unique identifier of the user.</param>
-        /// <exception cref="InvalidOperationException">Thrown when a database update failure occurs.</exception>
         public void UpdateLastLogin(int userId)
         {
             try
@@ -69,6 +65,20 @@ namespace Persistence.Repository
                 // TODO: Implement logging for the exception once logging infrastructure is available.
                 throw new InvalidOperationException("Failed to update user session in the database.", ex);
             }
+        }
+
+        private static UserAccount MapToDomainModel(User entity)
+        {
+            return new UserAccount
+            {
+                IdUser = entity.IdUser,
+                Username = entity.Username,
+                Email = entity.Email,
+                PasswordHash = entity.PasswordHash,
+                Status = entity.Status,
+                CreatedAt = entity.CreatedAt,
+                LastLoginAt = entity.LastLoginAt
+            };
         }
     }
 }
