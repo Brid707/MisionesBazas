@@ -14,17 +14,20 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class EnterGameCodeViewModel : ViewModelBase
     {
-        private readonly IDialogService _dialogService;
-        private string _gameCode;
-        private bool _isBusy;
+        private const int ServerErrorCodeLobbyFull = 104;
 
-        public EnterGameCodeViewModel(IDialogService dialogService)
+        private readonly IDialogService _dialogService;
+        private readonly ILobbySession _lobbySession;
+        private string _gameCode;
+
+        public EnterGameCodeViewModel(IDialogService dialogService, ILobbySession lobbySession)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _gameCode = string.Empty;
 
             CloseCommand = new RelayCommand(ExecuteClose);
-            JoinCommand = new RelayCommand(ExecuteJoin, CanExecuteJoin);
+            JoinCommand = new AsyncRelayCommand(ExecuteJoinAsync);
         }
 
         public event Action<bool> RequestClose;
@@ -39,17 +42,12 @@ namespace ViewModel.ViewModels
 
         public ICommand JoinCommand { get; }
 
-        private bool CanExecuteJoin()
-        {
-            return !_isBusy;
-        }
-
         private void ExecuteClose()
         {
             RequestClose?.Invoke(false);
         }
 
-        private async void ExecuteJoin()
+        private async Task ExecuteJoinAsync()
         {
             if (string.IsNullOrWhiteSpace(_gameCode))
             {
@@ -63,63 +61,28 @@ namespace ViewModel.ViewModels
 
         private async Task TryJoinLobbyAsync()
         {
-            SetBusyState(true);
-            try
+            int userId = UserSession.Current.EnsureActiveUserId();
+            string normalizedCode = _gameCode.Trim().ToUpperInvariant();
+
+            LobbyResult result = await _lobbySession.Client.JoinLobbyByCodeAsync(normalizedCode, userId);
+
+            if (result == null)
             {
-                int userId = ResolveActiveUserId();
-                string normalizedCode = _gameCode.Trim().ToUpperInvariant();
-
-                LobbyResult result = await LobbySession.Current.Client.JoinLobbyByCodeAsync(
-                    normalizedCode,
-                    userId);
-
-                if (result == null)
-                {
-                    _dialogService.ShowError(MessageCode.ConnectionFailed);
-                }
-                else if (!result.IsSuccess || result.Lobby == null)
-                {
-                    _dialogService.ShowWarning(MessageCode.EnterGameCodeInvalidCode);
-                }
-                else
-                {
-                    LobbySession.Current.SetLobby(result.Lobby);
-                    RequestClose?.Invoke(true);
-                }
+                _dialogService.ShowError(MessageCode.ConnectionFailed);
             }
-            finally
+            else if (!result.IsSuccess || result.Lobby == null)
             {
-                SetBusyState(false);
+                int messageToDisplay = result.ErrorCode == ServerErrorCodeLobbyFull
+                    ? MessageCode.EnterGameCodeLobbyAlreadyFull
+                    : MessageCode.EnterGameCodeInvalidCode;
+
+                _dialogService.ShowWarning(messageToDisplay);
             }
-        }
-
-        private static int ResolveActiveUserId()
-        {
-            int userId = UserSession.Current.CurrentUser != null
-                ? UserSession.Current.CurrentUser.IdUser
-                : 0;
-
-            if (userId == 0)
+            else
             {
-                int randomValue = Math.Abs(Guid.NewGuid().GetHashCode());
-                userId = -((randomValue % 9000) + 1000);
-                int guestSuffix = Math.Abs(userId % 10000);
-
-                UserSession.Current.SetUser(new UserSessionData
-                {
-                    IdUser = userId,
-                    Username = $"Guest_{guestSuffix:D4}",
-                    Email = string.Empty
-                });
+                _lobbySession.SetLobby(result.Lobby);
+                RequestClose?.Invoke(true);
             }
-
-            return userId;
-        }
-
-        private void SetBusyState(bool isBusy)
-        {
-            _isBusy = isBusy;
-            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

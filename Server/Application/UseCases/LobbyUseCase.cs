@@ -21,6 +21,24 @@ namespace Application
         private const int ErrorCodeLobbyInProgress = 105;
         private const int ErrorCodePersistenceFailure = 201;
 
+        private const string MessageLobbyCreated = "Lobby created successfully.";
+        private const string MessageJoinedLobby = "Joined lobby successfully.";
+        private const string MessageRejoinedLobby = "Rejoined lobby successfully.";
+        private const string MessagePlayerLeft = "Player left the lobby.";
+        private const string MessagePlayerKicked = "Player was kicked from the lobby.";
+        private const string MessageReadinessUpdated = "Readiness status updated.";
+
+        private const string ErrorMessageDatabaseHostVerification = "Database error while verifying host user.";
+        private const string ErrorMessageDatabasePlayerVerification = "Database error while verifying player.";
+        private const string ErrorMessageHostNotFound = "Host user account does not exist.";
+        private const string ErrorMessagePlayerNotFound = "Player account was not found.";
+        private const string ErrorMessageInvalidLobbyCodeFormat = "Lobby code format is invalid.";
+        private const string ErrorMessageLobbyNotFound = "Lobby room was not found.";
+        private const string ErrorMessageUnableToKickPlayer = "Unable to kick player.";
+        private const string ErrorMessageParticipantNotInLobby = "Participant not found in lobby.";
+        private const string ErrorMessageLobbyMatchInProgress = "The match in this lobby has already started.";
+        private const string ErrorMessageLobbyFull = "The lobby room is full.";
+
         private readonly IUserRepository _userRepository;
         private readonly ConcurrentDictionary<string, LobbyRoomData> _activeLobbies;
 
@@ -42,11 +60,11 @@ namespace Application
 
             if (hasDatabaseError)
             {
-                outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, "Database error while verifying host user.");
+                outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, ErrorMessageDatabaseHostVerification);
             }
             else if (hostAccount == null)
             {
-                outcome = CreateErrorOutcome(ErrorCodeUserNotFound, "Host user account does not exist.");
+                outcome = CreateErrorOutcome(ErrorCodeUserNotFound, ErrorMessageHostNotFound);
             }
             else
             {
@@ -63,11 +81,11 @@ namespace Application
 
             if (!LobbyCodeRules.IsCodeFormatValid(normalizedCode))
             {
-                outcome = CreateErrorOutcome(ErrorCodeValidationFailed, "Lobby code format is invalid.");
+                outcome = CreateErrorOutcome(ErrorCodeValidationFailed, ErrorMessageInvalidLobbyCodeFormat);
             }
             else if (!_activeLobbies.TryGetValue(normalizedCode, out LobbyRoomData lobby))
             {
-                outcome = CreateErrorOutcome(ErrorCodeLobbyNotFound, "Lobby room was not found.");
+                outcome = CreateErrorOutcome(ErrorCodeLobbyNotFound, ErrorMessageLobbyNotFound);
             }
             else
             {
@@ -79,7 +97,7 @@ namespace Application
 
         public LobbyActionOutcome LeaveLobby(string lobbyCode, int userId)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeLobbyNotFound, "Lobby room was not found.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeLobbyNotFound, ErrorMessageLobbyNotFound);
             string normalizedCode = LobbyCodeRules.NormalizeCode(lobbyCode);
 
             if (_activeLobbies.TryGetValue(normalizedCode, out LobbyRoomData lobby))
@@ -96,7 +114,7 @@ namespace Application
 
         public LobbyActionOutcome KickPlayer(string lobbyCode, int hostUserId, int targetUserId)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeValidationFailed, "Unable to kick player.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeValidationFailed, ErrorMessageUnableToKickPlayer);
             string normalizedCode = LobbyCodeRules.NormalizeCode(lobbyCode);
 
             if (hostUserId != targetUserId && _activeLobbies.TryGetValue(normalizedCode, out LobbyRoomData lobby))
@@ -109,7 +127,9 @@ namespace Application
 
         public LobbyActionOutcome UpdatePlayerReadiness(string lobbyCode, int userId, bool isReady)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeLobbyNotFound, "Participant not found in lobby.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(
+                ErrorCodeLobbyNotFound,
+                ErrorMessageParticipantNotInLobby);
             string normalizedCode = LobbyCodeRules.NormalizeCode(lobbyCode);
 
             if (_activeLobbies.TryGetValue(normalizedCode, out LobbyRoomData lobby))
@@ -197,7 +217,7 @@ namespace Application
             {
                 IsSuccess = true,
                 ErrorCode = ErrorCodeSuccess,
-                Message = "Lobby created successfully.",
+                Message = MessageLobbyCreated,
                 Lobby = CreateRoomSnapshot(newLobby),
                 AffectedPlayer = CloneParticipant(hostParticipant)
             };
@@ -210,11 +230,11 @@ namespace Application
 
             if (hasDatabaseError)
             {
-                outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, "Database error while verifying player.");
+                outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, ErrorMessageDatabasePlayerVerification);
             }
             else if (userAccount == null)
             {
-                outcome = CreateErrorOutcome(ErrorCodeUserNotFound, "Player account was not found.");
+                outcome = CreateErrorOutcome(ErrorCodeUserNotFound, ErrorMessagePlayerNotFound);
             }
             else
             {
@@ -240,18 +260,18 @@ namespace Application
                 {
                     IsSuccess = true,
                     ErrorCode = ErrorCodeSuccess,
-                    Message = "Rejoined lobby successfully.",
+                    Message = MessageRejoinedLobby,
                     Lobby = CreateRoomSnapshot(lobby),
                     AffectedPlayer = CloneParticipant(existing)
                 };
             }
             else if (!LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
             {
-                outcome = CreateErrorOutcome(ErrorCodeLobbyInProgress, "The match in this lobby has already started.");
+                outcome = CreateErrorOutcome(ErrorCodeLobbyInProgress, ErrorMessageLobbyMatchInProgress);
             }
             else if (!LobbyRoomRules.HasAvailableSlot(lobby.Players.Count, lobby.PlayerLimit))
             {
-                outcome = CreateErrorOutcome(ErrorCodeLobbyFull, "The lobby room is full.");
+                outcome = CreateErrorOutcome(ErrorCodeLobbyFull, ErrorMessageLobbyFull);
             }
             else
             {
@@ -269,7 +289,7 @@ namespace Application
                 {
                     IsSuccess = true,
                     ErrorCode = ErrorCodeSuccess,
-                    Message = "Joined lobby successfully.",
+                    Message = MessageJoinedLobby,
                     Lobby = CreateRoomSnapshot(lobby),
                     AffectedPlayer = CloneParticipant(newParticipant)
                 };
@@ -280,7 +300,9 @@ namespace Application
 
         private static LobbyActionOutcome RemoveParticipantFromRoom(LobbyRoomData lobby, int userId)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeUserNotFound, "Player is not in the lobby.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(
+                ErrorCodeUserNotFound,
+                ErrorMessageParticipantNotInLobby);
 
             lock (lobby)
             {
@@ -298,7 +320,7 @@ namespace Application
                     {
                         IsSuccess = true,
                         ErrorCode = ErrorCodeSuccess,
-                        Message = "Player left the lobby.",
+                        Message = MessagePlayerLeft,
                         IsRoomDisbanded = isDisbanded,
                         Lobby = CreateRoomSnapshot(lobby),
                         AffectedPlayer = CloneParticipant(existing)
@@ -314,7 +336,9 @@ namespace Application
             int hostUserId,
             int targetUserId)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeValidationFailed, "Unable to kick player.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(
+                ErrorCodeValidationFailed,
+                ErrorMessageUnableToKickPlayer);
 
             lock (lobby)
             {
@@ -326,7 +350,7 @@ namespace Application
                     {
                         IsSuccess = true,
                         ErrorCode = ErrorCodeSuccess,
-                        Message = "Player was kicked from the lobby.",
+                        Message = MessagePlayerKicked,
                         Lobby = CreateRoomSnapshot(lobby),
                         AffectedPlayer = CloneParticipant(target)
                     };
@@ -341,7 +365,9 @@ namespace Application
             int userId,
             bool isReady)
         {
-            LobbyActionOutcome outcome = CreateErrorOutcome(ErrorCodeUserNotFound, "Player not found in lobby.");
+            LobbyActionOutcome outcome = CreateErrorOutcome(
+                ErrorCodeUserNotFound,
+                ErrorMessageParticipantNotInLobby);
 
             lock (lobby)
             {
@@ -353,7 +379,7 @@ namespace Application
                     {
                         IsSuccess = true,
                         ErrorCode = ErrorCodeSuccess,
-                        Message = "Readiness status updated.",
+                        Message = MessageReadinessUpdated,
                         Lobby = CreateRoomSnapshot(lobby),
                         AffectedPlayer = CloneParticipant(participant)
                     };
@@ -385,13 +411,12 @@ namespace Application
                     hasDatabaseError = true;
                 }
             }
-            else if (userId < 0)
+            else if (GuestIdentityRules.IsGuestUserId(userId))
             {
-                int guestNumber = Math.Abs(userId % 10000);
                 account = new UserAccount
                 {
                     IdUser = userId,
-                    Username = $"Guest_{guestNumber:D4}",
+                    Username = GuestIdentityRules.BuildGuestUsername(userId),
                     Email = string.Empty
                 };
             }

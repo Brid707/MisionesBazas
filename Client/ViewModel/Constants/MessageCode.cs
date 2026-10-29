@@ -30,6 +30,7 @@ namespace ViewModel.Constants
         // Match codes (1030 - 1049)
         public const int EnterGameCodeEmptyCode = 1030;
         public const int EnterGameCodeInvalidCode = 1031;
+        public const int EnterGameCodeLobbyAlreadyFull = 1032;
 
         // Social and friend request codes (1050 - 1069)
         public const int EmptyFriendUsername = 1050;

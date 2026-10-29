@@ -46,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\AsyncRelayCommand.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Constants\MessageCode.cs" />

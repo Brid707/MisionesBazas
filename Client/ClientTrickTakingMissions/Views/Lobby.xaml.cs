@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using Model.Session;
 using View.Services;
 using ViewModel.Services;
 using ViewModel.ViewModels;
@@ -18,7 +19,7 @@ namespace View.Views
             InitializeComponent();
 
             INavigationService navigationService = new WpfNavigationService();
-            LobbyViewModel viewModel = new LobbyViewModel(navigationService);
+            LobbyViewModel viewModel = new LobbyViewModel(navigationService, LobbySession.Current);
             DataContext = viewModel;
         }
     }

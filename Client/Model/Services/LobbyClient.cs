@@ -9,7 +9,7 @@ namespace Model.Services
     /// Manages client-side WCF duplex communication for lobby rooms and handles server push callbacks.
     /// </summary>
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
-    public sealed class LobbyClient : ILobbyServiceCallback, IDisposable
+    public sealed class LobbyClient : ILobbyClient, ILobbyServiceCallback
     {
         private LobbyServiceClient _client;
 

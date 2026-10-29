@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Model.Session
 {
@@ -7,7 +7,11 @@ namespace Model.Session
     /// </summary>
     public sealed class UserSession
     {
+        private const int GuestIdMinimum = 1000;
+        private const int GuestIdMaximum = 10000;
+
         private static readonly object _lockObject = new object();
+        private static readonly Random s_random = new Random();
         private static UserSession _instance;
 
         private UserSessionData _currentUser;
@@ -64,5 +68,27 @@ namespace Model.Session
         {
             _currentUser = null;
         }
-    }
+
+        /// <summary>
+        /// Gets the identifier of the active user, creating a temporary guest identity when no user is signed in.
+        /// </summary>
+        /// <returns>The identifier of the active user or of the newly created guest.</returns>
+        public int EnsureActiveUserId()
+        {
+            lock (_lockObject)
+            {
+                if (_currentUser == null)
+                {
+                    int guestSuffix = s_random.Next(GuestIdMinimum, GuestIdMaximum);
+                    _currentUser = new UserSessionData
+                    {
+                        IdUser = -guestSuffix,
+                        Username = string.Empty,
+                        Email = string.Empty
+                    };
+                }
+
+                return _currentUser.IdUser;
+            }
+        }    }
 }

@@ -61,17 +61,7 @@ namespace ViewModel.ViewModels
 
         private void ExecuteGuest()
         {
-            int randomValue = Math.Abs(Guid.NewGuid().GetHashCode());
-            int guestId = -((randomValue % 9000) + 1000);
-            int guestSuffix = Math.Abs(guestId % 10000);
-
-            UserSession.Current.SetUser(new UserSessionData
-            {
-                IdUser = guestId,
-                Username = $"Guest_{guestSuffix:D4}",
-                Email = string.Empty
-            });
-
+            UserSession.Current.EnsureActiveUserId();
             _navigationService.NavigateTo(ViewId.GameMenu);
         }
 

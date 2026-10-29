@@ -10,9 +10,9 @@ namespace Domain
         public const byte MaximumTargetMissionCount = 50;
 
         public const byte DefaultPlayerLimit = 4;
-        public const byte MinimumPlayerLimit = 2;
+        public const byte MinimumPlayerLimit = 3;
         public const byte MaximumPlayerLimit = 4;
-        public const byte MinimumPlayersToStart = 2;
+        public const byte MinimumPlayersToStart = 3;
 
         public const byte StatusWaiting = 1;
         public const byte StatusInGame = 2;

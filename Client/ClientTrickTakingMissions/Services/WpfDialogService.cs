@@ -29,6 +29,7 @@ namespace View.Services
             { MessageCode.RegisterSuccess, nameof(View.Properties.Langs.Resources.Register_Success) },
             { MessageCode.EnterGameCodeEmptyCode, nameof(View.Properties.Langs.Resources.EnterGameCode_EmptyCode) },
             { MessageCode.EnterGameCodeInvalidCode, nameof(View.Properties.Langs.Resources.EnterGameCode_InvalidCode) },
+            { MessageCode.EnterGameCodeLobbyAlreadyFull, nameof(View.Properties.Langs.Resources.EnterGameCode_LobbyAlreadyFull) },
             { MessageCode.EmptyFriendUsername, nameof(View.Properties.Langs.Resources.Register_EmptyUsername) },
             { MessageCode.ConnectionFailed, nameof(View.Properties.Langs.Resources.Common_Error_ConnectionFailed) },
             { MessageCode.RequestTimeout, nameof(View.Properties.Langs.Resources.Common_Error_Timeout) },

@@ -6,12 +6,12 @@ namespace Model.Session
     /// <summary>
     /// Manages the active client-side lobby state and duplex communication channel as a thread-safe singleton.
     /// </summary>
-    public sealed class LobbySession
+    public sealed class LobbySession : ILobbySession
     {
-        private static readonly object SyncRoot = new object();
-        private static LobbySession _instance;
+        private static readonly object s_syncRoot = new object();
+        private static LobbySession s_instance;
 
-        private LobbyClient _client;
+        private ILobbyClient _client;
         private Lobby _currentLobby;
 
         private LobbySession()
@@ -22,18 +22,18 @@ namespace Model.Session
         {
             get
             {
-                if (_instance == null)
+                if (s_instance == null)
                 {
-                    lock (SyncRoot)
+                    lock (s_syncRoot)
                     {
-                        if (_instance == null)
+                        if (s_instance == null)
                         {
-                            _instance = new LobbySession();
+                            s_instance = new LobbySession();
                         }
                     }
                 }
 
-                return _instance;
+                return s_instance;
             }
         }
 
@@ -41,11 +41,11 @@ namespace Model.Session
 
         public bool HasActiveLobby => _currentLobby != null;
 
-        public LobbyClient Client
+        public ILobbyClient Client
         {
             get
             {
-                lock (SyncRoot)
+                lock (s_syncRoot)
                 {
                     if (_client == null)
                     {
@@ -59,7 +59,7 @@ namespace Model.Session
 
         public void SetLobby(Lobby lobby)
         {
-            lock (SyncRoot)
+            lock (s_syncRoot)
             {
                 _currentLobby = lobby;
             }
@@ -67,7 +67,7 @@ namespace Model.Session
 
         public void ClearLobby()
         {
-            lock (SyncRoot)
+            lock (s_syncRoot)
             {
                 _currentLobby = null;
                 if (_client != null)

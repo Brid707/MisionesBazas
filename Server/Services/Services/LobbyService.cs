@@ -21,7 +21,7 @@ namespace Services.Services
         private const string PlayerKickedReason = "Player was kicked by the host.";
         private const byte UnspecifiedSettingValue = 0;
 
-        private static readonly ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>> RoomCallbacks =
+        private static readonly ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>> s_roomCallbacks =
             new ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>>(
                 StringComparer.OrdinalIgnoreCase);
 
@@ -148,7 +148,7 @@ namespace Services.Services
                     lobbyCode,
                     excludedUserId: null,
                     callback => callback.OnLobbyDisbanded(HostLeftReason));
-                RoomCallbacks.TryRemove(NormalizeRoomKey(lobbyCode), out ConcurrentDictionary<int, ILobbyCallback> _);
+                s_roomCallbacks.TryRemove(NormalizeRoomKey(lobbyCode), out ConcurrentDictionary<int, ILobbyCallback> _);
             }
             else
             {
@@ -169,7 +169,7 @@ namespace Services.Services
             if (callback != null)
             {
                 string roomKey = NormalizeRoomKey(lobbyCode);
-                ConcurrentDictionary<int, ILobbyCallback> participants = RoomCallbacks.GetOrAdd(
+                ConcurrentDictionary<int, ILobbyCallback> participants = s_roomCallbacks.GetOrAdd(
                     roomKey,
                     _ => new ConcurrentDictionary<int, ILobbyCallback>());
                 participants[userId] = callback;
@@ -179,7 +179,7 @@ namespace Services.Services
         private static void UnregisterCallback(string lobbyCode, int userId)
         {
             string roomKey = NormalizeRoomKey(lobbyCode);
-            if (RoomCallbacks.TryGetValue(roomKey, out ConcurrentDictionary<int, ILobbyCallback> participants))
+            if (s_roomCallbacks.TryGetValue(roomKey, out ConcurrentDictionary<int, ILobbyCallback> participants))
             {
                 participants.TryRemove(userId, out ILobbyCallback _);
             }
@@ -191,7 +191,7 @@ namespace Services.Services
             Action<ILobbyCallback> notificationAction)
         {
             string roomKey = NormalizeRoomKey(lobbyCode);
-            if (RoomCallbacks.TryGetValue(roomKey, out ConcurrentDictionary<int, ILobbyCallback> participants))
+            if (s_roomCallbacks.TryGetValue(roomKey, out ConcurrentDictionary<int, ILobbyCallback> participants))
             {
                 foreach (KeyValuePair<int, ILobbyCallback> entry in participants.ToArray())
                 {

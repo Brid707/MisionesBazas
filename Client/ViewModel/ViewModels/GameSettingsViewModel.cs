@@ -22,19 +22,16 @@ namespace ViewModel.ViewModels
         private const int DefaultMissionCount = 5;
 
         private readonly IDialogService _dialogService;
+        private readonly ILobbySession _lobbySession;
         private int _selectedPlayerCount;
         private int _selectedMissionCount;
         private bool _isPrivate;
-        private bool _isBusy;
 
-        public GameSettingsViewModel()
-            : this(null)
+        public GameSettingsViewModel(IDialogService dialogService, ILobbySession lobbySession)
         {
-        }
+            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
 
-        public GameSettingsViewModel(IDialogService dialogService)
-        {
-            _dialogService = dialogService;
             AvailablePlayerCounts = new List<int> { MinimumPlayerCount, MaximumPlayerCount };
             _selectedPlayerCount = MaximumPlayerCount;
 
@@ -48,7 +45,7 @@ namespace ViewModel.ViewModels
             _isPrivate = true;
 
             CloseCommand = new RelayCommand(ExecuteClose);
-            ConfirmCommand = new RelayCommand(ExecuteConfirm, CanExecuteConfirm);
+            ConfirmCommand = new AsyncRelayCommand(ExecuteConfirmAsync);
         }
 
         public event Action<bool> RequestClose;
@@ -79,19 +76,14 @@ namespace ViewModel.ViewModels
 
         public ICommand ConfirmCommand { get; }
 
-        private bool CanExecuteConfirm()
-        {
-            return !_isBusy;
-        }
-
         private void ExecuteClose()
         {
             RequestClose?.Invoke(false);
         }
 
-        private async void ExecuteConfirm()
+        private async Task ExecuteConfirmAsync()
         {
-            if (LobbySession.Current.HasActiveLobby)
+            if (_lobbySession.HasActiveLobby)
             {
                 RequestClose?.Invoke(true);
             }
@@ -103,63 +95,26 @@ namespace ViewModel.ViewModels
 
         private async Task CreateNewLobbyAsync()
         {
-            SetBusyState(true);
-            try
+            int hostUserId = UserSession.Current.EnsureActiveUserId();
+
+            LobbyResult result = await _lobbySession.Client.CreateLobbyAsync(
+                hostUserId,
+                (byte)_selectedMissionCount,
+                (byte)_selectedPlayerCount);
+
+            if (result == null)
             {
-                int hostUserId = ResolveActiveUserId();
-
-                LobbyResult result = await LobbySession.Current.Client.CreateLobbyAsync(
-                    hostUserId,
-                    (byte)_selectedMissionCount,
-                    (byte)_selectedPlayerCount);
-
-                if (result == null)
-                {
-                    _dialogService?.ShowError(MessageCode.ConnectionFailed);
-                }
-                else if (!result.IsSuccess || result.Lobby == null)
-                {
-                    _dialogService?.ShowWarning(MessageCode.UnexpectedError);
-                }
-                else
-                {
-                    LobbySession.Current.SetLobby(result.Lobby);
-                    RequestClose?.Invoke(true);
-                }
+                _dialogService.ShowError(MessageCode.ConnectionFailed);
             }
-            finally
+            else if (!result.IsSuccess || result.Lobby == null)
             {
-                SetBusyState(false);
+                _dialogService.ShowWarning(MessageCode.UnexpectedError);
             }
-        }
-
-        private static int ResolveActiveUserId()
-        {
-            int userId = UserSession.Current.CurrentUser != null
-                ? UserSession.Current.CurrentUser.IdUser
-                : 0;
-
-            if (userId == 0)
+            else
             {
-                int randomValue = Math.Abs(Guid.NewGuid().GetHashCode());
-                userId = -((randomValue % 9000) + 1000);
-                int guestSuffix = Math.Abs(userId % 10000);
-
-                UserSession.Current.SetUser(new UserSessionData
-                {
-                    IdUser = userId,
-                    Username = $"Guest_{guestSuffix:D4}",
-                    Email = string.Empty
-                });
+                _lobbySession.SetLobby(result.Lobby);
+                RequestClose?.Invoke(true);
             }
-
-            return userId;
-        }
-
-        private void SetBusyState(bool isBusy)
-        {
-            _isBusy = isBusy;
-            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

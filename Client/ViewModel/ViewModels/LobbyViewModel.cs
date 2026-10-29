@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.ILobbyService;
 using Model.Services;
@@ -19,9 +20,9 @@ namespace ViewModel.ViewModels
     public sealed class LobbyViewModel : ViewModelBase
     {
         private const string DefaultMissionsTarget = "5";
-        private const string DefaultLobbyCode = "XXXXX";
 
         private readonly INavigationService _navigationService;
+        private readonly ILobbySession _lobbySession;
         private readonly SynchronizationContext _uiSyncContext;
         private readonly int _currentUserId;
 
@@ -29,23 +30,22 @@ namespace ViewModel.ViewModels
         private string _lobbyCode;
         private bool _isReady;
 
-        public LobbyViewModel(INavigationService navigationService)
+        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _uiSyncContext = SynchronizationContext.Current;
-            _currentUserId = UserSession.Current.CurrentUser != null
-                ? UserSession.Current.CurrentUser.IdUser
-                : 0;
+            _currentUserId = UserSession.Current.EnsureActiveUserId();
 
             _missionsTarget = DefaultMissionsTarget;
-            _lobbyCode = DefaultLobbyCode;
+            _lobbyCode = string.Empty;
             _isReady = false;
             Players = new ObservableCollection<LobbyPlayerItemViewModel>();
 
-            BackCommand = new RelayCommand(ExecuteBack);
+            BackCommand = new AsyncRelayCommand(ExecuteBackAsync);
             ProfileCommand = new RelayCommand(ExecuteProfile);
             SettingsCommand = new RelayCommand(ExecuteSettings);
-            ToggleReadyCommand = new RelayCommand(ExecuteToggleReady);
+            ToggleReadyCommand = new AsyncRelayCommand(ExecuteToggleReadyAsync);
 
             LoadInitialLobbyState();
             SubscribeToLobbyEvents();
@@ -81,10 +81,10 @@ namespace ViewModel.ViewModels
 
         private void LoadInitialLobbyState()
         {
-            Lobby activeLobby = LobbySession.Current.CurrentLobby;
+            Lobby activeLobby = _lobbySession.CurrentLobby;
             if (activeLobby != null)
             {
-                LobbyCode = activeLobby.LobbyCode ?? DefaultLobbyCode;
+                LobbyCode = activeLobby.LobbyCode ?? string.Empty;
                 MissionsTarget = activeLobby.TargetMissionCount.ToString(CultureInfo.InvariantCulture);
 
                 if (activeLobby.Players != null)
@@ -99,7 +99,7 @@ namespace ViewModel.ViewModels
 
         private void SubscribeToLobbyEvents()
         {
-            LobbyClient client = LobbySession.Current.Client;
+            ILobbyClient client = _lobbySession.Client;
             client.PlayerJoined += OnServerPlayerJoined;
             client.PlayerLeft += OnServerPlayerLeft;
             client.PlayerReadyStatusChanged += OnServerPlayerReadyStatusChanged;
@@ -108,7 +108,7 @@ namespace ViewModel.ViewModels
 
         private void UnsubscribeFromLobbyEvents()
         {
-            LobbyClient client = LobbySession.Current.Client;
+            ILobbyClient client = _lobbySession.Client;
             client.PlayerJoined -= OnServerPlayerJoined;
             client.PlayerLeft -= OnServerPlayerLeft;
             client.PlayerReadyStatusChanged -= OnServerPlayerReadyStatusChanged;
@@ -138,7 +138,7 @@ namespace ViewModel.ViewModels
             DispatchToUiThread(() =>
             {
                 UnsubscribeFromLobbyEvents();
-                LobbySession.Current.ClearLobby();
+                _lobbySession.ClearLobby();
                 _navigationService.NavigateTo(ViewId.GameMenu);
             });
         }
@@ -206,17 +206,17 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private async void ExecuteBack()
+        private async Task ExecuteBackAsync()
         {
             UnsubscribeFromLobbyEvents();
             string codeToLeave = _lobbyCode;
 
-            if (_currentUserId > 0 && !string.IsNullOrWhiteSpace(codeToLeave) && codeToLeave != DefaultLobbyCode)
+            if (!string.IsNullOrWhiteSpace(codeToLeave))
             {
-                await LobbySession.Current.Client.LeaveLobbyAsync(codeToLeave, _currentUserId);
+                await _lobbySession.Client.LeaveLobbyAsync(codeToLeave, _currentUserId);
             }
 
-            LobbySession.Current.ClearLobby();
+            _lobbySession.ClearLobby();
             _navigationService.NavigateTo(ViewId.GameMenu);
         }
 
@@ -238,14 +238,14 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private async void ExecuteToggleReady()
+        private async Task ExecuteToggleReadyAsync()
         {
             bool newReadyState = !IsReady;
             UpdateParticipantReadyState(_currentUserId, newReadyState);
 
-            if (_currentUserId > 0 && !string.IsNullOrWhiteSpace(_lobbyCode) && _lobbyCode != DefaultLobbyCode)
+            if (!string.IsNullOrWhiteSpace(_lobbyCode))
             {
-                await LobbySession.Current.Client.SetPlayerReadyStatusAsync(
+                await _lobbySession.Client.SetPlayerReadyStatusAsync(
                     _lobbyCode,
                     _currentUserId,
                     newReadyState);

@@ -80,7 +80,7 @@
                                    Margin="0,6,0,6" />
                         <StackPanel Orientation="Vertical" Margin="8,6,0,6">
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
-                                <RadioButton x:Name="RadioPrivate" GroupName="Privacy"
+                                <RadioButton x:Name="PrivateRadioButton" GroupName="Privacy"
                                              Width="18" Height="18" VerticalAlignment="Center"
                                              IsChecked="{Binding IsPrivate}" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PrivateRButton}"
@@ -91,7 +91,7 @@
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
-                                <RadioButton x:Name="RadioPublic" GroupName="Privacy"
+                                <RadioButton x:Name="PublicRadioButton" GroupName="Privacy"
                                              Width="18" Height="18" VerticalAlignment="Center" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PublicRButton}"
                                            Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"

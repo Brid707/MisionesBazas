@@ -1,4 +1,5 @@
 using System.Windows;
+using Model.Session;
 using View.Services;
 using ViewModel.Services;
 using ViewModel.ViewModels;
@@ -19,7 +20,7 @@ namespace View.Views
             InitializeComponent();
 
             IDialogService dialogService = new WpfDialogService();
-            GameSettingsViewModel viewModel = new GameSettingsViewModel(dialogService);
+            GameSettingsViewModel viewModel = new GameSettingsViewModel(dialogService, LobbySession.Current);
             viewModel.RequestClose += OnRequestClose;
             DataContext = viewModel;
         }

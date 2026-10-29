@@ -13,14 +13,17 @@ namespace ViewModel.ViewModels
     public sealed class GameMenuViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly ILobbySession _lobbySession;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameMenuViewModel"/> class with the navigation service.
         /// </summary>
         /// <param name="navigationService">Service for navigating between views and modal dialogs.</param>
-        public GameMenuViewModel(INavigationService navigationService)
+        /// <param name="lobbySession">The active lobby state shared across the lobby flow.</param>
+        public GameMenuViewModel(INavigationService navigationService, ILobbySession lobbySession)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
 
             ProfileCommand = new RelayCommand(ExecuteProfile);
             ScoreBoardCommand = new RelayCommand(ExecuteScoreBoard);
@@ -82,10 +85,10 @@ namespace ViewModel.ViewModels
         {
             try
             {
-                LobbySession.Current.ClearLobby();
+                _lobbySession.ClearLobby();
                 _navigationService.ShowDialog(ViewId.GameSettingsDialog);
 
-                if (LobbySession.Current.HasActiveLobby)
+                if (_lobbySession.HasActiveLobby)
                 {
                     _navigationService.NavigateTo(ViewId.Lobby);
                 }
@@ -101,10 +104,10 @@ namespace ViewModel.ViewModels
         {
             try
             {
-                LobbySession.Current.ClearLobby();
+                _lobbySession.ClearLobby();
                 _navigationService.ShowDialog(ViewId.EnterGameCodeDialog);
 
-                if (LobbySession.Current.HasActiveLobby)
+                if (_lobbySession.HasActiveLobby)
                 {
                     _navigationService.NavigateTo(ViewId.Lobby);
                 }
