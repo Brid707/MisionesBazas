@@ -30,7 +30,7 @@
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
                             Margin="40,0,0,120" Width="500">
                     <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
-                        <TextBlock x:Name="GameTitle"
+                        <TextBlock x:Name="GameTitleTextBlock"
                                    Text="{x:Static language:Resources.HomeScreen_Title}"
                                    Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
@@ -42,7 +42,7 @@
 
                     <Grid Margin="0,0,0,16" />
 
-                    <Button x:Name="BtnLanguage" Width="260" Height="56"
+                    <Button x:Name="LanguageButton" Width="260" Height="56"
                             Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
                             Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                             Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
@@ -50,37 +50,37 @@
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             FontWeight="SemiBold" BorderThickness="0"
                             HorizontalAlignment="Left" Margin="4,40,0,0"
-                            Click="BtnLanguage_Click" />
+                            Command="{Binding SelectLanguageCommand}" />
                 </StackPanel>
             </Grid>
         </Border>
 
         <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                <Button x:Name="HomePage_BtnSignUp" Width="420" Height="84"
+                <Button x:Name="SignUpButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
                         Background="{x:Static styles:ColorPalette.SecondaryButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
-                        Click="HomePage_BtnSignUp_Click" />
-                <Button x:Name="HomePage_BtnLogin" Width="420" Height="84"
+                        Command="{Binding SignUpCommand}" />
+                <Button x:Name="LoginButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_LoginButton}"
                         Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
-                        Click="HomePage_BtnLogin_Click" />
-                <Button x:Name="HomePage_BtnGuest" Width="420" Height="84"
+                        Command="{Binding LoginCommand}" />
+                <Button x:Name="GuestButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_GuestButton}"
                         Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0"
-                        Click="HomePage_BtnGuest_Click" />
+                        Command="{Binding GuestCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -41,7 +41,7 @@
                     HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="12,12,0,0"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Click="BackButton_Click">
+                    Command="{Binding BackCommand}">
                 <Canvas Width="40" Height="40">
                     <Path Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                           StrokeThickness="5" Data="M 30 6 L 10 20 L 30 34" Fill="Transparent" />
@@ -53,7 +53,7 @@
                     HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="80,12,0,0"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Click="ProfileButton_Click">
+                    Command="{Binding ProfileCommand}">
                 <Grid Width="56" Height="56">
                     <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
                     <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
@@ -96,7 +96,7 @@
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
-                    <TextBlock Text="5"
+                    <TextBlock Text="{Binding MissionsTarget}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
@@ -106,7 +106,7 @@
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
-                    <TextBlock Text="XXXXX"
+                    <TextBlock Text="{Binding LobbyCode}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
@@ -122,7 +122,8 @@
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                         BorderThickness="0"
-                        HorizontalAlignment="Center" VerticalAlignment="Top" />
+                        HorizontalAlignment="Center" VerticalAlignment="Top"
+                        Command="{Binding SettingsCommand}" />
             </Grid>
 
             <Border Grid.Row="2"
@@ -186,7 +187,7 @@
                                         BorderThickness="2"
                                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                         FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                        RenderTransformOrigin="-5.707,35.478" />
+                                        Command="{Binding ToggleReadyCommand}" />
                             </StackPanel>
                         </Grid>
                     </Border>

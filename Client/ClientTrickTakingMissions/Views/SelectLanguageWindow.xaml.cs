@@ -1,47 +1,39 @@
-using System;
 using System.Windows;
+using View.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
     /// <summary>
-    /// Interaction logic for selecting application language culture.
+    /// Interaction logic for selecting application language culture following the MVVM pattern.
     /// </summary>
     public partial class SelectLanguageWindow : Window
     {
-        private const string SpanishCultureCode = "es-MX";
-        private const string EnglishCultureCode = "en-US";
+        private readonly SelectLanguageViewModel _viewModel;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SelectLanguageWindow"/> class.
+        /// Initializes a new instance of the <see cref="SelectLanguageWindow"/> class with default UI services.
         /// </summary>
         public SelectLanguageWindow()
+            : this(new SelectLanguageViewModel(new WpfLanguageService()))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectLanguageWindow"/> class with an injected ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel instance to bind to this dialog.</param>
+        public SelectLanguageWindow(SelectLanguageViewModel viewModel)
         {
             InitializeComponent();
-        }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+            _viewModel = viewModel;
+            DataContext = _viewModel;
 
-        private void BtnSpanish_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeLanguage(SpanishCultureCode);
-        }
-
-        private void BtnEnglish_Click(object sender, RoutedEventArgs e)
-        {
-            ChangeLanguage(EnglishCultureCode);
-        }
-
-        private void ChangeLanguage(string cultureCode)
-        {
-            View.Properties.Settings.Default.LanguageCode = cultureCode;
-            View.Properties.Settings.Default.Save();
-
-            App.ApplyCulture(cultureCode);
-
-            this.Close();
+            if (_viewModel != null)
+            {
+                _viewModel.RequestClose += () => this.Close();
+            }
         }
     }
 }

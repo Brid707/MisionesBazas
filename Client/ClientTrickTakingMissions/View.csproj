@@ -111,6 +111,9 @@
     </Compile>
     <Compile Include="Styles\ColorPalette.cs" />
     <Compile Include="Styles\FontTypography.cs" />
+    <Compile Include="Services\WpfNavigationService.cs" />
+    <Compile Include="Services\WpfDialogService.cs" />
+    <Compile Include="Services\WpfLanguageService.cs" />
     <Page Include="Views\ChangePassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

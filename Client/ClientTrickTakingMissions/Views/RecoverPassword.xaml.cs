@@ -1,35 +1,53 @@
-using System;
 using System.Windows;
 using System.Windows.Controls;
+using View.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
     /// <summary>
-    /// Interaction logic for the password recovery confirmation view.
+    /// Interaction logic for the password recovery confirmation view following the MVVM pattern.
     /// </summary>
     public partial class RecoverPassword : Page
     {
+        private readonly RecoverPasswordViewModel _viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RecoverPassword"/> class.
         /// </summary>
         public RecoverPassword()
+            : this(string.Empty)
         {
-            InitializeComponent();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecoverPassword"/> class with an email address.
         /// </summary>
         /// <param name="email">The email address of the account being recovered.</param>
-        public RecoverPassword(string email) : this()
+        public RecoverPassword(string email)
+            : this(new RecoverPasswordViewModel(new WpfNavigationService(), new WpfDialogService(), email))
         {
-            if (!string.IsNullOrEmpty(email))
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecoverPassword"/> class with an injected ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel instance to bind to this view.</param>
+        public RecoverPassword(RecoverPasswordViewModel viewModel)
+        {
+            InitializeComponent();
+
+            _viewModel = viewModel;
+            DataContext = _viewModel;
+
+            if (_viewModel != null)
             {
-                EmailTextBox.Text = email;
+                _viewModel.RequestBack += OnRequestBack;
+                _viewModel.RequestClose += OnRequestClose;
             }
         }
 
-        private void BtnBack_Click(object sender, RoutedEventArgs e)
+        private void OnRequestBack()
         {
             ForgotPassword parent = Window.GetWindow(this) as ForgotPassword;
             if (parent != null)
@@ -42,32 +60,9 @@ namespace View.Views
             }
         }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        private void OnRequestClose()
         {
             Window.GetWindow(this)?.Close();
-        }
-
-        private void ResendButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Implement code resend via backend service.
-        }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            ChangePassword changePasswordDialog = new ChangePassword();
-            ShowModalDialog(changePasswordDialog);
-        }
-
-        private bool? ShowModalDialog(Window dialog)
-        {
-            Window owner = Window.GetWindow(this);
-            if (owner != null)
-            {
-                dialog.Owner = owner;
-                dialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            }
-
-            return dialog.ShowDialog();
         }
     }
 }

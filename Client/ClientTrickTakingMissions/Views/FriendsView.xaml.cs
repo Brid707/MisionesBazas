@@ -1,8 +1,8 @@
-using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
+using View.Services;
+using ViewModel.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
@@ -32,12 +32,18 @@ namespace View.Views
                 typeof(FriendsView),
                 new PropertyMetadata(Visibility.Collapsed));
 
+        private readonly FriendsViewModel _viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FriendsView"/> class.
         /// </summary>
         public FriendsView()
         {
             InitializeComponent();
+
+            INavigationService navigationService = new WpfNavigationService();
+            _viewModel = new FriendsViewModel(navigationService);
+            DataContext = _viewModel;
         }
 
         /// <summary>
@@ -62,75 +68,11 @@ namespace View.Views
         {
             if (d is FriendsView friendsView)
             {
-                friendsView.InviteButtonVisibility = (bool)e.NewValue ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
-        private void FriendsButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: In future iterations, toggle or filter active friends list.
-        }
-
-        private void MessagesButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenManageFriendRequests();
-        }
-
-        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new SendFriendRequest());
-        }
-
-        private void ViewProfileButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigateToPage(new Profile());
-        }
-
-        private void DeleteFriendButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Delete friend logic via backend service/ViewModel.
-        }
-
-        private void InviteFriendButton_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Dispatch match invitation via backend service/ViewModel.
-        }
-
-        private void OpenManageFriendRequests()
-        {
-            try
-            {
-                ManageFriendRequest manageFriendRequestDialog = new ManageFriendRequest();
-                Window owner = Window.GetWindow(this);
-                if (owner != null)
+                bool isInLobby = (bool)e.NewValue;
+                friendsView.InviteButtonVisibility = isInLobby ? Visibility.Visible : Visibility.Collapsed;
+                if (friendsView._viewModel != null)
                 {
-                    manageFriendRequestDialog.Owner = owner;
-                    manageFriendRequestDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                }
-
-                manageFriendRequestDialog.ShowDialog();
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[FriendsView] Error opening friend requests dialog: {ex.Message}");
-                MessageBox.Show(View.Properties.Langs.Resources.Common_Error_Unexpected);
-            }
-        }
-
-        private void NavigateToPage(Page targetPage)
-        {
-            NavigationService navigationService = NavigationService.GetNavigationService(this);
-            if (navigationService != null)
-            {
-                navigationService.Navigate(targetPage);
-            }
-            else
-            {
-                Window window = Window.GetWindow(this);
-                if (window is MainWindow mainWindow)
-                {
-                    mainWindow.MainFrame.Navigate(targetPage);
+                    friendsView._viewModel.IsInLobby = isInLobby;
                 }
             }
         }

@@ -43,7 +43,7 @@
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             BorderThickness="2"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            Click="CloseButton_Click" />
+                            Command="{Binding CloseCommand}" />
                 </Grid>
 
                 <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"
@@ -57,7 +57,9 @@
                         <ComboBox x:Name="PlayersComboBox" Width="160" Height="36"
                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                   FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
-                                  Margin="0,0,0,12" HorizontalAlignment="Left" />
+                                  Margin="0,0,0,12" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding AvailablePlayerCounts}"
+                                  SelectedItem="{Binding SelectedPlayerCount}" />
 
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Missions}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
@@ -67,7 +69,9 @@
                         <ComboBox x:Name="MissionsComboBox" Width="160" Height="36"
                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                   FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
-                                  Margin="0,0,0,12" HorizontalAlignment="Left" />
+                                  Margin="0,0,0,12" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding AvailableMissionCounts}"
+                                  SelectedItem="{Binding SelectedMissionCount}" />
 
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Privacy}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
@@ -77,7 +81,8 @@
                         <StackPanel Orientation="Vertical" Margin="8,6,0,6">
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
                                 <RadioButton x:Name="RadioPrivate" GroupName="Privacy"
-                                             Width="18" Height="18" VerticalAlignment="Center" />
+                                             Width="18" Height="18" VerticalAlignment="Center"
+                                             IsChecked="{Binding IsPrivate}" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PrivateRButton}"
                                            Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
@@ -104,7 +109,7 @@
                                 FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                 FontWeight="SemiBold" BorderThickness="0" Margin="0,18,0,0"
-                                HorizontalAlignment="Center" Click="ConfirmButton_Click" />
+                                HorizontalAlignment="Center" Command="{Binding ConfirmCommand}" />
                     </StackPanel>
                 </Grid>
             </Grid>

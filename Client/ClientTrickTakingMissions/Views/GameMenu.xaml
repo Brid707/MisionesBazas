@@ -34,7 +34,7 @@
                     Width="64" Height="64" Margin="40,30,0,0"
                     HorizontalAlignment="Left" VerticalAlignment="Top"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Click="ProfileButton_Click"
+                    Command="{Binding ProfileCommand}"
                     ToolTip="{x:Static language:Resources.GameMenu_Profile}">
                 <Grid Width="56" Height="56">
                     <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
@@ -49,7 +49,7 @@
                     Width="44" Height="44"
                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,120,0"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Click="TrophyButton_Click"
+                    Command="{Binding ScoreBoardCommand}"
                     ToolTip="{x:Static language:Resources.GameMenu_Tooltip_ScoreBoard}">
                 <TextBlock Text="🏆"
                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
@@ -78,7 +78,7 @@
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
                             BorderThickness="0" Margin="0,0,0,24"
-                            Click="CreateRoomButton_Click" />
+                            Command="{Binding CreateRoomCommand}" />
 
                     <Button x:Name="JoinLobbyButton"
                             Content="{x:Static language:Resources.GameMenu_JoinLobby}"
@@ -89,7 +89,7 @@
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
                             BorderThickness="0" Margin="0,0,0,24"
-                            Click="JoinLobbyButton_Click" />
+                            Command="{Binding JoinLobbyCommand}" />
 
                     <Button x:Name="HowToPlayButton"
                             Content="{x:Static language:Resources.GameMenu_HowToPlay}"
@@ -100,7 +100,7 @@
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
                             BorderThickness="0"
-                            Click="HowToPlayButton_Click" />
+                            Command="{Binding HowToPlayCommand}" />
 
                     <Button x:Name="SignOutButton"
                             Content="{x:Static language:Resources.GameMenu_SignOut}"
@@ -111,7 +111,7 @@
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             FontWeight="SemiBold"
                             BorderThickness="2" Margin="0,24,0,0"
-                            Click="SignOutButton_Click" />
+                            Command="{Binding SignOutCommand}" />
                 </StackPanel>
             </StackPanel>
         </Grid>

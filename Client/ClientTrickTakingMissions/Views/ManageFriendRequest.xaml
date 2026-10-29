@@ -11,8 +11,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        WindowStartupLocation="CenterOwner"
-        Loaded="Window_Loaded">
+        WindowStartupLocation="CenterOwner">
 
     <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
         <Grid>
@@ -57,7 +56,7 @@
                                VerticalAlignment="Center"
                                LineHeight="34" />
 
-                    <Button x:Name="BtnClose"
+                    <Button x:Name="CloseButton"
                             Grid.Column="2"
                             Width="38" Height="38"
                             HorizontalAlignment="Right"
@@ -65,7 +64,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Cursor="Hand"
-                            Click="BtnClose_Click">
+                            Command="{Binding CloseCommand}">
                         <Grid Width="36" Height="36">
                             <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                      StrokeThickness="3.5" Fill="Transparent" />
@@ -117,7 +116,7 @@
                                        Margin="14,0,8,0"
                                        TextTrimming="CharacterEllipsis" />
 
-                            <Button x:Name="BtnAcceptSample"
+                            <Button x:Name="AcceptButton"
                                     Grid.Column="2"
                                     Width="38" Height="38"
                                     Margin="0,0,10,0"
@@ -125,7 +124,7 @@
                                     BorderThickness="0"
                                     Cursor="Hand"
                                     ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
-                                    Click="BtnAcceptSample_Click">
+                                    Command="{Binding AcceptRequestCommand}">
                                 <Grid Width="36" Height="36">
                                     <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                              StrokeThickness="3.5" Fill="Transparent" />
@@ -140,14 +139,14 @@
                                 </Grid>
                             </Button>
 
-                            <Button x:Name="BtnRejectSample"
+                            <Button x:Name="RejectButton"
                                     Grid.Column="3"
                                     Width="38" Height="38"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Cursor="Hand"
                                     ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
-                                    Click="BtnRejectSample_Click">
+                                    Command="{Binding RejectRequestCommand}">
                                 <Grid Width="36" Height="36">
                                     <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
                                              StrokeThickness="3.5" Fill="Transparent" />

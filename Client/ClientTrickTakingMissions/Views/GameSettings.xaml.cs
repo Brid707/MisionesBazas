@@ -1,6 +1,5 @@
-using System;
-using System.Diagnostics;
 using System.Windows;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
@@ -10,13 +9,6 @@ namespace View.Views
     /// </summary>
     public partial class GameSettings : Window
     {
-        private const int MinimumPlayerCount = 3;
-        private const int MaximumPlayerCount = 4;
-        private const int DefaultPlayerSelectionIndex = 1;
-        private const int MinimumMissionCount = 1;
-        private const int MaximumMissionCount = 50;
-        private const int DefaultMissionSelectionIndex = 4;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GameSettings"/> class.
         /// </summary>
@@ -24,31 +16,15 @@ namespace View.Views
         {
             InitializeComponent();
 
-            PlayersComboBox.Items.Clear();
-            PlayersComboBox.Items.Add(MinimumPlayerCount);
-            PlayersComboBox.Items.Add(MaximumPlayerCount);
-            PlayersComboBox.SelectedIndex = DefaultPlayerSelectionIndex;
-
-            MissionsComboBox.Items.Clear();
-            for (int missionNumber = MinimumMissionCount; missionNumber <= MaximumMissionCount; missionNumber++)
-            {
-                MissionsComboBox.Items.Add(missionNumber);
-            }
-            MissionsComboBox.SelectedIndex = DefaultMissionSelectionIndex;
-
-            RadioPrivate.IsChecked = true;
+            GameSettingsViewModel viewModel = new GameSettingsViewModel();
+            viewModel.RequestClose += OnRequestClose;
+            DataContext = viewModel;
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void OnRequestClose(bool confirmed)
         {
-            this.DialogResult = false;
-            this.Close();
-        }
-
-        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = true;
-            this.Close();
+            DialogResult = confirmed;
+            Close();
         }
     }
 }

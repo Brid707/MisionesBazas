@@ -30,7 +30,7 @@
                 <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
                             Margin="40,0,0,120" Width="500">
                     <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
-                        <TextBlock x:Name="lblTitulo" Text="{x:Static language:Resources.Login_Title}"
+                        <TextBlock x:Name="TitleTextBlock" Text="{x:Static language:Resources.Login_Title}"
                                    Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontWeight="Bold"
@@ -48,15 +48,15 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button x:Name="BtnBack" Content="{x:Static language:Resources.Common_Button_Back}"
+            <Button x:Name="BackButton" Content="{x:Static language:Resources.Common_Button_Back}"
                     Width="40" Height="40" Margin="12" HorizontalAlignment="Left"
                     VerticalAlignment="Top"
                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                     FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                    Click="BtnBack_Click" />
+                    Command="{Binding BackCommand}" />
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                <TextBlock x:Name="lblTituloInicioSesion"
+                <TextBlock x:Name="LoginTitleTextBlock"
                            Text="{x:Static language:Resources.Login_LoginTitle}"
                            Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                            FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
@@ -68,7 +68,8 @@
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                            Margin="6,0,0,6" />
-                <TextBox x:Name="txfEmail" Height="56"
+                <TextBox x:Name="EmailTextBox" Height="56"
+                         Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                          FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                          FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                          Padding="12" Margin="0,0,0,12" />
@@ -78,27 +79,29 @@
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                            Margin="6,0,0,6" />
-                <PasswordBox x:Name="txfPassword" Height="56"
+                <PasswordBox x:Name="PasswordBox" Height="56"
                              FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                              FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                             Padding="12" Margin="0,0,0,8" />
+                             Padding="12" Margin="0,0,0,8"
+                             PasswordChanged="PasswordBox_PasswordChanged" />
 
-                <Button x:Name="btnForgotPassword"
+                <Button x:Name="ForgotPasswordButton"
                         Content="{x:Static language:Resources.Login_ForgotPassword}"
                         Height="32" Width="220" Background="Transparent"
                         Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                         BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,12"
-                        Click="BtnForgotPassword_Click" />
+                        Command="{Binding ForgotPasswordCommand}" />
 
-                <Button x:Name="btnLogin" Content="{x:Static language:Resources.Login_Enter}"
+                <Button x:Name="LoginButton" Content="{x:Static language:Resources.Login_Enter}"
                         Height="64" Width="220"
                         Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
-                        FontWeight="Bold" Click="BtnLogin_Click" />
+                        FontWeight="Bold"
+                        Command="{Binding LoginCommand}" />
             </StackPanel>
         </Grid>
     </Grid>

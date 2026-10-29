@@ -1,5 +1,5 @@
-using System;
 using System.Windows;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
@@ -14,31 +14,15 @@ namespace View.Views
         public ManageFriendRequest()
         {
             InitializeComponent();
+
+            ManageFriendRequestViewModel viewModel = new ManageFriendRequestViewModel();
+            viewModel.RequestClose += OnRequestClose;
+            DataContext = viewModel;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void OnRequestClose()
         {
-            LoadFriendRequests();
-        }
-
-        private void LoadFriendRequests()
-        {
-            // TODO: Load friend requests from backend service.
-        }
-
-        private void BtnAcceptSample_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Accept friend request via backend service.
-        }
-
-        private void BtnRejectSample_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: Reject friend request via backend service.
-        }
-
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
+            Close();
         }
     }
 }

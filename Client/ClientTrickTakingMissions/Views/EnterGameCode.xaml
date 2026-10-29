@@ -29,7 +29,7 @@
                         FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                         BorderThickness="2"
                         BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                        Click="CloseButton_Click" />
+                        Command="{Binding CloseCommand}" />
 
                 <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,6,0,6">
                     <TextBlock Text="{x:Static language:Resources.EnterGameCode_Title}"
@@ -46,7 +46,8 @@
                                  BorderBrush="{x:Static styles:ColorPalette.DarkTextBrush}"
                                  BorderThickness="4" Padding="8"
                                  FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}" />
+                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                                 Text="{Binding GameCode, UpdateSourceTrigger=PropertyChanged}" />
 
                         <Button x:Name="EnterButton"
                                 Content="{x:Static language:Resources.EnterGameCode_JoinButton}"
@@ -56,7 +57,7 @@
                                 FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                 FontWeight="SemiBold" BorderThickness="0" Margin="0,24,0,0"
-                                Click="EnterButton_Click" HorizontalAlignment="Center" />
+                                Command="{Binding JoinCommand}" HorizontalAlignment="Center" />
                     </StackPanel>
                 </Grid>
             </Grid>

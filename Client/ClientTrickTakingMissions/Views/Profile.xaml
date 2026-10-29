@@ -23,14 +23,14 @@
                Width="150" />
 
         <Grid Grid.Column="1" Margin="30,24,40,30">
-            <Button x:Name="BtnClose"
+            <Button x:Name="CloseButton"
                     Width="50" Height="50"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Background="Transparent"
                     BorderThickness="0"
                     Cursor="Hand"
-                    Click="BtnClose_Click">
+                    Command="{Binding CloseCommand}">
                 <Grid Width="44" Height="44">
                     <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="44" Height="44" />
                     <Path Stroke="{x:Static styles:ColorPalette.TableAlternateRowBackgroundBrush}"
@@ -52,8 +52,8 @@
                               Data="M 20 78 C 20 58 34 52 48 52 C 62 52 76 58 76 78 Z" />
                     </Grid>
 
-                    <TextBlock x:Name="lblNombreUsuario"
-                               Text="xX_Samuel_Xx"
+                    <TextBlock x:Name="UsernameTextBlock"
+                               Text="{Binding Username}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.ProfileTitleFontSize}"
                                FontWeight="Normal"
@@ -64,7 +64,7 @@
 
                 <WrapPanel Orientation="Horizontal" Margin="0,0,0,24">
                     <StackPanel Orientation="Horizontal" Margin="0,0,80,0">
-                        <Label x:Name="lblCreacionCuenta"
+                        <Label x:Name="AccountCreationLabel"
                                Content="{x:Static language:Resources.Profile_AccountCreation}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
@@ -72,8 +72,8 @@
                                Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                Padding="0"
                                VerticalAlignment="Center" />
-                        <Label x:Name="lblFecha"
-                               Content="{x:Static language:Resources.Profile_Date}"
+                        <Label x:Name="DateLabel"
+                               Content="{Binding AccountCreationDate}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
                                FontWeight="Normal"
@@ -84,7 +84,7 @@
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <Label x:Name="lblMisiones"
+                        <Label x:Name="MissionsLabel"
                                Content="{x:Static language:Resources.Profile_Missions}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
@@ -92,8 +92,8 @@
                                Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                Padding="0"
                                VerticalAlignment="Center" />
-                        <Label x:Name="lblMisionesValor"
-                               Content="0"
+                        <Label x:Name="MissionsValueLabel"
+                               Content="{Binding MissionsCount}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
                                FontWeight="Normal"
@@ -104,7 +104,7 @@
                     </StackPanel>
                 </WrapPanel>
 
-                <Label x:Name="lblBiografia"
+                <Label x:Name="BiographyLabel"
                        Content="{x:Static language:Resources.Profile_Biography}"
                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                        FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
@@ -113,7 +113,8 @@
                        Padding="0"
                        Margin="0,0,0,10" />
 
-                <TextBox x:Name="txtBiografia"
+                <TextBox x:Name="BiographyTextBox"
+                         Text="{Binding Biography, UpdateSourceTrigger=PropertyChanged}"
                          Width="660"
                          Height="160"
                          Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
@@ -128,7 +129,7 @@
                          Margin="0,0,0,24" />
 
                 <StackPanel Orientation="Horizontal">
-                    <Label x:Name="lblCorreo"
+                    <Label x:Name="EmailLabel"
                            Content="{x:Static language:Resources.Profile_Email}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
@@ -136,8 +137,8 @@
                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                            Padding="0"
                            VerticalAlignment="Center" />
-                    <Label x:Name="lblCorreoValor"
-                           Content="correo@correo.com"
+                    <Label x:Name="EmailValueLabel"
+                           Content="{Binding Email}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
                            FontWeight="Normal"

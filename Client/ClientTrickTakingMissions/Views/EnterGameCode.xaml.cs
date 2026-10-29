@@ -1,5 +1,7 @@
-using System;
 using System.Windows;
+using View.Services;
+using ViewModel.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
@@ -8,36 +10,30 @@ namespace View.Views
     /// </summary>
     public partial class EnterGameCode : Window
     {
+        private readonly EnterGameCodeViewModel _viewModel;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EnterGameCode"/> class.
         /// </summary>
         public EnterGameCode()
         {
             InitializeComponent();
+
+            IDialogService dialogService = new WpfDialogService();
+            _viewModel = new EnterGameCodeViewModel(dialogService);
+            _viewModel.RequestClose += OnRequestClose;
+            DataContext = _viewModel;
         }
 
         /// <summary>
         /// Gets the trimmed code string entered by the user.
         /// </summary>
-        public string GameCode => CodeTextBox?.Text?.Trim() ?? string.Empty;
+        public string GameCode => _viewModel?.GameCode?.Trim() ?? string.Empty;
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void OnRequestClose(bool confirmed)
         {
-            this.DialogResult = false;
-            this.Close();
-        }
-
-        private void EnterButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(GameCode))
-            {
-                this.DialogResult = true;
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show(View.Properties.Langs.Resources.EnterGameCode_EmptyCode);
-            }
+            DialogResult = confirmed;
+            Close();
         }
     }
 }

@@ -1,101 +1,34 @@
-using System;
-using System.Diagnostics;
-using System.Windows;
 using System.Windows.Controls;
+using View.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
     /// <summary>
-    /// Interaction logic for the initial home screen view.
+    /// Interaction logic for the initial home screen view following the MVVM pattern.
     /// </summary>
     public partial class HomeScreen : Page
     {
-        private const double DefaultWindowWidth = 900;
-        private const double DefaultWindowHeight = 700;
-        private const double GameMenuWindowWidth = 1000;
-        private const double GameMenuWindowHeight = 700;
+        private readonly HomeScreenViewModel _viewModel;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="HomeScreen"/> class.
+        /// Initializes a new instance of the <see cref="HomeScreen"/> class with default UI services.
         /// </summary>
         public HomeScreen()
+            : this(new HomeScreenViewModel(new WpfNavigationService()))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HomeScreen"/> class with an injected ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel instance to bind to this view.</param>
+        public HomeScreen(HomeScreenViewModel viewModel)
         {
             InitializeComponent();
-        }
 
-        private void BtnLanguage_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SelectLanguageWindow selectLanguageWindow = new SelectLanguageWindow();
-                selectLanguageWindow.Owner = Window.GetWindow(this);
-                selectLanguageWindow.ShowDialog();
-                this.NavigationService?.Navigate(new HomeScreen());
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[HomeScreen] Error opening language selector: {ex.Message}");
-            }
-        }
-
-        private void HomePage_BtnSignUp_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NavigateOrOpenModal(new RegisterPage(), View.Properties.Langs.Resources.Register_Title, DefaultWindowWidth, DefaultWindowHeight);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[HomeScreen] Error opening RegisterPage: {ex.Message}");
-            }
-        }
-
-        private void HomePage_BtnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NavigateOrOpenModal(new LoginPage(), View.Properties.Langs.Resources.Login_Title, DefaultWindowWidth, DefaultWindowHeight);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[HomeScreen] Error opening LoginPage: {ex.Message}");
-            }
-        }
-
-        private void HomePage_BtnGuest_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                NavigateOrOpenModal(new GameMenu(), View.Properties.Langs.Resources.GameMenu_Title, GameMenuWindowWidth, GameMenuWindowHeight);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[HomeScreen] Error opening GameMenu: {ex.Message}");
-            }
-        }
-
-        private void NavigateOrOpenModal(Page targetPage, string windowTitle, double width, double height)
-        {
-            if (this.NavigationService != null)
-            {
-                this.NavigationService.Navigate(targetPage);
-            }
-            else
-            {
-                Window modalWindow = new Window
-                {
-                    Title = windowTitle,
-                    Content = targetPage,
-                    Width = width,
-                    Height = height,
-                    Owner = Window.GetWindow(this)
-                };
-                modalWindow.ShowDialog();
-            }
+            _viewModel = viewModel;
+            DataContext = _viewModel;
         }
     }
 }

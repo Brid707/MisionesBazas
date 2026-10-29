@@ -1,53 +1,34 @@
-using System;
-using System.Diagnostics;
-using System.Windows;
 using System.Windows.Controls;
+using View.Services;
+using ViewModel.ViewModels;
 
 namespace View.Views
 {
     /// <summary>
-    /// Interaction logic for displaying and managing user profile information.
+    /// Interaction logic for displaying and managing user profile information following the MVVM pattern.
     /// </summary>
     public partial class Profile : Page
     {
+        private readonly ProfileViewModel _viewModel;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="Profile"/> class.
+        /// Initializes a new instance of the <see cref="Profile"/> class with default UI services.
         /// </summary>
         public Profile()
+            : this(new ProfileViewModel(new WpfNavigationService()))
         {
-            InitializeComponent();
         }
 
-        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Profile"/> class with an injected ViewModel.
+        /// </summary>
+        /// <param name="viewModel">The ViewModel instance to bind to this view.</param>
+        public Profile(ProfileViewModel viewModel)
         {
-            try
-            {
-                if (this.NavigationService != null && this.NavigationService.CanGoBack)
-                {
-                    this.NavigationService.GoBack();
-                }
-                else if (this.NavigationService != null)
-                {
-                    this.NavigationService.Navigate(new GameMenu());
-                }
-                else
-                {
-                    Window window = Window.GetWindow(this);
-                    if (window is MainWindow mainWindow)
-                    {
-                        mainWindow.MainFrame.Navigate(new GameMenu());
-                    }
-                    else if (window != null)
-                    {
-                        window.Close();
-                    }
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[Profile] Navigation error: {ex.Message}");
-            }
+            InitializeComponent();
+
+            _viewModel = viewModel;
+            DataContext = _viewModel;
         }
     }
 }

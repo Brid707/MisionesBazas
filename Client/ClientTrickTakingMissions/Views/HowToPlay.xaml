@@ -43,7 +43,7 @@
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             BorderThickness="2"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            Click="CloseButton_Click" />
+                            Command="{Binding CloseCommand}" />
                 </Grid>
 
                 <Border Grid.Row="1"

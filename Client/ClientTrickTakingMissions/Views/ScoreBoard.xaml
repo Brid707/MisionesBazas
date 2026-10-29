@@ -4,22 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:language="clr-namespace:View.Properties.Langs"
-        xmlns:local="clr-namespace:View.Views"
-        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         xmlns:styles="clr-namespace:View.Styles"
         mc:Ignorable="d"
         Title="ScoreBoard" Height="380" Width="780"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
-        Loaded="Window_Loaded">
+        WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
-        <CollectionViewSource x:Key="userViewSource"
-                              d:DesignSource="{d:DesignInstance {x:Type local:User}, CreateList=True}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Position" Direction="Ascending" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-
         <Style x:Key="CenteredCellStyle" TargetType="TextBlock">
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -78,11 +69,12 @@
                                HorizontalAlignment="Center" TextAlignment="Center"
                                TextWrapping="Wrap" MaxWidth="620" />
 
-                    <Button Grid.Column="2" x:Name="BtnClose" Width="44" Height="44"
+                    <Button Grid.Column="2" x:Name="CloseButton" Width="44" Height="44"
                             HorizontalAlignment="Right" VerticalAlignment="Top"
                             Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="2" Click="BtnClose_Click">
+                            BorderThickness="2"
+                            Command="{Binding CloseCommand}">
                         <TextBlock Text="✕"
                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
@@ -94,7 +86,7 @@
 
                 <StackPanel Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Width="740">
                     <DataGrid x:Name="ScoresDataGrid"
-                              ItemsSource="{Binding Source={StaticResource userViewSource}}"
+                              ItemsSource="{Binding Rankings}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column"
                               IsReadOnly="True"
@@ -139,7 +131,7 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn Header="{x:Static language:Resources.ScoreBoard_Experience}"
-                                                Binding="{Binding Experience.TotalXP}" Width="180"
+                                                Binding="{Binding TotalXP}" Width="180"
                                                 ElementStyle="{StaticResource CenteredCellStyle}" />
                         </DataGrid.Columns>
                     </DataGrid>

@@ -25,7 +25,7 @@
                         Background="Transparent"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Click="FriendsButton_Click"
+                        Command="{Binding FilterFriendsCommand}"
                         ToolTip="{x:Static language:Resources.GameMenu_Friends}">
                     <Canvas Width="70" Height="50">
                         <Ellipse Canvas.Left="16" Canvas.Top="0" Width="22" Height="22"
@@ -58,7 +58,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Cursor="Hand"
-                            Click="MessagesButton_Click"
+                            Command="{Binding OpenManageFriendRequestsCommand}"
                             ToolTip="{x:Static language:Resources.GameMenu_Messages}">
                         <Canvas Width="48" Height="36">
                             <Rectangle Width="46" Height="32" Canvas.Left="1" Canvas.Top="2"
@@ -76,7 +76,7 @@
                             Background="Transparent"
                             BorderThickness="0"
                             Cursor="Hand"
-                            Click="AddFriendButton_Click"
+                            Command="{Binding AddFriendCommand}"
                             ToolTip="{x:Static language:Resources.GameMenu_AddFriend}">
                         <Canvas Width="48" Height="36">
                             <Ellipse Canvas.Left="12" Canvas.Top="0" Width="16" Height="16"
@@ -125,7 +125,7 @@
                                             FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
-                                            Click="ViewProfileButton_Click" />
+                                            Command="{Binding ViewProfileCommand}" />
                                     <Button x:Name="DeleteFriendButton"
                                             Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
                                             Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
@@ -134,7 +134,7 @@
                                             FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
-                                            Click="DeleteFriendButton_Click" />
+                                            Command="{Binding DeleteFriendCommand}" />
                                     <Button x:Name="InviteFriendButton"
                                             Content="{x:Static language:Resources.FriendsBar_GameInvitation}"
                                             Background="{x:Static styles:ColorPalette.InviteButtonBackgroundBrush}"
@@ -143,7 +143,7 @@
                                             FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                             Padding="6,2"
                                             Margin="0,0,4,4"
-                                            Click="InviteFriendButton_Click"
+                                            Command="{Binding InviteFriendCommand}"
                                             Visibility="{Binding InviteButtonVisibility,
                                                 RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                 </WrapPanel>
