@@ -9,6 +9,9 @@
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="Lobby">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Page.Resources>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -132,190 +135,99 @@
                     Margin="12,12,12,12"
                     Padding="8"
                     Background="{x:Static styles:ColorPalette.LobbyContainerBackgroundBrush}">
-                <StackPanel>
-                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="3"
-                            Margin="0,6,0,6"
-                            Padding="8"
-                            Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="56" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Ellipse Width="44" Height="44"
-                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                         StrokeThickness="2" />
-                            </Grid>
-
-                            <StackPanel Grid.Column="1"
-                                        VerticalAlignment="Center"
-                                        Orientation="Horizontal"
-                                        Margin="8,0,0,0">
-                                <TextBlock Text="xX_Samuel_Xx"
-                                           Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Text="  👑"
-                                           FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                                           VerticalAlignment="Center"
-                                           Margin="8,0,0,0" />
-                            </StackPanel>
-
-                            <StackPanel Grid.Column="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                <Button Content="{x:Static language:Resources.Common_Button_Close}"
-                                        Width="44" Height="44"
-                                        Background="Transparent"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="PlayersItemsControl"
+                                  ItemsSource="{Binding Players}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                                         BorderThickness="3"
-                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}" />
-                                <Button x:Name="ReadyButton"
-                                        Content="{x:Static language:Resources.Lobby_ReadyButton}"
-                                        Width="72" Height="36" Margin="8,0,0,0"
-                                        Background="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}"
-                                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                        BorderThickness="2"
-                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                        FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                        Command="{Binding ToggleReadyCommand}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
+                                        Margin="0,6,0,6"
+                                        Padding="8"
+                                        Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="56" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
 
-                    <!-- Player 2 - not ready -->
-                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="3"
-                            Margin="0,6,0,6"
-                            Padding="8"
-                            Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="56" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center">
+                                            <Ellipse Width="44" Height="44"
+                                                     Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                     Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                     StrokeThickness="2" />
+                                        </Grid>
 
-                            <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Ellipse Width="44" Height="44"
-                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                         StrokeThickness="2" />
-                            </Grid>
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal"
+                                                    Margin="8,0,0,0">
+                                            <TextBlock Text="{Binding Username}"
+                                                       Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                                                       FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                       FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                                                       VerticalAlignment="Center" />
+                                            <TextBlock Text="  👑"
+                                                       FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="8,0,0,0"
+                                                       Visibility="{Binding IsHost, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                        </StackPanel>
 
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock Text="xX_TheFatBv_Xx"
-                                           Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}" />
-                            </StackPanel>
+                                        <StackPanel Grid.Column="2"
+                                                    Orientation="Horizontal"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center">
+                                            <Button x:Name="ReadyButton"
+                                                    Width="96" Height="36" Margin="8,0,0,0"
+                                                    Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                                                    BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                    BorderThickness="2"
+                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                    FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
+                                                    Visibility="{Binding IsCurrentPlayer, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Command="{Binding DataContext.ToggleReadyCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Content" Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
+                                                        <Setter Property="Background" Value="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                                                <Setter Property="Content" Value="{x:Static language:Resources.Lobby_ReadyButton}" />
+                                                                <Setter Property="Background" Value="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
 
-                            <StackPanel Grid.Column="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                <Button Content="⋯"
-                                        Width="44" Height="44"
-                                        Background="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                        Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                        BorderThickness="3"
-                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}" />
-                                <TextBlock Text="{x:Static language:Resources.Lobby_NotReadyButton}"
-                                           VerticalAlignment="Center"
-                                           Margin="8,0,0,0"
-                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.DarkTextBrush}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <!-- Empty slots -->
-                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="3"
-                            Margin="0,6,0,6"
-                            Padding="8"
-                            Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}"
-                            Height="72">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="56" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Ellipse Width="44" Height="44"
-                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                         StrokeThickness="2" />
-                            </Grid>
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" />
-
-                            <StackPanel Grid.Column="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                <Button Content="＋"
-                                        Width="44" Height="44"
-                                        Background="Transparent"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                        BorderThickness="3"
-                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="3"
-                            Margin="0,6,0,6"
-                            Padding="8"
-                            Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}"
-                            Height="72">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="56" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="140" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Ellipse Width="44" Height="44"
-                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                         StrokeThickness="2" />
-                            </Grid>
-
-                            <StackPanel Grid.Column="1" VerticalAlignment="Center" />
-
-                            <StackPanel Grid.Column="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center">
-                                <Button Content="＋"
-                                        Width="44" Height="44"
-                                        Background="Transparent"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                        BorderThickness="3"
-                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </StackPanel>
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Margin="8,0,8,0"
+                                                       FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                       FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
+                                                       Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                                                       Visibility="{Binding IsOtherPlayer, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsReady}" Value="True">
+                                                                <Setter Property="Text" Value="{x:Static language:Resources.Lobby_ReadyButton}" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
             </Border>
         </Grid>
 

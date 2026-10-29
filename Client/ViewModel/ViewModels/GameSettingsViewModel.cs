@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Model.ILobbyService;
+using Model.Session;
 using ViewModel.Base;
+using ViewModel.Constants;
+using ViewModel.Services;
 
 namespace ViewModel.ViewModels
 {
@@ -14,92 +19,147 @@ namespace ViewModel.ViewModels
         private const int MaximumPlayerCount = 4;
         private const int MinimumMissionCount = 1;
         private const int MaximumMissionCount = 50;
+        private const int DefaultMissionCount = 5;
 
+        private readonly IDialogService _dialogService;
         private int _selectedPlayerCount;
         private int _selectedMissionCount;
         private bool _isPrivate;
+        private bool _isBusy;
 
-        /// <summary>
-        /// Occurs when the dialog requests to close, passing a boolean indicating whether settings were confirmed.
-        /// </summary>
-        public event Action<bool> RequestClose;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameSettingsViewModel"/> class.
-        /// </summary>
         public GameSettingsViewModel()
+            : this(null)
         {
+        }
+
+        public GameSettingsViewModel(IDialogService dialogService)
+        {
+            _dialogService = dialogService;
             AvailablePlayerCounts = new List<int> { MinimumPlayerCount, MaximumPlayerCount };
             _selectedPlayerCount = MaximumPlayerCount;
 
             AvailableMissionCounts = new List<int>();
-            for (int i = MinimumMissionCount; i <= MaximumMissionCount; i++)
+            for (int count = MinimumMissionCount; count <= MaximumMissionCount; count++)
             {
-                AvailableMissionCounts.Add(i);
+                AvailableMissionCounts.Add(count);
             }
-            _selectedMissionCount = 5;
 
+            _selectedMissionCount = DefaultMissionCount;
             _isPrivate = true;
 
             CloseCommand = new RelayCommand(ExecuteClose);
-            ConfirmCommand = new RelayCommand(ExecuteConfirm);
+            ConfirmCommand = new RelayCommand(ExecuteConfirm, CanExecuteConfirm);
         }
 
-        /// <summary>
-        /// Gets the list of valid player counts allowed in a match.
-        /// </summary>
+        public event Action<bool> RequestClose;
+
         public List<int> AvailablePlayerCounts { get; }
 
-        /// <summary>
-        /// Gets or sets the selected maximum player count.
-        /// </summary>
         public int SelectedPlayerCount
         {
             get => _selectedPlayerCount;
             set => SetProperty(ref _selectedPlayerCount, value);
         }
 
-        /// <summary>
-        /// Gets the list of selectable mission targets.
-        /// </summary>
         public List<int> AvailableMissionCounts { get; }
 
-        /// <summary>
-        /// Gets or sets the chosen mission target count.
-        /// </summary>
         public int SelectedMissionCount
         {
             get => _selectedMissionCount;
             set => SetProperty(ref _selectedMissionCount, value);
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the lobby is private (invitation/code only) or public.
-        /// </summary>
         public bool IsPrivate
         {
             get => _isPrivate;
             set => SetProperty(ref _isPrivate, value);
         }
 
-        /// <summary>
-        /// Gets the command that cancels settings configuration.
-        /// </summary>
         public ICommand CloseCommand { get; }
 
-        /// <summary>
-        /// Gets the command that confirms game rules and saves lobby parameters.
-        /// </summary>
         public ICommand ConfirmCommand { get; }
+
+        private bool CanExecuteConfirm()
+        {
+            return !_isBusy;
+        }
 
         private void ExecuteClose()
         {
             RequestClose?.Invoke(false);
         }
 
-        private void ExecuteConfirm()
+        private async void ExecuteConfirm()
         {
-            RequestClose?.Invoke(true);
+            if (LobbySession.Current.HasActiveLobby)
+            {
+                RequestClose?.Invoke(true);
+            }
+            else
+            {
+                await CreateNewLobbyAsync();
+            }
+        }
+
+        private async Task CreateNewLobbyAsync()
+        {
+            SetBusyState(true);
+            try
+            {
+                int hostUserId = ResolveActiveUserId();
+
+                LobbyResult result = await LobbySession.Current.Client.CreateLobbyAsync(
+                    hostUserId,
+                    (byte)_selectedMissionCount,
+                    (byte)_selectedPlayerCount);
+
+                if (result == null)
+                {
+                    _dialogService?.ShowError(MessageCode.ConnectionFailed);
+                }
+                else if (!result.IsSuccess || result.Lobby == null)
+                {
+                    _dialogService?.ShowWarning(MessageCode.UnexpectedError);
+                }
+                else
+                {
+                    LobbySession.Current.SetLobby(result.Lobby);
+                    RequestClose?.Invoke(true);
+                }
+            }
+            finally
+            {
+                SetBusyState(false);
+            }
+        }
+
+        private static int ResolveActiveUserId()
+        {
+            int userId = UserSession.Current.CurrentUser != null
+                ? UserSession.Current.CurrentUser.IdUser
+                : 0;
+
+            if (userId == 0)
+            {
+                int randomValue = Math.Abs(Guid.NewGuid().GetHashCode());
+                userId = -((randomValue % 9000) + 1000);
+                int guestSuffix = Math.Abs(userId % 10000);
+
+                UserSession.Current.SetUser(new UserSessionData
+                {
+                    IdUser = userId,
+                    Username = $"Guest_{guestSuffix:D4}",
+                    Email = string.Empty
+                });
+            }
+
+            return userId;
+        }
+
+        private void SetBusyState(bool isBusy)
+        {
+            _isBusy = isBusy;
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

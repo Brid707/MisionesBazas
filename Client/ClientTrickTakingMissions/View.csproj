@@ -233,7 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
-      <Project>{9cc9ccb1-1db1-4074-9c61-5b9d3665747c}</Project>
+      <Project>{67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95}</Project>
       <Name>ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">

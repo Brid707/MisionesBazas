@@ -20,45 +20,68 @@ namespace Host
         /// </summary>
         private static void Main()
         {
-            ServiceHost host = null;
+            ServiceHost loginHost = null;
+            ServiceHost lobbyHost = null;
+
             try
             {
-                host = CreateUserLoginServiceHost();
-                host.Open();
+                IUserRepository userRepository = new UserRepository();
+
+                loginHost = CreateUserLoginServiceHost(userRepository);
+                lobbyHost = CreateLobbyServiceHost(userRepository);
+
+                loginHost.Open();
+                lobbyHost.Open();
 
                 Console.WriteLine("TrickTakingMissions Server is running.");
                 Console.WriteLine("TCP Endpoint: net.tcp://localhost:8090/UserLoginService");
+                Console.WriteLine("TCP Endpoint: net.tcp://localhost:8090/LobbyService");
                 Console.WriteLine("Press [Enter] to terminate the server.");
                 Console.ReadLine();
 
-                host.Close();
+                lobbyHost.Close();
+                loginHost.Close();
             }
             catch (TimeoutException)
             {
-                host?.Abort();
+                lobbyHost?.Abort();
+                loginHost?.Abort();
                 // TODO: Log timeout failure using official logging component once available.
             }
             catch (CommunicationException)
             {
-                host?.Abort();
+                lobbyHost?.Abort();
+                loginHost?.Abort();
                 // TODO: Log communication failure using official logging component once available.
             }
             catch (InvalidOperationException)
             {
-                host?.Abort();
+                lobbyHost?.Abort();
+                loginHost?.Abort();
                 // TODO: Log configuration/service startup failure using official logging component once available.
             }
         }
 
-        private static ServiceHost CreateUserLoginServiceHost()
+        private static ServiceHost CreateUserLoginServiceHost(IUserRepository userRepository)
         {
-            IUserRepository userRepository = new UserRepository();
             IUserLoginUseCase userLoginUseCase = new UserLoginUseCase(userRepository);
             IInstanceProvider instanceProvider = new FuncInstanceProvider<UserLoginService>(
                 () => new UserLoginService(userLoginUseCase));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(UserLoginService));
+            serviceHost.Description.Behaviors.Add(injectionBehavior);
+            return serviceHost;
+        }
+
+        private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository)
+        {
+            ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository);
+            IInstanceProvider instanceProvider = new FuncInstanceProvider<LobbyService>(
+                () => new LobbyService(lobbyUseCase));
+            IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
+
+            ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));
             serviceHost.Description.Behaviors.Add(injectionBehavior);
             return serviceHost;
         }

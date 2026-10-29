@@ -46,6 +46,35 @@ namespace Persistence.Repository
             return foundUserAccount;
         }
 
+        public UserAccount GetUserById(int userId)
+        {
+            UserAccount foundUserAccount = null;
+
+            try
+            {
+                using (TrickTakingMissionsBDEntities context = new TrickTakingMissionsBDEntities())
+                {
+                    User foundUser = context.User.Find(userId);
+                    if (foundUser != null)
+                    {
+                        foundUserAccount = MapToDomainModel(foundUser);
+                    }
+                }
+            }
+            catch (EntityException ex)
+            {
+                // TODO: Implement logging for the exception once logging infrastructure is available.
+                throw new InvalidOperationException("Failed to connect to the database.", ex);
+            }
+            catch (SqlException ex)
+            {
+                // TODO: Implement logging for the exception once logging infrastructure is available.
+                throw new InvalidOperationException("Failed to execute query in the database.", ex);
+            }
+
+            return foundUserAccount;
+        }
+
         public void UpdateLastLogin(int userId)
         {
             try

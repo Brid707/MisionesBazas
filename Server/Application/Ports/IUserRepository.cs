@@ -17,6 +17,14 @@ namespace Application.Ports
         UserAccount GetUserByEmail(string email);
 
         /// <summary>
+        /// Retrieves a user account matching the specified unique user identifier.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user to find.</param>
+        /// <returns>The <see cref="UserAccount"/> if found; otherwise, null.</returns>
+        /// <exception cref="InvalidOperationException">Thrown when a persistence access error occurs.</exception>
+        UserAccount GetUserById(int userId);
+
+        /// <summary>
         /// Updates the last login timestamp of the specified user to the current UTC time.
         /// </summary>
         /// <param name="userId">The unique identifier of the user.</param>

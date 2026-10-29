@@ -82,7 +82,13 @@ namespace ViewModel.ViewModels
         {
             try
             {
+                LobbySession.Current.ClearLobby();
                 _navigationService.ShowDialog(ViewId.GameSettingsDialog);
+
+                if (LobbySession.Current.HasActiveLobby)
+                {
+                    _navigationService.NavigateTo(ViewId.Lobby);
+                }
             }
             catch (InvalidOperationException ex)
             {
@@ -95,7 +101,13 @@ namespace ViewModel.ViewModels
         {
             try
             {
+                LobbySession.Current.ClearLobby();
                 _navigationService.ShowDialog(ViewId.EnterGameCodeDialog);
+
+                if (LobbySession.Current.HasActiveLobby)
+                {
+                    _navigationService.NavigateTo(ViewId.Lobby);
+                }
             }
             catch (InvalidOperationException ex)
             {

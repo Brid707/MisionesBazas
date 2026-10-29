@@ -4,4 +4,5 @@
   <Project Path="../Infrastructure.Email/Infrastructure.Email.csproj" Id="84a9f63d-9b2e-4d1c-8a54-7e319c04e6b2" />
   <Project Path="../Persistence/Persistence.csproj" Id="c36681c2-acec-4779-b280-e9b8ce8fdab7" />
   <Project Path="../Services/Services.csproj" Id="c3ce4b74-c003-42a1-9dbd-75f8213916eb" />
+  <Project Path="Domain/Domain.csproj" Id="b0c8e1ab-21b4-4a79-a2ce-6a48e177bb35" />
 </Solution>

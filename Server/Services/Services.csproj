@@ -43,8 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\ILobbyCallback.cs" />
+    <Compile Include="Contracts\ILobbyService.cs" />
     <Compile Include="Contracts\IUserLoginService.cs" />
+    <Compile Include="DTO\Lobby.cs" />
+    <Compile Include="DTO\LobbyMessage.cs" />
+    <Compile Include="DTO\LobbyPlayer.cs" />
+    <Compile Include="DTO\LobbyResult.cs" />
+    <Compile Include="DTO\LobbySettings.cs" />
+    <Compile Include="DTO\OperationResult.cs" />
     <Compile Include="DTO\User.cs" />
+    <Compile Include="Services\LobbyService.cs" />
     <Compile Include="Services\UserLoginService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

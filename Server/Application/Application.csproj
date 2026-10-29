@@ -42,13 +42,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AuthenticatedUserData.cs" />
+    <Compile Include="Models\LobbyActionOutcome.cs" />
+    <Compile Include="Models\LobbyParticipantData.cs" />
+    <Compile Include="Models\LobbyRoomData.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Ports\IEmailService.cs" />
+    <Compile Include="Ports\ILobbyUseCase.cs" />
     <Compile Include="Ports\INotificationService.cs" />
     <Compile Include="Ports\IUserLoginUseCase.cs" />
     <Compile Include="Ports\IUserRepository.cs" />
+    <Compile Include="UseCases\LobbyUseCase.cs" />
     <Compile Include="UseCases\UserLoginUseCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
+      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

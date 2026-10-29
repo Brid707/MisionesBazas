@@ -48,7 +48,7 @@ namespace View.Services
             {
                 if (s_pageFactories.TryGetValue(viewId, out var factory))
                 {
-                    MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+                    MainWindow mainWindow = FindMainWindow();
                     if (mainWindow != null)
                     {
                         mainWindow.MainFrame.Navigate(factory());
@@ -70,7 +70,7 @@ namespace View.Services
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                MainWindow mainWindow = Application.Current.MainWindow as MainWindow;
+                MainWindow mainWindow = FindMainWindow();
                 if (mainWindow != null)
                 {
                     if (mainWindow.MainFrame.CanGoBack)
@@ -96,7 +96,12 @@ namespace View.Services
                 if (s_dialogFactories.TryGetValue(dialogId, out var factory))
                 {
                     Window dialog = factory();
-                    dialog.Owner = Application.Current.MainWindow;
+                    Window owner = ResolveDialogOwner(dialog);
+                    if (owner != null)
+                    {
+                        dialog.Owner = owner;
+                    }
+
                     dialog.ShowDialog();
                 }
                 else
@@ -105,6 +110,37 @@ namespace View.Services
                     Console.WriteLine($"[WpfNavigationService] Unrecognized dialog id: {dialogId}");
                 }
             });
+        }
+
+        private static MainWindow FindMainWindow()
+        {
+            MainWindow found = null;
+
+            foreach (Window candidate in Application.Current.Windows)
+            {
+                if (candidate is MainWindow)
+                {
+                    found = (MainWindow)candidate;
+                }
+            }
+
+            return found;
+        }
+
+        private static Window ResolveDialogOwner(Window dialog)
+        {
+            Window owner = null;
+
+            foreach (Window candidate in Application.Current.Windows)
+            {
+                bool isValidOwner = candidate != dialog && candidate.IsVisible && candidate is MainWindow;
+                if (isValidOwner)
+                {
+                    owner = candidate;
+                }
+            }
+
+            return owner;
         }
     }
 }
