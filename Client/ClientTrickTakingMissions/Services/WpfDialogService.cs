@@ -19,17 +19,41 @@ namespace View.Services
             { MessageCode.RegisterEmptyEmail, nameof(View.Properties.Langs.Resources.Register_EmptyEmail) },
             { MessageCode.RegisterEmptyUsername, nameof(View.Properties.Langs.Resources.Register_EmptyUsername) },
             { MessageCode.RegisterEmptyPassword, nameof(View.Properties.Langs.Resources.Register_EmptyPassword) },
-            { MessageCode.RegisterEmptyPasswordConfirmation, nameof(View.Properties.Langs.Resources.Register_EmptyPasswordConfirmation) },
-            { MessageCode.RegisterPasswordMismatch, nameof(View.Properties.Langs.Resources.Register_PasswordMismatch) },
-            { MessageCode.RegisterPasswordRuleLength, nameof(View.Properties.Langs.Resources.Register_PasswordRuleLength) },
-            { MessageCode.RegisterPasswordRuleSpecialChar, nameof(View.Properties.Langs.Resources.Register_PasswordRuleSpecialChar) },
-            { MessageCode.RegisterPasswordRuleNumber, nameof(View.Properties.Langs.Resources.Register_PasswordRuleNumber) },
-            { MessageCode.RegisterEmailAlreadyRegistered, nameof(View.Properties.Langs.Resources.Register_EmailAlreadyRegistered) },
-            { MessageCode.RegisterUsernameAlreadyRegistered, nameof(View.Properties.Langs.Resources.Register_UsernameAlreadyRegistered) },
+            {
+                MessageCode.RegisterEmptyPasswordConfirmation,
+                nameof(View.Properties.Langs.Resources.Register_EmptyPasswordConfirmation)
+            },
+            {
+                MessageCode.RegisterPasswordMismatch,
+                nameof(View.Properties.Langs.Resources.Register_PasswordMismatch)
+            },
+            {
+                MessageCode.RegisterPasswordRuleLength,
+                nameof(View.Properties.Langs.Resources.Register_PasswordRuleLength)
+            },
+            {
+                MessageCode.RegisterPasswordRuleSpecialChar,
+                nameof(View.Properties.Langs.Resources.Register_PasswordRuleSpecialChar)
+            },
+            {
+                MessageCode.RegisterPasswordRuleNumber,
+                nameof(View.Properties.Langs.Resources.Register_PasswordRuleNumber)
+            },
+            {
+                MessageCode.RegisterEmailAlreadyRegistered,
+                nameof(View.Properties.Langs.Resources.Register_EmailAlreadyRegistered)
+            },
+            {
+                MessageCode.RegisterUsernameAlreadyRegistered,
+                nameof(View.Properties.Langs.Resources.Register_UsernameAlreadyRegistered)
+            },
             { MessageCode.RegisterSuccess, nameof(View.Properties.Langs.Resources.Register_Success) },
             { MessageCode.EnterGameCodeEmptyCode, nameof(View.Properties.Langs.Resources.EnterGameCode_EmptyCode) },
             { MessageCode.EnterGameCodeInvalidCode, nameof(View.Properties.Langs.Resources.EnterGameCode_InvalidCode) },
-            { MessageCode.EnterGameCodeLobbyAlreadyFull, nameof(View.Properties.Langs.Resources.EnterGameCode_LobbyAlreadyFull) },
+            {
+                MessageCode.EnterGameCodeLobbyAlreadyFull,
+                nameof(View.Properties.Langs.Resources.EnterGameCode_LobbyAlreadyFull)
+            },
             { MessageCode.EmptyFriendUsername, nameof(View.Properties.Langs.Resources.Register_EmptyUsername) },
             { MessageCode.ConnectionFailed, nameof(View.Properties.Langs.Resources.Common_Error_ConnectionFailed) },
             { MessageCode.RequestTimeout, nameof(View.Properties.Langs.Resources.Common_Error_Timeout) },

@@ -1,6 +1,9 @@
 using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Model.Security;
+using Model.Services;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -19,6 +22,7 @@ namespace ViewModel.ViewModels
 
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly IAccountManagementClient _accountManagementClient;
 
         private string _email;
         private string _username;
@@ -27,17 +31,34 @@ namespace ViewModel.ViewModels
         private bool _isLoading;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterViewModel"/> class with the required UI services.
+        /// Initializes a new instance of the <see cref="RegisterViewModel"/> class with the required UI services and default client.
         /// </summary>
         /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
         /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
         public RegisterViewModel(INavigationService navigationService, IDialogService dialogService)
+            : this(navigationService, dialogService, new AccountManagementClient())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegisterViewModel"/> class with injected UI services and WCF client.
+        /// </summary>
+        /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
+        /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
+        /// <param name="accountManagementClient">Client service managing communication with the account management service.</param>
+        public RegisterViewModel(
+            INavigationService navigationService,
+            IDialogService dialogService,
+            IAccountManagementClient accountManagementClient)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _accountManagementClient = accountManagementClient ?? throw new ArgumentNullException(nameof(accountManagementClient));
+
+            _accountManagementClient.ConnectionErrorOccurred += OnConnectionErrorOccurred;
 
             BackCommand = new RelayCommand(ExecuteBack);
-            SubmitCommand = new RelayCommand(ExecuteSubmit, CanExecuteSubmit);
+            SubmitCommand = new AsyncRelayCommand(ExecuteSubmitAsync, CanExecuteSubmit);
         }
 
         /// <summary>
@@ -111,7 +132,7 @@ namespace ViewModel.ViewModels
             _navigationService.GoBack();
         }
 
-        private void ExecuteSubmit()
+        private async Task ExecuteSubmitAsync()
         {
             string email = Email?.Trim() ?? string.Empty;
             string username = Username?.Trim() ?? string.Empty;
@@ -120,9 +141,65 @@ namespace ViewModel.ViewModels
 
             if (IsRegistrationDataValid(email, username, password, passwordConfirm))
             {
-                // TODO: Dispatch user registration to WCF service once registration contract is integrated.
-                _dialogService.ShowInformation(MessageCode.RegisterSuccess);
-                _navigationService.NavigateTo(ViewId.LoginPage);
+                IsLoading = true;
+
+                try
+                {
+                    string passwordHash = PasswordHasher.ComputeSha256Hash(password);
+                    AccountRegistrationResult result = await _accountManagementClient.RegisterUserAsync(username, email, passwordHash);
+
+                    if (result != null)
+                    {
+                        if (result.IsSuccess)
+                        {
+                            _dialogService.ShowInformation(MessageCode.RegisterSuccess);
+                            _navigationService.NavigateTo(ViewId.LoginPage);
+                        }
+                        else
+                        {
+                            HandleRegistrationFailure(result.ErrorCode);
+                        }
+                    }
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
+        }
+
+        private void HandleRegistrationFailure(int errorCode)
+        {
+            if (errorCode == MessageCode.RegisterEmailAlreadyRegistered)
+            {
+                _dialogService.ShowWarning(MessageCode.RegisterEmailAlreadyRegistered);
+            }
+            else if (errorCode == MessageCode.RegisterUsernameAlreadyRegistered)
+            {
+                _dialogService.ShowWarning(MessageCode.RegisterUsernameAlreadyRegistered);
+            }
+            else
+            {
+                _dialogService.ShowError(MessageCode.UnexpectedError);
+            }
+        }
+
+        private void OnConnectionErrorOccurred(AuthenticationErrorType errorType)
+        {
+            switch (errorType)
+            {
+                case AuthenticationErrorType.ConnectionFailed:
+                    _dialogService.ShowError(MessageCode.ConnectionFailed);
+                    break;
+
+                case AuthenticationErrorType.Timeout:
+                    _dialogService.ShowError(MessageCode.RequestTimeout);
+                    break;
+
+                case AuthenticationErrorType.CommunicationError:
+                default:
+                    _dialogService.ShowError(MessageCode.CommunicationError);
+                    break;
             }
         }
 

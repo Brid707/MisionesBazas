@@ -42,16 +42,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AuthenticatedUserData.cs" />
+    <Compile Include="Models\Friendship\FriendRequestData.cs" />
+    <Compile Include="Models\Friendship\FriendshipActionOutcome.cs" />
+    <Compile Include="Models\Friendship\FriendshipRecordData.cs" />
+    <Compile Include="Models\Friendship\FriendSummaryData.cs" />
     <Compile Include="Models\LobbyActionOutcome.cs" />
     <Compile Include="Models\LobbyParticipantData.cs" />
     <Compile Include="Models\LobbyRoomData.cs" />
     <Compile Include="Models\UserAccount.cs" />
+    <Compile Include="Models\UserRegistrationOutcome.cs" />
     <Compile Include="Ports\IEmailService.cs" />
+    <Compile Include="Ports\IFriendshipRepository.cs" />
     <Compile Include="Ports\ILobbyUseCase.cs" />
     <Compile Include="Ports\INotificationService.cs" />
     <Compile Include="Ports\IUserLoginUseCase.cs" />
+    <Compile Include="Ports\IAccountManagementUseCase.cs" />
     <Compile Include="Ports\IUserRepository.cs" />
     <Compile Include="UseCases\LobbyUseCase.cs" />
+    <Compile Include="UseCases\AccountManagementUseCase.cs" />
     <Compile Include="UseCases\UserLoginUseCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

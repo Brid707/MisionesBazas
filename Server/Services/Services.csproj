@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Contracts\ILobbyCallback.cs" />
     <Compile Include="Contracts\ILobbyService.cs" />
+    <Compile Include="Contracts\IAccountManagementService.cs" />
     <Compile Include="Contracts\IUserLoginService.cs" />
     <Compile Include="DataContracts\Lobby.cs" />
     <Compile Include="DataContracts\LobbyMessage.cs" />
@@ -53,7 +54,9 @@
     <Compile Include="DataContracts\LobbySettings.cs" />
     <Compile Include="DataContracts\OperationResult.cs" />
     <Compile Include="DataContracts\User.cs" />
+    <Compile Include="DataContracts\UserRegister.cs" />
     <Compile Include="Services\LobbyService.cs" />
+    <Compile Include="Services\AccountManagementService.cs" />
     <Compile Include="Services\UserLoginService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -55,6 +55,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PasswordHasher.cs" />
+    <Compile Include="Services\GameChannelCloser.cs" />
+    <Compile Include="Services\IAccountManagementClient.cs" />
+    <Compile Include="Services\AccountManagementClient.cs" />
     <Compile Include="Services\AuthenticationClient.cs" />
     <Compile Include="Services\ILobbyClient.cs" />
     <Compile Include="Services\LobbyClient.cs" />
