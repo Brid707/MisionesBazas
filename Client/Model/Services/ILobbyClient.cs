@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 using Model.GameServices;
@@ -51,5 +51,7 @@ namespace Model.Services
 
         Task<LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(
             LobbyChatMessageSubmission chatMessageSubmission);
+
+        Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId);
     }
 }

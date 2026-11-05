@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -23,6 +23,7 @@ namespace ViewModel.ViewModels
     public sealed class LobbyViewModel : ViewModelBase, IDisposable
     {
         private const byte WaitingLobbyStatus = 1;
+        private const int MinimumPlayersToStart = 3;
         private const string PlayerKickedReason = "Player was kicked by the host.";
 
         private const string DefaultMissionsTarget = "5";
@@ -61,6 +62,7 @@ namespace ViewModel.ViewModels
             BackCommand = new AsyncRelayCommand(ExecuteBackAsync);
             ProfileCommand = new RelayCommand(ExecuteProfile);
             SettingsCommand = new RelayCommand(ExecuteSettings, CanEditLobbySettings);
+            StartGameCommand = new AsyncRelayCommand(ExecuteStartGameAsync, CanStartGame);
             ToggleReadyCommand = new AsyncRelayCommand(ExecuteToggleReadyAsync);
 
             Chat = new LobbyChatViewModel(lobbySession, navigationService, chatModerationPresenter);
@@ -73,6 +75,11 @@ namespace ViewModel.ViewModels
 
         public bool CanEditCurrentLobby => _lobbySession.CurrentLobby?.HostUserId == _currentUserId &&
             !_hasLobbyConnectionFailure;
+
+        public bool CanStartCurrentLobby => CanEditCurrentLobby &&
+            _lobbySession.CurrentLobby?.Status == WaitingLobbyStatus &&
+            Players.Count >= MinimumPlayersToStart &&
+            Players.All(participant => participant.IsReady || participant.IsHost);
 
         public bool HasLobbyConnectionFailure
         {
@@ -125,6 +132,8 @@ namespace ViewModel.ViewModels
 
         public ICommand SettingsCommand { get; }
 
+        public ICommand StartGameCommand { get; }
+
         public ICommand ToggleReadyCommand { get; }
 
         public void Dispose()
@@ -166,6 +175,7 @@ namespace ViewModel.ViewModels
                 OnPropertyChanged(nameof(MaximumLobbyPlayerCount));
                 OnPropertyChanged(nameof(VacantLobbyPlayerSlots));
                 OnPropertyChanged(nameof(CanEditCurrentLobby));
+                OnPropertyChanged(nameof(CanStartCurrentLobby));
                 CommandManager.InvalidateRequerySuggested();
             }
         }
@@ -188,12 +198,18 @@ namespace ViewModel.ViewModels
         {
             HasLobbyConnectionFailure = true;
             OnPropertyChanged(nameof(CanEditCurrentLobby));
+            OnPropertyChanged(nameof(CanStartCurrentLobby));
             CommandManager.InvalidateRequerySuggested();
         }
 
         private bool CanEditLobbySettings()
         {
             return CanEditCurrentLobby;
+        }
+
+        private bool CanStartGame()
+        {
+            return CanStartCurrentLobby;
         }
 
         private void SubscribeToLobbyEvents()
@@ -203,6 +219,7 @@ namespace ViewModel.ViewModels
             client.LobbyStateChanged += OnServerLobbyStateChanged;
             client.ConnectionErrorOccurred += OnLobbyConnectionFailed;
             client.LobbyDisbanded += OnServerLobbyDisbanded;
+            client.GameStarted += OnServerGameStarted;
         }
 
         private void UnsubscribeFromLobbyEvents()
@@ -212,6 +229,22 @@ namespace ViewModel.ViewModels
             client.LobbyStateChanged -= OnServerLobbyStateChanged;
             client.ConnectionErrorOccurred -= OnLobbyConnectionFailed;
             client.LobbyDisbanded -= OnServerLobbyDisbanded;
+            client.GameStarted -= OnServerGameStarted;
+        }
+
+        private void OnServerGameStarted(int gameId)
+        {
+            DispatchToUiThread(HandleGameStarted);
+        }
+
+        private void HandleGameStarted()
+        {
+            if (!_isDisposed)
+            {
+                UnsubscribeFromLobbyEvents();
+                SyncSessionLobbyPlayers();
+                _navigationService.NavigateTo(ViewId.GameMatch);
+            }
         }
 
         private void OnServerPlayerLeft(int participantUserId, string departureReason)
@@ -337,6 +370,9 @@ namespace ViewModel.ViewModels
             {
                 IsReady = isReady;
             }
+
+            OnPropertyChanged(nameof(CanStartCurrentLobby));
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void DispatchToUiThread(Action uiAction)
@@ -380,6 +416,14 @@ namespace ViewModel.ViewModels
             {
                 // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
                 Console.WriteLine($"[LobbyViewModel] Error opening settings dialog: {ex.Message}");
+            }
+        }
+
+        private async Task ExecuteStartGameAsync()
+        {
+            if (CanStartGame() && !string.IsNullOrWhiteSpace(_lobbyCode))
+            {
+                await _lobbyClient.StartGameFromLobbyAsync(_lobbyCode, _currentUserId);
             }
         }
 

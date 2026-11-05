@@ -23,7 +23,8 @@ namespace View.Services
             { ViewId.Lobby, () => new Lobby() },
             { ViewId.Profile, () => new Profile() },
             { ViewId.RecoverPassword, () => new RecoverPassword() },
-            { ViewId.SendFriendRequest, () => new SendFriendRequest() }
+            { ViewId.SendFriendRequest, () => new SendFriendRequest() },
+            { ViewId.GameMatch, () => new GameMatch() }
         };
 
         private static readonly Dictionary<int, Func<Window>> s_dialogFactories = new Dictionary<int, Func<Window>>

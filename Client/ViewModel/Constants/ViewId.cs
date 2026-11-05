@@ -17,6 +17,7 @@ namespace ViewModel.Constants
         public const int Profile = 6;
         public const int RecoverPassword = 7;
         public const int SendFriendRequest = 8;
+        public const int GameMatch = 9;
 
         // Modal Dialogs / Windows (100+)
         public const int ForgotPasswordDialog = 101;

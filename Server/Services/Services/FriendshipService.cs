@@ -108,9 +108,7 @@ namespace Services.Services
         {
             if (gameInvitation != null && IsValidUserId(gameInvitation.ReceiverUserId))
             {
-                if (s_onlineSubscribers.TryGetValue(
-                    gameInvitation.ReceiverUserId,
-                    out IFriendshipServiceCallback receiverCallback))
+                if (s_onlineSubscribers.TryGetValue(gameInvitation.ReceiverUserId, out IFriendshipServiceCallback receiverCallback))
                 {
                     TrySendGameInvitationCallback(gameInvitation, receiverCallback);
                 }
@@ -268,9 +266,7 @@ namespace Services.Services
             }
         }
 
-        private static void TrySendGameInvitationCallback(
-            GameInvitation gameInvitation,
-            IFriendshipServiceCallback receiverCallback)
+        private static void TrySendGameInvitationCallback(GameInvitation gameInvitation, IFriendshipServiceCallback receiverCallback)
         {
             try
             {

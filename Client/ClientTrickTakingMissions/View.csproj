@@ -111,6 +111,9 @@
     <Compile Include="Views\FriendsView.xaml.cs">
       <DependentUpon>FriendsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\GameMatch.xaml.cs">
+      <DependentUpon>GameMatch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Styles\ColorPalette.cs" />
     <Compile Include="Styles\FontTypography.cs" />
     <Compile Include="Services\WpfNavigationService.cs" />
@@ -191,6 +194,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FriendsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GameMatch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

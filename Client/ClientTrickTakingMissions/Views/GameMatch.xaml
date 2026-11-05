@@ -1,0 +1,128 @@
+<Page x:Class="View.Views.GameMatch"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:styles="clr-namespace:View.Styles"
+      xmlns:language="clr-namespace:View.Properties.Langs"
+      mc:Ignorable="d"
+      d:DesignHeight="768" d:DesignWidth="1365"
+      Title="GameMatch">
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="MatchPlayerSeatTemplate">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Width="68" Height="68" HorizontalAlignment="Center">
+                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                    <Ellipse Width="22" Height="22" Margin="0,11,0,0" VerticalAlignment="Top"
+                             Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                    <Path Data="M 13 58 C 13 39 55 39 55 58 Q 34 70 13 58"
+                          Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                </Grid>
+                <TextBlock Text="{Binding Username}"
+                           Margin="0,6,0,0"
+                           HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                           FontWeight="Bold"
+                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header Bar: Mission, Trick, and Help Icon -->
+        <Grid Grid.Row="0" Margin="54,28,36,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                       FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
+                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}">
+                <Run Text="{x:Static language:Resources.GameMatch_Mission}" />
+                <Run Text=" " />
+                <Run Text="{Binding MissionProgressDisplay, Mode=OneWay}" />
+            </TextBlock>
+
+            <StackPanel Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                <TextBlock HorizontalAlignment="Center"
+                           TextAlignment="Center"
+                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
+                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}">
+                    <Run Text="{x:Static language:Resources.GameMatch_Trick}" />
+                    <Run Text=" " />
+                    <Run Text="{Binding TrickProgressDisplay, Mode=OneWay}" />
+                </TextBlock>
+
+                <!-- Top Player Seat -->
+                <ContentControl Margin="0,20,0,0"
+                                Content="{Binding TopPlayer}"
+                                ContentTemplate="{StaticResource MatchPlayerSeatTemplate}" />
+            </StackPanel>
+
+            <Button x:Name="HelpButton"
+                    Grid.Column="2"
+                    Width="76" Height="76"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    ToolTip="{x:Static language:Resources.GameMenu_HowToPlay}"
+                    Command="{Binding HowToPlayCommand}">
+                <Grid Width="72" Height="72">
+                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                             StrokeThickness="5"
+                             Fill="Transparent" />
+                    <TextBlock Text="?"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Margin="0,-2,0,0"
+                               FontFamily="Georgia, Times New Roman, Segoe UI"
+                               FontSize="48"
+                               FontWeight="Bold"
+                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                </Grid>
+            </Button>
+        </Grid>
+
+        <!-- Middle Table Area: Left and Right Player Seats -->
+        <Grid Grid.Row="1" Margin="54,0,84,0">
+            <ContentControl HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="{Binding LeftPlayer}"
+                            ContentTemplate="{StaticResource MatchPlayerSeatTemplate}" />
+
+            <ContentControl HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Content="{Binding RightPlayer}"
+                            ContentTemplate="{StaticResource MatchPlayerSeatTemplate}"
+                            Visibility="{Binding HasRightPlayer,
+                                Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Grid>
+
+        <!-- Bottom Player Seat (Local Player) -->
+        <Grid Grid.Row="2" Margin="0,0,0,48">
+            <ContentControl HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Content="{Binding BottomPlayer}"
+                            ContentTemplate="{StaticResource MatchPlayerSeatTemplate}" />
+        </Grid>
+    </Grid>
+</Page>

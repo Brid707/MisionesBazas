@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -520,4 +520,7 @@
   <data name="Lobby_KickPlayer" xml:space="preserve"><value>Kick player</value></data>
   <data name="Lobby_KickedNotice" xml:space="preserve"><value>The host removed you from the lobby.</value></data>
   <data name="Lobby_KickedParticipantReentryDenied" xml:space="preserve"><value>You were removed from this lobby. Only a new invitation authorized by the host can restore your access.</value></data>
+  <data name="Lobby_StartGameButton" xml:space="preserve"><value>Start match</value></data>
+  <data name="GameMatch_Mission" xml:space="preserve"><value>Mission</value></data>
+  <data name="GameMatch_Trick" xml:space="preserve"><value>Trick</value></data>
 </root>

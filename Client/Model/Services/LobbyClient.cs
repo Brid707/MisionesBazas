@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
 
@@ -261,6 +261,27 @@ namespace Model.Services
             }
 
             return chatMessageSubmissionOutcome;
+        }
+
+        public async Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId)
+        {
+            try
+            {
+                EnsureClientIsOpen();
+                await _client.StartGameFromLobbyAsync(lobbyCode, hostUserId);
+            }
+            catch (EndpointNotFoundException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+            }
+            catch (TimeoutException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+            }
+            catch (CommunicationException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+            }
         }
 
         public void OnChatAccountBanApplied(ChatAccountBanNotice chatAccountBanNotice)

@@ -1438,5 +1438,23 @@ namespace View.Properties.Langs {
                 return ResourceManager.GetString("SendFriendRequest_Title", resourceCulture);
             }
         }
+
+        public static string Lobby_StartGameButton {
+            get {
+                return ResourceManager.GetString("Lobby_StartGameButton", resourceCulture);
+            }
+        }
+
+        public static string GameMatch_Mission {
+            get {
+                return ResourceManager.GetString("GameMatch_Mission", resourceCulture);
+            }
+        }
+
+        public static string GameMatch_Trick {
+            get {
+                return ResourceManager.GetString("GameMatch_Trick", resourceCulture);
+            }
+        }
     }
 }

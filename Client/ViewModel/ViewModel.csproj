@@ -64,6 +64,7 @@
     <Compile Include="ViewModels\FriendRequestItemViewModel.cs" />
     <Compile Include="ViewModels\FriendsViewModel.cs" />
     <Compile Include="ViewModels\GameInvitationItemViewModel.cs" />
+    <Compile Include="ViewModels\GameMatchViewModel.cs" />
     <Compile Include="ViewModels\GameMenuViewModel.cs" />
     <Compile Include="ViewModels\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\HomeScreenViewModel.cs" />

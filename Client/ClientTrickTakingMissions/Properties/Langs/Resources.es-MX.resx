@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -520,4 +520,7 @@
   <data name="Lobby_KickPlayer" xml:space="preserve"><value>Expulsar</value></data>
   <data name="Lobby_KickedNotice" xml:space="preserve"><value>El anfitrión te expulsó de la sala.</value></data>
   <data name="Lobby_KickedParticipantReentryDenied" xml:space="preserve"><value>Fuiste expulsado de esta sala. Solo una nueva invitación autorizada por el anfitrión puede restablecer tu acceso.</value></data>
+  <data name="Lobby_StartGameButton" xml:space="preserve"><value>Iniciar partida</value></data>
+  <data name="GameMatch_Mission" xml:space="preserve"><value>Misión</value></data>
+  <data name="GameMatch_Trick" xml:space="preserve"><value>Baza</value></data>
 </root>
