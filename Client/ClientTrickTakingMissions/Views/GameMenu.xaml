@@ -30,20 +30,33 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <Button x:Name="ProfileButton"
-                    Width="64" Height="64" Margin="40,30,0,0"
-                    HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Background="Transparent" BorderThickness="0" Cursor="Hand"
-                    Command="{Binding ProfileCommand}"
-                    ToolTip="{x:Static language:Resources.GameMenu_Profile}">
-                <Grid Width="56" Height="56">
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                             Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
-                    <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                          Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
-                </Grid>
-            </Button>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="40,30,0,0">
+                <Button x:Name="ProfileButton"
+                        Width="64" Height="64"
+                        Background="Transparent" BorderThickness="0" Cursor="Hand"
+                        Command="{Binding ProfileCommand}"
+                        ToolTip="{x:Static language:Resources.GameMenu_Profile}">
+                    <Grid Width="56" Height="56">
+                        <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
+                        <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                 Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
+                        <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                              Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
+                    </Grid>
+                </Button>
+
+                <TextBlock x:Name="UsernameTextBlock"
+                           Text="{Binding Username}"
+                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Margin="14,0,0,0" />
+            </StackPanel>
 
             <Button x:Name="TrophyButton"
                     Width="44" Height="44"

@@ -98,55 +98,69 @@
                         BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                         BorderThickness="0,3,0,0" Margin="0,6,0,6" />
 
-                <StackPanel Grid.Row="3" Margin="4,12,4,4">
-                    <TextBlock Text="{x:Static language:Resources.SendFriendRequest_RequestsSent}"
+                <Grid Grid.Row="3" Margin="4,12,4,4">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="{x:Static language:Resources.SendFriendRequest_RequestsSent}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                Margin="4,0,4,8" />
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel>
-                            <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                    BorderThickness="3"
-                                    Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}"
-                                    Padding="8" Margin="0,6,0,6">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="56" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="56" />
-                                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="SentRequestsItemsControl"
+                                      ItemsSource="{Binding SentRequests}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                            BorderThickness="3"
+                                            Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}"
+                                            Padding="8" Margin="0,6,0,6">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="56" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="56" />
+                                            </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="0" HorizontalAlignment="Center"
-                                          VerticalAlignment="Center">
-                                        <Ellipse Width="44" Height="44"
-                                                 Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                 Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                                 StrokeThickness="2" />
-                                    </Grid>
+                                            <Grid Grid.Column="0" HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center">
+                                                <Ellipse Width="44" Height="44"
+                                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                         StrokeThickness="2" />
+                                            </Grid>
 
-                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                        <TextBlock Text="xX_Denis_Xx"
-                                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                                   Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                   FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
-                                                   VerticalAlignment="Center" />
-                                    </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding ReceiverUsername}"
+                                                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                           FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                                                           VerticalAlignment="Center" />
+                                            </StackPanel>
 
-                                    <StackPanel Grid.Column="2" HorizontalAlignment="Center"
-                                                VerticalAlignment="Center">
-                                        <Button Content="{x:Static language:Resources.Common_Button_Close}"
-                                                Width="36" Height="36" Background="Transparent"
-                                                BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                BorderThickness="3"
-                                                Command="{Binding CancelSentRequestCommand}" />
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
+                                            <StackPanel Grid.Column="2" HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <Button Content="{x:Static language:Resources.Common_Button_Close}"
+                                                        Width="36" Height="36" Background="Transparent"
+                                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                        BorderThickness="3"
+                                                        Cursor="Hand"
+                                                        Command="{Binding DataContext.CancelSentRequestCommand,
+                                                            RelativeSource={RelativeSource AncestorType=Page}}"
+                                                        CommandParameter="{Binding}" />
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ScrollViewer>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

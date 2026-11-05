@@ -12,6 +12,9 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
 
     <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
         <Grid>
@@ -83,84 +86,91 @@
 
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel x:Name="RequestsContainer">
-                    <Border x:Name="SampleRequestRow"
-                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                            BorderThickness="0,0,0,3"
-                            Background="{x:Static styles:ColorPalette.RequestCardBackgroundBrush}"
-                            Padding="16,12">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                    <ItemsControl x:Name="PendingRequestsItemsControl"
+                                  ItemsSource="{Binding PendingRequests}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                        BorderThickness="0,0,0,3"
+                                        Background="{x:Static styles:ColorPalette.RequestCardBackgroundBrush}"
+                                        Padding="16,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                            <Grid Grid.Column="0" Width="48" Height="48">
-                                <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
-                                <Ellipse Width="16" Height="16"
-                                         Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                         Margin="0,7,0,0" VerticalAlignment="Top" />
-                                <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40"
-                                      Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
-                            </Grid>
+                                        <Grid Grid.Column="0" Width="48" Height="48">
+                                            <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                                            <Ellipse Width="16" Height="16"
+                                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                     Margin="0,7,0,0" VerticalAlignment="Top" />
+                                            <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40"
+                                                  Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                                        </Grid>
 
-                            <TextBlock x:Name="LblSampleUsername"
-                                       Grid.Column="1"
-                                       Text="xX_Denis_Xx"
-                                       FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                       FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                                       FontWeight="Bold"
-                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                       VerticalAlignment="Center"
-                                       Margin="14,0,8,0"
-                                       TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding SenderUsername}"
+                                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                                                   FontWeight="Bold"
+                                                   Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="14,0,8,0"
+                                                   TextTrimming="CharacterEllipsis" />
 
-                            <Button x:Name="AcceptButton"
-                                    Grid.Column="2"
-                                    Width="38" Height="38"
-                                    Margin="0,0,10,0"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Cursor="Hand"
-                                    ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
-                                    Command="{Binding AcceptRequestCommand}">
-                                <Grid Width="36" Height="36">
-                                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                             StrokeThickness="3.5" Fill="Transparent" />
-                                    <Path Data="M 9 18 L 15 24 L 27 11"
-                                          Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                          StrokeThickness="3.5"
-                                          StrokeStartLineCap="Round"
-                                          StrokeEndLineCap="Round"
-                                          StrokeLineJoin="Round"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top" />
-                                </Grid>
-                            </Button>
+                                        <Button Grid.Column="2"
+                                                Width="38" Height="38"
+                                                Margin="0,0,10,0"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
+                                                Command="{Binding DataContext.AcceptRequestCommand,
+                                                    RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}">
+                                            <Grid Width="36" Height="36">
+                                                <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                         StrokeThickness="3.5" Fill="Transparent" />
+                                                <Path Data="M 9 18 L 15 24 L 27 11"
+                                                      Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                      StrokeThickness="3.5"
+                                                      StrokeStartLineCap="Round"
+                                                      StrokeEndLineCap="Round"
+                                                      StrokeLineJoin="Round"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top" />
+                                            </Grid>
+                                        </Button>
 
-                            <Button x:Name="RejectButton"
-                                    Grid.Column="3"
-                                    Width="38" Height="38"
-                                    Background="Transparent"
-                                    BorderThickness="0"
-                                    Cursor="Hand"
-                                    ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
-                                    Command="{Binding RejectRequestCommand}">
-                                <Grid Width="36" Height="36">
-                                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                             StrokeThickness="3.5" Fill="Transparent" />
-                                    <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
-                                          Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                          StrokeThickness="3.5"
-                                          StrokeStartLineCap="Round"
-                                          StrokeEndLineCap="Round"
-                                          HorizontalAlignment="Left"
-                                          VerticalAlignment="Top" />
-                                </Grid>
-                            </Button>
-                        </Grid>
-                    </Border>
+                                        <Button Grid.Column="3"
+                                                Width="38" Height="38"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
+                                                Command="{Binding DataContext.RejectRequestCommand,
+                                                    RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding}">
+                                            <Grid Width="36" Height="36">
+                                                <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                         StrokeThickness="3.5" Fill="Transparent" />
+                                                <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
+                                                      Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                      StrokeThickness="3.5"
+                                                      StrokeStartLineCap="Round"
+                                                      StrokeEndLineCap="Round"
+                                                      HorizontalAlignment="Left"
+                                                      VerticalAlignment="Top" />
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
                     <!-- Message when there are no requests -->
                     <TextBlock x:Name="TxtNoRequests"
@@ -171,7 +181,8 @@
                                Foreground="{x:Static styles:ColorPalette.EmptyStateTextBrush}"
                                HorizontalAlignment="Center"
                                Margin="0,40,0,0"
-                               Visibility="Collapsed" />
+                               Visibility="{Binding HasNoPendingRequests,
+                                   Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </StackPanel>
             </ScrollViewer>
         </Grid>

@@ -53,11 +53,13 @@
     <Compile Include="Models\UserRegistrationOutcome.cs" />
     <Compile Include="Ports\IEmailService.cs" />
     <Compile Include="Ports\IFriendshipRepository.cs" />
+    <Compile Include="Ports\IFriendshipUseCase.cs" />
     <Compile Include="Ports\ILobbyUseCase.cs" />
     <Compile Include="Ports\INotificationService.cs" />
     <Compile Include="Ports\IUserLoginUseCase.cs" />
     <Compile Include="Ports\IAccountManagementUseCase.cs" />
     <Compile Include="Ports\IUserRepository.cs" />
+    <Compile Include="UseCases\FriendshipUseCase.cs" />
     <Compile Include="UseCases\LobbyUseCase.cs" />
     <Compile Include="UseCases\AccountManagementUseCase.cs" />
     <Compile Include="UseCases\UserLoginUseCase.cs" />

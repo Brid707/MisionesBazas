@@ -480,4 +480,13 @@
   </data>
   <data name="ManageFriendRequest_Label_NoPendingRequests" xml:space="preserve">
     <value>No hay solicitudes de amistad pendientes</value>
-  </data></root>
+  </data>  <data name="FriendsBar_InviteButton" xml:space="preserve">
+    <value>Invitar</value>
+  </data>
+  <data name="FriendsBar_Missions" xml:space="preserve">
+    <value>Misiones:</value>
+  </data>
+  <data name="FriendsBar_Players" xml:space="preserve">
+    <value>Jugadores:</value>
+  </data>
+</root>

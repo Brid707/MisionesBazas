@@ -1,4 +1,7 @@
 using System.Windows;
+using Model.Session;
+using View.Services;
+using ViewModel.Services;
 using ViewModel.ViewModels;
 
 namespace View.Views
@@ -15,7 +18,10 @@ namespace View.Views
         {
             InitializeComponent();
 
-            ManageFriendRequestViewModel viewModel = new ManageFriendRequestViewModel();
+            IDialogService dialogService = new WpfDialogService();
+            ManageFriendRequestViewModel viewModel = new ManageFriendRequestViewModel(
+                FriendshipSession.Current,
+                dialogService);
             viewModel.RequestClose += OnRequestClose;
             DataContext = viewModel;
         }

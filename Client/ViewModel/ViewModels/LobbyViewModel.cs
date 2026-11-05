@@ -169,6 +169,8 @@ namespace ViewModel.ViewModels
             {
                 IsReady = participant.IsReady;
             }
+
+            SyncSessionLobbyPlayers();
         }
 
         private void RemoveParticipantItem(int userId)
@@ -177,6 +179,29 @@ namespace ViewModel.ViewModels
             if (existing != null)
             {
                 Players.Remove(existing);
+                SyncSessionLobbyPlayers();
+            }
+        }
+
+        private void SyncSessionLobbyPlayers()
+        {
+            Lobby activeLobby = _lobbySession.CurrentLobby;
+            if (activeLobby != null)
+            {
+                LobbyPlayer[] updatedPlayers = new LobbyPlayer[Players.Count];
+                for (int index = 0; index < Players.Count; index++)
+                {
+                    LobbyPlayerItemViewModel item = Players[index];
+                    updatedPlayers[index] = new LobbyPlayer
+                    {
+                        IdUser = item.IdUser,
+                        Username = item.Username,
+                        IsHost = item.IsHost,
+                        IsReady = item.IsReady
+                    };
+                }
+
+                activeLobby.Players = updatedPlayers;
             }
         }
 

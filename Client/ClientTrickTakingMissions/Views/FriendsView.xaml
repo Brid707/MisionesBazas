@@ -15,6 +15,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="120" />
                 <RowDefinition Height="80" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -98,58 +99,175 @@
                 </Grid>
             </Border>
 
-            <!-- Friends list -->
-            <Grid Grid.Row="2">
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel x:Name="FriendsListStackPanel" Margin="10">
-                        <Border Background="{x:Static styles:ColorPalette.FriendCardBackgroundBrush}"
-                                CornerRadius="4" Padding="8" Margin="0,0,0,8">
+            <!-- Dynamic Incoming Game Invitations -->
+            <ItemsControl x:Name="GameInvitationsItemsControl"
+                          Grid.Row="2"
+                          ItemsSource="{Binding GameInvitations}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                BorderThickness="0,0,0,3"
+                                Background="{x:Static styles:ColorPalette.DangerButtonBackgroundBrush}"
+                                Padding="12,10">
                             <StackPanel>
-                                <TextBlock Text="User 1"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                           FontWeight="Bold"
+                                <TextBlock TextWrapping="Wrap"
+                                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}" />
-                                <TextBlock x:Name="OnlineStatusTextBlock"
-                                           Text="{x:Static language:Resources.FriendsBar_Online}"
-                                           Foreground="{x:Static styles:ColorPalette.OnlineStatusTextBrush}"
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}">
+                                    <Run Text="{Binding SenderUsername, Mode=OneWay}" />
+                                    <Run Text=" " />
+                                    <Run Text="{x:Static language:Resources.FriendsBar_GameInvitation}" />
+                                </TextBlock>
+
+                                <TextBlock Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                           FontSize="{x:Static styles:FontTypography.SmallFontSize}"
-                                           Margin="0,2,0,4" />
-                                <WrapPanel Orientation="Horizontal">
-                                    <Button x:Name="ViewProfileButton"
-                                            Content="{x:Static language:Resources.FriendsBar_ViewProfile}"
-                                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
-                                            Padding="6,2"
-                                            Margin="0,0,4,4"
-                                            Command="{Binding ViewProfileCommand}" />
-                                    <Button x:Name="DeleteFriendButton"
-                                            Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
-                                            Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
-                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
-                                            Padding="6,2"
-                                            Margin="0,0,4,4"
-                                            Command="{Binding DeleteFriendCommand}" />
-                                    <Button x:Name="InviteFriendButton"
-                                            Content="{x:Static language:Resources.FriendsBar_GameInvitation}"
-                                            Background="{x:Static styles:ColorPalette.InviteButtonBackgroundBrush}"
-                                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                            FontSize="{x:Static styles:FontTypography.MicroFontSize}"
-                                            Padding="6,2"
-                                            Margin="0,0,4,4"
-                                            Command="{Binding InviteFriendCommand}"
-                                            Visibility="{Binding InviteButtonVisibility,
-                                                RelativeSource={RelativeSource AncestorType=UserControl}}" />
-                                </WrapPanel>
+                                           FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
+                                           Margin="0,4,0,10">
+                                    <Run Text="{x:Static language:Resources.FriendsBar_Missions}" />
+                                    <Run Text=" " />
+                                    <Run Text="{Binding TargetMissionCount, Mode=OneWay}" />
+                                    <Run Text="   " />
+                                    <Run Text="{x:Static language:Resources.FriendsBar_Players}" />
+                                    <Run Text=" " />
+                                    <Run Text="{Binding PlayersCountDisplay, Mode=OneWay}" />
+                                </TextBlock>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Grid.Column="0"
+                                            Width="38" Height="38"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
+                                            Command="{Binding DataContext.AcceptGameInvitationCommand,
+                                                RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <Grid Width="36" Height="36">
+                                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                     StrokeThickness="3" Fill="Transparent" />
+                                            <Path Data="M 9 18 L 15 24 L 27 11"
+                                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  StrokeLineJoin="Round"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top" />
+                                        </Grid>
+                                    </Button>
+
+                                    <Button Grid.Column="1"
+                                            Width="38" Height="38"
+                                            HorizontalAlignment="Center"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
+                                            Command="{Binding DataContext.RejectGameInvitationCommand,
+                                                RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}">
+                                        <Grid Width="36" Height="36">
+                                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                     StrokeThickness="3" Fill="Transparent" />
+                                            <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
+                                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                  StrokeThickness="3"
+                                                  StrokeStartLineCap="Round"
+                                                  StrokeEndLineCap="Round"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Top" />
+                                        </Grid>
+                                    </Button>
+                                </Grid>
                             </StackPanel>
                         </Border>
-                    </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Friends list -->
+            <Grid Grid.Row="3">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl x:Name="FriendsItemsControl"
+                                  ItemsSource="{Binding Friends}"
+                                  Margin="10">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{x:Static styles:ColorPalette.FriendCardBackgroundBrush}"
+                                        CornerRadius="4"
+                                        Padding="8"
+                                        Margin="0,0,0,8">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Username}"
+                                                   Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                   FontSize="{x:Static styles:FontTypography.CaptionFontSize}" />
+                                        <TextBlock FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                   FontSize="{x:Static styles:FontTypography.SmallFontSize}"
+                                                   Margin="0,2,0,4">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Text"
+                                                            Value="{x:Static language:Resources.FriendsBar_Online}" />
+                                                    <Setter Property="Foreground"
+                                                            Value="{x:Static styles:ColorPalette.OnlineStatusTextBrush}" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsOnline}" Value="False">
+                                                            <Setter Property="Text"
+                                                                    Value="{x:Static language:Resources.FriendsBar_Offline}" />
+                                                            <Setter Property="Foreground"
+                                                                    Value="{x:Static styles:ColorPalette.LightBodyTextBrush}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                        <WrapPanel Orientation="Horizontal">
+                                            <Button Content="{x:Static language:Resources.FriendsBar_ViewProfile}"
+                                                    Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
+                                                    Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                    FontSize="{x:Static styles:FontTypography.MicroFontSize}"
+                                                    Padding="6,2"
+                                                    Margin="0,0,4,4"
+                                                    Command="{Binding DataContext.ViewProfileCommand,
+                                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}" />
+                                            <Button Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
+                                                    Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
+                                                    Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                    FontSize="{x:Static styles:FontTypography.MicroFontSize}"
+                                                    Padding="6,2"
+                                                    Margin="0,0,4,4"
+                                                    Command="{Binding DataContext.DeleteFriendCommand,
+                                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}" />
+                                            <Button Content="{x:Static language:Resources.FriendsBar_InviteButton}"
+                                                    Background="{x:Static styles:ColorPalette.InviteButtonBackgroundBrush}"
+                                                    Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                                    FontSize="{x:Static styles:FontTypography.MicroFontSize}"
+                                                    Padding="6,2"
+                                                    Margin="0,0,4,4"
+                                                    Command="{Binding DataContext.InviteFriendCommand,
+                                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding InviteButtonVisibility,
+                                                        RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
             </Grid>
         </Grid>

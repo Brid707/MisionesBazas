@@ -43,6 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\IFriendShipService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\IFriendsRequestService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\ILobbyService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -59,8 +69,14 @@
     <Compile Include="Services\IAccountManagementClient.cs" />
     <Compile Include="Services\AccountManagementClient.cs" />
     <Compile Include="Services\AuthenticationClient.cs" />
+    <Compile Include="Services\IFriendshipClient.cs" />
+    <Compile Include="Services\FriendshipClient.cs" />
+    <Compile Include="Services\IFriendsRequestClient.cs" />
+    <Compile Include="Services\FriendsRequestClient.cs" />
     <Compile Include="Services\ILobbyClient.cs" />
     <Compile Include="Services\LobbyClient.cs" />
+    <Compile Include="Session\IFriendshipSession.cs" />
+    <Compile Include="Session\FriendshipSession.cs" />
     <Compile Include="Session\ILobbySession.cs" />
     <Compile Include="Session\LobbySession.cs" />
     <Compile Include="Session\UserSession.cs" />
@@ -70,11 +86,45 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\IFriendShipService\" />
+    <WCFMetadataStorage Include="Connected Services\IFriendsRequestService\" />
     <WCFMetadataStorage Include="Connected Services\ILobbyService\" />
     <WCFMetadataStorage Include="Connected Services\UserLoginService\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Connected Services\IFriendShipService\configuration.svcinfo" />
+    <None Include="Connected Services\IFriendShipService\configuration91.svcinfo" />
+    <None Include="Connected Services\IFriendShipService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\IFriendShipService\service.wsdl" />
+    <None Include="Connected Services\IFriendShipService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IFriendShipService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IFriendShipService\Services.DTO.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IFriendsRequestService\configuration.svcinfo" />
+    <None Include="Connected Services\IFriendsRequestService\configuration91.svcinfo" />
+    <None Include="Connected Services\IFriendsRequestService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\IFriendsRequestService\service.wsdl" />
+    <None Include="Connected Services\IFriendsRequestService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IFriendsRequestService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\IFriendsRequestService\Services.DTO.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\ILobbyService\configuration.svcinfo" />
     <None Include="Connected Services\ILobbyService\configuration91.svcinfo" />
     <None Include="Connected Services\ILobbyService\Model.ILobbyService.LobbyResult.datasource">

@@ -43,10 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\Friendship\IFriendshipService.cs" />
+    <Compile Include="Contracts\Friendship\IFriendshipServiceCallback.cs" />
+    <Compile Include="Contracts\Friendship\IFriendsRequestService.cs" />
     <Compile Include="Contracts\ILobbyCallback.cs" />
     <Compile Include="Contracts\ILobbyService.cs" />
     <Compile Include="Contracts\IAccountManagementService.cs" />
     <Compile Include="Contracts\IUserLoginService.cs" />
+    <Compile Include="DataContracts\Friendship\Friend.cs" />
+    <Compile Include="DataContracts\Friendship\FriendRequest.cs" />
+    <Compile Include="DataContracts\Friendship\GameInvitation.cs" />
     <Compile Include="DataContracts\Lobby.cs" />
     <Compile Include="DataContracts\LobbyMessage.cs" />
     <Compile Include="DataContracts\LobbyPlayer.cs" />
@@ -55,6 +61,9 @@
     <Compile Include="DataContracts\OperationResult.cs" />
     <Compile Include="DataContracts\User.cs" />
     <Compile Include="DataContracts\UserRegister.cs" />
+    <Compile Include="Services\ChannelDisconnectObserver.cs" />
+    <Compile Include="Services\FriendshipService.cs" />
+    <Compile Include="Services\FriendsRequestService.cs" />
     <Compile Include="Services\LobbyService.cs" />
     <Compile Include="Services\AccountManagementService.cs" />
     <Compile Include="Services\UserLoginService.cs" />

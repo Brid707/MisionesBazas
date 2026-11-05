@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Threading;
 using Application.Models;
 using Application.Ports;
 using Services.Contracts;
@@ -21,9 +22,10 @@ namespace Services.Services
         private const string PlayerKickedReason = "Player was kicked by the host.";
         private const byte UnspecifiedSettingValue = 0;
 
-        private static readonly ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>> s_roomCallbacks =
-            new ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>>(
-                StringComparer.OrdinalIgnoreCase);
+        private static readonly ConcurrentDictionary<string,
+            ConcurrentDictionary<int, ILobbyCallback>> s_roomCallbacks =
+                new ConcurrentDictionary<string, ConcurrentDictionary<int, ILobbyCallback>>(
+                    StringComparer.OrdinalIgnoreCase);
 
         private readonly ILobbyUseCase _lobbyUseCase;
 
@@ -41,7 +43,6 @@ namespace Services.Services
         {
             byte targetMissions = settings != null ? settings.TargetMissionCount : UnspecifiedSettingValue;
             byte playerLimit = settings != null ? settings.PlayerLimit : UnspecifiedSettingValue;
-
             LobbyActionOutcome outcome = _lobbyUseCase.CreateLobby(hostUserId, targetMissions, playerLimit);
             if (outcome.IsSuccess && outcome.Lobby != null)
             {
@@ -159,7 +160,7 @@ namespace Services.Services
             }
         }
 
-        private static void RegisterCurrentCallback(string lobbyCode, int userId)
+        private void RegisterCurrentCallback(string lobbyCode, int userId)
         {
             OperationContext context = OperationContext.Current;
             ILobbyCallback callback = context != null
@@ -173,6 +174,43 @@ namespace Services.Services
                     roomKey,
                     _ => new ConcurrentDictionary<int, ILobbyCallback>());
                 participants[userId] = callback;
+
+                if (callback is ICommunicationObject communicationChannel)
+                {
+                    AttachDisconnectionHandler(communicationChannel, lobbyCode, userId);
+                }
+            }
+        }
+
+        private void AttachDisconnectionHandler(
+            ICommunicationObject channel,
+            string lobbyCode,
+            int userId)
+        {
+            int disconnectionHandled = 0;
+            EventHandler disconnectHandler = null;
+
+            disconnectHandler = (sender, args) =>
+            {
+                if (Interlocked.Exchange(ref disconnectionHandled, 1) == 0)
+                {
+                    channel.Closed -= disconnectHandler;
+                    channel.Faulted -= disconnectHandler;
+                    HandleClientDisconnection(lobbyCode, userId);
+                }
+            };
+
+            channel.Closed += disconnectHandler;
+            channel.Faulted += disconnectHandler;
+        }
+
+        private void HandleClientDisconnection(string lobbyCode, int userId)
+        {
+            UnregisterCallback(lobbyCode, userId);
+            LobbyActionOutcome outcome = _lobbyUseCase.LeaveLobby(lobbyCode, userId);
+            if (outcome.IsSuccess)
+            {
+                NotifyPlayerDeparture(lobbyCode, userId, outcome.IsRoomDisbanded);
             }
         }
 

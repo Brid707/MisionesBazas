@@ -90,5 +90,6 @@ namespace Model.Session
 
                 return _currentUser.IdUser;
             }
-        }    }
+        }    
+    }
 }

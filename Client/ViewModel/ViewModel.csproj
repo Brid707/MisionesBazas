@@ -58,7 +58,10 @@
     <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\EnterGameCodeViewModel.cs" />
     <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\FriendItemViewModel.cs" />
+    <Compile Include="ViewModels\FriendRequestItemViewModel.cs" />
     <Compile Include="ViewModels\FriendsViewModel.cs" />
+    <Compile Include="ViewModels\GameInvitationItemViewModel.cs" />
     <Compile Include="ViewModels\GameMenuViewModel.cs" />
     <Compile Include="ViewModels\GameSettingsViewModel.cs" />
     <Compile Include="ViewModels\HomeScreenViewModel.cs" />

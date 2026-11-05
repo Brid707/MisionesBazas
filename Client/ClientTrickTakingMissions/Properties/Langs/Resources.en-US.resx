@@ -267,7 +267,7 @@
     <value>View profile</value>
   </data>
   <data name="FriendsBar_GameInvitation" xml:space="preserve">
-    <value>invited you to a game</value>
+    <value>has invited you to a game</value>
   </data>
   <data name="FriendsBar_GameInformation" xml:space="preserve">
     <value>Missions: x Players y/z</value>
@@ -480,4 +480,13 @@
   </data>
   <data name="ManageFriendRequest_Label_NoPendingRequests" xml:space="preserve">
     <value>No pending friend requests</value>
-  </data></root>
+  </data>  <data name="FriendsBar_InviteButton" xml:space="preserve">
+    <value>Invite</value>
+  </data>
+  <data name="FriendsBar_Missions" xml:space="preserve">
+    <value>Missions:</value>
+  </data>
+  <data name="FriendsBar_Players" xml:space="preserve">
+    <value>Players:</value>
+  </data>
+</root>

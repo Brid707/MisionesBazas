@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.Session;
 using ViewModel.Base;
@@ -14,6 +15,7 @@ namespace ViewModel.ViewModels
     {
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
+        private string _username;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GameMenuViewModel"/> class with the navigation service.
@@ -25,12 +27,23 @@ namespace ViewModel.ViewModels
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
 
+            LoadCurrentUsername();
+
             ProfileCommand = new RelayCommand(ExecuteProfile);
             ScoreBoardCommand = new RelayCommand(ExecuteScoreBoard);
             CreateRoomCommand = new RelayCommand(ExecuteCreateRoom);
             JoinLobbyCommand = new RelayCommand(ExecuteJoinLobby);
             HowToPlayCommand = new RelayCommand(ExecuteHowToPlay);
-            SignOutCommand = new RelayCommand(ExecuteSignOut);
+            SignOutCommand = new AsyncRelayCommand(ExecuteSignOutAsync);
+        }
+
+        /// <summary>
+        /// Gets or sets the display username of the currently active player.
+        /// </summary>
+        public string Username
+        {
+            get => _username;
+            set => SetProperty(ref _username, value);
         }
 
         /// <summary>
@@ -62,6 +75,19 @@ namespace ViewModel.ViewModels
         /// Gets the command that clears the active user session and returns to the home screen.
         /// </summary>
         public ICommand SignOutCommand { get; }
+
+        private void LoadCurrentUsername()
+        {
+            UserSessionData currentUser = UserSession.Current.CurrentUser;
+            if (currentUser != null && !string.IsNullOrWhiteSpace(currentUser.Username))
+            {
+                Username = currentUser.Username;
+            }
+            else
+            {
+                Username = string.Empty;
+            }
+        }
 
         private void ExecuteProfile()
         {
@@ -132,8 +158,15 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private void ExecuteSignOut()
+        private async Task ExecuteSignOutAsync()
         {
+            UserSessionData currentUser = UserSession.Current.CurrentUser;
+            if (currentUser != null && currentUser.IdUser > 0)
+            {
+                await FriendshipSession.Current.Client.UnsubscribeSocialEventsAsync(currentUser.IdUser);
+            }
+
+            FriendshipSession.Current.ClearSession();
             UserSession.Current.ClearSession();
             _navigationService.NavigateTo(ViewId.HomeScreen);
         }
