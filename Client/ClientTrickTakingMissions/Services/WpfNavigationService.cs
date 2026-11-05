@@ -23,7 +23,7 @@ namespace View.Services
             { ViewId.Lobby, () => new Lobby() },
             { ViewId.Profile, () => new Profile() },
             { ViewId.RecoverPassword, () => new RecoverPassword() },
-            { ViewId.SendFriendRequest, () => new SendFriendRequest() },
+            { ViewId.SendFriendRequest, () => new SendFriendRequestPage() },
             { ViewId.GameMatch, () => new GameMatch() }
         };
 
@@ -34,7 +34,7 @@ namespace View.Services
             { ViewId.EnterGameCodeDialog, () => new EnterGameCode() },
             { ViewId.GameSettingsDialog, () => new GameSettings() },
             { ViewId.HowToPlayDialog, () => new HowToPlay() },
-            { ViewId.ManageFriendRequestDialog, () => new ManageFriendRequest() },
+            { ViewId.ManageFriendRequestDialog, () => new ManageFriendRequestWindow() },
             { ViewId.ScoreBoardDialog, () => new ScoreBoard() },
             { ViewId.SelectLanguageDialog, () => new SelectLanguageWindow() }
         };

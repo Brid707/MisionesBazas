@@ -8,13 +8,8 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class GameInvitationItemViewModel : ViewModelBase
     {
-        public GameInvitationItemViewModel(
-            int senderUserId,
-            string senderUsername,
-            string lobbyCode,
-            byte targetMissionCount,
-            int currentPlayerCount,
-            byte playerLimit)
+        public GameInvitationItemViewModel(int senderUserId, string senderUsername, string lobbyCode,
+            byte targetMissionCount, int currentPlayerCount, byte playerLimit)
         {
             SenderUserId = senderUserId;
             SenderUsername = senderUsername ?? string.Empty;
@@ -22,11 +17,8 @@ namespace ViewModel.ViewModels
             TargetMissionCount = targetMissionCount;
             CurrentPlayerCount = currentPlayerCount;
             PlayerLimit = playerLimit;
-            PlayersCountDisplay = string.Format(
-                CultureInfo.InvariantCulture,
-                "{0}/{1}",
-                currentPlayerCount,
-                playerLimit);
+            PlayersCountDisplay = string.Format(CultureInfo.InvariantCulture, "{0}/{1}",
+                currentPlayerCount, playerLimit);
         }
 
         public int SenderUserId { get; }

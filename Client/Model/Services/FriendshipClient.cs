@@ -252,9 +252,8 @@ namespace Model.Services
 
         private void EnsureClientIsOpen()
         {
-            bool shouldReinitialize = _client == null ||
-                                      _client.State == CommunicationState.Faulted ||
-                                      _client.State == CommunicationState.Closed;
+            bool shouldReinitialize = _client == null || _client.State == CommunicationState.Faulted 
+                || _client.State == CommunicationState.Closed;
 
             if (shouldReinitialize)
             {

@@ -8,12 +8,8 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class FriendRequestItemViewModel : ViewModelBase
     {
-        public FriendRequestItemViewModel(
-            int senderUserId,
-            string senderUsername,
-            int receiverUserId,
-            string receiverUsername,
-            DateTime requestedAt)
+        public FriendRequestItemViewModel(int senderUserId, string senderUsername, int receiverUserId,
+            string receiverUsername, DateTime requestedAt)
         {
             SenderUserId = senderUserId;
             SenderUsername = senderUsername ?? string.Empty;

@@ -9,12 +9,12 @@ namespace View.Views
     /// <summary>
     /// Interaction logic for managing pending and sent friend requests.
     /// </summary>
-    public partial class ManageFriendRequest : Window
+    public partial class ManageFriendRequestWindow : Window
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ManageFriendRequest"/> class.
+        /// Initializes a new instance of the <see cref="ManageFriendRequestWindow"/> class.
         /// </summary>
-        public ManageFriendRequest()
+        public ManageFriendRequestWindow()
         {
             InitializeComponent();
 

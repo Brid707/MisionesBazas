@@ -322,7 +322,7 @@ namespace Model.Services
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this); // Menciono que se justifique porque se utiliza GC
+            GC.SuppressFinalize(this);
         }
 
         private void InitializeClient()

@@ -61,7 +61,7 @@ namespace Application.UseCases
                 try
                 {
                     friendshipActionOutcome = await
-                        ProccessAcceptRequestAsync(receiverUserId, senderUserId);
+                        ProcessAcceptRequestAsync(receiverUserId, senderUserId);
                 }
                 catch (InvalidOperationException)
                 {
@@ -117,7 +117,7 @@ namespace Application.UseCases
             {
                 try
                 {
-                    friendshipActionOutcome = await ProccessRemovePendingRequestAsync(
+                    friendshipActionOutcome = await ProcessRemovePendingRequestAsync(
                         receiverUserId,
                         senderUserId,
                         MessageFriendRequestCancelled);
@@ -206,7 +206,7 @@ namespace Application.UseCases
             {
                 try
                 {
-                    friendshipActionOutcome = await ProccessRemovePendingRequestAsync(
+                    friendshipActionOutcome = await ProcessRemovePendingRequestAsync(
                         receiverUserId,
                         senderUserId,
                         MessageFriendRequestRejected);
@@ -264,7 +264,7 @@ namespace Application.UseCases
             {
                 try
                 {
-                    friendshipActionOutcome = await ProccessSendFriendRequestAsync(senderUserId,
+                    friendshipActionOutcome = await ProcessSendFriendRequestAsync(senderUserId,
                         targetUsername.Trim());
                 }
                 catch (InvalidOperationException)
@@ -312,7 +312,7 @@ namespace Application.UseCases
             return friendshipActionOutcome;
         }
 
-        private static bool IsPendingForReciver(FriendshipRecordData friendshipRecordData, int receiverUserId)
+        private static bool IsPendingForReceiver(FriendshipRecordData friendshipRecordData, int receiverUserId)
         {
             bool isPendingForReceiver = false;
 
@@ -328,13 +328,13 @@ namespace Application.UseCases
             return isPendingForReceiver;
         }
 
-        private async Task<FriendshipActionOutcome> ProccessAcceptRequestAsync(int receiverUserId, int senderUserId)
+        private async Task<FriendshipActionOutcome> ProcessAcceptRequestAsync(int receiverUserId, int senderUserId)
         {
             FriendshipActionOutcome friendshipActionOutcome;
             FriendshipRecordData friendshipRecordData = await _friendshipRepository
                 .GetFriendshipAsync(receiverUserId, senderUserId);
 
-            if (IsPendingForReciver(friendshipRecordData, receiverUserId))
+            if (IsPendingForReceiver(friendshipRecordData, receiverUserId))
             {
                 await _friendshipRepository.UpdateFriendshipStatusAsync(receiverUserId, senderUserId,
                     AcceptedFriendshipStatus);
@@ -350,7 +350,7 @@ namespace Application.UseCases
             return friendshipActionOutcome;
         }
 
-        private async Task<FriendshipActionOutcome> ProccessRemovePendingRequestAsync(
+        private async Task<FriendshipActionOutcome> ProcessRemovePendingRequestAsync(
             int receiverUserId,
             int senderUserId,
             string successMessage)
@@ -359,7 +359,7 @@ namespace Application.UseCases
             FriendshipRecordData friendshipRecordData = await
                 _friendshipRepository.GetFriendshipAsync(receiverUserId, senderUserId);
 
-            if (IsPendingForReciver(friendshipRecordData, receiverUserId))
+            if (IsPendingForReceiver(friendshipRecordData, receiverUserId))
             {
                 await _friendshipRepository.DeleteFriendshipAsync(receiverUserId, senderUserId);
                 friendshipActionOutcome = CreateFriendshipActionOutcome(true, ErrorCodeSuccess,
@@ -374,7 +374,7 @@ namespace Application.UseCases
             return friendshipActionOutcome;
         }
 
-        private async Task<FriendshipActionOutcome> ProccessSendFriendRequestAsync(int senderUserId,
+        private async Task<FriendshipActionOutcome> ProcessSendFriendRequestAsync(int senderUserId,
             string targetUsername)
         {
             FriendshipActionOutcome friendshipActionOutcome;

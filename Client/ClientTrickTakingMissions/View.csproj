@@ -102,11 +102,11 @@
     <Compile Include="Views\SelectLanguageWindow.xaml.cs">
       <DependentUpon>SelectLanguageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SendFriendRequest.xaml.cs">
-      <DependentUpon>SendFriendRequest.xaml</DependentUpon>
+    <Compile Include="Views\SendFriendRequestPage.xaml.cs">
+      <DependentUpon>SendFriendRequestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManageFriendRequest.xaml.cs">
-      <DependentUpon>ManageFriendRequest.xaml</DependentUpon>
+    <Compile Include="Views\ManageFriendRequestWindow.xaml.cs">
+      <DependentUpon>ManageFriendRequestWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FriendsView.xaml.cs">
       <DependentUpon>FriendsView.xaml</DependentUpon>
@@ -185,11 +185,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SendFriendRequest.xaml">
+    <Page Include="Views\SendFriendRequestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ManageFriendRequest.xaml">
+    <Page Include="Views\ManageFriendRequestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

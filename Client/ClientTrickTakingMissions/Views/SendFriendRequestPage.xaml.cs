@@ -8,12 +8,12 @@ namespace View.Views
     /// <summary>
     /// Interaction logic for sending friend requests to other players.
     /// </summary>
-    public partial class SendFriendRequest : Page
+    public partial class SendFriendRequestPage : Page
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SendFriendRequest"/> class.
+        /// Initializes a new instance of the <see cref="SendFriendRequestPage"/> class.
         /// </summary>
-        public SendFriendRequest()
+        public SendFriendRequestPage()
         {
             InitializeComponent();
 

@@ -46,11 +46,8 @@ namespace ViewModel.ViewModels
         /// <param name="dialogService">Optional service for displaying user alerts.</param>
         /// <param name="friendshipSession">Active social session providing friendship channels.</param>
         /// <param name="lobbySession">Active lobby session used when dispatching match invitations.</param>
-        public FriendsViewModel(
-            INavigationService navigationService,
-            IDialogService dialogService,
-            IFriendshipSession friendshipSession,
-            ILobbySession lobbySession)
+        public FriendsViewModel(INavigationService navigationService, IDialogService dialogService,
+            IFriendshipSession friendshipSession, ILobbySession lobbySession)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _dialogService = dialogService;
@@ -140,7 +137,7 @@ namespace ViewModel.ViewModels
         {
             int currentUserId = GetAuthenticatedUserId();
 
-            if (currentUserId > 0)
+            if (IsValidUserId(currentUserId))
             {
                 await _friendshipSession.Client.SubscribeSocialEventsAsync(currentUserId);
                 await LoadFriendsListAsync();
@@ -151,10 +148,10 @@ namespace ViewModel.ViewModels
         {
             int currentUserId = GetAuthenticatedUserId();
 
-            if (currentUserId > 0)
+            if (IsValidUserId(currentUserId))
             {
-                IList<Friend> friendsFromServer =
-                    await _friendshipSession.Client.GetFriendsListByUserIdAsync(currentUserId);
+                IList<Friend> friendsFromServer =await 
+                    _friendshipSession.Client.GetFriendsListByUserIdAsync(currentUserId);
 
                 _allFriends.Clear();
 
@@ -356,6 +353,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
+                // TODO: Log this exception to a proper logging framework instead of writing to the console.
                 Console.WriteLine($"[FriendsViewModel] Error opening friend requests dialog: {ex.Message}");
             }
         }
@@ -375,10 +373,9 @@ namespace ViewModel.ViewModels
             FriendItemViewModel targetFriend = parameter as FriendItemViewModel;
             int currentUserId = GetAuthenticatedUserId();
 
-            if (targetFriend != null && currentUserId > 0)
+            if (targetFriend != null && IsValidUserId(currentUserId))
             {
-                OperationResult result = await _friendshipSession.Client.RemoveFriendAsync(
-                    currentUserId,
+                OperationResult result = await _friendshipSession.Client.RemoveFriendAsync(currentUserId,
                     targetFriend.UserId);
 
                 if (result == null)
@@ -402,15 +399,24 @@ namespace ViewModel.ViewModels
             FriendItemViewModel targetFriend = parameter as FriendItemViewModel;
             int currentUserId = GetAuthenticatedUserId();
             Model.GameServices.Lobby activeLobby = _lobbySession.CurrentLobby;
-            bool canSendInvitation = targetFriend != null &&
-                                     currentUserId > 0 &&
-                                     _lobbySession.HasActiveLobby &&
-                                     activeLobby != null;
+            bool canSendInvitation = targetFriend != null && IsValidUserId(currentUserId) 
+                && _lobbySession.HasActiveLobby && activeLobby != null;
 
             if (canSendInvitation)
             {
-                string senderUsername = UserSession.Current.CurrentUser?.Username ?? string.Empty;
-                int currentPlayerCount = activeLobby.Players != null ? activeLobby.Players.Length : 1;
+                string senderUsername;
+                int currentPlayerCount = activeLobby.Players != null 
+                    ? activeLobby.Players.Length 
+                    : 1;
+
+                if (UserSession.Current.CurrentUser != null)
+                {
+                    senderUsername = UserSession.Current.CurrentUser.Username;
+                }
+                else
+                {
+                    senderUsername = string.Empty;
+                }
 
                 GameInvitation invitation = new GameInvitation
                 {
@@ -436,8 +442,7 @@ namespace ViewModel.ViewModels
             {
                 _lobbySession.ClearLobby();
                 Model.GameServices.LobbyResult result = await _lobbySession.Client.JoinLobbyByCodeAsync(
-                    invitationItem.LobbyCode.Trim().ToUpperInvariant(),
-                    currentUserId);
+                    invitationItem.LobbyCode.Trim().ToUpperInvariant(), currentUserId);
 
                 if (result == null)
                 {
@@ -484,6 +489,11 @@ namespace ViewModel.ViewModels
             }
 
             return userId;
+        }
+
+        private bool IsValidUserId(int userId)
+        {
+            return userId > 0;
         }
     }
 }
