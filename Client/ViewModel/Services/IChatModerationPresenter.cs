@@ -8,6 +8,8 @@ namespace ViewModel.Services
     {
         string FormatChatSubmissionFeedback(LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome);
 
+        string FormatAccountBan(ChatAccountBanNotice chatAccountBanNotice);
+
         void ShowChatAccountBan(ChatAccountBanNotice chatAccountBanNotice);
     }
 }

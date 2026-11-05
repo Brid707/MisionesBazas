@@ -25,6 +25,12 @@ namespace Services.DataContracts
         public byte Status { get; set; }
 
         [DataMember]
+        public bool IsPrivate { get; set; } = true;
+
+        [DataMember]
+        public long StateVersion { get; set; }
+
+        [DataMember]
         public List<LobbyPlayer> Players { get; set; } = new List<LobbyPlayer>();
     }
 }

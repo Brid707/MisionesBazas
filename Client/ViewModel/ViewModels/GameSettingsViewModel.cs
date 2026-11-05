@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System;
 
 using Model.GameServices;
 using Model.Session;
@@ -17,6 +17,8 @@ namespace ViewModel.ViewModels
     public sealed class GameSettingsViewModel : ViewModelBase
     {
         private const int MinimumPlayerCount = 3;
+        private const int HostRequiredServerCode = 106;
+        private const int MatchInProgressServerCode = 105;
         private const int MaximumPlayerCount = 4;
         private const int MinimumMissionCount = 1;
         private const int MaximumMissionCount = 50;
@@ -44,6 +46,7 @@ namespace ViewModel.ViewModels
 
             _selectedMissionCount = DefaultMissionCount;
             _isPrivate = true;
+            LoadCurrentLobbyConfiguration();
 
             CloseCommand = new RelayCommand(ExecuteClose);
             ConfirmCommand = new AsyncRelayCommand(ExecuteConfirmAsync);
@@ -70,7 +73,17 @@ namespace ViewModel.ViewModels
         public bool IsPrivate
         {
             get => _isPrivate;
-            set => SetProperty(ref _isPrivate, value);
+            set
+            {
+                SetProperty(ref _isPrivate, value);
+                OnPropertyChanged(nameof(IsPublic));
+            }
+        }
+
+        public bool IsPublic
+        {
+            get => !IsPrivate;
+            set => IsPrivate = !value;
         }
 
         public ICommand CloseCommand { get; }
@@ -86,7 +99,7 @@ namespace ViewModel.ViewModels
         {
             if (_lobbySession.HasActiveLobby)
             {
-                RequestClose?.Invoke(true);
+                await UpdateCurrentLobbyAsync();
             }
             else
             {
@@ -94,14 +107,68 @@ namespace ViewModel.ViewModels
             }
         }
 
+        private void LoadCurrentLobbyConfiguration()
+        {
+            Lobby activeLobby = _lobbySession.CurrentLobby;
+            if (activeLobby != null)
+            {
+                SelectedPlayerCount = activeLobby.PlayerLimit;
+                SelectedMissionCount = activeLobby.TargetMissionCount;
+                IsPrivate = activeLobby.IsPrivate;
+            }
+        }
+
+        private LobbySettings BuildSelectedLobbySettings()
+        {
+            return new LobbySettings
+            {
+                PlayerLimit = (byte)SelectedPlayerCount,
+                TargetMissionCount = (byte)SelectedMissionCount,
+                IsPrivate = IsPrivate
+            };
+        }
+
+        private async Task UpdateCurrentLobbyAsync()
+        {
+            LobbyResult configurationUpdate = await _lobbySession.Client.UpdateLobbySettingsAsync(
+                _lobbySession.CurrentLobby.LobbyCode, UserSession.Current.EnsureActiveUserId(),
+                BuildSelectedLobbySettings());
+            if (configurationUpdate?.IsSuccess == true && configurationUpdate.Lobby != null)
+            {
+                _lobbySession.SetLobby(configurationUpdate.Lobby);
+                RequestClose?.Invoke(true);
+            }
+            else
+            {
+                ShowConfigurationRejection(configurationUpdate);
+            }
+        }
+
+        private void ShowConfigurationRejection(LobbyResult configurationUpdate)
+        {
+            int configurationErrorCode = MessageCode.ConnectionFailed;
+            if (configurationUpdate != null)
+            {
+                configurationErrorCode = MessageCode.LobbyConfigurationInvalid;
+                if (configurationUpdate.ErrorCode == HostRequiredServerCode)
+                {
+                    configurationErrorCode = MessageCode.LobbyHostRequired;
+                }
+                else if (configurationUpdate.ErrorCode == MatchInProgressServerCode)
+                {
+                    configurationErrorCode = MessageCode.LobbyMatchInProgress;
+                }
+            }
+
+            _dialogService.ShowWarning(configurationErrorCode);
+        }
+
         private async Task CreateNewLobbyAsync()
         {
             int hostUserId = UserSession.Current.EnsureActiveUserId();
 
             LobbyResult result = await _lobbySession.Client.CreateLobbyAsync(
-                hostUserId,
-                (byte)_selectedMissionCount,
-                (byte)_selectedPlayerCount);
+                hostUserId, BuildSelectedLobbySettings());
 
             if (result == null)
             {

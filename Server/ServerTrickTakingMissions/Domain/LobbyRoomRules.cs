@@ -16,6 +16,15 @@ namespace Domain
 
         public const byte StatusWaiting = 1;
         public const byte StatusInGame = 2;
+        public const byte StatusClosed = 3;
+
+        /// <summary>Checks explicit editing bounds without silently substituting default values.</summary>
+        public static bool IsConfigurationValid(byte targetMissionCount, byte playerLimit, int currentPlayerCount)
+        {
+            return targetMissionCount >= MinimumTargetMissionCount && targetMissionCount <= MaximumTargetMissionCount &&
+                playerLimit >= MinimumPlayerLimit && playerLimit <= MaximumPlayerLimit &&
+                currentPlayerCount <= playerLimit;
+        }
 
         /// <summary>
         /// Resolves a valid target mission count by applying domain bounds to the requested value.

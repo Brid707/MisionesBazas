@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 using ViewModel.Constants;
@@ -13,9 +13,14 @@ namespace View.Services
     {
         private static readonly Dictionary<int, string> s_resourceKeys = new Dictionary<int, string>
         {
+            { MessageCode.LobbyKickedParticipantReentryDenied, "Lobby_KickedParticipantReentryDenied" },
+            { MessageCode.LobbyHostRequired, "Lobby_HostRequired" },
+            { MessageCode.LobbyConfigurationInvalid, "Lobby_ConfigurationInvalid" },
+            { MessageCode.LobbyMatchInProgress, "Lobby_MatchInProgress" },
+            { MessageCode.RegisterEmailPermanentlyBlocked, "Register_EmailPermanentlyBlocked" },
             { MessageCode.EmptyEmail, nameof(View.Properties.Langs.Resources.Login_EmptyEmail) },
             { MessageCode.EmptyPassword, nameof(View.Properties.Langs.Resources.Login_EmptyPassword) },
-            { MessageCode.ChatStorageUnavailable, "Chat_ChatStorageUnavailable" },
+            { MessageCode.ChatStorageUnavailable, "Account_StorageUnavailable" },
             { MessageCode.ChatAccountBanned, "Chat_AccountBanned" },
             { MessageCode.InvalidCredentials, nameof(View.Properties.Langs.Resources.Login_InvalidCredentials) },
             { MessageCode.RegisterInvalidEmail, nameof(View.Properties.Langs.Resources.Register_InvalidEmail) },

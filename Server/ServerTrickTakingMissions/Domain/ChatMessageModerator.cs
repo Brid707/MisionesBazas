@@ -79,6 +79,10 @@ namespace Domain
             {
                 characterPattern = @"\s+";
             }
+            else if (expressionCharacter == '\'')
+            {
+                characterPattern = "['\u2019\u2018\u02BC]";
+            }
             else if (canMatchObfuscatedLetters && char.IsLetter(expressionCharacter))
             {
                 characterPattern = GetObfuscatedLetterPattern(expressionCharacter) + "{1,3}";

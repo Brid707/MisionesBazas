@@ -13,5 +13,8 @@ namespace Services.DataContracts
 
         [DataMember]
         public byte PlayerLimit { get; set; }
+
+        [DataMember]
+        public bool IsPrivate { get; set; } = true;
     }
 }

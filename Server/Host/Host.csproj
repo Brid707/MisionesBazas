@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LobbyHostSelection.cs" />
     <Compile Include="DependencyInjection\DependencyInjectionServiceBehavior.cs" />
     <Compile Include="DependencyInjection\FuncInstanceProvider.cs" />
     <Compile Include="Program.cs" />

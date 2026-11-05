@@ -9,6 +9,11 @@ namespace Services.Contracts
     /// </summary>
     public interface ILobbyCallback
     {
+        /// <summary>Publishes a versioned authoritative room snapshot
+        /// after rules, role or participants change.</summary>
+        [OperationContract(IsOneWay = true)]
+        void OnLobbyStateChanged(Lobby lobby);
+
         /// <summary>
         /// Notifies participants that a new player has joined the lobby room.
         /// </summary>

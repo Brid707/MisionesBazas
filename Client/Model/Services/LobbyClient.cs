@@ -1,6 +1,6 @@
+﻿using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using System;
 
 using Model.GameServices;
 using Model.Security;
@@ -14,11 +14,14 @@ namespace Model.Services
     public sealed class LobbyClient : ILobbyClient, ILobbyServiceCallback
     {
         private LobbyServiceClient _client;
+        private bool _isLobbyClientDisposed;
 
         public LobbyClient()
         {
             InitializeClient();
         }
+
+        public event EventHandler<LobbyStateChangedEventArgs> LobbyStateChanged;
 
         public event Action<LobbyPlayer> PlayerJoined;
 
@@ -40,22 +43,15 @@ namespace Model.Services
         /// Sends an asynchronous request to create a new lobby room on the server.
         /// </summary>
         /// <param name="hostUserId">The unique identifier of the user hosting the lobby.</param>
-        /// <param name="targetMissionCount">The configured target mission count.</param>
-        /// <param name="playerLimit">The maximum number of players allowed in the room.</param>
+        /// <param name="lobbySettings">The selected missions, capacity and privacy.</param>
         /// <returns>The <see cref="LobbyResult"/> from the server, or null if a network fault occurred.</returns>
-        public async Task<LobbyResult> CreateLobbyAsync(int hostUserId, byte targetMissionCount, byte playerLimit)
+        public async Task<LobbyResult> CreateLobbyAsync(int hostUserId, LobbySettings lobbySettings)
         {
             LobbyResult result = null;
-            LobbySettings settings = new LobbySettings
-            {
-                TargetMissionCount = targetMissionCount,
-                PlayerLimit = playerLimit
-            };
-
             try
             {
                 EnsureClientIsOpen();
-                result = await _client.CreateLobbyAsync(hostUserId, settings);
+                result = await _client.CreateLobbyAsync(hostUserId, lobbySettings);
             }
             catch (EndpointNotFoundException)
             {
@@ -74,6 +70,57 @@ namespace Model.Services
             }
 
             return result;
+        }
+
+        /// <inheritdoc />
+        public async Task<LobbyResult> UpdateLobbySettingsAsync(string lobbyCode, int requesterUserId,
+            LobbySettings lobbySettings)
+        {
+            LobbyResult configurationUpdate = null;
+            try
+            {
+                EnsureClientIsOpen();
+                configurationUpdate = await _client.UpdateLobbySettingsAsync(lobbyCode, requesterUserId, lobbySettings);
+            }
+            catch (TimeoutException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+            }
+            catch (CommunicationException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+            }
+
+            return configurationUpdate;
+        }
+
+        /// <inheritdoc />
+        public async Task<LobbyResult> AuthorizeKickedPlayerReentryAsync(
+            string lobbyCode, int hostUserId, int targetUserId)
+        {
+            LobbyResult reentryAuthorization = null;
+            try
+            {
+                EnsureClientIsOpen();
+                reentryAuthorization = await _client.AuthorizeKickedPlayerReentryAsync(
+                    lobbyCode, hostUserId, targetUserId);
+            }
+            catch (TimeoutException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+            }
+            catch (CommunicationException)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+            }
+
+            return reentryAuthorization;
+        }
+
+        /// <summary>Raises the local event for a server-confirmed room snapshot.</summary>
+        public void OnLobbyStateChanged(Lobby confirmedLobby)
+        {
+            LobbyStateChanged?.Invoke(this, new LobbyStateChangedEventArgs(confirmedLobby));
         }
 
         /// <summary>
@@ -121,6 +168,31 @@ namespace Model.Services
             {
                 EnsureClientIsOpen();
                 await _client.LeaveLobbyAsync(lobbyCode, userId);
+            }
+            catch (EndpointNotFoundException)
+            {
+                // TODO: Implement logging for the exception once logging infrastructure is available.
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+            }
+            catch (TimeoutException)
+            {
+                // TODO: Implement logging for the exception once logging infrastructure is available.
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+            }
+            catch (CommunicationException)
+            {
+                // TODO: Implement logging for the exception once logging infrastructure is available.
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+            }
+        }
+
+        /// <summary>Requests removal through the existing authenticated lobby operation.</summary>
+        public async Task KickPlayerAsync(string lobbyCode, int hostUserId, int targetUserId)
+        {
+            try
+            {
+                EnsureClientIsOpen();
+                await _client.KickPlayerByUserIdAsync(lobbyCode, hostUserId, targetUserId);
             }
             catch (EndpointNotFoundException)
             {
@@ -237,6 +309,16 @@ namespace Model.Services
             InstanceContext instanceContext = new InstanceContext(this);
             _client = new LobbyServiceClient(instanceContext);
             _client.Endpoint.EndpointBehaviors.Add(new AccountSessionEndpointBehavior());
+            _client.InnerChannel.Faulted += OnLobbyChannelDisconnected;
+            _client.InnerChannel.Closed += OnLobbyChannelDisconnected;
+        }
+
+        private void OnLobbyChannelDisconnected(object sender, EventArgs e)
+        {
+            if (!_isLobbyClientDisposed)
+            {
+                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+            }
         }
 
         private void EnsureClientIsOpen()
@@ -253,6 +335,7 @@ namespace Model.Services
 
         private void Dispose(bool isDisposing)
         {
+            _isLobbyClientDisposed = true;
             if (isDisposing && _client != null)
             {
                 CloseOrAbortClient();

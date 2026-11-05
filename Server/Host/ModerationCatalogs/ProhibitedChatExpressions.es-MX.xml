@@ -29,4 +29,7 @@
   <expression category="Threat" matchObfuscation="true">te voy a hackear</expression>
   <expression category="Threat" matchObfuscation="true">voy a hackearte</expression>
   <expression category="Threat" matchObfuscation="true">te voy a hacer dano</expression>
+  <expression category="Threat" matchObfuscation="true">voy a encontrar tu direccion</expression>
+  <expression category="Threat" matchObfuscation="true">voy a averiguar tu direccion</expression>
+  <expression category="Threat" matchObfuscation="true">voy a hacerte dano</expression>
 </catalog>

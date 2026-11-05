@@ -1,4 +1,4 @@
-using System.ServiceModel;
+﻿using System.ServiceModel;
 
 using Services.DataContracts;
 
@@ -10,6 +10,14 @@ namespace Services.Contracts
     [ServiceContract(CallbackContract = typeof(ILobbyCallback))]
     public interface ILobbyService
     {
+        /// <summary>Changes waiting-room configuration and returns the server-confirmed room or rejection.</summary>
+        /// <param name="lobbyCode">The existing room invitation code.</param>
+        /// <param name="requesterUserId">The participant whose channel and session will be verified.</param>
+        /// <param name="settings">The requested mission, capacity and privacy values.</param>
+        /// <returns>The confirmed room snapshot or a specific rejection.</returns>
+        [OperationContract]
+        LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, LobbySettings settings);
+
         /// <summary>
         /// Creates a new game lobby hosted by the specified user with custom configuration settings.
         /// </summary>
@@ -44,6 +52,14 @@ namespace Services.Contracts
         /// <param name="targetUserId">The unique identifier of the user to be ejected.</param>
         [OperationContract(IsOneWay = true)]
         void KickPlayerByUserId(string lobbyCode, int hostUserId, int targetUserId);
+
+        /// <summary>Allows an invitation workflow to restore access after a host-issued removal.</summary>
+        /// <param name="lobbyCode">The room whose reentry restriction will be removed.</param>
+        /// <param name="hostUserId">The current host authorizing a new invitation.</param>
+        /// <param name="targetUserId">The player being invited back to this room.</param>
+        /// <returns>Authorization confirmation or a specific rejection; does not deliver an invitation.</returns>
+        [OperationContract]
+        LobbyResult AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId);
 
         /// <summary>
         /// Updates the readiness status of a player inside the lobby room.

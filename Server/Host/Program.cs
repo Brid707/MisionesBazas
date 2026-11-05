@@ -1,11 +1,11 @@
+using System;
 using System.IO;
+using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using System.ServiceModel;
-using System;
 
-using Application.Ports;
 using Application;
+using Application.Ports;
 using Application.UseCases;
 using Host.DependencyInjection;
 using Infrastructure.Moderation;
@@ -100,7 +100,7 @@ namespace Host
         private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository,
             ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy)
         {
-            ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository);
+            ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection());
             IInstanceProvider instanceProvider = new FuncInstanceProvider<LobbyService>(
                 () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
@@ -112,7 +112,8 @@ namespace Host
 
         private static ServiceHost CreateAccountManagementServiceHost(IUserRepository userRepository)
         {
-            IAccountManagementUseCase accountManagementUseCase = new AccountManagementUseCase(userRepository);
+            IAccountManagementUseCase accountManagementUseCase = new AccountManagementUseCase(userRepository,
+                new BlockedAccountEmailRepository(new ChatModerationLogger()));
             IInstanceProvider instanceProvider = new FuncInstanceProvider<AccountManagementService>(
                 () => new AccountManagementService(accountManagementUseCase));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);

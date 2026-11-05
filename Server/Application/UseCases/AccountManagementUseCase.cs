@@ -1,4 +1,5 @@
 using System;
+
 using Application.Models;
 using Application.Ports;
 using Domain;
@@ -11,6 +12,7 @@ namespace Application.UseCases
     public sealed class AccountManagementUseCase : IAccountManagementUseCase
     {
         private const int ErrorCodeSuccess = 0;
+        private const int ErrorCodePermanentlyBlockedEmail = 1022;
         private const int ErrorCodeValidationFailed = 101;
         private const int ErrorCodeEmailAlreadyRegistered = 1019;
         private const int ErrorCodeUsernameAlreadyRegistered = 1020;
@@ -25,20 +27,25 @@ namespace Application.UseCases
         private const string MessagePersistenceFailure = "A database error occurred while registering the user.";
 
         private readonly IUserRepository _userRepository;
+        private readonly IBlockedAccountEmailRepository _blockedAccountEmailRepository;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountManagementUseCase"/> class with the user repository.
         /// </summary>
         /// <param name="userRepository">The secondary port for user data persistence.</param>
-        public AccountManagementUseCase(IUserRepository userRepository)
+        /// <param name="blockedAccountEmailRepository">The persistent restriction check
+        /// for registration emails.</param>
+        public AccountManagementUseCase(IUserRepository userRepository,
+            IBlockedAccountEmailRepository blockedAccountEmailRepository)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _blockedAccountEmailRepository = blockedAccountEmailRepository;
         }
 
         /// <inheritdoc />
         public UserRegistrationOutcome RegisterUser(string username, string email, string passwordHash)
         {
-            UserRegistrationOutcome outcome;
+            UserRegistrationOutcome registrationOutcome;
 
             string normalizedUsername = username?.Trim() ?? string.Empty;
             string normalizedEmail = email?.Trim() ?? string.Empty;
@@ -46,14 +53,15 @@ namespace Application.UseCases
 
             if (!IsInputValid(normalizedUsername, normalizedEmail, normalizedPasswordHash))
             {
-                outcome = CreateOutcome(false, ErrorCodeValidationFailed, MessageValidationFailed, null);
+                registrationOutcome = CreateRegistrationOutcome(
+                false, ErrorCodeValidationFailed, MessageValidationFailed);
             }
             else
             {
-                outcome = ProcessRegistration(normalizedUsername, normalizedEmail, normalizedPasswordHash);
+                registrationOutcome = ProcessRegistration(normalizedUsername, normalizedEmail, normalizedPasswordHash);
             }
 
-            return outcome;
+            return registrationOutcome;
         }
 
         private bool IsInputValid(string username, string email, string passwordHash)
@@ -65,34 +73,48 @@ namespace Application.UseCases
 
         private UserRegistrationOutcome ProcessRegistration(string username, string email, string passwordHash)
         {
-            UserRegistrationOutcome outcome;
+            UserRegistrationOutcome registrationOutcome;
 
             try
             {
-                UserAccount existingEmailUser = _userRepository.GetUserByEmail(email);
-                if (existingEmailUser != null)
+                if (_blockedAccountEmailRepository.IsAccountEmailPermanentlyBlocked(email))
                 {
-                    outcome = CreateOutcome(false, ErrorCodeEmailAlreadyRegistered, MessageEmailAlreadyRegistered, null);
+                    registrationOutcome = CreateRegistrationOutcome(
+                    false, ErrorCodePermanentlyBlockedEmail, "AccountEmailPermanentlyBlocked");
                 }
                 else
                 {
-                    UserAccount existingUsernameUser = _userRepository.GetUserByUsername(username);
-                    if (existingUsernameUser != null)
-                    {
-                        outcome = CreateOutcome(false, ErrorCodeUsernameAlreadyRegistered, MessageUsernameAlreadyRegistered, null);
-                    }
-                    else
-                    {
-                        outcome = PersistNewUser(username, email, passwordHash);
-                    }
+                    registrationOutcome = RegisterUnblockedEmail(username, email, passwordHash);
                 }
             }
             catch (InvalidOperationException)
             {
-                outcome = CreateOutcome(false, ErrorCodePersistenceFailure, MessagePersistenceFailure, null);
+                registrationOutcome = CreateRegistrationOutcome(
+                false, ErrorCodePersistenceFailure, MessagePersistenceFailure);
             }
 
-            return outcome;
+            return registrationOutcome;
+        }
+
+        private UserRegistrationOutcome RegisterUnblockedEmail(string username, string email, string passwordHash)
+        {
+            UserRegistrationOutcome registrationOutcome;
+            if (_userRepository.GetUserByEmail(email) != null)
+            {
+                registrationOutcome = CreateRegistrationOutcome(
+                    false, ErrorCodeEmailAlreadyRegistered, MessageEmailAlreadyRegistered);
+            }
+            else if (_userRepository.GetUserByUsername(username) != null)
+            {
+                registrationOutcome = CreateRegistrationOutcome(false, ErrorCodeUsernameAlreadyRegistered,
+                    MessageUsernameAlreadyRegistered);
+            }
+            else
+            {
+                registrationOutcome = PersistNewUser(username, email, passwordHash);
+            }
+
+            return registrationOutcome;
         }
 
         private UserRegistrationOutcome PersistNewUser(string username, string email, string passwordHash)
@@ -107,17 +129,19 @@ namespace Application.UseCases
             };
 
             int createdUserId = _userRepository.CreateUser(newUser, username);
-            return CreateOutcome(true, ErrorCodeSuccess, MessageSuccess, createdUserId);
+            UserRegistrationOutcome registrationOutcome = CreateRegistrationOutcome(
+                true, ErrorCodeSuccess, MessageSuccess);
+            registrationOutcome.CreatedUserId = createdUserId;
+            return registrationOutcome;
         }
 
-        private static UserRegistrationOutcome CreateOutcome(bool isSuccess, int errorCode, string message, int? createdUserId)
+        private static UserRegistrationOutcome CreateRegistrationOutcome(bool isSuccess, int errorCode, string message)
         {
             return new UserRegistrationOutcome
             {
                 IsSuccess = isSuccess,
                 ErrorCode = errorCode,
-                Message = message,
-                CreatedUserId = createdUserId
+                Message = message
             };
         }
     }

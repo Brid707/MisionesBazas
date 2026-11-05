@@ -14,6 +14,11 @@ namespace View.Services
             return ChatModerationTextFormatter.FormatSubmissionFeedback(chatMessageSubmissionOutcome);
         }
 
+        public string FormatAccountBan(ChatAccountBanNotice chatAccountBanNotice)
+        {
+            return ChatModerationTextFormatter.FormatAccountBan(chatAccountBanNotice);
+        }
+
         public void ShowChatAccountBan(ChatAccountBanNotice chatAccountBanNotice)
         {
             MessageBox.Show(ChatModerationTextFormatter.FormatAccountBan(chatAccountBanNotice),

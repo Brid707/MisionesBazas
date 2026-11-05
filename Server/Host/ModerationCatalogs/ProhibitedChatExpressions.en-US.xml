@@ -21,4 +21,10 @@
   <expression category="Threat" matchObfuscation="true">i will hack you</expression>
   <expression category="Threat" matchObfuscation="true">i'll hack you</expression>
   <expression category="Threat" matchObfuscation="true">i will hurt you</expression>
+  <expression category="Threat" matchObfuscation="true">i am going to hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i'm going to hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i am going to stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i'm going to stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i will track you down</expression>
+  <expression category="Threat" matchObfuscation="true">i'll track you down</expression>
 </catalog>

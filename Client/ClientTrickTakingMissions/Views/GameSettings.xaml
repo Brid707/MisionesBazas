@@ -92,7 +92,8 @@
 
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
                                 <RadioButton x:Name="PublicRadioButton" GroupName="Privacy"
-                                             Width="18" Height="18" VerticalAlignment="Center" />
+                                             Width="18" Height="18" VerticalAlignment="Center"
+                                             IsChecked="{Binding IsPublic}" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PublicRButton}"
                                            Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"

@@ -1,4 +1,4 @@
-namespace ViewModel.Constants
+﻿namespace ViewModel.Constants
 {
     /// <summary>
     /// Defines integer constants representing user feedback, validation warnings, and network error messages.
@@ -28,11 +28,17 @@ namespace ViewModel.Constants
         public const int RegisterEmailAlreadyRegistered = 1019;
         public const int RegisterUsernameAlreadyRegistered = 1020;
         public const int RegisterSuccess = 1021;
+        public const int RegisterEmailPermanentlyBlocked = 1022;
+        public const int AccountStorageUnavailable = 201;
 
         // Match codes (1030 - 1049)
         public const int EnterGameCodeEmptyCode = 1030;
         public const int EnterGameCodeInvalidCode = 1031;
         public const int EnterGameCodeLobbyAlreadyFull = 1032;
+        public const int LobbyHostRequired = 1033;
+        public const int LobbyConfigurationInvalid = 1034;
+        public const int LobbyMatchInProgress = 1035;
+        public const int LobbyKickedParticipantReentryDenied = 1036;
 
         // Social and friend request codes (1050 - 1069)
         public const int EmptyFriendUsername = 1050;

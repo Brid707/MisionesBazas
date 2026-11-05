@@ -4,6 +4,7 @@
   <xs:import namespace="http://schemas.datacontract.org/2004/07/Application.Models" />
   <xs:complexType name="LobbySettings">
     <xs:sequence>
+      <xs:element minOccurs="0" name="IsPrivate" type="xs:boolean" />
       <xs:element minOccurs="0" name="PlayerLimit" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="TargetMissionCount" type="xs:unsignedByte" />
     </xs:sequence>
@@ -30,9 +31,11 @@
   <xs:complexType name="Lobby">
     <xs:sequence>
       <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="IsPrivate" type="xs:boolean" />
       <xs:element minOccurs="0" name="LobbyCode" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="PlayerLimit" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="Players" nillable="true" type="tns:ArrayOfLobbyPlayer" />
+      <xs:element minOccurs="0" name="StateVersion" type="xs:long" />
       <xs:element minOccurs="0" name="Status" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="TargetMissionCount" type="xs:unsignedByte" />
     </xs:sequence>
@@ -88,6 +91,7 @@
       <xs:element minOccurs="0" name="ChatMessageSubmissionId" type="ser:guid" />
       <xs:element minOccurs="0" name="ChatAccountBanType" type="tns:ChatAccountBanType" />
       <xs:element minOccurs="0" name="ChatAccountBanEndsAtUtc" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EvaluatedAtUtc" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ChatAccountBanNotice" nillable="true" type="tns:ChatAccountBanNotice" />
@@ -119,6 +123,7 @@
   <xs:complexType name="User">
     <xs:sequence>
       <xs:element minOccurs="0" name="AccountSessionToken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ChatAccountBanNotice" nillable="true" type="tns:ChatAccountBanNotice" />
       <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IdUser" type="xs:int" />
       <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />

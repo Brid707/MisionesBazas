@@ -21,6 +21,8 @@ namespace Model.GameServices
         
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
+        private bool IsPrivateField;
+        
         private byte PlayerLimitField;
         
         private byte TargetMissionCountField;
@@ -34,6 +36,19 @@ namespace Model.GameServices
             set
             {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPrivate
+        {
+            get
+            {
+                return this.IsPrivateField;
+            }
+            set
+            {
+                this.IsPrivateField = value;
             }
         }
         
@@ -163,11 +178,15 @@ namespace Model.GameServices
         
         private int HostUserIdField;
         
+        private bool IsPrivateField;
+        
         private string LobbyCodeField;
         
         private byte PlayerLimitField;
         
         private Model.GameServices.LobbyPlayer[] PlayersField;
+        
+        private long StateVersionField;
         
         private byte StatusField;
         
@@ -195,6 +214,19 @@ namespace Model.GameServices
             set
             {
                 this.HostUserIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsPrivate
+        {
+            get
+            {
+                return this.IsPrivateField;
+            }
+            set
+            {
+                this.IsPrivateField = value;
             }
         }
         
@@ -234,6 +266,19 @@ namespace Model.GameServices
             set
             {
                 this.PlayersField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public long StateVersion
+        {
+            get
+            {
+                return this.StateVersionField;
+            }
+            set
+            {
+                this.StateVersionField = value;
             }
         }
         
@@ -647,6 +692,8 @@ namespace Model.GameServices
         
         private System.Nullable<System.DateTime> ChatAccountBanEndsAtUtcField;
         
+        private System.DateTime EvaluatedAtUtcField;
+        
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData
         {
             get
@@ -695,6 +742,19 @@ namespace Model.GameServices
             set
             {
                 this.ChatAccountBanEndsAtUtcField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.DateTime EvaluatedAtUtc
+        {
+            get
+            {
+                return this.EvaluatedAtUtcField;
+            }
+            set
+            {
+                this.EvaluatedAtUtcField = value;
             }
         }
     }
@@ -904,6 +964,8 @@ namespace Model.GameServices
         
         private string AccountSessionTokenField;
         
+        private Model.GameServices.ChatAccountBanNotice ChatAccountBanNoticeField;
+        
         private string EmailField;
         
         private int IdUserField;
@@ -932,6 +994,19 @@ namespace Model.GameServices
             set
             {
                 this.AccountSessionTokenField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Model.GameServices.ChatAccountBanNotice ChatAccountBanNotice
+        {
+            get
+            {
+                return this.ChatAccountBanNoticeField;
+            }
+            set
+            {
+                this.ChatAccountBanNoticeField = value;
             }
         }
         
@@ -980,6 +1055,12 @@ namespace Model.GameServices
     public interface ILobbyService
     {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/UpdateLobbySettings", ReplyAction="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse")]
+        Model.GameServices.LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/UpdateLobbySettings", ReplyAction="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse")]
+        System.Threading.Tasks.Task<Model.GameServices.LobbyResult> UpdateLobbySettingsAsync(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/CreateLobby", ReplyAction="http://tempuri.org/ILobbyService/CreateLobbyResponse")]
         Model.GameServices.LobbyResult CreateLobby(int hostUserId, Model.GameServices.LobbySettings settings);
         
@@ -1004,6 +1085,12 @@ namespace Model.GameServices
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/KickPlayerByUserId")]
         System.Threading.Tasks.Task KickPlayerByUserIdAsync(string lobbyCode, int hostUserId, int targetUserId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentry", ReplyAction="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentryResponse")]
+        Model.GameServices.LobbyResult AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentry", ReplyAction="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentryResponse")]
+        System.Threading.Tasks.Task<Model.GameServices.LobbyResult> AuthorizeKickedPlayerReentryAsync(string lobbyCode, int hostUserId, int targetUserId);
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/SetPlayerReadyStatus")]
         void SetPlayerReadyStatus(string lobbyCode, int userId, bool isReady);
         
@@ -1026,6 +1113,9 @@ namespace Model.GameServices
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ILobbyServiceCallback
     {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnLobbyStateChanged")]
+        void OnLobbyStateChanged(Model.GameServices.Lobby lobby);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnPlayerJoinedLobby")]
         void OnPlayerJoinedLobby(Model.GameServices.LobbyPlayer player);
@@ -1084,6 +1174,16 @@ namespace Model.GameServices
         {
         }
         
+        public Model.GameServices.LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings)
+        {
+            return base.Channel.UpdateLobbySettings(lobbyCode, requesterUserId, settings);
+        }
+        
+        public System.Threading.Tasks.Task<Model.GameServices.LobbyResult> UpdateLobbySettingsAsync(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings)
+        {
+            return base.Channel.UpdateLobbySettingsAsync(lobbyCode, requesterUserId, settings);
+        }
+        
         public Model.GameServices.LobbyResult CreateLobby(int hostUserId, Model.GameServices.LobbySettings settings)
         {
             return base.Channel.CreateLobby(hostUserId, settings);
@@ -1122,6 +1222,16 @@ namespace Model.GameServices
         public System.Threading.Tasks.Task KickPlayerByUserIdAsync(string lobbyCode, int hostUserId, int targetUserId)
         {
             return base.Channel.KickPlayerByUserIdAsync(lobbyCode, hostUserId, targetUserId);
+        }
+        
+        public Model.GameServices.LobbyResult AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId)
+        {
+            return base.Channel.AuthorizeKickedPlayerReentry(lobbyCode, hostUserId, targetUserId);
+        }
+        
+        public System.Threading.Tasks.Task<Model.GameServices.LobbyResult> AuthorizeKickedPlayerReentryAsync(string lobbyCode, int hostUserId, int targetUserId)
+        {
+            return base.Channel.AuthorizeKickedPlayerReentryAsync(lobbyCode, hostUserId, targetUserId);
         }
         
         public void SetPlayerReadyStatus(string lobbyCode, int userId, bool isReady)

@@ -20,6 +20,11 @@ namespace Application
             _chatInfractionRepository = chatInfractionRepository;
         }
 
+        public ChatAccountInfractionState GetAccountBanState(int accountUserId)
+        {
+            return _chatInfractionRepository.GetAccountInfractionState(accountUserId);
+        }
+
         public string CreateAllowedAccountSession(int accountUserId)
         {
             string accountSessionToken = null;

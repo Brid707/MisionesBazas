@@ -1,5 +1,5 @@
-using System.Data.SqlClient;
 using System;
+using System.Data.SqlClient;
 
 using Application.Models;
 using Application.Ports;
@@ -38,7 +38,7 @@ namespace Persistence.Repository
             ChatAccountInfractionState accountInfractionState;
             try
             {
-                using (SqlConnection moderationConnection = OpenModerationConnection())
+                using (SqlConnection moderationConnection = ModerationDatabaseConnection.Open())
                 {
                     accountInfractionState = ReadAccountState(moderationConnection, null, accountUserId);
                 }
@@ -57,7 +57,7 @@ namespace Persistence.Repository
             ChatInfractionRecord recordedChatInfraction;
             try
             {
-                using (SqlConnection moderationConnection = OpenModerationConnection())
+                using (SqlConnection moderationConnection = ModerationDatabaseConnection.Open())
                 using (SqlTransaction moderationTransaction = moderationConnection.BeginTransaction())
                 {
                     AcquireAccountLock(moderationTransaction, chatInfractionSubmission.AccountUserId);
@@ -66,6 +66,11 @@ namespace Persistence.Repository
                 }
             }
             catch (SqlException ex)
+            {
+                _chatModerationLogger.RecordPersistenceFailure(nameof(RecordChatMessageInfraction), ex);
+                throw;
+            }
+            catch (InvalidOperationException ex)
             {
                 _chatModerationLogger.RecordPersistenceFailure(nameof(RecordChatMessageInfraction), ex);
                 throw;
@@ -98,29 +103,13 @@ namespace Persistence.Repository
             recordedChatInfraction.IsAccountBanned = ChatInfractionRules.IsAccountBanned(
                 accountInfractionState, evaluatedAtUtc);
             SaveAccountState(moderationTransaction, chatInfractionSubmission.AccountUserId, accountInfractionState);
+            if (accountInfractionState.IsChatAccountPermanentlyBanned)
+            {
+                BlockedAccountEmailRepository.BlockAccountEmail(moderationTransaction,
+                    chatInfractionSubmission.AccountUserId);
+            }
+
             return recordedChatInfraction;
-        }
-
-        private static SqlConnection OpenModerationConnection()
-        {
-            string databaseConnectionString;
-            using (TrickTakingMissionsBDEntities databaseContext = new TrickTakingMissionsBDEntities())
-            {
-                databaseConnectionString = databaseContext.Database.Connection.ConnectionString;
-            }
-
-            SqlConnection moderationConnection = new SqlConnection(databaseConnectionString);
-            try
-            {
-                moderationConnection.Open();
-            }
-            catch (SqlException)
-            {
-                moderationConnection.Dispose();
-                throw;
-            }
-
-            return moderationConnection;
         }
 
         private static ChatAccountInfractionState ReadAccountState(SqlConnection moderationConnection,

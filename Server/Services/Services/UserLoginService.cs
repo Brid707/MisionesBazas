@@ -1,9 +1,10 @@
+using System;
 using System.Data.SqlClient;
 using System.ServiceModel;
-using System;
 
 using Application.Models;
 using Application.Ports;
+using Domain;
 using Services.Contracts;
 using Services.DataContracts;
 
@@ -38,11 +39,40 @@ namespace Services.Services
             {
                 AuthenticateAndNotifyAccount(email, password);
             }
+            catch (InvalidOperationException)
+            {
+                NotifyLoginStorageFailure();
+            }
             catch (SqlException)
             {
-                OperationContext.Current.GetCallbackChannel<IUserLoginCallback>()
-                    .LoginResult(false, "ChatStorageUnavailable", null);
+                NotifyLoginStorageFailure();
             }
+        }
+
+        private static void NotifyLoginStorageFailure()
+        {
+            OperationContext.Current.GetCallbackChannel<IUserLoginCallback>()
+                .LoginResult(false, "ChatStorageUnavailable", null);
+        }
+
+        private User CreateRestrictedLoginNotice(int accountUserId)
+        {
+            ChatAccountInfractionState accountBanState = _accountAccessPolicy.GetAccountBanState(accountUserId);
+            ChatAccountBanType accountBanType = ChatAccountBanType.Temporary;
+            if (accountBanState.IsChatAccountPermanentlyBanned)
+            {
+                accountBanType = ChatAccountBanType.Permanent;
+            }
+
+            return new User
+            {
+                ChatAccountBanNotice = new ChatAccountBanNotice
+                {
+                    ChatAccountBanType = accountBanType,
+                    ChatAccountBanEndsAtUtc = accountBanState.ChatAccountBanEndsAtUtc,
+                    EvaluatedAtUtc = DateTime.UtcNow
+                }
+            };
         }
 
         private void AuthenticateAndNotifyAccount(string email, string password)
@@ -75,6 +105,7 @@ namespace Services.Services
                 if (user != null)
                 {
                     responseMessage = "ChatAccountBanned";
+                    userDto = CreateRestrictedLoginNotice(user.IdUser);
                 }
             }
 

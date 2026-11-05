@@ -1,18 +1,34 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/Services.DataContracts" />
+  <xs:element name="UpdateLobbySettings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lobbyCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="requesterUserId" type="xs:int" />
+        <xs:element minOccurs="0" name="settings" nillable="true" xmlns:q1="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q1:LobbySettings" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateLobbySettingsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UpdateLobbySettingsResult" nillable="true" xmlns:q2="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q2:LobbyResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="CreateLobby">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="hostUserId" type="xs:int" />
-        <xs:element minOccurs="0" name="settings" nillable="true" xmlns:q1="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q1:LobbySettings" />
+        <xs:element minOccurs="0" name="settings" nillable="true" xmlns:q3="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q3:LobbySettings" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="CreateLobbyResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="CreateLobbyResult" nillable="true" xmlns:q2="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q2:LobbyResult" />
+        <xs:element minOccurs="0" name="CreateLobbyResult" nillable="true" xmlns:q4="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q4:LobbyResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -27,7 +43,7 @@
   <xs:element name="JoinLobbyByCodeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="JoinLobbyByCodeResult" nillable="true" xmlns:q3="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q3:LobbyResult" />
+        <xs:element minOccurs="0" name="JoinLobbyByCodeResult" nillable="true" xmlns:q5="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q5:LobbyResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -48,6 +64,22 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="AuthorizeKickedPlayerReentry">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lobbyCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="hostUserId" type="xs:int" />
+        <xs:element minOccurs="0" name="targetUserId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthorizeKickedPlayerReentryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AuthorizeKickedPlayerReentryResult" nillable="true" xmlns:q6="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q6:LobbyResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="SetPlayerReadyStatus">
     <xs:complexType>
       <xs:sequence>
@@ -60,14 +92,14 @@
   <xs:element name="SendLobbyChatMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="chatMessageSubmission" nillable="true" xmlns:q4="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q4:LobbyChatMessageSubmission" />
+        <xs:element minOccurs="0" name="chatMessageSubmission" nillable="true" xmlns:q7="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q7:LobbyChatMessageSubmission" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SendLobbyChatMessageResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="SendLobbyChatMessageResult" nillable="true" xmlns:q5="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q5:LobbyChatMessageSubmissionOutcome" />
+        <xs:element minOccurs="0" name="SendLobbyChatMessageResult" nillable="true" xmlns:q8="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q8:LobbyChatMessageSubmissionOutcome" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -79,10 +111,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="OnLobbyStateChanged">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="lobby" nillable="true" xmlns:q9="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q9:Lobby" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="OnPlayerJoinedLobby">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="player" nillable="true" xmlns:q6="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q6:LobbyPlayer" />
+        <xs:element minOccurs="0" name="player" nillable="true" xmlns:q10="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q10:LobbyPlayer" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -105,14 +144,14 @@
   <xs:element name="OnReceiveLobbyChatMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="message" nillable="true" xmlns:q7="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q7:LobbyMessage" />
+        <xs:element minOccurs="0" name="message" nillable="true" xmlns:q11="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q11:LobbyMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnChatAccountBanApplied">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="chatAccountBanNotice" nillable="true" xmlns:q8="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q8:ChatAccountBanNotice" />
+        <xs:element minOccurs="0" name="chatAccountBanNotice" nillable="true" xmlns:q12="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q12:ChatAccountBanNotice" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -133,14 +172,14 @@
   <xs:element name="RegisterUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="user" nillable="true" xmlns:q9="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q9:UserRegister" />
+        <xs:element minOccurs="0" name="user" nillable="true" xmlns:q13="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q13:UserRegister" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RegisterUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="RegisterUserResult" nillable="true" xmlns:q10="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q10:OperationResult" />
+        <xs:element minOccurs="0" name="RegisterUserResult" nillable="true" xmlns:q14="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q14:OperationResult" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -157,7 +196,7 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="success" type="xs:boolean" />
         <xs:element minOccurs="0" name="message" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="user" nillable="true" xmlns:q11="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q11:User" />
+        <xs:element minOccurs="0" name="user" nillable="true" xmlns:q15="http://schemas.datacontract.org/2004/07/Services.DataContracts" type="q15:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

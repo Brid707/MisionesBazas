@@ -1,6 +1,5 @@
-using System.Runtime.Serialization;
 using System;
-
+using System.Runtime.Serialization;
 
 namespace Services.DataContracts
 {
@@ -8,6 +7,9 @@ namespace Services.DataContracts
     [DataContract]
     public sealed class ChatAccountBanNotice
     {
+        [DataMember(Order = 4)]
+        public DateTime EvaluatedAtUtc { get; set; }
+
         [DataMember(Order = 1)]
         public Guid ChatMessageSubmissionId { get; set; }
 

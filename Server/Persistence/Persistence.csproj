@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repository\BlockedAccountEmailRepository.cs" />
+    <Compile Include="Repository\ModerationDatabaseConnection.cs" />
     <Compile Include="AttemptCard.cs">
       <DependentUpon>TrickTakingMissionsModel.tt</DependentUpon>
     </Compile>
@@ -211,6 +213,7 @@
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
     </ProjectReference>
+    <None Include="Migrations\002_PermanentlyBlockedAccountEmail.sql" />
     <None Include="Migrations\001_ChatModeration.sql" />
   </ItemGroup>
 </Project>

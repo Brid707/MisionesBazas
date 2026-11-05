@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -496,4 +496,18 @@
   <data name="Chat_ChatDeliveryUnknown" xml:space="preserve"><value>No se pudo confirmar el envío. Al reintentar el mismo texto no se duplicarán los puntos.</value></data>
   <data name="Chat_ConflictingChatMessageIdentifier" xml:space="preserve"><value>El identificador del envío ya corresponde a otro mensaje.</value></data>
   <data name="Chat_ChatAccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
+  <data name="Lobby_HostRequired" xml:space="preserve"><value>Solo el anfitrión actual puede cambiar la configuración.</value></data>
+  <data name="Lobby_ConfigurationInvalid" xml:space="preserve"><value>La configuración no es válida. La capacidad debe admitir a los jugadores presentes.</value></data>
+  <data name="Lobby_MatchInProgress" xml:space="preserve"><value>La partida ya comenzó; no puedes cambiar la configuración.</value></data>
+  <data name="Lobby_ConnectionLost" xml:space="preserve"><value>Se perdió la comunicación con el servidor. Revisa tu conexión e intenta volver a entrar.</value></data>
+  <data name="Lobby_HostChanged" xml:space="preserve"><value>Nuevo anfitrión: </value></data>
+  <data name="Lobby_PlayerLimit" xml:space="preserve"><value>Máximo de jugadores: </value></data>
+  <data name="Register_EmailPermanentlyBlocked" xml:space="preserve"><value>Este correo está bloqueado permanentemente y no puede usarse para registrar otra cuenta.</value></data>
+  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Tiempo restante: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s.</value></data>
+  <data name="Chat_TemporaryBanExpired" xml:space="preserve"><value>El bloqueo temporal terminó. Puedes intentar iniciar sesión nuevamente.</value></data>
+  <data name="Account_StorageUnavailable" xml:space="preserve"><value>No se pudo consultar la base de datos de cuentas. Inténtalo cuando se restablezca el servicio.</value></data>
+  <data name="Lobby_PlayerActions" xml:space="preserve"><value>Opciones del jugador</value></data>
+  <data name="Lobby_KickPlayer" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="Lobby_KickedNotice" xml:space="preserve"><value>El anfitrión te expulsó de la sala.</value></data>
+  <data name="Lobby_KickedParticipantReentryDenied" xml:space="preserve"><value>Fuiste expulsado de esta sala. Solo una nueva invitación autorizada por el anfitrión puede restablecer tu acceso.</value></data>
 </root>

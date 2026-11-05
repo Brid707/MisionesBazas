@@ -1,6 +1,5 @@
 using System.Runtime.Serialization;
 
-
 namespace Services.DataContracts
 {
     /// <summary>
@@ -9,6 +8,9 @@ namespace Services.DataContracts
     [DataContract]
     public sealed class User
     {
+        [DataMember]
+        public ChatAccountBanNotice ChatAccountBanNotice { get; set; }
+
         [DataMember]
         public int IdUser { get; set; }
 

@@ -1,4 +1,4 @@
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 using Model.Session;
 using View.Services;
@@ -23,11 +23,32 @@ namespace View.Views
             LobbyViewModel viewModel = new LobbyViewModel(navigationService, LobbySession.Current,
                 new ChatModerationPresenter());
             DataContext = viewModel;
+            viewModel.CurrentPlayerKicked += OnCurrentPlayerKicked;
             Unloaded += OnLobbyUnloaded;
         }
+        private void OnPlayerActionsButtonClick(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (sender is Button playerActionsButton && playerActionsButton.ContextMenu != null)
+            {
+                playerActionsButton.ContextMenu.PlacementTarget = playerActionsButton;
+                playerActionsButton.ContextMenu.IsOpen = true;
+            }
+        }
+
+        private void OnCurrentPlayerKicked(object sender, System.EventArgs e)
+        {
+            System.Windows.MessageBox.Show(Properties.Langs.Resources.Lobby_KickedNotice,
+                Properties.Langs.Resources.Lobby_PlayerActions,
+                System.Windows.MessageBoxButton.OK);
+        }
+
         private void OnLobbyUnloaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            (DataContext as System.IDisposable)?.Dispose();
+            if (DataContext is LobbyViewModel lobbyViewModel)
+            {
+                lobbyViewModel.CurrentPlayerKicked -= OnCurrentPlayerKicked;
+                lobbyViewModel.Dispose();
+            }
         }
     }
 }

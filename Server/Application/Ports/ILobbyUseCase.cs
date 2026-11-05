@@ -1,4 +1,4 @@
-using Application.Models;
+﻿using Application.Models;
 
 namespace Application.Ports
 {
@@ -11,10 +11,23 @@ namespace Application.Ports
         /// Creates a new multiplayer lobby room hosted by the specified user.
         /// </summary>
         /// <param name="hostUserId">The unique identifier of the user hosting the room.</param>
-        /// <param name="targetMissionCount">The number of missions configured for the session.</param>
-        /// <param name="playerLimit">The maximum number of participants allowed (2 to 4).</param>
+        /// <param name="lobbyConfiguration">The requested missions, capacity and room privacy.</param>
         /// <returns>A <see cref="LobbyActionOutcome"/> containing the generated lobby state or error details.</returns>
-        LobbyActionOutcome CreateLobby(int hostUserId, byte targetMissionCount, byte playerLimit);
+        LobbyActionOutcome CreateLobby(int hostUserId, LobbyConfiguration lobbyConfiguration);
+
+        /// <summary>Updates waiting-room rules after verifying the authenticated host and capacity.</summary>
+        /// <param name="lobbyCode">The authoritative room identifier.</param>
+        /// <param name="requesterUserId">The authenticated participant requesting the change.</param>
+        /// <param name="lobbyConfiguration">The transport-independent requested rules.</param>
+        /// <returns>A detached room snapshot on success, otherwise a specific rejection.</returns>
+        LobbyActionOutcome UpdateLobbySettings(string lobbyCode, int requesterUserId,
+            LobbyConfiguration lobbyConfiguration);
+
+        /// <summary>Removes a disconnected participant only while the room is waiting for players.</summary>
+        /// <param name="lobbyCode">The room whose transport reported the loss.</param>
+        /// <param name="participantUserId">The disconnected participant.</param>
+        /// <returns>The departure snapshot; an active match retains the participant for reconnection.</returns>
+        LobbyActionOutcome DisconnectLobbyParticipant(string lobbyCode, int participantUserId);
 
         /// <summary>
         /// Adds a user to an existing active lobby room using its invitation code.
@@ -40,6 +53,13 @@ namespace Application.Ports
         /// <param name="targetUserId">The unique identifier of the player to remove.</param>
         /// <returns>A <see cref="LobbyActionOutcome"/> indicating whether the target player was removed.</returns>
         LobbyActionOutcome KickPlayer(string lobbyCode, int hostUserId, int targetUserId);
+
+        /// <summary>Allows an invitation workflow to restore access after a host-issued removal.</summary>
+        /// <param name="lobbyCode">The room whose reentry restriction will be removed.</param>
+        /// <param name="hostUserId">The current host authorizing a new invitation.</param>
+        /// <param name="targetUserId">The player being invited back to this room.</param>
+        /// <returns>Authorization confirmation or a specific rejection; does not deliver an invitation.</returns>
+        LobbyActionOutcome AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId);
 
         /// <summary>
         /// Updates the readiness status of a participant inside the specified lobby room.

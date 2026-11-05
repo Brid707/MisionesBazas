@@ -1,6 +1,6 @@
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System;
 
 using Model.GameServices;
 using Model.Session;
@@ -16,6 +16,7 @@ namespace ViewModel.ViewModels
     public sealed class EnterGameCodeViewModel : ViewModelBase
     {
         private const int ServerErrorCodeLobbyFull = 104;
+        private const int ServerErrorCodeKickedParticipantReentryDenied = 107;
 
         private readonly IDialogService _dialogService;
         private readonly ILobbySession _lobbySession;
@@ -60,6 +61,25 @@ namespace ViewModel.ViewModels
             }
         }
 
+        private static int ResolveLobbyEntryRejection(int serverErrorCode)
+        {
+            int rejectionMessageCode;
+            switch (serverErrorCode)
+            {
+                case ServerErrorCodeLobbyFull:
+                    rejectionMessageCode = MessageCode.EnterGameCodeLobbyAlreadyFull;
+                    break;
+                case ServerErrorCodeKickedParticipantReentryDenied:
+                    rejectionMessageCode = MessageCode.LobbyKickedParticipantReentryDenied;
+                    break;
+                default:
+                    rejectionMessageCode = MessageCode.EnterGameCodeInvalidCode;
+                    break;
+            }
+
+            return rejectionMessageCode;
+        }
+
         private async Task TryJoinLobbyAsync()
         {
             int userId = UserSession.Current.EnsureActiveUserId();
@@ -73,9 +93,7 @@ namespace ViewModel.ViewModels
             }
             else if (!result.IsSuccess || result.Lobby == null)
             {
-                int messageToDisplay = result.ErrorCode == ServerErrorCodeLobbyFull
-                    ? MessageCode.EnterGameCodeLobbyAlreadyFull
-                    : MessageCode.EnterGameCodeInvalidCode;
+                int messageToDisplay = ResolveLobbyEntryRejection(result.ErrorCode);
 
                 _dialogService.ShowWarning(messageToDisplay);
             }

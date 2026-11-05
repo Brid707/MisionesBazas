@@ -1,6 +1,8 @@
-using System.ServiceModel;
-using System.Windows.Input;
 using System;
+using System.Diagnostics;
+using System.ServiceModel;
+using System.Threading;
+using System.Windows.Input;
 
 using Model.GameServices;
 using Model.Security;
@@ -15,10 +17,18 @@ namespace ViewModel.ViewModels
     /// ViewModel for handling user login logic, decoupled from WPF UI controls.
     /// Implements <see cref="IUserLoginCallback"/> to receive asynchronous authentication responses from WCF.
     /// </summary>
-    public sealed class LoginViewModel : ViewModelBase, IUserLoginCallback
+    public sealed class LoginViewModel : ViewModelBase, IUserLoginCallback, IDisposable
     {
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly IChatModerationPresenter _chatModerationPresenter;
+        private readonly SynchronizationContext _loginSynchronizationContext;
+        private readonly Stopwatch _accountBanElapsedTime = new Stopwatch();
+        private Timer _accountBanCountdownTimer;
+        private ChatAccountBanNotice _accountBanNotice;
+        private string _accountBanFeedbackText;
+        private UserLoginClient _loginServiceClient;
+        private bool _isLoginDisposed;
 
         private string _email;
         private string _password;
@@ -29,14 +39,24 @@ namespace ViewModel.ViewModels
         /// </summary>
         /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
         /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
-        public LoginViewModel(INavigationService navigationService, IDialogService dialogService)
+        /// <param name="chatModerationPresenter">Formats private account restrictions in the selected language.</param>
+        public LoginViewModel(INavigationService navigationService, IDialogService dialogService,
+            IChatModerationPresenter chatModerationPresenter)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            _chatModerationPresenter = chatModerationPresenter;
+            _loginSynchronizationContext = SynchronizationContext.Current;
 
             LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
             BackCommand = new RelayCommand(ExecuteBack);
             ForgotPasswordCommand = new RelayCommand(ExecuteForgotPassword);
+        }
+
+        public string AccountBanFeedbackText
+        {
+            get => _accountBanFeedbackText;
+            private set => SetProperty(ref _accountBanFeedbackText, value);
         }
 
         /// <summary>
@@ -114,17 +134,70 @@ namespace ViewModel.ViewModels
             }
             else
             {
-                int loginWarningCode = MessageCode.InvalidCredentials;
-                if (message == "ChatAccountBanned")
+                ProcessLoginRejection(message, user?.ChatAccountBanNotice);
+            }
+        }
+
+        public void Dispose()
+        {
+            _isLoginDisposed = true;
+            _accountBanCountdownTimer?.Dispose();
+            _loginServiceClient?.Abort();
+        }
+
+        private void ProcessLoginRejection(string rejectionReason, ChatAccountBanNotice accountBanNotice)
+        {
+            if (accountBanNotice != null)
+            {
+                _accountBanNotice = accountBanNotice;
+                _accountBanElapsedTime.Restart();
+                UpdateAccountBanCountdown();
+                _accountBanCountdownTimer?.Dispose();
+                if (accountBanNotice.ChatAccountBanType == ChatAccountBanType.Temporary)
                 {
-                    loginWarningCode = MessageCode.ChatAccountBanned;
+                    _accountBanCountdownTimer = new Timer(OnAccountBanCountdownTick, null,
+                        TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
                 }
-                else if (message == "ChatStorageUnavailable")
+            }
+            else
+            {
+                int loginWarningCode = MessageCode.InvalidCredentials;
+                if (rejectionReason == "ChatStorageUnavailable")
                 {
                     loginWarningCode = MessageCode.ChatStorageUnavailable;
                 }
 
                 _dialogService.ShowWarning(loginWarningCode);
+            }
+        }
+
+        private void OnAccountBanCountdownTick(object countdownTimerState)
+        {
+            if (_loginSynchronizationContext != null)
+            {
+                _loginSynchronizationContext.Post(_ => UpdateAccountBanCountdown(), null);
+            }
+            else
+            {
+                UpdateAccountBanCountdown();
+            }
+        }
+
+        private void UpdateAccountBanCountdown()
+        {
+            if (!_isLoginDisposed && _accountBanNotice != null)
+            {
+                AccountBanFeedbackText = _chatModerationPresenter.FormatAccountBan(new ChatAccountBanNotice
+                {
+                    ChatAccountBanType = _accountBanNotice.ChatAccountBanType,
+                    ChatAccountBanEndsAtUtc = _accountBanNotice.ChatAccountBanEndsAtUtc,
+                    EvaluatedAtUtc = _accountBanNotice.EvaluatedAtUtc + _accountBanElapsedTime.Elapsed
+                });
+                if (_accountBanNotice.ChatAccountBanEndsAtUtc <=
+                    _accountBanNotice.EvaluatedAtUtc + _accountBanElapsedTime.Elapsed)
+                {
+                    _accountBanCountdownTimer?.Dispose();
+                }
             }
         }
 
@@ -145,9 +218,11 @@ namespace ViewModel.ViewModels
                     IsLoading = true;
                     string passwordHash = PasswordHasher.ComputeSha256Hash(password);
                     InstanceContext context = new InstanceContext(this);
-                    UserLoginClient client = new UserLoginClient(context);
-
-                    client.Login(email, passwordHash);
+                    _accountBanCountdownTimer?.Dispose();
+                    AccountBanFeedbackText = string.Empty;
+                    _loginServiceClient?.Abort();
+                    _loginServiceClient = new UserLoginClient(context);
+                    _loginServiceClient.Login(email, passwordHash);
                 }
                 catch (EndpointNotFoundException ex)
                 {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -496,4 +496,18 @@
   <data name="Chat_ChatDeliveryUnknown" xml:space="preserve"><value>Submission could not be confirmed. Retrying the same text will not duplicate infraction points.</value></data>
   <data name="Chat_ConflictingChatMessageIdentifier" xml:space="preserve"><value>The submission identifier already belongs to another message.</value></data>
   <data name="Chat_ChatAccountBanned" xml:space="preserve"><value>Your account is banned for chat infractions.</value></data>
+  <data name="Lobby_HostRequired" xml:space="preserve"><value>Only the current host can change the configuration.</value></data>
+  <data name="Lobby_ConfigurationInvalid" xml:space="preserve"><value>Invalid configuration. Capacity must accommodate the current participants.</value></data>
+  <data name="Lobby_MatchInProgress" xml:space="preserve"><value>The match has started; configuration cannot be changed.</value></data>
+  <data name="Lobby_ConnectionLost" xml:space="preserve"><value>Communication with the server was lost. Check your connection and try joining again.</value></data>
+  <data name="Lobby_HostChanged" xml:space="preserve"><value>New host: </value></data>
+  <data name="Lobby_PlayerLimit" xml:space="preserve"><value>Maximum players: </value></data>
+  <data name="Register_EmailPermanentlyBlocked" xml:space="preserve"><value>This email is permanently blocked and cannot register another account.</value></data>
+  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Time remaining: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s.</value></data>
+  <data name="Chat_TemporaryBanExpired" xml:space="preserve"><value>The temporary restriction has expired. You can try signing in again.</value></data>
+  <data name="Account_StorageUnavailable" xml:space="preserve"><value>The account database could not be reached. Try again when the service is available.</value></data>
+  <data name="Lobby_PlayerActions" xml:space="preserve"><value>Player options</value></data>
+  <data name="Lobby_KickPlayer" xml:space="preserve"><value>Kick player</value></data>
+  <data name="Lobby_KickedNotice" xml:space="preserve"><value>The host removed you from the lobby.</value></data>
+  <data name="Lobby_KickedParticipantReentryDenied" xml:space="preserve"><value>You were removed from this lobby. Only a new invitation authorized by the host can restore your access.</value></data>
 </root>

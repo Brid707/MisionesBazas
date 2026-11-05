@@ -48,6 +48,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\LobbyStateChangedEventArgs.cs" />
     <Compile Include="Services\ChatAccountBanAppliedEventArgs.cs" />
     <Compile Include="Security\AccountSessionEndpointBehavior.cs" />
     <Compile Include="Connected Services\GameServices\Reference.cs" />

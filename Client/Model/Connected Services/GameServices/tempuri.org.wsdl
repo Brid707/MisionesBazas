@@ -8,6 +8,12 @@
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/Application.Models" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="ILobbyService_UpdateLobbySettings_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLobbySettings" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_UpdateLobbySettings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateLobbySettingsResponse" />
+  </wsdl:message>
   <wsdl:message name="ILobbyService_CreateLobby_InputMessage">
     <wsdl:part name="parameters" element="tns:CreateLobby" />
   </wsdl:message>
@@ -26,6 +32,12 @@
   <wsdl:message name="ILobbyService_KickPlayerByUserId_InputMessage">
     <wsdl:part name="parameters" element="tns:KickPlayerByUserId" />
   </wsdl:message>
+  <wsdl:message name="ILobbyService_AuthorizeKickedPlayerReentry_InputMessage">
+    <wsdl:part name="parameters" element="tns:AuthorizeKickedPlayerReentry" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_AuthorizeKickedPlayerReentry_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AuthorizeKickedPlayerReentryResponse" />
+  </wsdl:message>
   <wsdl:message name="ILobbyService_SetPlayerReadyStatus_InputMessage">
     <wsdl:part name="parameters" element="tns:SetPlayerReadyStatus" />
   </wsdl:message>
@@ -37,6 +49,9 @@
   </wsdl:message>
   <wsdl:message name="ILobbyService_StartGameFromLobby_InputMessage">
     <wsdl:part name="parameters" element="tns:StartGameFromLobby" />
+  </wsdl:message>
+  <wsdl:message name="ILobbyService_OnLobbyStateChanged_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnLobbyStateChanged" />
   </wsdl:message>
   <wsdl:message name="ILobbyService_OnPlayerJoinedLobby_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:OnPlayerJoinedLobby" />
@@ -75,6 +90,10 @@
     <wsdl:part name="parameters" element="tns:LoginResultResponse" />
   </wsdl:message>
   <wsdl:portType name="ILobbyService">
+    <wsdl:operation name="UpdateLobbySettings">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/UpdateLobbySettings" message="tns:ILobbyService_UpdateLobbySettings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse" message="tns:ILobbyService_UpdateLobbySettings_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="CreateLobby">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/CreateLobby" message="tns:ILobbyService_CreateLobby_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/CreateLobbyResponse" message="tns:ILobbyService_CreateLobby_OutputMessage" />
@@ -89,6 +108,10 @@
     <wsdl:operation name="KickPlayerByUserId">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/KickPlayerByUserId" message="tns:ILobbyService_KickPlayerByUserId_InputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="AuthorizeKickedPlayerReentry">
+      <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentry" message="tns:ILobbyService_AuthorizeKickedPlayerReentry_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentryResponse" message="tns:ILobbyService_AuthorizeKickedPlayerReentry_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="SetPlayerReadyStatus">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/SetPlayerReadyStatus" message="tns:ILobbyService_SetPlayerReadyStatus_InputMessage" />
     </wsdl:operation>
@@ -98,6 +121,9 @@
     </wsdl:operation>
     <wsdl:operation name="StartGameFromLobby">
       <wsdl:input wsaw:Action="http://tempuri.org/ILobbyService/StartGameFromLobby" message="tns:ILobbyService_StartGameFromLobby_InputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OnLobbyStateChanged">
+      <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/OnLobbyStateChanged" message="tns:ILobbyService_OnLobbyStateChanged_OutputCallbackMessage" />
     </wsdl:operation>
     <wsdl:operation name="OnPlayerJoinedLobby">
       <wsdl:output wsaw:Action="http://tempuri.org/ILobbyService/OnPlayerJoinedLobby" message="tns:ILobbyService_OnPlayerJoinedLobby_OutputCallbackMessage" />
@@ -138,6 +164,15 @@
   </wsdl:portType>
   <wsdl:binding name="DefaultBinding_ILobbyService" type="tns:ILobbyService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="UpdateLobbySettings">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/UpdateLobbySettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="CreateLobby">
       <soap:operation soapAction="http://tempuri.org/ILobbyService/CreateLobby" style="document" />
       <wsdl:input>
@@ -168,6 +203,15 @@
         <soap:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
+    <wsdl:operation name="AuthorizeKickedPlayerReentry">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/AuthorizeKickedPlayerReentry" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="SetPlayerReadyStatus">
       <soap:operation soapAction="http://tempuri.org/ILobbyService/SetPlayerReadyStatus" style="document" />
       <wsdl:input>
@@ -188,6 +232,12 @@
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="OnLobbyStateChanged">
+      <soap:operation soapAction="http://tempuri.org/ILobbyService/OnLobbyStateChanged" style="document" />
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="OnPlayerJoinedLobby">
       <soap:operation soapAction="http://tempuri.org/ILobbyService/OnPlayerJoinedLobby" style="document" />

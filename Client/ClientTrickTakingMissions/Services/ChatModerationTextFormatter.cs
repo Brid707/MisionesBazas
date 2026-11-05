@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 
 using Model.GameServices;
@@ -36,9 +37,28 @@ namespace View.Services
                     .ToString("g", CultureInfo.CurrentCulture) ?? string.Empty;
                 localizedAccountBanNotice = GetChatResource("Chat_TemporaryAccountBan")
                     .Replace("{chatAccountBanEndsAtLocalTime}", localBanEndText);
+                TimeSpan remainingBanDuration = chatAccountBanNotice.ChatAccountBanEndsAtUtc.GetValueOrDefault() -
+                    chatAccountBanNotice.EvaluatedAtUtc;
+                localizedAccountBanNotice += " " + FormatRemainingBanDuration(remainingBanDuration);
             }
 
             return localizedAccountBanNotice;
+        }
+
+        private static string FormatRemainingBanDuration(TimeSpan remainingBanDuration)
+        {
+            string remainingBanText = GetChatResource("Chat_TemporaryBanExpired");
+            if (remainingBanDuration > TimeSpan.Zero)
+            {
+                remainingBanText = GetChatResource("Chat_RemainingBanDuration")
+                    .Replace("{remainingBanDays}", remainingBanDuration.Days.ToString(CultureInfo.CurrentCulture))
+                    .Replace("{remainingBanHours}", remainingBanDuration.Hours.ToString(CultureInfo.CurrentCulture))
+                    .Replace("{remainingBanMinutes}", remainingBanDuration.Minutes.ToString(CultureInfo.CurrentCulture))
+                    .Replace("{remainingBanSeconds}",
+                    remainingBanDuration.Seconds.ToString(CultureInfo.CurrentCulture));
+            }
+
+            return remainingBanText;
         }
 
         private static string FormatInfractionNotice(ChatInfractionNotice chatInfractionNotice)

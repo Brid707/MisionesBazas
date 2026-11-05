@@ -1,3 +1,5 @@
+using Domain;
+
 namespace Application.Ports
 {
     /// <summary>
@@ -5,6 +7,9 @@ namespace Application.Ports
     /// </summary>
     public interface IAccountAccessPolicy
     {
+        /// <summary>Returns the persisted sanction state used for a private login restriction notice.</summary>
+        ChatAccountInfractionState GetAccountBanState(int accountUserId);
+
         string CreateAllowedAccountSession(int accountUserId);
 
         bool IsAccountOperationAllowed(int accountUserId, string accountSessionToken);
