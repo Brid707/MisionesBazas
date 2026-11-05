@@ -1,0 +1,30 @@
+<catalog culture="en-US">
+  <expression category="Profanity" matchObfuscation="true">fuck</expression>
+  <expression category="Profanity" matchObfuscation="true">fucking</expression>
+  <expression category="Profanity" matchObfuscation="true">fucker</expression>
+  <expression category="Profanity" matchObfuscation="true">motherfucker</expression>
+  <expression category="Profanity" matchObfuscation="true">shit</expression>
+  <expression category="Profanity" matchObfuscation="true">bullshit</expression>
+  <expression category="Profanity" matchObfuscation="true">asshole</expression>
+  <expression category="Profanity" matchObfuscation="true">bitch</expression>
+  <expression category="Profanity" matchObfuscation="true">bastard</expression>
+  <expression category="Profanity" matchObfuscation="true">idiot</expression>
+  <expression category="Profanity" matchObfuscation="true">stupid</expression>
+  <expression category="Threat" matchObfuscation="true">i will kill you</expression>
+  <expression category="Threat" matchObfuscation="true">i'll kill you</expression>
+  <expression category="Threat" matchObfuscation="true">i am going to kill you</expression>
+  <expression category="Threat" matchObfuscation="true">i'm going to kill you</expression>
+  <expression category="Threat" matchObfuscation="true">i will stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i'll stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i will find your address</expression>
+  <expression category="Threat" matchObfuscation="true">i'll find your address</expression>
+  <expression category="Threat" matchObfuscation="true">i will hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i'll hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i will hurt you</expression>
+  <expression category="Threat" matchObfuscation="true">i am going to hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i'm going to hack you</expression>
+  <expression category="Threat" matchObfuscation="true">i am going to stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i'm going to stalk you</expression>
+  <expression category="Threat" matchObfuscation="true">i will track you down</expression>
+  <expression category="Threat" matchObfuscation="true">i'll track you down</expression>
+</catalog>

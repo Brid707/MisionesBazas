@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace Model.Services
 {
-    [DataContract(Name = "UserRegister", Namespace = "http://schemas.datacontract.org/2004/07/Services.DTO")]
+    [DataContract(Name = "UserRegister",
+        Namespace = "http://schemas.datacontract.org/2004/07/Services.DataContracts")]
     internal sealed class UserRegisterContract
     {
         [DataMember]
@@ -18,7 +19,8 @@ namespace Model.Services
         public string PasswordHash { get; set; }
     }
 
-    [DataContract(Name = "OperationResult", Namespace = "http://schemas.datacontract.org/2004/07/Services.DTO")]
+    [DataContract(Name = "OperationResult",
+        Namespace = "http://schemas.datacontract.org/2004/07/Services.DataContracts")]
     internal class OperationResultContract
     {
         [DataMember]

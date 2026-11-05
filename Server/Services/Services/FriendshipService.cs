@@ -2,7 +2,7 @@ using Application.Models.Friendship;
 using Application.Ports;
 using Services.Contracts.Friendship;
 using Services.DataContracts.Friendship;
-using Services.DTO;
+using Services.DataContracts;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

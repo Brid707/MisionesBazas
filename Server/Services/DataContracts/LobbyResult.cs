@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents the specialized result contract for lobby room operations.

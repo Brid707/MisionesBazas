@@ -1,3 +1,5 @@
+﻿using System.Windows.Input;
+
 using ViewModel.Base;
 
 namespace ViewModel.ViewModels
@@ -26,6 +28,12 @@ namespace ViewModel.ViewModels
         public bool IsHost { get; }
 
         public bool IsCurrentPlayer { get; set; }
+
+        /// <summary>Indicates whether this row offers host participant actions.</summary>
+        public bool CanBeKickedByCurrentHost { get; set; }
+
+        /// <summary>Requests removal of this participant after checking the current host permission.</summary>
+        public ICommand KickPlayerCommand { get; set; }
 
         public bool IsOtherPlayer => !IsCurrentPlayer;
 

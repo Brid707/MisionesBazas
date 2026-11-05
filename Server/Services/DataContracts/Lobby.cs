@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents the state and participant list of an active game lobby room.
@@ -23,6 +23,12 @@ namespace Services.DTO
 
         [DataMember]
         public byte Status { get; set; }
+
+        [DataMember]
+        public bool IsPrivate { get; set; } = true;
+
+        [DataMember]
+        public long StateVersion { get; set; }
 
         [DataMember]
         public List<LobbyPlayer> Players { get; set; } = new List<LobbyPlayer>();

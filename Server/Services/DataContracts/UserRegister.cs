@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Data transfer object carrying credentials and details for user account registration.

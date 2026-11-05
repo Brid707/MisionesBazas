@@ -1,4 +1,4 @@
-<Page x:Class="View.Views.Lobby"
+﻿<Page x:Class="View.Views.Lobby"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,17 +11,22 @@
       Title="Lobby">
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="LobbyAvatarTemplate">
+            <Grid Width="50" Height="50">
+                <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                <Ellipse Width="17" Height="17" Margin="0,8,0,0" VerticalAlignment="Top"
+                         Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                <Path Data="M 10 43 C 10 29 40 29 40 43 Q 25 53 10 43"
+                      Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStartColor}"
+                <GradientStop Color="{x:Static styles:ColorPalette.LobbyBackgroundGradientStartColor}"
                               Offset="0.0" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep1Color}"
-                              Offset="0.3" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep2Color}"
-                              Offset="0.8" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientEndColor}"
+                <GradientStop Color="{x:Static styles:ColorPalette.LobbyBackgroundGradientEndColor}"
                               Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
@@ -32,9 +37,9 @@
         </Grid.ColumnDefinitions>
 
         <!-- Main Lobby Content -->
-        <Grid Grid.Column="0" Margin="24,12,24,12">
+        <Grid Grid.Column="0" Margin="120,12,70,20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="140" />
+                <RowDefinition Height="210" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
@@ -42,7 +47,7 @@
             <Button x:Name="BackButton"
                     Width="56" Height="56"
                     HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Margin="12,12,0,0"
+                    Margin="0,0,0,0"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
                     Command="{Binding BackCommand}">
                 <Canvas Width="40" Height="40">
@@ -54,7 +59,7 @@
             <Button x:Name="ProfileButton"
                     Width="56" Height="56"
                     HorizontalAlignment="Left" VerticalAlignment="Top"
-                    Margin="80,12,0,0"
+                    Margin="76,0,0,0"
                     Background="Transparent" BorderThickness="0" Cursor="Hand"
                     Command="{Binding ProfileCommand}">
                 <Grid Width="56" Height="56">
@@ -66,7 +71,7 @@
                 </Grid>
             </Button>
 
-            <Viewbox Grid.Row="0" MaxWidth="700" MaxHeight="130" HorizontalAlignment="Center"
+            <Viewbox Grid.Row="0" MaxWidth="600" MaxHeight="190" HorizontalAlignment="Center"
                      VerticalAlignment="Top">
                 <StackPanel HorizontalAlignment="Center">
                     <TextBlock Text="{x:Static language:Resources.Lobby_Title1}"
@@ -91,41 +96,44 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0"
-                            Orientation="Horizontal"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center">
-                    <TextBlock Text="{x:Static language:Resources.Lobby_Missions}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
-                    <TextBlock Text="{Binding MissionsTarget}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                               Margin="6,0,24,0" />
-
-                    <TextBlock Text="{x:Static language:Resources.Lobby_Code}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
-                    <TextBlock Text="{Binding LobbyCode}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                               Margin="6,0,24,0" />
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <TextBlock Text="{x:Static language:Resources.Lobby_Missions}"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                        <TextBlock Text="{Binding MissionsTarget}" Margin="8,0,0,0"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Static language:Resources.Lobby_Code}"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                        <TextBlock Text="{Binding LobbyCode}" Margin="8,0,0,0"
+                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}" />
+                    </StackPanel>
+                    <TextBlock Margin="0,6,0,0"
+                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}">
+                        <Run Text="{x:Static language:Resources.Lobby_PlayerLimit}" />
+                        <Run Text="{Binding MaximumLobbyPlayerCount, Mode=OneWay}" />
+                    </TextBlock>
                 </StackPanel>
 
                 <Button Grid.Column="1"
                         x:Name="SettingsButton"
                         Content="{x:Static language:Resources.Lobby_SettingsButton}"
-                        Width="140" Height="36"
+                        Width="230" Height="44"
                         Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
                         Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                         BorderThickness="0"
-                        HorizontalAlignment="Center" VerticalAlignment="Top"
+                        HorizontalAlignment="Right" VerticalAlignment="Center"
+                        IsEnabled="{Binding CanEditCurrentLobby}"
                         Command="{Binding SettingsCommand}" />
             </Grid>
 
@@ -133,18 +141,19 @@
                     BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                     BorderThickness="4"
                     Margin="12,12,12,12"
-                    Padding="8"
-                    Background="{x:Static styles:ColorPalette.LobbyContainerBackgroundBrush}">
+                    Padding="0"
+                    Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
                     <ItemsControl x:Name="PlayersItemsControl"
                                   ItemsSource="{Binding Players}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
                                         BorderThickness="3"
-                                        Margin="0,6,0,6"
-                                        Padding="8"
-                                        Background="{x:Static styles:ColorPalette.PlayerSlotBackgroundBrush}">
+                                        Margin="0"
+                                        MinHeight="84" Padding="16,10"
+                                        Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="56" />
@@ -155,10 +164,7 @@
                                         <Grid Grid.Column="0"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center">
-                                            <Ellipse Width="44" Height="44"
-                                                     Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                     Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                                     StrokeThickness="2" />
+                                            <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}" />
                                         </Grid>
 
                                         <StackPanel Grid.Column="1"
@@ -170,11 +176,26 @@
                                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                        FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                                        VerticalAlignment="Center" />
-                                            <TextBlock Text="  👑"
+                                            <Button Content="&#x22EE;" Width="28" Height="30" Margin="8,0,0,0"
+                                                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                                    FontSize="20" Click="OnPlayerActionsButtonClick"
+                                                    ToolTip="{x:Static language:Resources.Lobby_PlayerActions}"
+                                                    Visibility="{Binding CanBeKickedByCurrentHost,
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Button.ContextMenu>
+                                                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext,
+                                                                     RelativeSource={RelativeSource Self}}">
+                                                        <MenuItem Header="{x:Static language:Resources.Lobby_KickPlayer}"
+                                                                  Command="{Binding KickPlayerCommand}" />
+                                                    </ContextMenu>
+                                                </Button.ContextMenu>
+                                            </Button>
+                                            <TextBlock Text="&#x1F451;"
                                                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                                        VerticalAlignment="Center"
                                                        Margin="8,0,0,0"
-                                                       Visibility="{Binding IsHost, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                       Visibility="{Binding IsHost,
+                                                           Converter={StaticResource BooleanToVisibilityConverter}}" />
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2"
@@ -188,16 +209,22 @@
                                                     BorderThickness="2"
                                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                     FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                                    Visibility="{Binding IsCurrentPlayer, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                    Command="{Binding DataContext.ToggleReadyCommand, RelativeSource={RelativeSource AncestorType=Page}}">
+                                                    Visibility="{Binding IsCurrentPlayer,
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Command="{Binding DataContext.ToggleReadyCommand,
+                                                        RelativeSource={RelativeSource AncestorType=Page}}">
                                                 <Button.Style>
                                                     <Style TargetType="Button">
-                                                        <Setter Property="Content" Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
-                                                        <Setter Property="Background" Value="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}" />
+                                                        <Setter Property="Content"
+                                                            Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
+                                                        <Setter Property="Background"
+                                                            Value="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsReady}" Value="True">
-                                                                <Setter Property="Content" Value="{x:Static language:Resources.Lobby_ReadyButton}" />
-                                                                <Setter Property="Background" Value="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}" />
+                                                                <Setter Property="Content"
+                                                                    Value="{x:Static language:Resources.Lobby_ReadyButton}" />
+                                                                <Setter Property="Background"
+                                                                    Value="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -209,13 +236,16 @@
                                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                        FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                                       Visibility="{Binding IsOtherPlayer, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                       Visibility="{Binding IsOtherPlayer,
+                                                           Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">
-                                                        <Setter Property="Text" Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
+                                                        <Setter Property="Text"
+                                                            Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsReady}" Value="True">
-                                                                <Setter Property="Text" Value="{x:Static language:Resources.Lobby_ReadyButton}" />
+                                                                <Setter Property="Text"
+                                                                    Value="{x:Static language:Resources.Lobby_ReadyButton}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -227,9 +257,184 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding VacantLobbyPlayerSlots}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border MinHeight="84" Padding="16,10"
+                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                        BorderThickness="3"
+                                        Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+                                    <Grid>
+                                        <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}"
+                                                        HorizontalAlignment="Left" />
+                                        <Canvas Width="44" Height="44" HorizontalAlignment="Right">
+                                            <Ellipse Width="44" Height="44" StrokeThickness="3"
+                                                     Stroke="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                                            <Path Data="M 22 10 L 22 34 M 10 22 L 34 22" StrokeThickness="3"
+                                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                                        </Canvas>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    </StackPanel>
                 </ScrollViewer>
             </Border>
         </Grid>
+
+        <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                    Margin="132,180,12,0">
+            <TextBlock Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                       Visibility="{Binding HasLobbyHostChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Run Text="{x:Static language:Resources.Lobby_HostChanged}" />
+                <Run Text="{Binding CurrentLobbyHostUsername, Mode=OneWay}" />
+            </TextBlock>
+            <TextBlock Text="{x:Static language:Resources.Lobby_ConnectionLost}" TextWrapping="Wrap" MaxWidth="700"
+                       Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                       Visibility="{Binding HasLobbyConnectionFailure,
+                           Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </StackPanel>
+
+        <ToggleButton x:Name="LobbyChatToggleButton" Grid.Column="0"
+                      Width="56" Height="56" Margin="0,0,10,12"
+                      HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                      Panel.ZIndex="2" Cursor="Hand"
+                      AutomationProperties.Name="{x:Static language:Resources.Chat_Title}"
+                      ToolTip="{x:Static language:Resources.Chat_Title}">
+            <ToggleButton.Template>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border Background="{x:Static styles:ColorPalette.PureBlackBrush}" CornerRadius="28">
+                        <Canvas Width="34" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path Data="M 3 2 L 31 2 L 31 23 L 20 23 L 12 29 L 12 23 L 3 23 Z"
+                                  Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}" StrokeThickness="2" />
+                            <Ellipse Width="3" Height="3" Canvas.Left="9" Canvas.Top="11"
+                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                            <Ellipse Width="3" Height="3" Canvas.Left="16" Canvas.Top="11"
+                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                            <Ellipse Width="3" Height="3" Canvas.Left="23" Canvas.Top="11"
+                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                        </Canvas>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter Property="Opacity" Value="0.75" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.85" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </ToggleButton.Template>
+        </ToggleButton>
+
+        <Border x:Name="LobbyChatPanel" Grid.Column="0" Panel.ZIndex="1"
+                Width="485" Height="380" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Margin="0,0,0,72" Padding="34,10,34,12"
+                Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}"
+                BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3"
+                Visibility="{Binding IsChecked, ElementName=LobbyChatToggleButton,
+                    Converter={StaticResource BooleanToVisibilityConverter}}"
+                DataContext="{Binding Chat}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static language:Resources.Chat_Title}" Margin="0,0,0,8"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.ProfileTitleFontSize}" />
+                <ListBox Grid.Row="1" ItemsSource="{Binding ChatMessages}" Padding="10"
+                         Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                         BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         HorizontalContentAlignment="Stretch"
+                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                         FontSize="{x:Static styles:FontTypography.FormLabelFontSize}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="0" />
+                            <Setter Property="Margin" Value="0,0,0,8" />
+                            <Setter Property="Focusable" Value="False" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                    BorderThickness="3" Padding="12,6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}"
+                                                    VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Margin="12,0,0,0">
+                                        <TextBlock Text="{Binding SenderUsername}" TextTrimming="CharacterEllipsis" />
+                                        <TextBlock Text="{Binding Message}" TextWrapping="Wrap" Margin="0,4,0,0" />
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="0,4"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Text="{Binding ChatSubmissionFeedbackText}" />
+                <Border Grid.Row="3" Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="44" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="LobbyChatMessageInput" BorderThickness="0" Padding="8,6"
+                                 VerticalContentAlignment="Center" MinHeight="40"
+                                 FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                 FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                                 Text="{Binding DraftChatMessageText, UpdateSourceTrigger=PropertyChanged}"
+                                 IsEnabled="{Binding IsRegisteredAccountChatAvailable}"
+                                 AutomationProperties.Name="{x:Static language:Resources.Chat_MessageInput}"
+                                 ToolTip="{x:Static language:Resources.Chat_RegisteredAccountsOnly}">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Return" Command="{Binding SendChatMessageCommand}" />
+                            </TextBox.InputBindings>
+                        </TextBox>
+                        <TextBlock IsHitTestVisible="False" Margin="8,0" VerticalAlignment="Center"
+                                   Text="{x:Static language:Resources.Chat_MessageInput}">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DraftChatMessageText}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Button Grid.Column="1" Command="{Binding SendChatMessageCommand}"
+                                Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                AutomationProperties.Name="{x:Static language:Resources.Chat_Send}"
+                                ToolTip="{x:Static language:Resources.Chat_Send}">
+                            <Path Width="28" Height="28" Stretch="Uniform"
+                                  Data="M 2 2 L 30 16 L 2 30 L 7 16 Z M 7 16 L 30 16"
+                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}" StrokeThickness="1.5" />
+                        </Button>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
 
         <!-- Dynamic Friends Sidebar Component -->
         <local:FriendsView Grid.Column="1" IsInLobby="True" />

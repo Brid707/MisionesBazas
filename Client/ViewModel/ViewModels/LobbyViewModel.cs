@@ -1,11 +1,14 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Model.ILobbyService;
+
+using Model.GameServices;
 using Model.Services;
 using Model.Session;
 using ViewModel.Base;
@@ -17,23 +20,35 @@ namespace ViewModel.ViewModels
     /// <summary>
     /// ViewModel for managing room state, live participant list, player readiness, and navigation from the lobby.
     /// </summary>
-    public sealed class LobbyViewModel : ViewModelBase
+    public sealed class LobbyViewModel : ViewModelBase, IDisposable
     {
+        private const byte WaitingLobbyStatus = 1;
+        private const string PlayerKickedReason = "Player was kicked by the host.";
+
         private const string DefaultMissionsTarget = "5";
 
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILobbyClient _lobbyClient;
         private readonly SynchronizationContext _uiSyncContext;
         private readonly int _currentUserId;
 
         private string _missionsTarget;
         private string _lobbyCode;
         private bool _isReady;
+        private bool _isDisposed;
+        private long _lastAppliedLobbyVersion;
+        private bool _hasLobbyConnectionFailure;
+        private bool _hasLobbyHostChanged;
+        private string _currentLobbyHostUsername;
+        private int _lastConfirmedHostUserId;
 
-        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession)
+        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession,
+            IChatModerationPresenter chatModerationPresenter)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _lobbyClient = lobbySession.Client;
             _uiSyncContext = SynchronizationContext.Current;
             _currentUserId = UserSession.Current.EnsureActiveUserId();
 
@@ -41,17 +56,50 @@ namespace ViewModel.ViewModels
             _lobbyCode = string.Empty;
             _isReady = false;
             Players = new ObservableCollection<LobbyPlayerItemViewModel>();
+            Players.CollectionChanged += OnLobbyParticipantsChanged;
 
             BackCommand = new AsyncRelayCommand(ExecuteBackAsync);
             ProfileCommand = new RelayCommand(ExecuteProfile);
-            SettingsCommand = new RelayCommand(ExecuteSettings);
+            SettingsCommand = new RelayCommand(ExecuteSettings, CanEditLobbySettings);
             ToggleReadyCommand = new AsyncRelayCommand(ExecuteToggleReadyAsync);
 
+            Chat = new LobbyChatViewModel(lobbySession, navigationService, chatModerationPresenter);
             LoadInitialLobbyState();
             SubscribeToLobbyEvents();
         }
 
+        /// <summary>Notifies the view that the local participant was removed by the host.</summary>
+        public event EventHandler CurrentPlayerKicked;
+
+        public bool CanEditCurrentLobby => _lobbySession.CurrentLobby?.HostUserId == _currentUserId &&
+            !_hasLobbyConnectionFailure;
+
+        public bool HasLobbyConnectionFailure
+        {
+            get => _hasLobbyConnectionFailure;
+            private set => SetProperty(ref _hasLobbyConnectionFailure, value);
+        }
+
+        public bool HasLobbyHostChanged
+        {
+            get => _hasLobbyHostChanged;
+            private set => SetProperty(ref _hasLobbyHostChanged, value);
+        }
+
+        public string CurrentLobbyHostUsername
+        {
+            get => _currentLobbyHostUsername;
+            private set => SetProperty(ref _currentLobbyHostUsername, value);
+        }
+
+        public int MaximumLobbyPlayerCount => _lobbySession.CurrentLobby?.PlayerLimit ?? 0;
+
+        public LobbyChatViewModel Chat { get; }
+
         public ObservableCollection<LobbyPlayerItemViewModel> Players { get; }
+
+        public IEnumerable<int> VacantLobbyPlayerSlots => Enumerable.Range(0,
+            Math.Max(0, (_lobbySession.CurrentLobby?.PlayerLimit ?? 0) - Players.Count));
 
         public string MissionsTarget
         {
@@ -79,58 +127,125 @@ namespace ViewModel.ViewModels
 
         public ICommand ToggleReadyCommand { get; }
 
+        public void Dispose()
+        {
+            _isDisposed = true;
+            Players.CollectionChanged -= OnLobbyParticipantsChanged;
+            UnsubscribeFromLobbyEvents();
+            Chat.Dispose();
+        }
+
+        private void OnLobbyParticipantsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(VacantLobbyPlayerSlots));
+        }
+
         private void LoadInitialLobbyState()
         {
-            Lobby activeLobby = _lobbySession.CurrentLobby;
-            if (activeLobby != null)
-            {
-                LobbyCode = activeLobby.LobbyCode ?? string.Empty;
-                MissionsTarget = activeLobby.TargetMissionCount.ToString(CultureInfo.InvariantCulture);
+            ApplyConfirmedLobbyState(_lobbySession.CurrentLobby);
+        }
 
-                if (activeLobby.Players != null)
-                {
-                    foreach (LobbyPlayer participant in activeLobby.Players)
-                    {
-                        AddOrUpdateParticipantItem(participant);
-                    }
-                }
+        private void OnServerLobbyStateChanged(object sender, LobbyStateChangedEventArgs e)
+        {
+            DispatchToUiThread(() => ApplyConfirmedLobbyState(e.ConfirmedLobby));
+        }
+
+        private void ApplyConfirmedLobbyState(Lobby confirmedLobby)
+        {
+            if (confirmedLobby != null && confirmedLobby.StateVersion >= _lastAppliedLobbyVersion)
+            {
+                HasLobbyHostChanged = _lastConfirmedHostUserId != 0 &&
+                    _lastConfirmedHostUserId != confirmedLobby.HostUserId;
+                _lastConfirmedHostUserId = confirmedLobby.HostUserId;
+                _lastAppliedLobbyVersion = confirmedLobby.StateVersion;
+                _lobbySession.SetLobby(confirmedLobby);
+                LobbyCode = confirmedLobby.LobbyCode;
+                MissionsTarget = confirmedLobby.TargetMissionCount.ToString(CultureInfo.InvariantCulture);
+                SynchronizeLobbyPlayers(confirmedLobby);
+                CurrentLobbyHostUsername = Players.FirstOrDefault(participant => participant.IsHost)?.Username;
+                OnPropertyChanged(nameof(MaximumLobbyPlayerCount));
+                OnPropertyChanged(nameof(VacantLobbyPlayerSlots));
+                OnPropertyChanged(nameof(CanEditCurrentLobby));
+                CommandManager.InvalidateRequerySuggested();
             }
+        }
+
+        private void SynchronizeLobbyPlayers(Lobby confirmedLobby)
+        {
+            Players.Clear();
+            foreach (LobbyPlayer participant in confirmedLobby.Players)
+            {
+                AddOrUpdateParticipantItem(participant);
+            }
+        }
+
+        private void OnLobbyConnectionFailed(AuthenticationErrorType connectionFailure)
+        {
+            DispatchToUiThread(MarkLobbyConnectionFailure);
+        }
+
+        private void MarkLobbyConnectionFailure()
+        {
+            HasLobbyConnectionFailure = true;
+            OnPropertyChanged(nameof(CanEditCurrentLobby));
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private bool CanEditLobbySettings()
+        {
+            return CanEditCurrentLobby;
         }
 
         private void SubscribeToLobbyEvents()
         {
-            ILobbyClient client = _lobbySession.Client;
-            client.PlayerJoined += OnServerPlayerJoined;
+            ILobbyClient client = _lobbyClient;
             client.PlayerLeft += OnServerPlayerLeft;
-            client.PlayerReadyStatusChanged += OnServerPlayerReadyStatusChanged;
+            client.LobbyStateChanged += OnServerLobbyStateChanged;
+            client.ConnectionErrorOccurred += OnLobbyConnectionFailed;
             client.LobbyDisbanded += OnServerLobbyDisbanded;
         }
 
         private void UnsubscribeFromLobbyEvents()
         {
-            ILobbyClient client = _lobbySession.Client;
-            client.PlayerJoined -= OnServerPlayerJoined;
+            ILobbyClient client = _lobbyClient;
             client.PlayerLeft -= OnServerPlayerLeft;
-            client.PlayerReadyStatusChanged -= OnServerPlayerReadyStatusChanged;
+            client.LobbyStateChanged -= OnServerLobbyStateChanged;
+            client.ConnectionErrorOccurred -= OnLobbyConnectionFailed;
             client.LobbyDisbanded -= OnServerLobbyDisbanded;
         }
 
-        private void OnServerPlayerJoined(LobbyPlayer player)
+        private void OnServerPlayerLeft(int participantUserId, string departureReason)
         {
-            if (player != null)
+            if (participantUserId == _currentUserId && departureReason == PlayerKickedReason)
             {
-                DispatchToUiThread(() => AddOrUpdateParticipantItem(player));
+                DispatchToUiThread(HandleCurrentPlayerKick);
             }
         }
 
-        private void OnServerPlayerLeft(int userId, string reason)
+        private void HandleCurrentPlayerKick()
         {
-            DispatchToUiThread(() => RemoveParticipantItem(userId));
+            if (!_isDisposed)
+            {
+                UnsubscribeFromLobbyEvents();
+                _lobbySession.ClearLobby();
+                CurrentPlayerKicked?.Invoke(this, EventArgs.Empty);
+                _navigationService.NavigateTo(ViewId.GameMenu);
+            }
         }
 
-        private void OnServerPlayerReadyStatusChanged(int userId, bool isReady)
+        private bool CanKickLobbyPlayer(int targetUserId)
         {
-            DispatchToUiThread(() => UpdateParticipantReadyState(userId, isReady));
+            return !_isDisposed && CanEditCurrentLobby && targetUserId != _currentUserId &&
+                _lobbySession.CurrentLobby?.Status == WaitingLobbyStatus &&
+                Players.Any(participant => participant.IdUser == targetUserId && !participant.IsHost);
+        }
+
+        private async Task KickLobbyPlayerAsync(int targetUserId)
+        {
+            if (CanKickLobbyPlayer(targetUserId))
+            {
+                await _lobbyClient.KickPlayerAsync(_lobbyCode, _currentUserId, targetUserId);
+            }
         }
 
         private void OnServerLobbyDisbanded(string reason)
@@ -155,6 +270,11 @@ namespace ViewModel.ViewModels
                     participant.Username,
                     participant.IsHost)
                 {
+                    CanBeKickedByCurrentHost = CanEditCurrentLobby && !isLocalPlayer && !participant.IsHost &&
+                        _lobbySession.CurrentLobby?.Status == WaitingLobbyStatus,
+                    KickPlayerCommand = new AsyncRelayCommand(
+                        () => KickLobbyPlayerAsync(participant.IdUser),
+                        () => CanKickLobbyPlayer(participant.IdUser)),
                     IsCurrentPlayer = isLocalPlayer,
                     IsReady = participant.IsReady
                 };
@@ -238,7 +358,7 @@ namespace ViewModel.ViewModels
 
             if (!string.IsNullOrWhiteSpace(codeToLeave))
             {
-                await _lobbySession.Client.LeaveLobbyAsync(codeToLeave, _currentUserId);
+                await _lobbyClient.LeaveLobbyAsync(codeToLeave, _currentUserId);
             }
 
             _lobbySession.ClearLobby();
@@ -270,7 +390,7 @@ namespace ViewModel.ViewModels
 
             if (!string.IsNullOrWhiteSpace(_lobbyCode))
             {
-                await _lobbySession.Client.SetPlayerReadyStatusAsync(
+                await _lobbyClient.SetPlayerReadyStatusAsync(
                     _lobbyCode,
                     _currentUserId,
                     newReadyState);

@@ -1,5 +1,6 @@
-using System.ServiceModel;
-using Services.DTO;
+﻿using System.ServiceModel;
+
+using Services.DataContracts;
 
 namespace Services.Contracts
 {
@@ -9,6 +10,14 @@ namespace Services.Contracts
     [ServiceContract(CallbackContract = typeof(ILobbyCallback))]
     public interface ILobbyService
     {
+        /// <summary>Changes waiting-room configuration and returns the server-confirmed room or rejection.</summary>
+        /// <param name="lobbyCode">The existing room invitation code.</param>
+        /// <param name="requesterUserId">The participant whose channel and session will be verified.</param>
+        /// <param name="settings">The requested mission, capacity and privacy values.</param>
+        /// <returns>The confirmed room snapshot or a specific rejection.</returns>
+        [OperationContract]
+        LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, LobbySettings settings);
+
         /// <summary>
         /// Creates a new game lobby hosted by the specified user with custom configuration settings.
         /// </summary>
@@ -44,6 +53,14 @@ namespace Services.Contracts
         [OperationContract(IsOneWay = true)]
         void KickPlayerByUserId(string lobbyCode, int hostUserId, int targetUserId);
 
+        /// <summary>Allows an invitation workflow to restore access after a host-issued removal.</summary>
+        /// <param name="lobbyCode">The room whose reentry restriction will be removed.</param>
+        /// <param name="hostUserId">The current host authorizing a new invitation.</param>
+        /// <param name="targetUserId">The player being invited back to this room.</param>
+        /// <returns>Authorization confirmation or a specific rejection; does not deliver an invitation.</returns>
+        [OperationContract]
+        LobbyResult AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId);
+
         /// <summary>
         /// Updates the readiness status of a player inside the lobby room.
         /// </summary>
@@ -53,14 +70,11 @@ namespace Services.Contracts
         [OperationContract(IsOneWay = true)]
         void SetPlayerReadyStatus(string lobbyCode, int userId, bool isReady);
 
-        /// <summary>
-        /// Dispatches a textual chat message to all participants connected to the specified lobby room.
-        /// </summary>
-        /// <param name="lobbyCode">The room invitation code.</param>
-        /// <param name="senderUserId">The unique identifier of the user authoring the message.</param>
-        /// <param name="message">The text payload of the chat message.</param>
-        [OperationContract(IsOneWay = true)]
-        void SendLobbyChatMessage(string lobbyCode, int senderUserId, string message);
+        /// <summary>Processes an authenticated chat submission and returns its committed disposition.</summary>
+        /// <param name="chatMessageSubmission">The identified lobby message to evaluate.</param>
+        /// <returns>The acceptance, moderation notice or account ban for this submission.</returns>
+        [OperationContract]
+        LobbyChatMessageSubmissionOutcome SendLobbyChatMessage(LobbyChatMessageSubmission chatMessageSubmission);
 
         /// <summary>
         /// Instructs the server to initialize the game match from the current lobby once participants are ready.

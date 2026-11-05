@@ -10,8 +10,11 @@
     <RootNamespace>Application</RootNamespace>
     <AssemblyName>Application</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,17 +45,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ports\IBlockedAccountEmailRepository.cs" />
+    <Compile Include="Ports\ILobbyHostSelection.cs" />
+    <Compile Include="..\ServerTrickTakingMissions\Domain\IsExternalInit.cs">
+      <Link>Compatibility\IsExternalInit.cs</Link>
+    </Compile>
+    <Compile Include="Models\LobbyConfiguration.cs" />
+    <Compile Include="Models\ChatMessageRejectionReason.cs" />
+    <Compile Include="Ports\IChatModerationLogger.cs" />
+    <Compile Include="UseCases\AccountAccessPolicy.cs" />
+    <Compile Include="Ports\IAccountAccessPolicy.cs" />
+    <Compile Include="UseCases\LobbyChatMessageUseCase.cs" />
+    <Compile Include="Ports\IProhibitedChatExpressionCatalog.cs" />
+    <Compile Include="Ports\ILobbyChatMessageUseCase.cs" />
+    <Compile Include="Ports\IChatInfractionRepository.cs" />
+    <Compile Include="Ports\IAuthenticatedAccountSessionRegistry.cs" />
+    <Compile Include="Models\LobbyChatMessageProcessing.cs" />
+    <Compile Include="Models\ChatInfractionSubmission.cs" />
+    <Compile Include="Models\ChatInfractionRecord.cs" />
+    <Compile Include="Models\AuthenticatedChatMessageSubmission.cs" />
     <Compile Include="Models\AuthenticatedUserData.cs" />
-    <Compile Include="Models\Friendship\FriendRequestData.cs" />
-    <Compile Include="Models\Friendship\FriendshipActionOutcome.cs" />
-    <Compile Include="Models\Friendship\FriendshipRecordData.cs" />
-    <Compile Include="Models\Friendship\FriendSummaryData.cs" />
     <Compile Include="Models\LobbyActionOutcome.cs" />
     <Compile Include="Models\LobbyParticipantData.cs" />
     <Compile Include="Models\LobbyRoomData.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\UserRegistrationOutcome.cs" />
     <Compile Include="Ports\IEmailService.cs" />
+    <Compile Include="Models\Friendship\FriendRequestData.cs" />
+    <Compile Include="Models\Friendship\FriendSummaryData.cs" />
+    <Compile Include="Models\Friendship\FriendshipActionOutcome.cs" />
+    <Compile Include="Models\Friendship\FriendshipRecordData.cs" />
     <Compile Include="Ports\IFriendshipRepository.cs" />
     <Compile Include="Ports\IFriendshipUseCase.cs" />
     <Compile Include="Ports\ILobbyUseCase.cs" />
@@ -70,6 +93,9 @@
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

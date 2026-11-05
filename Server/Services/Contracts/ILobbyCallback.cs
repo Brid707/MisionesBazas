@@ -1,5 +1,6 @@
 using System.ServiceModel;
-using Services.DTO;
+
+using Services.DataContracts;
 
 namespace Services.Contracts
 {
@@ -8,6 +9,11 @@ namespace Services.Contracts
     /// </summary>
     public interface ILobbyCallback
     {
+        /// <summary>Publishes a versioned authoritative room snapshot
+        /// after rules, role or participants change.</summary>
+        [OperationContract(IsOneWay = true)]
+        void OnLobbyStateChanged(Lobby lobby);
+
         /// <summary>
         /// Notifies participants that a new player has joined the lobby room.
         /// </summary>
@@ -37,6 +43,10 @@ namespace Services.Contracts
         /// <param name="message">The chat message object containing sender details and text.</param>
         [OperationContract(IsOneWay = true)]
         void OnReceiveLobbyChatMessage(LobbyMessage message);
+
+        /// <summary>Notifies only the sanctioned account that server access has been revoked.</summary>
+        [OperationContract(IsOneWay = true)]
+        void OnChatAccountBanApplied(ChatAccountBanNotice chatAccountBanNotice);
 
         /// <summary>
         /// Notifies participants that the host launched the game and provides the new match identifier.

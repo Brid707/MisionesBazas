@@ -1,4 +1,5 @@
-using Model.ILobbyService;
+
+using Model.GameServices;
 using Model.Services;
 
 namespace Model.Session
@@ -61,7 +62,12 @@ namespace Model.Session
         {
             lock (s_syncRoot)
             {
-                _currentLobby = lobby;
+                bool isCurrentOrNewerRoom = _currentLobby == null || lobby == null ||
+                    _currentLobby.LobbyCode != lobby.LobbyCode || lobby.StateVersion >= _currentLobby.StateVersion;
+                if (isCurrentOrNewerRoom)
+                {
+                    _currentLobby = lobby;
+                }
             }
         }
 

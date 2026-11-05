@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents a chat message exchanged among participants in a lobby room.

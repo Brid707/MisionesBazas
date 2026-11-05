@@ -1,4 +1,5 @@
 using System;
+
 using Application.Models;
 using Application.Ports;
 
@@ -27,25 +28,17 @@ namespace Application
 
             if (IsValidParameter(email) && IsValidParameter(passwordHash))
             {
-                try
+                UserAccount user = _userRepository.GetUserByEmail(email);
+                if (user != null &&
+                    string.Equals(user.PasswordHash, passwordHash, StringComparison.OrdinalIgnoreCase))
                 {
-                    UserAccount user = _userRepository.GetUserByEmail(email);
-                    if (user != null &&
-                        string.Equals(user.PasswordHash, passwordHash, StringComparison.OrdinalIgnoreCase))
+                    _userRepository.UpdateLastLogin(user.IdUser);
+                    authenticatedUser = new AuthenticatedUserData
                     {
-                        _userRepository.UpdateLastLogin(user.IdUser);
-                        authenticatedUser = new AuthenticatedUserData
-                        {
-                            IdUser = user.IdUser,
-                            Username = user.Username,
-                            Email = user.Email
-                        };
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-                    // TODO: Implement logging for the exception once logging infrastructure is available.
-                    authenticatedUser = null;
+                        IdUser = user.IdUser,
+                        Username = user.Username,
+                        Email = user.Email
+                    };
                 }
             }
 

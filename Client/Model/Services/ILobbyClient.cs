@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using Model.ILobbyService;
+
+using Model.GameServices;
 
 namespace Model.Services
 {
@@ -9,6 +10,8 @@ namespace Model.Services
     /// </summary>
     public interface ILobbyClient : IDisposable
     {
+        event EventHandler<LobbyStateChangedEventArgs> LobbyStateChanged;
+
         event Action<LobbyPlayer> PlayerJoined;
 
         event Action<int, string> PlayerLeft;
@@ -17,20 +20,36 @@ namespace Model.Services
 
         event Action<LobbyMessage> ChatMessageReceived;
 
+        event EventHandler<ChatAccountBanAppliedEventArgs> ChatAccountBanApplied;
+
         event Action<int> GameStarted;
 
         event Action<string> LobbyDisbanded;
 
         event Action<AuthenticationErrorType> ConnectionErrorOccurred;
 
-        Task<LobbyResult> CreateLobbyAsync(int hostUserId, byte targetMissionCount, byte playerLimit);
+        Task<LobbyResult> CreateLobbyAsync(int hostUserId, LobbySettings lobbySettings);
+
+        /// <summary>Requests an update without replacing the room or its participants.</summary>
+        /// <param name="lobbyCode">The existing room invitation code.</param>
+        /// <param name="requesterUserId">The current participant requesting the change.</param>
+        /// <param name="lobbySettings">The selected missions, capacity and privacy.</param>
+        /// <returns>The confirmed state or rejection; null when delivery could not be confirmed.</returns>
+        Task<LobbyResult> UpdateLobbySettingsAsync(string lobbyCode, int requesterUserId, LobbySettings lobbySettings);
 
         Task<LobbyResult> JoinLobbyByCodeAsync(string lobbyCode, int userId);
+
+        /// <summary>Requests that the current host remove another lobby participant.</summary>
+        Task KickPlayerAsync(string lobbyCode, int hostUserId, int targetUserId);
+
+        /// <summary>Restores room access for a new host-authorized invitation; does not send the invitation.</summary>
+        Task<LobbyResult> AuthorizeKickedPlayerReentryAsync(string lobbyCode, int hostUserId, int targetUserId);
 
         Task LeaveLobbyAsync(string lobbyCode, int userId);
 
         Task SetPlayerReadyStatusAsync(string lobbyCode, int userId, bool isReady);
 
-        Task SendLobbyChatMessageAsync(string lobbyCode, int senderUserId, string message);
+        Task<LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(
+            LobbyChatMessageSubmission chatMessageSubmission);
     }
 }

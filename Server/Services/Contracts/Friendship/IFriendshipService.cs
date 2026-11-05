@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using Services.DataContracts.Friendship;
-using Services.DTO;
+using Services.DataContracts;
 
 namespace Services.Contracts.Friendship
 {

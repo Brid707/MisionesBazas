@@ -480,7 +480,8 @@
   </data>
   <data name="ManageFriendRequest_Label_NoPendingRequests" xml:space="preserve">
     <value>No hay solicitudes de amistad pendientes</value>
-  </data>  <data name="FriendsBar_InviteButton" xml:space="preserve">
+  </data>
+  <data name="FriendsBar_InviteButton" xml:space="preserve">
     <value>Invitar</value>
   </data>
   <data name="FriendsBar_Missions" xml:space="preserve">
@@ -489,4 +490,34 @@
   <data name="FriendsBar_Players" xml:space="preserve">
     <value>Jugadores:</value>
   </data>
+  <data name="Chat_Title" xml:space="preserve"><value>MENSAJES</value></data>
+  <data name="Chat_Send" xml:space="preserve"><value>Enviar</value></data>
+  <data name="Chat_MessageInput" xml:space="preserve"><value>Mensaje para enviar al chat</value></data>
+  <data name="Chat_RegisteredAccountsOnly" xml:space="preserve"><value>El chat está disponible solo para cuentas registradas.</value></data>
+  <data name="Chat_AccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
+  <data name="Chat_InfractionWarning" xml:space="preserve"><value>Acumulas {accumulatedChatInfractionPoints} de {chatInfractionPointThreshold} puntos por infracciones del chat. Te faltan {remainingChatInfractionPointsBeforeBan} puntos para bloquear tu cuenta.</value></data>
+  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Tu cuenta está bloqueada durante una semana, hasta {chatAccountBanEndsAtLocalTime}.</value></data>
+  <data name="Chat_PermanentAccountBan" xml:space="preserve"><value>Tu cuenta fue bloqueada permanentemente por infracciones del chat.</value></data>
+  <data name="Chat_InvalidChatMessage" xml:space="preserve"><value>Escribe un mensaje de hasta 500 caracteres.</value></data>
+  <data name="Chat_ChatAuthenticationRequired" xml:space="preserve"><value>Inicia sesión nuevamente para utilizar el chat.</value></data>
+  <data name="Chat_ChatParticipantNotInLobby" xml:space="preserve"><value>Ya no formas parte de esta sala.</value></data>
+  <data name="Chat_ChatStorageUnavailable" xml:space="preserve"><value>No se pudo confirmar el envío. Reintenta el mismo mensaje.</value></data>
+  <data name="Chat_ChatModerationUnavailable" xml:space="preserve"><value>No se pudo revisar el mensaje. Inténtalo nuevamente.</value></data>
+  <data name="Chat_ChatDeliveryUnknown" xml:space="preserve"><value>No se pudo confirmar el envío. Al reintentar el mismo texto no se duplicarán los puntos.</value></data>
+  <data name="Chat_ConflictingChatMessageIdentifier" xml:space="preserve"><value>El identificador del envío ya corresponde a otro mensaje.</value></data>
+  <data name="Chat_ChatAccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
+  <data name="Lobby_HostRequired" xml:space="preserve"><value>Solo el anfitrión actual puede cambiar la configuración.</value></data>
+  <data name="Lobby_ConfigurationInvalid" xml:space="preserve"><value>La configuración no es válida. La capacidad debe admitir a los jugadores presentes.</value></data>
+  <data name="Lobby_MatchInProgress" xml:space="preserve"><value>La partida ya comenzó; no puedes cambiar la configuración.</value></data>
+  <data name="Lobby_ConnectionLost" xml:space="preserve"><value>Se perdió la comunicación con el servidor. Revisa tu conexión e intenta volver a entrar.</value></data>
+  <data name="Lobby_HostChanged" xml:space="preserve"><value>Nuevo anfitrión: </value></data>
+  <data name="Lobby_PlayerLimit" xml:space="preserve"><value>Máximo de jugadores: </value></data>
+  <data name="Register_EmailPermanentlyBlocked" xml:space="preserve"><value>Este correo está bloqueado permanentemente y no puede usarse para registrar otra cuenta.</value></data>
+  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Tiempo restante: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s.</value></data>
+  <data name="Chat_TemporaryBanExpired" xml:space="preserve"><value>El bloqueo temporal terminó. Puedes intentar iniciar sesión nuevamente.</value></data>
+  <data name="Account_StorageUnavailable" xml:space="preserve"><value>No se pudo consultar la base de datos de cuentas. Inténtalo cuando se restablezca el servicio.</value></data>
+  <data name="Lobby_PlayerActions" xml:space="preserve"><value>Opciones del jugador</value></data>
+  <data name="Lobby_KickPlayer" xml:space="preserve"><value>Expulsar</value></data>
+  <data name="Lobby_KickedNotice" xml:space="preserve"><value>El anfitrión te expulsó de la sala.</value></data>
+  <data name="Lobby_KickedParticipantReentryDenied" xml:space="preserve"><value>Fuiste expulsado de esta sala. Solo una nueva invitación autorizada por el anfitrión puede restablecer tu acceso.</value></data>
 </root>

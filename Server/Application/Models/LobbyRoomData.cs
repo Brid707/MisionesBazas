@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Application.Models
 {
@@ -16,6 +16,13 @@ namespace Application.Models
         public byte PlayerLimit { get; set; }
 
         public byte Status { get; set; }
+
+        public bool IsPrivate { get; set; } = true;
+
+        public long StateVersion { get; set; }
+
+        /// <summary>Server-only room restrictions retained until the current host authorizes reentry.</summary>
+        public HashSet<int> KickedParticipantUserIds { get; } = new HashSet<int>();
 
         public List<LobbyParticipantData> Players { get; set; } = new List<LobbyParticipantData>();
     }

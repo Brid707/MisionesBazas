@@ -1,0 +1,29 @@
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A53B0772-76DF-4F1D-A540-B8C73E0F1F17}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>9.0</LangVersion>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <RootNamespace>Infrastructure.Moderation</RootNamespace>
+    <AssemblyName>Infrastructure.Moderation</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Compile Include="ChatModerationLogger.cs" />
+    <Compile Include="ProhibitedChatExpressionCatalog.cs" />
+    <ProjectReference Include="..\Application\Application.csproj">
+      <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project><Name>Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
+      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

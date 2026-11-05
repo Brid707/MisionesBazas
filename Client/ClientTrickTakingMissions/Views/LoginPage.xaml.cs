@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+
 using View.Services;
 using ViewModel.ViewModels;
 
@@ -16,7 +17,8 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="LoginPage"/> class with default UI services.
         /// </summary>
         public LoginPage()
-            : this(new LoginViewModel(new WpfNavigationService(), new WpfDialogService()))
+            : this(new LoginViewModel(new WpfNavigationService(), new WpfDialogService(),
+                new ChatModerationPresenter()))
         {
         }
 
@@ -30,6 +32,12 @@ namespace View.Views
 
             _viewModel = viewModel;
             DataContext = _viewModel;
+            Unloaded += OnLoginPageUnloaded;
+        }
+
+        private void OnLoginPageUnloaded(object sender, RoutedEventArgs e)
+        {
+            _viewModel.Dispose();
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

@@ -94,6 +94,10 @@
                         BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,12"
                         Command="{Binding ForgotPasswordCommand}" />
 
+                <TextBlock Text="{Binding AccountBanFeedbackText}" TextWrapping="Wrap" Margin="0,0,0,12"
+                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}" />
+
                 <Button x:Name="LoginButton" Content="{x:Static language:Resources.Login_Enter}"
                         Height="64" Width="220"
                         Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"

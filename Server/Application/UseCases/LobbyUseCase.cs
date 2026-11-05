@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+
 using Application.Models;
 using Application.Ports;
 using Domain;
@@ -14,6 +15,8 @@ namespace Application
     public sealed class LobbyUseCase : ILobbyUseCase
     {
         private const int ErrorCodeSuccess = 0;
+        private const int ErrorCodeHostRequired = 106;
+        private const int ErrorCodeKickedParticipantReentryDenied = 107;
         private const int ErrorCodeValidationFailed = 101;
         private const int ErrorCodeUserNotFound = 102;
         private const int ErrorCodeLobbyNotFound = 103;
@@ -40,9 +43,10 @@ namespace Application
         private const string ErrorMessageLobbyFull = "The lobby room is full.";
 
         private readonly IUserRepository _userRepository;
+        private readonly ILobbyHostSelection _lobbyHostSelection;
         private readonly ConcurrentDictionary<string, LobbyRoomData> _activeLobbies;
 
-        public LobbyUseCase(IUserRepository userRepository)
+        public LobbyUseCase(IUserRepository userRepository, ILobbyHostSelection lobbyHostSelection)
         {
             if (userRepository == null)
             {
@@ -50,10 +54,11 @@ namespace Application
             }
 
             _userRepository = userRepository;
+            _lobbyHostSelection = lobbyHostSelection;
             _activeLobbies = new ConcurrentDictionary<string, LobbyRoomData>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public LobbyActionOutcome CreateLobby(int hostUserId, byte targetMissionCount, byte playerLimit)
+        public LobbyActionOutcome CreateLobby(int hostUserId, LobbyConfiguration lobbyConfiguration)
         {
             LobbyActionOutcome outcome;
             UserAccount hostAccount = TryFindUser(hostUserId, out bool hasDatabaseError);
@@ -68,7 +73,7 @@ namespace Application
             }
             else
             {
-                outcome = InitializeNewLobby(hostAccount, targetMissionCount, playerLimit);
+                outcome = InitializeNewLobby(hostAccount, lobbyConfiguration);
             }
 
             return outcome;
@@ -123,6 +128,20 @@ namespace Application
             }
 
             return outcome;
+        }
+
+        /// <inheritdoc />
+        public LobbyActionOutcome AuthorizeKickedPlayerReentry(string lobbyCode, int hostUserId, int targetUserId)
+        {
+            LobbyActionOutcome reentryAuthorization = CreateErrorOutcome(ErrorCodeLobbyNotFound,
+                ErrorMessageLobbyNotFound);
+            string normalizedCode = LobbyCodeRules.NormalizeCode(lobbyCode);
+            if (_activeLobbies.TryGetValue(normalizedCode, out LobbyRoomData lobby))
+            {
+                reentryAuthorization = AuthorizeReentryUnderLock(lobby, hostUserId, targetUserId);
+            }
+
+            return reentryAuthorization;
         }
 
         public LobbyActionOutcome UpdatePlayerReadiness(string lobbyCode, int userId, bool isReady)
@@ -184,13 +203,120 @@ namespace Application
             return canStart;
         }
 
+        public LobbyActionOutcome UpdateLobbySettings(string lobbyCode, int requesterUserId,
+            LobbyConfiguration lobbyConfiguration)
+        {
+            LobbyActionOutcome configurationUpdate = CreateErrorOutcome(
+                ErrorCodeLobbyNotFound, ErrorMessageLobbyNotFound);
+            if (_activeLobbies.TryGetValue(LobbyCodeRules.NormalizeCode(lobbyCode), out LobbyRoomData lobby))
+            {
+                lock (lobby)
+                {
+                    configurationUpdate = ApplyLobbyConfiguration(lobby, requesterUserId, lobbyConfiguration);
+                }
+            }
+
+            return configurationUpdate;
+        }
+
+        public LobbyActionOutcome DisconnectLobbyParticipant(string lobbyCode, int participantUserId)
+        {
+            LobbyActionOutcome participantDeparture = CreateErrorOutcome(
+                ErrorCodeLobbyInProgress, ErrorMessageLobbyMatchInProgress);
+            if (_activeLobbies.TryGetValue(LobbyCodeRules.NormalizeCode(lobbyCode), out LobbyRoomData lobby))
+            {
+                participantDeparture = RemoveDisconnectedWaitingParticipant(lobby, participantUserId);
+            }
+
+            return participantDeparture;
+        }
+
+        private LobbyActionOutcome RemoveDisconnectedWaitingParticipant(LobbyRoomData lobby, int participantUserId)
+        {
+            LobbyActionOutcome participantDeparture = CreateErrorOutcome(
+                ErrorCodeLobbyInProgress, ErrorMessageLobbyMatchInProgress);
+            lock (lobby)
+            {
+                if (LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
+                {
+                    participantDeparture = LeaveLobby(lobby.LobbyCode, participantUserId);
+                }
+            }
+
+            return participantDeparture;
+        }
+
+        private static LobbyActionOutcome ApplyLobbyConfiguration(LobbyRoomData lobby, int requesterUserId,
+            LobbyConfiguration lobbyConfiguration)
+        {
+            LobbyActionOutcome configurationUpdate = ValidateLobbyConfiguration(lobby, requesterUserId,
+                lobbyConfiguration);
+            if (configurationUpdate.IsSuccess)
+            {
+                ApplyChangedLobbyRules(lobby, lobbyConfiguration);
+                configurationUpdate.Lobby = CreateRoomSnapshot(lobby);
+            }
+
+            return configurationUpdate;
+        }
+
+        private static LobbyActionOutcome ValidateLobbyConfiguration(LobbyRoomData lobby, int requesterUserId,
+            LobbyConfiguration lobbyConfiguration)
+        {
+            LobbyActionOutcome configurationValidation = new LobbyActionOutcome { IsSuccess = true };
+            if (lobby.HostUserId != requesterUserId)
+            {
+                configurationValidation = CreateErrorOutcome(ErrorCodeHostRequired, "LobbyHostRequired");
+            }
+            else if (!LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
+            {
+                configurationValidation = CreateErrorOutcome(ErrorCodeLobbyInProgress, "LobbyMatchInProgress");
+            }
+            else if (lobbyConfiguration == null || !LobbyRoomRules.IsConfigurationValid(
+                lobbyConfiguration.TargetMissionCount, lobbyConfiguration.PlayerLimit, lobby.Players.Count))
+            {
+                configurationValidation = CreateErrorOutcome(ErrorCodeValidationFailed, "LobbyConfigurationInvalid");
+            }
+
+            return configurationValidation;
+        }
+
+        private static void ApplyChangedLobbyRules(LobbyRoomData lobby, LobbyConfiguration lobbyConfiguration)
+        {
+            bool hasConfigurationChanged = lobby.TargetMissionCount != lobbyConfiguration.TargetMissionCount ||
+                lobby.PlayerLimit != lobbyConfiguration.PlayerLimit || lobby.IsPrivate != lobbyConfiguration.IsPrivate;
+            if (hasConfigurationChanged)
+            {
+                lobby.TargetMissionCount = lobbyConfiguration.TargetMissionCount;
+                lobby.PlayerLimit = lobbyConfiguration.PlayerLimit;
+                lobby.IsPrivate = lobbyConfiguration.IsPrivate;
+                lobby.Players.ForEach(ResetParticipantReadiness);
+                lobby.StateVersion++;
+            }
+        }
+
+        private static void ResetParticipantReadiness(LobbyParticipantData participant)
+        {
+            participant.IsReady = false;
+        }
+
+        private void TransferLobbyHost(LobbyRoomData lobby)
+        {
+            int selectedHostUserId = _lobbyHostSelection.SelectHostUserId(
+                lobby.Players.Select(participant => participant.IdUser).ToList());
+            lobby.HostUserId = selectedHostUserId;
+            foreach (LobbyParticipantData participant in lobby.Players)
+            {
+                participant.IsHost = participant.IdUser == selectedHostUserId;
+            }
+        }
+
         private LobbyActionOutcome InitializeNewLobby(
             UserAccount hostAccount,
-            byte targetMissionCount,
-            byte playerLimit)
+            LobbyConfiguration lobbyConfiguration)
         {
-            byte sanitizedMissions = LobbyRoomRules.ResolveTargetMissionCount(targetMissionCount);
-            byte sanitizedLimit = LobbyRoomRules.ResolvePlayerLimit(playerLimit);
+            byte sanitizedMissions = LobbyRoomRules.ResolveTargetMissionCount(lobbyConfiguration.TargetMissionCount);
+            byte sanitizedLimit = LobbyRoomRules.ResolvePlayerLimit(lobbyConfiguration.PlayerLimit);
             string generatedCode = GenerateUniqueLobbyCode();
 
             LobbyParticipantData hostParticipant = new LobbyParticipantData
@@ -208,6 +334,8 @@ namespace Application
                 TargetMissionCount = sanitizedMissions,
                 PlayerLimit = sanitizedLimit,
                 Status = LobbyRoomRules.StatusWaiting,
+                IsPrivate = lobbyConfiguration.IsPrivate,
+                StateVersion = 1,
                 Players = new List<LobbyParticipantData> { hostParticipant }
             };
 
@@ -221,6 +349,52 @@ namespace Application
                 Lobby = CreateRoomSnapshot(newLobby),
                 AffectedPlayer = CloneParticipant(hostParticipant)
             };
+        }
+
+        private static LobbyActionOutcome AuthorizeReentryUnderLock(
+            LobbyRoomData lobby, int hostUserId, int targetUserId)
+        {
+            LobbyActionOutcome reentryAuthorization;
+            lock (lobby)
+            {
+                reentryAuthorization = ValidateReentryAuthorization(lobby, hostUserId, targetUserId);
+                if (reentryAuthorization.IsSuccess)
+                {
+                    lobby.KickedParticipantUserIds.Remove(targetUserId);
+                    reentryAuthorization.Lobby = CreateRoomSnapshot(lobby);
+                }
+            }
+
+            return reentryAuthorization;
+        }
+
+        private static LobbyActionOutcome ValidateReentryAuthorization(
+            LobbyRoomData lobby, int hostUserId, int targetUserId)
+        {
+            LobbyActionOutcome reentryAuthorization;
+            if (lobby.HostUserId != hostUserId)
+            {
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeHostRequired, "LobbyHostRequired");
+            }
+            else if (!LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
+            {
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeLobbyInProgress, "LobbyMatchInProgress");
+            }
+            else if (targetUserId == hostUserId || targetUserId == 0)
+            {
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeValidationFailed, "LobbyReentryTargetInvalid");
+            }
+            else
+            {
+                reentryAuthorization = new LobbyActionOutcome
+                {
+                    IsSuccess = true,
+                    ErrorCode = ErrorCodeSuccess,
+                    Message = "LobbyKickedPlayerReentryAuthorized"
+                };
+            }
+
+            return reentryAuthorization;
         }
 
         private LobbyActionOutcome TryAddParticipantToLobby(LobbyRoomData lobby, int userId)
@@ -248,6 +422,23 @@ namespace Application
         }
 
         private static LobbyActionOutcome AddOrRefreshParticipantUnderLock(
+            LobbyRoomData lobby, UserAccount userAccount)
+        {
+            LobbyActionOutcome lobbyEntryDecision;
+            if (lobby.KickedParticipantUserIds.Contains(userAccount.IdUser))
+            {
+                lobbyEntryDecision = CreateErrorOutcome(ErrorCodeKickedParticipantReentryDenied,
+                    "LobbyKickedParticipantReentryDenied");
+            }
+            else
+            {
+                lobbyEntryDecision = AddUnrestrictedParticipantUnderLock(lobby, userAccount);
+            }
+
+            return lobbyEntryDecision;
+        }
+
+        private static LobbyActionOutcome AddUnrestrictedParticipantUnderLock(
             LobbyRoomData lobby,
             UserAccount userAccount)
         {
@@ -284,6 +475,7 @@ namespace Application
                 };
 
                 lobby.Players.Add(newParticipant);
+                lobby.StateVersion++;
 
                 outcome = new LobbyActionOutcome
                 {
@@ -298,7 +490,7 @@ namespace Application
             return outcome;
         }
 
-        private static LobbyActionOutcome RemoveParticipantFromRoom(LobbyRoomData lobby, int userId)
+        private LobbyActionOutcome RemoveParticipantFromRoom(LobbyRoomData lobby, int userId)
         {
             LobbyActionOutcome outcome = CreateErrorOutcome(
                 ErrorCodeUserNotFound,
@@ -310,11 +502,17 @@ namespace Application
                 if (existing != null)
                 {
                     lobby.Players.Remove(existing);
-                    bool isDisbanded = existing.IsHost;
+                    bool isDisbanded = lobby.Players.Count == 0;
                     if (isDisbanded)
                     {
-                        lobby.Players.Clear();
+                        lobby.Status = LobbyRoomRules.StatusClosed;
                     }
+                    if (existing.IsHost && !isDisbanded)
+                    {
+                        TransferLobbyHost(lobby);
+                    }
+
+                    lobby.StateVersion++;
 
                     outcome = new LobbyActionOutcome
                     {
@@ -343,9 +541,11 @@ namespace Application
             lock (lobby)
             {
                 LobbyParticipantData target = FindParticipantById(lobby, targetUserId);
-                if (lobby.HostUserId == hostUserId && target != null)
+                if (lobby.HostUserId == hostUserId && target != null && lobby.Status == LobbyRoomRules.StatusWaiting)
                 {
+                    lobby.KickedParticipantUserIds.Add(targetUserId);
                     lobby.Players.Remove(target);
+                    lobby.StateVersion++;
                     outcome = new LobbyActionOutcome
                     {
                         IsSuccess = true,
@@ -375,6 +575,7 @@ namespace Application
                 if (participant != null)
                 {
                     participant.IsReady = isReady;
+                    lobby.StateVersion++;
                     outcome = new LobbyActionOutcome
                     {
                         IsSuccess = true,
@@ -449,6 +650,8 @@ namespace Application
                 TargetMissionCount = source.TargetMissionCount,
                 PlayerLimit = source.PlayerLimit,
                 Status = source.Status,
+                IsPrivate = source.IsPrivate,
+                StateVersion = source.StateVersion,
                 Players = clonedPlayers
             };
         }

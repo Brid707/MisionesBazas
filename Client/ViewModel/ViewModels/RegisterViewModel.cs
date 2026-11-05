@@ -2,6 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using Model.Security;
 using Model.Services;
 using ViewModel.Base;
@@ -170,17 +171,19 @@ namespace ViewModel.ViewModels
 
         private void HandleRegistrationFailure(int errorCode)
         {
-            if (errorCode == MessageCode.RegisterEmailAlreadyRegistered)
+            switch (errorCode)
             {
-                _dialogService.ShowWarning(MessageCode.RegisterEmailAlreadyRegistered);
-            }
-            else if (errorCode == MessageCode.RegisterUsernameAlreadyRegistered)
-            {
-                _dialogService.ShowWarning(MessageCode.RegisterUsernameAlreadyRegistered);
-            }
-            else
-            {
-                _dialogService.ShowError(MessageCode.UnexpectedError);
+                case MessageCode.RegisterEmailAlreadyRegistered:
+                case MessageCode.RegisterUsernameAlreadyRegistered:
+                case MessageCode.RegisterEmailPermanentlyBlocked:
+                    _dialogService.ShowWarning(errorCode);
+                    break;
+                case MessageCode.AccountStorageUnavailable:
+                    _dialogService.ShowError(MessageCode.ChatStorageUnavailable);
+                    break;
+                default:
+                    _dialogService.ShowError(MessageCode.UnexpectedError);
+                    break;
             }
         }
 

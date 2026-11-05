@@ -61,6 +61,15 @@ namespace View.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a No se pudo consultar la base de datos de cuentas. Inténtalo cuando se restablezca el servicio..
+        /// </summary>
+        public static string Account_StorageUnavailable {
+            get {
+                return ResourceManager.GetString("Account_StorageUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Confirmar.
         /// </summary>
         public static string ChangePassword_ConfirmButton {
@@ -102,6 +111,168 @@ namespace View.Properties.Langs {
         public static string ChangePassword_Title {
             get {
                 return ResourceManager.GetString("ChangePassword_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tu cuenta está bloqueada por infracciones del chat..
+        /// </summary>
+        public static string Chat_AccountBanned {
+            get {
+                return ResourceManager.GetString("Chat_AccountBanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tu cuenta está bloqueada por infracciones del chat..
+        /// </summary>
+        public static string Chat_ChatAccountBanned {
+            get {
+                return ResourceManager.GetString("Chat_ChatAccountBanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Inicia sesión nuevamente para utilizar el chat..
+        /// </summary>
+        public static string Chat_ChatAuthenticationRequired {
+            get {
+                return ResourceManager.GetString("Chat_ChatAuthenticationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No se pudo confirmar el envío. Al reintentar el mismo texto no se duplicarán los puntos..
+        /// </summary>
+        public static string Chat_ChatDeliveryUnknown {
+            get {
+                return ResourceManager.GetString("Chat_ChatDeliveryUnknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No se pudo revisar el mensaje. Inténtalo nuevamente..
+        /// </summary>
+        public static string Chat_ChatModerationUnavailable {
+            get {
+                return ResourceManager.GetString("Chat_ChatModerationUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Ya no formas parte de esta sala..
+        /// </summary>
+        public static string Chat_ChatParticipantNotInLobby {
+            get {
+                return ResourceManager.GetString("Chat_ChatParticipantNotInLobby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a No se pudo confirmar el envío. Reintenta el mismo mensaje..
+        /// </summary>
+        public static string Chat_ChatStorageUnavailable {
+            get {
+                return ResourceManager.GetString("Chat_ChatStorageUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El identificador del envío ya corresponde a otro mensaje..
+        /// </summary>
+        public static string Chat_ConflictingChatMessageIdentifier {
+            get {
+                return ResourceManager.GetString("Chat_ConflictingChatMessageIdentifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Acumulas {accumulatedChatInfractionPoints} de {chatInfractionPointThreshold} puntos por infracciones del chat. Te faltan {remainingChatInfractionPointsBeforeBan} puntos para bloquear tu cuenta..
+        /// </summary>
+        public static string Chat_InfractionWarning {
+            get {
+                return ResourceManager.GetString("Chat_InfractionWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Escribe un mensaje de hasta 500 caracteres..
+        /// </summary>
+        public static string Chat_InvalidChatMessage {
+            get {
+                return ResourceManager.GetString("Chat_InvalidChatMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Mensaje para enviar al chat.
+        /// </summary>
+        public static string Chat_MessageInput {
+            get {
+                return ResourceManager.GetString("Chat_MessageInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tu cuenta fue bloqueada permanentemente por infracciones del chat..
+        /// </summary>
+        public static string Chat_PermanentAccountBan {
+            get {
+                return ResourceManager.GetString("Chat_PermanentAccountBan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El chat está disponible solo para cuentas registradas..
+        /// </summary>
+        public static string Chat_RegisteredAccountsOnly {
+            get {
+                return ResourceManager.GetString("Chat_RegisteredAccountsOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tiempo restante: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s..
+        /// </summary>
+        public static string Chat_RemainingBanDuration {
+            get {
+                return ResourceManager.GetString("Chat_RemainingBanDuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Enviar.
+        /// </summary>
+        public static string Chat_Send {
+            get {
+                return ResourceManager.GetString("Chat_Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Tu cuenta está bloqueada durante una semana, hasta {chatAccountBanEndsAtLocalTime}..
+        /// </summary>
+        public static string Chat_TemporaryAccountBan {
+            get {
+                return ResourceManager.GetString("Chat_TemporaryAccountBan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El bloqueo temporal terminó. Puedes intentar iniciar sesión nuevamente..
+        /// </summary>
+        public static string Chat_TemporaryBanExpired {
+            get {
+                return ResourceManager.GetString("Chat_TemporaryBanExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a MENSAJES.
+        /// </summary>
+        public static string Chat_Title {
+            get {
+                return ResourceManager.GetString("Chat_Title", resourceCulture);
             }
         }
         
@@ -610,6 +781,78 @@ namespace View.Properties.Langs {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a La configuración no es válida. La capacidad debe admitir a los jugadores presentes..
+        /// </summary>
+        public static string Lobby_ConfigurationInvalid {
+            get {
+                return ResourceManager.GetString("Lobby_ConfigurationInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Se perdió la comunicación con el servidor. Revisa tu conexión e intenta volver a entrar..
+        /// </summary>
+        public static string Lobby_ConnectionLost {
+            get {
+                return ResourceManager.GetString("Lobby_ConnectionLost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Nuevo anfitrión: .
+        /// </summary>
+        public static string Lobby_HostChanged {
+            get {
+                return ResourceManager.GetString("Lobby_HostChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Solo el anfitrión actual puede cambiar la configuración..
+        /// </summary>
+        public static string Lobby_HostRequired {
+            get {
+                return ResourceManager.GetString("Lobby_HostRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a El anfitrión te expulsó de la sala..
+        /// </summary>
+        public static string Lobby_KickedNotice {
+            get {
+                return ResourceManager.GetString("Lobby_KickedNotice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Fuiste expulsado de esta sala. Solo una nueva invitación autorizada por el anfitrión puede restablecer tu acceso..
+        /// </summary>
+        public static string Lobby_KickedParticipantReentryDenied {
+            get {
+                return ResourceManager.GetString("Lobby_KickedParticipantReentryDenied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Expulsar.
+        /// </summary>
+        public static string Lobby_KickPlayer {
+            get {
+                return ResourceManager.GetString("Lobby_KickPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a La partida ya comenzó; no puedes cambiar la configuración..
+        /// </summary>
+        public static string Lobby_MatchInProgress {
+            get {
+                return ResourceManager.GetString("Lobby_MatchInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a Número de misiones:.
         /// </summary>
         public static string Lobby_Missions {
@@ -624,6 +867,24 @@ namespace View.Properties.Langs {
         public static string Lobby_NotReadyButton {
             get {
                 return ResourceManager.GetString("Lobby_NotReadyButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Opciones del jugador.
+        /// </summary>
+        public static string Lobby_PlayerActions {
+            get {
+                return ResourceManager.GetString("Lobby_PlayerActions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Máximo de jugadores: .
+        /// </summary>
+        public static string Lobby_PlayerLimit {
+            get {
+                return ResourceManager.GetString("Lobby_PlayerLimit", resourceCulture);
             }
         }
         
@@ -903,6 +1164,15 @@ namespace View.Properties.Langs {
         public static string Register_EmailAlreadyRegistered {
             get {
                 return ResourceManager.GetString("Register_EmailAlreadyRegistered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a Este correo está bloqueado permanentemente y no puede usarse para registrar otra cuenta..
+        /// </summary>
+        public static string Register_EmailPermanentlyBlocked {
+            get {
+                return ResourceManager.GetString("Register_EmailPermanentlyBlocked", resourceCulture);
             }
         }
         

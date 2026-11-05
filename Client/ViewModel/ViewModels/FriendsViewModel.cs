@@ -401,7 +401,7 @@ namespace ViewModel.ViewModels
         {
             FriendItemViewModel targetFriend = parameter as FriendItemViewModel;
             int currentUserId = GetAuthenticatedUserId();
-            Model.ILobbyService.Lobby activeLobby = _lobbySession.CurrentLobby;
+            Model.GameServices.Lobby activeLobby = _lobbySession.CurrentLobby;
             bool canSendInvitation = targetFriend != null &&
                                      currentUserId > 0 &&
                                      _lobbySession.HasActiveLobby &&
@@ -435,7 +435,7 @@ namespace ViewModel.ViewModels
             if (invitationItem != null && !string.IsNullOrWhiteSpace(invitationItem.LobbyCode))
             {
                 _lobbySession.ClearLobby();
-                Model.ILobbyService.LobbyResult result = await _lobbySession.Client.JoinLobbyByCodeAsync(
+                Model.GameServices.LobbyResult result = await _lobbySession.Client.JoinLobbyByCodeAsync(
                     invitationItem.LobbyCode.Trim().ToUpperInvariant(),
                     currentUserId);
 

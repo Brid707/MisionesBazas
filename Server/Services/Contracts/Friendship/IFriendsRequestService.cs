@@ -1,5 +1,5 @@
-﻿using Services.DataContracts.Friendship;
-using Services.DTO;
+using Services.DataContracts.Friendship;
+using Services.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,8 @@
-﻿using Application.Models.Friendship;
+using Application.Models.Friendship;
 using Application.Ports;
 using Services.Contracts.Friendship;
 using Services.DataContracts.Friendship;
-using Services.DTO;
+using Services.DataContracts;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

@@ -1,0 +1,35 @@
+<catalog culture="es-MX">
+  <expression category="Profanity" matchObfuscation="true">mierda</expression>
+  <expression category="Profanity" matchObfuscation="true">pendejo</expression>
+  <expression category="Profanity" matchObfuscation="true">pendeja</expression>
+  <expression category="Profanity" matchObfuscation="true">pendejos</expression>
+  <expression category="Profanity" matchObfuscation="true">pendejas</expression>
+  <expression category="Profanity" matchObfuscation="true">cabron</expression>
+  <expression category="Profanity" matchObfuscation="true">cabrona</expression>
+  <expression category="Profanity" matchObfuscation="true">cabrones</expression>
+  <expression category="Profanity" matchObfuscation="true">chingada</expression>
+  <expression category="Profanity" matchObfuscation="true">chingado</expression>
+  <expression category="Profanity" matchObfuscation="true">chingar</expression>
+  <expression category="Profanity" matchObfuscation="true">chinga tu madre</expression>
+  <expression category="Profanity" matchObfuscation="true">hijo de puta</expression>
+  <expression category="Profanity" matchObfuscation="true">hija de puta</expression>
+  <expression category="Profanity" matchObfuscation="true">puto</expression>
+  <expression category="Profanity" matchObfuscation="true">puta</expression>
+  <expression category="Profanity" matchObfuscation="true">idiota</expression>
+  <expression category="Profanity" matchObfuscation="true">idiotas</expression>
+  <expression category="Profanity" matchObfuscation="true">imbecil</expression>
+  <expression category="Profanity" matchObfuscation="true">imbeciles</expression>
+  <expression category="Profanity" matchObfuscation="true">estupido</expression>
+  <expression category="Profanity" matchObfuscation="true">estupida</expression>
+  <expression category="Threat" matchObfuscation="true">te voy a matar</expression>
+  <expression category="Threat" matchObfuscation="true">voy a matarte</expression>
+  <expression category="Threat" matchObfuscation="true">voy a perseguirte</expression>
+  <expression category="Threat" matchObfuscation="true">te voy a perseguir</expression>
+  <expression category="Threat" matchObfuscation="true">voy a buscar tu direccion</expression>
+  <expression category="Threat" matchObfuscation="true">te voy a hackear</expression>
+  <expression category="Threat" matchObfuscation="true">voy a hackearte</expression>
+  <expression category="Threat" matchObfuscation="true">te voy a hacer dano</expression>
+  <expression category="Threat" matchObfuscation="true">voy a encontrar tu direccion</expression>
+  <expression category="Threat" matchObfuscation="true">voy a averiguar tu direccion</expression>
+  <expression category="Threat" matchObfuscation="true">voy a hacerte dano</expression>
+</catalog>
