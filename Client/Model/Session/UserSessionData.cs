@@ -1,4 +1,4 @@
-﻿namespace Model.Session
+namespace Model.Session
 {
     /// <summary>
     /// Represents the profile and identity data for an active user session.
@@ -19,5 +19,7 @@
         /// Gets or sets the email address of the user.
         /// </summary>
         public string Email { get; set; }
+
+        public string AccountSessionToken { get; set; }
     }
 }

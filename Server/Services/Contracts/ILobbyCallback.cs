@@ -1,5 +1,6 @@
 using System.ServiceModel;
-using Services.DTO;
+
+using Services.DataContracts;
 
 namespace Services.Contracts
 {
@@ -37,6 +38,10 @@ namespace Services.Contracts
         /// <param name="message">The chat message object containing sender details and text.</param>
         [OperationContract(IsOneWay = true)]
         void OnReceiveLobbyChatMessage(LobbyMessage message);
+
+        /// <summary>Notifies only the sanctioned account that server access has been revoked.</summary>
+        [OperationContract(IsOneWay = true)]
+        void OnChatAccountBanApplied(ChatAccountBanNotice chatAccountBanNotice);
 
         /// <summary>
         /// Notifies participants that the host launched the game and provides the new match identifier.

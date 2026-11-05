@@ -1,5 +1,5 @@
 using System.ServiceModel;
-using Services.DTO;
+using Services.DataContracts;
 
 namespace Services.Contracts
 {

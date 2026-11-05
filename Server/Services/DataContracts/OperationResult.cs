@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents the base result contract for non-generic service operations.

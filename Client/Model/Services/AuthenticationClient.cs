@@ -1,6 +1,7 @@
-using System;
 using System.ServiceModel;
-using Model.UserLoginService;
+using System;
+
+using Model.GameServices;
 
 namespace Model.Services
 {
@@ -43,7 +44,7 @@ namespace Model.Services
         /// <summary>
         /// Occurs when an authentication request completes on the server.
         /// </summary>
-        public event Action<bool, string, UserDTO> LoginCompleted;
+        public event Action<bool, string, User> LoginCompleted;
 
         /// <summary>
         /// Occurs when a network or communication fault prevents completing the request.
@@ -91,7 +92,7 @@ namespace Model.Services
         /// <param name="success">Indicates whether the authentication attempt succeeded.</param>
         /// <param name="message">A descriptive response message regarding the login result.</param>
         /// <param name="user">The authenticated user profile data, or null if login failed.</param>
-        public void LoginResult(bool success, string message, UserDTO user)
+        public void LoginResult(bool success, string message, User user)
         {
             LoginCompleted?.Invoke(success, message, user);
         }

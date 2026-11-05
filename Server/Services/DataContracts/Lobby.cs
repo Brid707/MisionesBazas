@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents the state and participant list of an active game lobby room.

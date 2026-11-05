@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+namespace Services.DataContracts
 {
     /// <summary>
     /// Represents the configuration settings specified when creating or updating a lobby room.

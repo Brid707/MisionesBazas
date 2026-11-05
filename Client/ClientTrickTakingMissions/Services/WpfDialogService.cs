@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Windows;
+
 using ViewModel.Constants;
 using ViewModel.Services;
 
@@ -14,6 +15,8 @@ namespace View.Services
         {
             { MessageCode.EmptyEmail, nameof(View.Properties.Langs.Resources.Login_EmptyEmail) },
             { MessageCode.EmptyPassword, nameof(View.Properties.Langs.Resources.Login_EmptyPassword) },
+            { MessageCode.ChatStorageUnavailable, "Chat_ChatStorageUnavailable" },
+            { MessageCode.ChatAccountBanned, "Chat_AccountBanned" },
             { MessageCode.InvalidCredentials, nameof(View.Properties.Langs.Resources.Login_InvalidCredentials) },
             { MessageCode.RegisterInvalidEmail, nameof(View.Properties.Langs.Resources.Register_InvalidEmail) },
             { MessageCode.RegisterEmptyEmail, nameof(View.Properties.Langs.Resources.Register_EmptyEmail) },

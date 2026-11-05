@@ -46,6 +46,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewModels\LobbyChatViewModel.cs" />
+    <Compile Include="Services\IChatModerationPresenter.cs" />
     <Compile Include="Base\AsyncRelayCommand.cs" />
     <Compile Include="Base\RelayCommand.cs" />
     <Compile Include="Base\ViewModelBase.cs" />

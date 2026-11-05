@@ -1,7 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Model.ILobbyService;
+using System;
+
+using Model.GameServices;
 using Model.Session;
 using ViewModel.Base;
 using ViewModel.Constants;

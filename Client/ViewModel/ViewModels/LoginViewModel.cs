@@ -1,9 +1,10 @@
-using System;
 using System.ServiceModel;
 using System.Windows.Input;
+using System;
+
+using Model.GameServices;
 using Model.Security;
 using Model.Session;
-using Model.UserLoginService;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -92,7 +93,7 @@ namespace ViewModel.ViewModels
         /// <param name="success">Indicates whether credentials were authenticated successfully.</param>
         /// <param name="message">The outcome message provided by the server.</param>
         /// <param name="user">The authenticated user profile, or null if login failed.</param>
-        public void LoginResult(bool success, string message, UserDTO user)
+        public void LoginResult(bool success, string message, User user)
         {
             IsLoading = false;
 
@@ -104,7 +105,8 @@ namespace ViewModel.ViewModels
                     {
                         IdUser = user.IdUser,
                         Username = user.Username,
-                        Email = user.Email
+                        Email = user.Email,
+                        AccountSessionToken = user.AccountSessionToken
                     });
                 }
 
@@ -112,7 +114,17 @@ namespace ViewModel.ViewModels
             }
             else
             {
-                _dialogService.ShowWarning(MessageCode.InvalidCredentials);
+                int loginWarningCode = MessageCode.InvalidCredentials;
+                if (message == "ChatAccountBanned")
+                {
+                    loginWarningCode = MessageCode.ChatAccountBanned;
+                }
+                else if (message == "ChatStorageUnavailable")
+                {
+                    loginWarningCode = MessageCode.ChatStorageUnavailable;
+                }
+
+                _dialogService.ShowWarning(loginWarningCode);
             }
         }
 

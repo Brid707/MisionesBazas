@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Services.DataContracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Services.DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/Application.Models" />
+  <xs:complexType name="LobbySettings">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PlayerLimit" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="TargetMissionCount" type="xs:unsignedByte" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbySettings" nillable="true" type="tns:LobbySettings" />
+  <xs:complexType name="LobbyResult">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:OperationResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Lobby" nillable="true" type="tns:Lobby" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="LobbyResult" nillable="true" type="tns:LobbyResult" />
+  <xs:complexType name="OperationResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" type="xs:int" />
+      <xs:element minOccurs="0" name="IsSuccess" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OperationResult" nillable="true" type="tns:OperationResult" />
+  <xs:complexType name="Lobby">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HostUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="LobbyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PlayerLimit" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="Players" nillable="true" type="tns:ArrayOfLobbyPlayer" />
+      <xs:element minOccurs="0" name="Status" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="TargetMissionCount" type="xs:unsignedByte" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Lobby" nillable="true" type="tns:Lobby" />
+  <xs:complexType name="ArrayOfLobbyPlayer">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="LobbyPlayer" nillable="true" type="tns:LobbyPlayer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLobbyPlayer" nillable="true" type="tns:ArrayOfLobbyPlayer" />
+  <xs:complexType name="LobbyPlayer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="IdUser" type="xs:int" />
+      <xs:element minOccurs="0" name="IsHost" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsReady" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyPlayer" nillable="true" type="tns:LobbyPlayer" />
+  <xs:complexType name="LobbyChatMessageSubmission">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChatMessageSubmissionId" type="ser:guid" />
+      <xs:element minOccurs="0" name="LobbyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalChatMessageText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyChatMessageSubmission" nillable="true" type="tns:LobbyChatMessageSubmission" />
+  <xs:complexType name="LobbyChatMessageSubmissionOutcome">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChatMessageSubmissionId" type="ser:guid" />
+      <xs:element minOccurs="0" name="IsChatMessageAccepted" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsRepeatedChatMessageSubmission" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ChatMessageRejectionReason" xmlns:q1="http://schemas.datacontract.org/2004/07/Application.Models" type="q1:ChatMessageRejectionReason" />
+      <xs:element minOccurs="0" name="ChatInfractionNotice" nillable="true" type="tns:ChatInfractionNotice" />
+      <xs:element minOccurs="0" name="ChatAccountBanNotice" nillable="true" type="tns:ChatAccountBanNotice" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyChatMessageSubmissionOutcome" nillable="true" type="tns:LobbyChatMessageSubmissionOutcome" />
+  <xs:complexType name="ChatInfractionNotice">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChatMessageSubmissionId" type="ser:guid" />
+      <xs:element minOccurs="0" name="CurrentMessageInfractionPoints" type="xs:int" />
+      <xs:element minOccurs="0" name="AccumulatedChatInfractionPoints" type="xs:int" />
+      <xs:element minOccurs="0" name="ChatInfractionPointThreshold" type="xs:int" />
+      <xs:element minOccurs="0" name="RemainingChatInfractionPointsBeforeBan" type="xs:int" />
+      <xs:element minOccurs="0" name="ThreateningChatMessageCount" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChatInfractionNotice" nillable="true" type="tns:ChatInfractionNotice" />
+  <xs:complexType name="ChatAccountBanNotice">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChatMessageSubmissionId" type="ser:guid" />
+      <xs:element minOccurs="0" name="ChatAccountBanType" type="tns:ChatAccountBanType" />
+      <xs:element minOccurs="0" name="ChatAccountBanEndsAtUtc" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChatAccountBanNotice" nillable="true" type="tns:ChatAccountBanNotice" />
+  <xs:simpleType name="ChatAccountBanType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Unspecified" />
+      <xs:enumeration value="Temporary" />
+      <xs:enumeration value="Permanent" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ChatAccountBanType" nillable="true" type="tns:ChatAccountBanType" />
+  <xs:complexType name="LobbyMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SenderUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="SenderUsername" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SentAt" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LobbyMessage" nillable="true" type="tns:LobbyMessage" />
+  <xs:complexType name="UserRegister">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PasswordHash" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserRegister" nillable="true" type="tns:UserRegister" />
+  <xs:complexType name="User">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountSessionToken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IdUser" type="xs:int" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="User" nillable="true" type="tns:User" />
+</xs:schema>

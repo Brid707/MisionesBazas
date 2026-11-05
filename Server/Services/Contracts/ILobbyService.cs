@@ -1,5 +1,6 @@
 using System.ServiceModel;
-using Services.DTO;
+
+using Services.DataContracts;
 
 namespace Services.Contracts
 {
@@ -53,14 +54,11 @@ namespace Services.Contracts
         [OperationContract(IsOneWay = true)]
         void SetPlayerReadyStatus(string lobbyCode, int userId, bool isReady);
 
-        /// <summary>
-        /// Dispatches a textual chat message to all participants connected to the specified lobby room.
-        /// </summary>
-        /// <param name="lobbyCode">The room invitation code.</param>
-        /// <param name="senderUserId">The unique identifier of the user authoring the message.</param>
-        /// <param name="message">The text payload of the chat message.</param>
-        [OperationContract(IsOneWay = true)]
-        void SendLobbyChatMessage(string lobbyCode, int senderUserId, string message);
+        /// <summary>Processes an authenticated chat submission and returns its committed disposition.</summary>
+        /// <param name="chatMessageSubmission">The identified lobby message to evaluate.</param>
+        /// <returns>The acceptance, moderation notice or account ban for this submission.</returns>
+        [OperationContract]
+        LobbyChatMessageSubmissionOutcome SendLobbyChatMessage(LobbyChatMessageSubmission chatMessageSubmission);
 
         /// <summary>
         /// Instructs the server to initialize the game match from the current lobby once participants are ready.

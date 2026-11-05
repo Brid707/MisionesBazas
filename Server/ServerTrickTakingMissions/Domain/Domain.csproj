@@ -10,8 +10,11 @@
     <RootNamespace>Domain</RootNamespace>
     <AssemblyName>Domain</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,11 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProhibitedChatExpression.cs" />
+    <Compile Include="NormalizedChatMessageText.cs" />
+    <Compile Include="ChatMessageTextNormalizer.cs" />
+    <Compile Include="ChatMessageModerator.cs" />
+    <Compile Include="ChatMessageModerationDecision.cs" />
+    <Compile Include="ChatInfractionRules.cs" />
+    <Compile Include="ChatInfractionCategory.cs" />
+    <Compile Include="ChatAccountInfractionState.cs" />
+    <Compile Include="IsExternalInit.cs" />
     <Compile Include="GuestIdentityRules.cs" />
     <Compile Include="LobbyCodeRules.cs" />
     <Compile Include="LobbyRoomRules.cs" />
     <Compile Include="UserAccountRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

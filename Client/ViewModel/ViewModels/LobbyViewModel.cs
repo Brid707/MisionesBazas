@@ -1,11 +1,14 @@
-using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Input;
-using Model.ILobbyService;
+using System;
+
+using Model.GameServices;
 using Model.Services;
 using Model.Session;
 using ViewModel.Base;
@@ -17,12 +20,13 @@ namespace ViewModel.ViewModels
     /// <summary>
     /// ViewModel for managing room state, live participant list, player readiness, and navigation from the lobby.
     /// </summary>
-    public sealed class LobbyViewModel : ViewModelBase
+    public sealed class LobbyViewModel : ViewModelBase, IDisposable
     {
         private const string DefaultMissionsTarget = "5";
 
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILobbyClient _lobbyClient;
         private readonly SynchronizationContext _uiSyncContext;
         private readonly int _currentUserId;
 
@@ -30,10 +34,12 @@ namespace ViewModel.ViewModels
         private string _lobbyCode;
         private bool _isReady;
 
-        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession)
+        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession,
+            IChatModerationPresenter chatModerationPresenter)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _lobbyClient = lobbySession.Client;
             _uiSyncContext = SynchronizationContext.Current;
             _currentUserId = UserSession.Current.EnsureActiveUserId();
 
@@ -41,17 +47,24 @@ namespace ViewModel.ViewModels
             _lobbyCode = string.Empty;
             _isReady = false;
             Players = new ObservableCollection<LobbyPlayerItemViewModel>();
+            Players.CollectionChanged += OnLobbyParticipantsChanged;
 
             BackCommand = new AsyncRelayCommand(ExecuteBackAsync);
             ProfileCommand = new RelayCommand(ExecuteProfile);
             SettingsCommand = new RelayCommand(ExecuteSettings);
             ToggleReadyCommand = new AsyncRelayCommand(ExecuteToggleReadyAsync);
 
+            Chat = new LobbyChatViewModel(lobbySession, navigationService, chatModerationPresenter);
             LoadInitialLobbyState();
             SubscribeToLobbyEvents();
         }
 
+        public LobbyChatViewModel Chat { get; }
+
         public ObservableCollection<LobbyPlayerItemViewModel> Players { get; }
+
+        public IEnumerable<int> VacantLobbyPlayerSlots => Enumerable.Range(0,
+            Math.Max(0, (_lobbySession.CurrentLobby?.PlayerLimit ?? 0) - Players.Count));
 
         public string MissionsTarget
         {
@@ -79,6 +92,18 @@ namespace ViewModel.ViewModels
 
         public ICommand ToggleReadyCommand { get; }
 
+        public void Dispose()
+        {
+            Players.CollectionChanged -= OnLobbyParticipantsChanged;
+            UnsubscribeFromLobbyEvents();
+            Chat.Dispose();
+        }
+
+        private void OnLobbyParticipantsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(VacantLobbyPlayerSlots));
+        }
+
         private void LoadInitialLobbyState()
         {
             Lobby activeLobby = _lobbySession.CurrentLobby;
@@ -99,7 +124,7 @@ namespace ViewModel.ViewModels
 
         private void SubscribeToLobbyEvents()
         {
-            ILobbyClient client = _lobbySession.Client;
+            ILobbyClient client = _lobbyClient;
             client.PlayerJoined += OnServerPlayerJoined;
             client.PlayerLeft += OnServerPlayerLeft;
             client.PlayerReadyStatusChanged += OnServerPlayerReadyStatusChanged;
@@ -108,7 +133,7 @@ namespace ViewModel.ViewModels
 
         private void UnsubscribeFromLobbyEvents()
         {
-            ILobbyClient client = _lobbySession.Client;
+            ILobbyClient client = _lobbyClient;
             client.PlayerJoined -= OnServerPlayerJoined;
             client.PlayerLeft -= OnServerPlayerLeft;
             client.PlayerReadyStatusChanged -= OnServerPlayerReadyStatusChanged;
@@ -213,7 +238,7 @@ namespace ViewModel.ViewModels
 
             if (!string.IsNullOrWhiteSpace(codeToLeave))
             {
-                await _lobbySession.Client.LeaveLobbyAsync(codeToLeave, _currentUserId);
+                await _lobbyClient.LeaveLobbyAsync(codeToLeave, _currentUserId);
             }
 
             _lobbySession.ClearLobby();
@@ -245,7 +270,7 @@ namespace ViewModel.ViewModels
 
             if (!string.IsNullOrWhiteSpace(_lobbyCode))
             {
-                await _lobbySession.Client.SetPlayerReadyStatusAsync(
+                await _lobbyClient.SetPlayerReadyStatusAsync(
                     _lobbyCode,
                     _currentUserId,
                     newReadyState);

@@ -1,9 +1,11 @@
-using System;
+using System.Data.SqlClient;
 using System.ServiceModel;
+using System;
+
 using Application.Models;
 using Application.Ports;
 using Services.Contracts;
-using Services.DTO;
+using Services.DataContracts;
 
 namespace Services.Services
 {
@@ -17,8 +19,9 @@ namespace Services.Services
         private const string InvalidCredentialsMessage = "Invalid email or password.";
 
         private readonly IUserLoginUseCase _userLoginUseCase;
+        private readonly IAccountAccessPolicy _accountAccessPolicy;
 
-        public UserLoginService(IUserLoginUseCase userLoginUseCase)
+        public UserLoginService(IUserLoginUseCase userLoginUseCase, IAccountAccessPolicy accountAccessPolicy)
         {
             if (userLoginUseCase == null)
             {
@@ -26,12 +29,32 @@ namespace Services.Services
             }
 
             _userLoginUseCase = userLoginUseCase;
+            _accountAccessPolicy = accountAccessPolicy;
         }
 
         public void Login(string email, string password)
         {
+            try
+            {
+                AuthenticateAndNotifyAccount(email, password);
+            }
+            catch (SqlException)
+            {
+                OperationContext.Current.GetCallbackChannel<IUserLoginCallback>()
+                    .LoginResult(false, "ChatStorageUnavailable", null);
+            }
+        }
+
+        private void AuthenticateAndNotifyAccount(string email, string password)
+        {
             AuthenticatedUserData user = _userLoginUseCase.AuthenticateUser(email, password);
-            bool isLoginSuccessful = user != null;
+            string accountSessionToken = null;
+            if (user != null)
+            {
+                accountSessionToken = _accountAccessPolicy.CreateAllowedAccountSession(user.IdUser);
+            }
+
+            bool isLoginSuccessful = !string.IsNullOrEmpty(accountSessionToken);
             User userDto = null;
             string responseMessage;
 
@@ -42,12 +65,17 @@ namespace Services.Services
                 {
                     IdUser = user.IdUser,
                     Username = user.Username,
-                    Email = user.Email
+                    Email = user.Email,
+                    AccountSessionToken = accountSessionToken
                 };
             }
             else
             {
                 responseMessage = InvalidCredentialsMessage;
+                if (user != null)
+                {
+                    responseMessage = "ChatAccountBanned";
+                }
             }
 
             OperationContext.Current

@@ -1,7 +1,9 @@
-using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Model.ILobbyService;
+using System;
+
+using Model.GameServices;
+using Model.Security;
 
 namespace Model.Services
 {
@@ -25,6 +27,8 @@ namespace Model.Services
         public event Action<int, bool> PlayerReadyStatusChanged;
 
         public event Action<LobbyMessage> ChatMessageReceived;
+
+        public event EventHandler<ChatAccountBanAppliedEventArgs> ChatAccountBanApplied;
 
         public event Action<int> GameStarted;
 
@@ -165,34 +169,31 @@ namespace Model.Services
             }
         }
 
-        /// <summary>
-        /// Sends a chat message asynchronously to all participants in the specified lobby room.
-        /// </summary>
-        /// <param name="lobbyCode">The alphanumeric invitation code of the room.</param>
-        /// <param name="senderUserId">The unique identifier of the message sender.</param>
-        /// <param name="message">The text content of the chat message.</param>
-        public async Task SendLobbyChatMessageAsync(string lobbyCode, int senderUserId, string message)
+        /// <summary>Returns processing confirmation; retries must reuse the same submission identifier.</summary>
+        public async Task<LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(
+            LobbyChatMessageSubmission chatMessageSubmission)
         {
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = null;
             try
             {
                 EnsureClientIsOpen();
-                await _client.SendLobbyChatMessageAsync(lobbyCode, senderUserId, message);
-            }
-            catch (EndpointNotFoundException)
-            {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                chatMessageSubmissionOutcome = await _client.SendLobbyChatMessageAsync(chatMessageSubmission);
             }
             catch (TimeoutException)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
                 ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
             }
             catch (CommunicationException)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
                 ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
             }
+
+            return chatMessageSubmissionOutcome;
+        }
+
+        public void OnChatAccountBanApplied(ChatAccountBanNotice chatAccountBanNotice)
+        {
+            ChatAccountBanApplied?.Invoke(this, new ChatAccountBanAppliedEventArgs(chatAccountBanNotice));
         }
 
         public void OnPlayerJoinedLobby(LobbyPlayer player)
@@ -235,6 +236,7 @@ namespace Model.Services
         {
             InstanceContext instanceContext = new InstanceContext(this);
             _client = new LobbyServiceClient(instanceContext);
+            _client.Endpoint.EndpointBehaviors.Add(new AccountSessionEndpointBehavior());
         }
 
         private void EnsureClientIsOpen()

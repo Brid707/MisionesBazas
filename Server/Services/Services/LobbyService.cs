@@ -1,12 +1,17 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel;
+using System.Text.RegularExpressions;
+using System;
+
 using Application.Models;
 using Application.Ports;
+using Domain;
 using Services.Contracts;
-using Services.DTO;
+using Services.DataContracts;
+using Services.Security;
 
 namespace Services.Services
 {
@@ -26,8 +31,11 @@ namespace Services.Services
                 StringComparer.OrdinalIgnoreCase);
 
         private readonly ILobbyUseCase _lobbyUseCase;
+        private readonly ILobbyChatMessageUseCase _lobbyChatMessageUseCase;
+        private readonly IAccountAccessPolicy _accountAccessPolicy;
 
-        public LobbyService(ILobbyUseCase lobbyUseCase)
+        public LobbyService(ILobbyUseCase lobbyUseCase, ILobbyChatMessageUseCase lobbyChatMessageUseCase,
+            IAccountAccessPolicy accountAccessPolicy)
         {
             if (lobbyUseCase == null)
             {
@@ -35,54 +43,62 @@ namespace Services.Services
             }
 
             _lobbyUseCase = lobbyUseCase;
+            _lobbyChatMessageUseCase = lobbyChatMessageUseCase;
+            _accountAccessPolicy = accountAccessPolicy;
         }
 
         public LobbyResult CreateLobby(int hostUserId, LobbySettings settings)
         {
+            EnsureParticipantOperationAllowed(hostUserId);
             byte targetMissions = settings != null ? settings.TargetMissionCount : UnspecifiedSettingValue;
             byte playerLimit = settings != null ? settings.PlayerLimit : UnspecifiedSettingValue;
 
-            LobbyActionOutcome outcome = _lobbyUseCase.CreateLobby(hostUserId, targetMissions, playerLimit);
-            if (outcome.IsSuccess && outcome.Lobby != null)
+            LobbyActionOutcome lobbyActionOutcome =
+                _lobbyUseCase.CreateLobby(hostUserId, targetMissions, playerLimit);
+            if (lobbyActionOutcome.IsSuccess && lobbyActionOutcome.Lobby != null)
             {
-                RegisterCurrentCallback(outcome.Lobby.LobbyCode, hostUserId);
+                RegisterCurrentCallback(lobbyActionOutcome.Lobby.LobbyCode, hostUserId);
             }
 
-            return MapToLobbyResult(outcome);
+            return MapToLobbyResult(lobbyActionOutcome);
         }
 
         public LobbyResult JoinLobbyByCode(string lobbyCode, int userId)
         {
-            LobbyActionOutcome outcome = _lobbyUseCase.JoinLobby(lobbyCode, userId);
-            if (outcome.IsSuccess && outcome.Lobby != null && outcome.AffectedPlayer != null)
+            EnsureParticipantOperationAllowed(userId);
+            LobbyActionOutcome lobbyActionOutcome = _lobbyUseCase.JoinLobby(lobbyCode, userId);
+            if (lobbyActionOutcome.IsSuccess && lobbyActionOutcome.Lobby != null &&
+                lobbyActionOutcome.AffectedPlayer != null)
             {
-                string canonicalCode = outcome.Lobby.LobbyCode;
+                string canonicalCode = lobbyActionOutcome.Lobby.LobbyCode;
                 RegisterCurrentCallback(canonicalCode, userId);
 
-                LobbyPlayer joinedPlayer = MapToPlayerDto(outcome.AffectedPlayer);
+                LobbyPlayer joinedPlayer = MapToPlayerDto(lobbyActionOutcome.AffectedPlayer);
                 BroadcastToRoom(
                     canonicalCode,
                     userId,
                     callback => callback.OnPlayerJoinedLobby(joinedPlayer));
             }
 
-            return MapToLobbyResult(outcome);
+            return MapToLobbyResult(lobbyActionOutcome);
         }
 
         public void LeaveLobby(string lobbyCode, int userId)
         {
-            LobbyActionOutcome outcome = _lobbyUseCase.LeaveLobby(lobbyCode, userId);
-            if (outcome.IsSuccess)
+            EnsureParticipantOperationAllowed(userId);
+            LobbyActionOutcome lobbyActionOutcome = _lobbyUseCase.LeaveLobby(lobbyCode, userId);
+            if (lobbyActionOutcome.IsSuccess)
             {
                 UnregisterCallback(lobbyCode, userId);
-                NotifyPlayerDeparture(lobbyCode, userId, outcome.IsRoomDisbanded);
+                NotifyPlayerDeparture(lobbyCode, userId, lobbyActionOutcome.IsRoomDisbanded);
             }
         }
 
         public void KickPlayerByUserId(string lobbyCode, int hostUserId, int targetUserId)
         {
-            LobbyActionOutcome outcome = _lobbyUseCase.KickPlayer(lobbyCode, hostUserId, targetUserId);
-            if (outcome.IsSuccess)
+            EnsureParticipantOperationAllowed(hostUserId);
+            LobbyActionOutcome lobbyActionOutcome = _lobbyUseCase.KickPlayer(lobbyCode, hostUserId, targetUserId);
+            if (lobbyActionOutcome.IsSuccess)
             {
                 BroadcastToRoom(
                     lobbyCode,
@@ -94,8 +110,9 @@ namespace Services.Services
 
         public void SetPlayerReadyStatus(string lobbyCode, int userId, bool isReady)
         {
-            LobbyActionOutcome outcome = _lobbyUseCase.UpdatePlayerReadiness(lobbyCode, userId, isReady);
-            if (outcome.IsSuccess)
+            EnsureParticipantOperationAllowed(userId);
+            LobbyActionOutcome lobbyActionOutcome = _lobbyUseCase.UpdatePlayerReadiness(lobbyCode, userId, isReady);
+            if (lobbyActionOutcome.IsSuccess)
             {
                 BroadcastToRoom(
                     lobbyCode,
@@ -104,31 +121,206 @@ namespace Services.Services
             }
         }
 
-        public void SendLobbyChatMessage(string lobbyCode, int senderUserId, string message)
+        public LobbyChatMessageSubmissionOutcome SendLobbyChatMessage(
+            LobbyChatMessageSubmission chatMessageSubmission)
         {
-            if (!string.IsNullOrWhiteSpace(message))
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
             {
-                string senderUsername = _lobbyUseCase.GetParticipantUsername(lobbyCode, senderUserId);
-                if (!string.IsNullOrEmpty(senderUsername))
-                {
-                    LobbyMessage chatMessage = new LobbyMessage
-                    {
-                        SenderUserId = senderUserId,
-                        SenderUsername = senderUsername,
-                        Message = message.Trim(),
-                        SentAt = DateTime.UtcNow
-                    };
+                ChatMessageRejectionReason = ChatMessageRejectionReason.InvalidChatMessage
+            };
+            try
+            {
+                chatMessageSubmissionOutcome = ProcessAuthenticatedChatMessage(chatMessageSubmission);
+            }
+            catch (SqlException)
+            {
+                chatMessageSubmissionOutcome.ChatMessageRejectionReason =
+                    ChatMessageRejectionReason.ChatStorageUnavailable;
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                chatMessageSubmissionOutcome.ChatMessageRejectionReason =
+                    ChatMessageRejectionReason.ChatModerationUnavailable;
+            }
+            catch (ArgumentException)
+            {
+                chatMessageSubmissionOutcome.ChatMessageRejectionReason = ChatMessageRejectionReason.InvalidChatMessage;
+            }
 
-                    BroadcastToRoom(
-                        lobbyCode,
-                        excludedUserId: null,
-                        callback => callback.OnReceiveLobbyChatMessage(chatMessage));
+            return chatMessageSubmissionOutcome;
+        }
+
+        private LobbyChatMessageSubmissionOutcome ProcessAuthenticatedChatMessage(
+            LobbyChatMessageSubmission chatMessageSubmission)
+        {
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
+            {
+                ChatMessageRejectionReason = ChatMessageRejectionReason.ChatAuthenticationRequired
+            };
+            int authenticatedAccountUserId = _accountAccessPolicy.ResolveAllowedAccountUserId(
+                AccountSessionHeader.ReadCurrentAccountSessionToken());
+            if (chatMessageSubmission != null && authenticatedAccountUserId > 0)
+            {
+                chatMessageSubmissionOutcome.ChatMessageSubmissionId = chatMessageSubmission.ChatMessageSubmissionId;
+                string participantUsername = _lobbyUseCase.GetParticipantUsername(
+                    chatMessageSubmission.LobbyCode, authenticatedAccountUserId);
+                if (!string.IsNullOrEmpty(participantUsername))
+                {
+                    chatMessageSubmissionOutcome = ProcessParticipantChatMessage(chatMessageSubmission,
+                        authenticatedAccountUserId, participantUsername);
                 }
+                else
+                {
+                    chatMessageSubmissionOutcome.ChatMessageRejectionReason =
+                        ChatMessageRejectionReason.ChatParticipantNotInLobby;
+                }
+            }
+
+            return chatMessageSubmissionOutcome;
+        }
+
+        private LobbyChatMessageSubmissionOutcome ProcessParticipantChatMessage(
+            LobbyChatMessageSubmission chatMessageSubmission, int authenticatedAccountUserId,
+            string participantUsername)
+        {
+            LobbyChatMessageProcessing chatMessageProcessing = _lobbyChatMessageUseCase.ProcessChatMessage(
+                new AuthenticatedChatMessageSubmission
+                {
+                    AccountUserId = authenticatedAccountUserId,
+                    ChatMessageSubmissionId = chatMessageSubmission.ChatMessageSubmissionId,
+                    LobbyCode = chatMessageSubmission.LobbyCode,
+                    OriginalChatMessageText = chatMessageSubmission.OriginalChatMessageText
+                });
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome =
+                MapChatSubmissionOutcome(
+                chatMessageSubmission, chatMessageProcessing);
+            if (chatMessageSubmissionOutcome.ChatAccountBanNotice != null)
+            {
+                RemoveBannedAccountFromLobbies(
+                    authenticatedAccountUserId, chatMessageSubmissionOutcome.ChatAccountBanNotice);
+            }
+            else if (chatMessageProcessing.CanPublishChatMessage)
+            {
+                LobbyMessage publishedChatMessage = new LobbyMessage
+                {
+                    SenderUserId = authenticatedAccountUserId,
+                    SenderUsername = participantUsername,
+                    Message = chatMessageProcessing.CensoredChatMessageText,
+                    SentAt = DateTime.UtcNow
+                };
+                BroadcastToRoom(chatMessageSubmission.LobbyCode, null,
+                    participantCallback => participantCallback.OnReceiveLobbyChatMessage(publishedChatMessage));
+            }
+
+            return chatMessageSubmissionOutcome;
+        }
+
+        private static LobbyChatMessageSubmissionOutcome MapChatSubmissionOutcome(
+            LobbyChatMessageSubmission chatMessageSubmission, LobbyChatMessageProcessing chatMessageProcessing)
+        {
+            ChatInfractionRecord recordedInfraction = chatMessageProcessing.RecordedChatInfraction;
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
+            {
+                ChatMessageSubmissionId = chatMessageSubmission.ChatMessageSubmissionId,
+                ChatMessageRejectionReason = chatMessageProcessing.ChatMessageRejectionReason,
+                IsChatMessageAccepted = chatMessageProcessing.ChatMessageRejectionReason ==
+                    ChatMessageRejectionReason.None
+            };
+            if (recordedInfraction != null)
+            {
+                chatMessageSubmissionOutcome.IsRepeatedChatMessageSubmission =
+                    recordedInfraction.IsRepeatedChatMessageSubmission;
+                chatMessageSubmissionOutcome.ChatInfractionNotice = CreateChatInfractionNotice(
+                    chatMessageSubmission.ChatMessageSubmissionId, recordedInfraction);
+                if (recordedInfraction.IsAccountBanned)
+                {
+                    chatMessageSubmissionOutcome.ChatAccountBanNotice = CreateChatAccountBanNotice(
+                        chatMessageSubmission.ChatMessageSubmissionId, recordedInfraction.AccountInfractionState);
+                }
+            }
+
+            return chatMessageSubmissionOutcome;
+        }
+
+        private static ChatInfractionNotice CreateChatInfractionNotice(Guid chatMessageSubmissionId,
+            ChatInfractionRecord recordedInfraction)
+        {
+            ChatAccountInfractionState accountInfractionState = recordedInfraction.AccountInfractionState;
+            return new ChatInfractionNotice
+            {
+                ChatMessageSubmissionId = chatMessageSubmissionId,
+                CurrentMessageInfractionPoints = recordedInfraction.CurrentMessageInfractionPoints,
+                AccumulatedChatInfractionPoints = accountInfractionState.AccumulatedChatInfractionPoints,
+                ChatInfractionPointThreshold = ChatInfractionRules.ChatInfractionPointThreshold,
+                RemainingChatInfractionPointsBeforeBan = Math.Max(0, ChatInfractionRules.ChatInfractionPointThreshold -
+                    accountInfractionState.AccumulatedChatInfractionPoints),
+                ThreateningChatMessageCount = accountInfractionState.ThreateningChatMessageCount
+            };
+        }
+
+        private static ChatAccountBanNotice CreateChatAccountBanNotice(Guid chatMessageSubmissionId,
+            ChatAccountInfractionState accountInfractionState)
+        {
+            ChatAccountBanType chatAccountBanType = ChatAccountBanType.Temporary;
+            if (accountInfractionState.IsChatAccountPermanentlyBanned)
+            {
+                chatAccountBanType = ChatAccountBanType.Permanent;
+            }
+
+            return new ChatAccountBanNotice
+            {
+                ChatMessageSubmissionId = chatMessageSubmissionId,
+                ChatAccountBanType = chatAccountBanType,
+                ChatAccountBanEndsAtUtc = accountInfractionState.ChatAccountBanEndsAtUtc
+            };
+        }
+
+        private void RemoveBannedAccountFromLobbies(int accountUserId, ChatAccountBanNotice chatAccountBanNotice)
+        {
+            _accountAccessPolicy.RevokeAccountSessions(accountUserId);
+            foreach (KeyValuePair<string, ConcurrentDictionary<int, ILobbyCallback>> lobbyCallbacks in s_roomCallbacks)
+            {
+                if (lobbyCallbacks.Value.TryGetValue(accountUserId, out ILobbyCallback accountCallback))
+                {
+                    NotifyAccountBanSafely(accountCallback, chatAccountBanNotice);
+                    LobbyActionOutcome accountDepartureOutcome = _lobbyUseCase.LeaveLobby(
+                        lobbyCallbacks.Key, accountUserId);
+                    UnregisterCallback(lobbyCallbacks.Key, accountUserId);
+                    NotifyPlayerDeparture(lobbyCallbacks.Key, accountUserId, accountDepartureOutcome.IsRoomDisbanded);
+                }
+            }
+        }
+
+        private static void NotifyAccountBanSafely(ILobbyCallback accountCallback,
+            ChatAccountBanNotice chatAccountBanNotice)
+        {
+            try
+            {
+                accountCallback.OnChatAccountBanApplied(chatAccountBanNotice);
+            }
+            catch (CommunicationException)
+            {
+                // The account restriction is already committed and must not depend on callback delivery.
+            }
+            catch (TimeoutException)
+            {
+                // The remaining participants must still receive the account departure notification.
+            }
+        }
+
+        private void EnsureParticipantOperationAllowed(int participantUserId)
+        {
+            bool isRegisteredAccountAllowed = _accountAccessPolicy.IsAccountOperationAllowed(
+                participantUserId, AccountSessionHeader.ReadCurrentAccountSessionToken());
+            if (participantUserId >= 0 && !isRegisteredAccountAllowed)
+            {
+                throw new FaultException(ChatMessageRejectionReason.ChatAuthenticationRequired.ToString());
             }
         }
 
         public void StartGameFromLobby(string lobbyCode, int hostUserId)
         {
+            EnsureParticipantOperationAllowed(hostUserId);
             bool canStart = _lobbyUseCase.CanTransitionLobbyToGame(lobbyCode, hostUserId);
             if (canStart)
             {
@@ -243,27 +435,27 @@ namespace Services.Services
                 : lobbyCode.Trim().ToUpperInvariant();
         }
 
-        private static LobbyResult MapToLobbyResult(LobbyActionOutcome outcome)
+        private static LobbyResult MapToLobbyResult(LobbyActionOutcome lobbyActionOutcome)
         {
             Lobby mappedLobby = null;
-            if (outcome.Lobby != null)
+            if (lobbyActionOutcome.Lobby != null)
             {
                 mappedLobby = new Lobby
                 {
-                    LobbyCode = outcome.Lobby.LobbyCode,
-                    HostUserId = outcome.Lobby.HostUserId,
-                    TargetMissionCount = outcome.Lobby.TargetMissionCount,
-                    PlayerLimit = outcome.Lobby.PlayerLimit,
-                    Status = outcome.Lobby.Status,
-                    Players = outcome.Lobby.Players.Select(MapToPlayerDto).ToList()
+                    LobbyCode = lobbyActionOutcome.Lobby.LobbyCode,
+                    HostUserId = lobbyActionOutcome.Lobby.HostUserId,
+                    TargetMissionCount = lobbyActionOutcome.Lobby.TargetMissionCount,
+                    PlayerLimit = lobbyActionOutcome.Lobby.PlayerLimit,
+                    Status = lobbyActionOutcome.Lobby.Status,
+                    Players = lobbyActionOutcome.Lobby.Players.Select(MapToPlayerDto).ToList()
                 };
             }
 
             return new LobbyResult
             {
-                IsSuccess = outcome.IsSuccess,
-                ErrorCode = outcome.ErrorCode,
-                Message = outcome.Message,
+                IsSuccess = lobbyActionOutcome.IsSuccess,
+                ErrorCode = lobbyActionOutcome.ErrorCode,
+                Message = lobbyActionOutcome.Message,
                 Lobby = mappedLobby
             };
         }

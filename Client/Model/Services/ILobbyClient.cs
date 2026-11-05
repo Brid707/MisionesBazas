@@ -1,6 +1,7 @@
-using System;
 using System.Threading.Tasks;
-using Model.ILobbyService;
+using System;
+
+using Model.GameServices;
 
 namespace Model.Services
 {
@@ -17,6 +18,8 @@ namespace Model.Services
 
         event Action<LobbyMessage> ChatMessageReceived;
 
+        event EventHandler<ChatAccountBanAppliedEventArgs> ChatAccountBanApplied;
+
         event Action<int> GameStarted;
 
         event Action<string> LobbyDisbanded;
@@ -31,6 +34,7 @@ namespace Model.Services
 
         Task SetPlayerReadyStatusAsync(string lobbyCode, int userId, bool isReady);
 
-        Task SendLobbyChatMessageAsync(string lobbyCode, int senderUserId, string message);
+        Task<LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(
+            LobbyChatMessageSubmission chatMessageSubmission);
     }
 }

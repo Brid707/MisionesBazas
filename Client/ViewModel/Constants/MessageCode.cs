@@ -12,6 +12,8 @@ namespace ViewModel.Constants
         public const int EmptyEmail = 1001;
         public const int EmptyPassword = 1002;
         public const int InvalidCredentials = 1003;
+        public const int ChatAccountBanned = 1004;
+        public const int ChatStorageUnavailable = 1005;
 
         // Register validation codes (1010 - 1029)
         public const int RegisterInvalidEmail = 1010;

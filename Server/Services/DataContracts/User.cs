@@ -1,6 +1,7 @@
 using System.Runtime.Serialization;
 
-namespace Services.DTO
+
+namespace Services.DataContracts
 {
     /// <summary>
     /// Data transfer object representing authenticated user profile information.
@@ -16,5 +17,8 @@ namespace Services.DTO
 
         [DataMember]
         public string Email { get; set; }
+
+        [DataMember]
+        public string AccountSessionToken { get; set; }
     }
 }

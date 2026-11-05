@@ -39,6 +39,9 @@ namespace View.Styles
 
         private const string SidebarBackgroundHex = "#8A0000";
         private const string LobbyContainerHex = "#7A0000";
+        private const string LobbyBackgroundStartHex = "#830015";
+        private const string LobbyBackgroundEndHex = "#B00000";
+        private const string LobbyMatchSurfaceHex = "#AB0000";
         private const string DialogHeaderHex = "#5A0002";
         private const string FriendCardBackgroundHex = "#680000";
         private const string RequestCardBackgroundHex = "#6F0004";
@@ -132,6 +135,15 @@ namespace View.Styles
 
         public static SolidColorBrush LobbyContainerBackgroundBrush { get; } =
             CreateFrozenBrush(LobbyContainerHex);
+
+        public static Color LobbyBackgroundGradientStartColor { get; } =
+            (Color)ColorConverter.ConvertFromString(LobbyBackgroundStartHex);
+
+        public static Color LobbyBackgroundGradientEndColor { get; } =
+            (Color)ColorConverter.ConvertFromString(LobbyBackgroundEndHex);
+
+        public static SolidColorBrush LobbyMatchSurfaceBrush { get; } =
+            CreateFrozenBrush(LobbyMatchSurfaceHex);
 
         public static SolidColorBrush CompactDialogBackgroundBrush { get; } =
             CreateFrozenBrush(CompactDialogBackgroundHex);

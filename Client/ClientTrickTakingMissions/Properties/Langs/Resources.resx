@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -480,4 +480,20 @@
   </data>
   <data name="ManageFriendRequest_Label_NoPendingRequests" xml:space="preserve">
     <value>No hay solicitudes de amistad pendientes</value>
-  </data></root>
+  </data>  <data name="Chat_Title" xml:space="preserve"><value>MENSAJES</value></data>
+  <data name="Chat_Send" xml:space="preserve"><value>Enviar</value></data>
+  <data name="Chat_MessageInput" xml:space="preserve"><value>Mensaje para enviar al chat</value></data>
+  <data name="Chat_RegisteredAccountsOnly" xml:space="preserve"><value>El chat está disponible solo para cuentas registradas.</value></data>
+  <data name="Chat_AccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
+  <data name="Chat_InfractionWarning" xml:space="preserve"><value>Acumulas {accumulatedChatInfractionPoints} de {chatInfractionPointThreshold} puntos por infracciones del chat. Te faltan {remainingChatInfractionPointsBeforeBan} puntos para bloquear tu cuenta.</value></data>
+  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Tu cuenta está bloqueada durante una semana, hasta {chatAccountBanEndsAtLocalTime}.</value></data>
+  <data name="Chat_PermanentAccountBan" xml:space="preserve"><value>Tu cuenta fue bloqueada permanentemente por infracciones del chat.</value></data>
+  <data name="Chat_InvalidChatMessage" xml:space="preserve"><value>Escribe un mensaje de hasta 500 caracteres.</value></data>
+  <data name="Chat_ChatAuthenticationRequired" xml:space="preserve"><value>Inicia sesión nuevamente para utilizar el chat.</value></data>
+  <data name="Chat_ChatParticipantNotInLobby" xml:space="preserve"><value>Ya no formas parte de esta sala.</value></data>
+  <data name="Chat_ChatStorageUnavailable" xml:space="preserve"><value>No se pudo confirmar el envío. Reintenta el mismo mensaje.</value></data>
+  <data name="Chat_ChatModerationUnavailable" xml:space="preserve"><value>No se pudo revisar el mensaje. Inténtalo nuevamente.</value></data>
+  <data name="Chat_ChatDeliveryUnknown" xml:space="preserve"><value>No se pudo confirmar el envío. Al reintentar el mismo texto no se duplicarán los puntos.</value></data>
+  <data name="Chat_ConflictingChatMessageIdentifier" xml:space="preserve"><value>El identificador del envío ya corresponde a otro mensaje.</value></data>
+  <data name="Chat_ChatAccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
+</root>

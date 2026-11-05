@@ -3,7 +3,7 @@ using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
 using Services.Contracts;
-using Services.DTO;
+using Services.DataContracts;
 
 namespace Services.Services
 {

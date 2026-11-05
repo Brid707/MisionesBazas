@@ -1,12 +1,16 @@
-using System;
-using System.ServiceModel;
+using System.IO;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-using Application;
+using System.ServiceModel;
+using System;
+
 using Application.Ports;
+using Application;
 using Application.UseCases;
 using Host.DependencyInjection;
+using Infrastructure.Moderation;
 using Persistence.Repository;
+using Services.Security;
 using Services.Services;
 
 namespace Host
@@ -29,8 +33,17 @@ namespace Host
             {
                 IUserRepository userRepository = new UserRepository();
 
-                loginHost = CreateUserLoginServiceHost(userRepository);
-                lobbyHost = CreateLobbyServiceHost(userRepository);
+                IChatInfractionRepository chatInfractionRepository =
+                    new ChatInfractionRepository(new ChatModerationLogger());
+                IAccountAccessPolicy accountAccessPolicy = new AccountAccessPolicy(
+                    new AuthenticatedAccountSessionRegistry(), chatInfractionRepository);
+                IProhibitedChatExpressionCatalog prohibitedChatExpressionCatalog =
+                    new ProhibitedChatExpressionCatalog(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ModerationCatalogs"));
+                ILobbyChatMessageUseCase lobbyChatMessageUseCase = new LobbyChatMessageUseCase(
+                    prohibitedChatExpressionCatalog, chatInfractionRepository);
+                loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy);
+                lobbyHost = CreateLobbyServiceHost(userRepository, lobbyChatMessageUseCase, accountAccessPolicy);
                 accountManagementHost = CreateAccountManagementServiceHost(userRepository);
 
                 loginHost.Open();
@@ -71,11 +84,12 @@ namespace Host
             }
         }
 
-        private static ServiceHost CreateUserLoginServiceHost(IUserRepository userRepository)
+        private static ServiceHost CreateUserLoginServiceHost(IUserRepository userRepository,
+            IAccountAccessPolicy accountAccessPolicy)
         {
             IUserLoginUseCase userLoginUseCase = new UserLoginUseCase(userRepository);
             IInstanceProvider instanceProvider = new FuncInstanceProvider<UserLoginService>(
-                () => new UserLoginService(userLoginUseCase));
+                () => new UserLoginService(userLoginUseCase, accountAccessPolicy));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(UserLoginService));
@@ -83,11 +97,12 @@ namespace Host
             return serviceHost;
         }
 
-        private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository)
+        private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository,
+            ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy)
         {
             ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository);
             IInstanceProvider instanceProvider = new FuncInstanceProvider<LobbyService>(
-                () => new LobbyService(lobbyUseCase));
+                () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));
