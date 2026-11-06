@@ -187,7 +187,7 @@ namespace View.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Acumulas {accumulatedChatInfractionPoints} de {chatInfractionPointThreshold} puntos por infracciones del chat. Te faltan {remainingChatInfractionPointsBeforeBan} puntos para bloquear tu cuenta..
+        ///   Busca una cadena traducida similar a Acumulas {0} de {1} puntos por infracciones del chat. Te faltan {2} puntos para bloquear tu cuenta..
         /// </summary>
         public static string Chat_InfractionWarning {
             get {
@@ -232,7 +232,7 @@ namespace View.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tiempo restante: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s..
+        ///   Busca una cadena traducida similar a Tiempo restante: {0} d, {1} h, {2} min, {3} s..
         /// </summary>
         public static string Chat_RemainingBanDuration {
             get {
@@ -250,7 +250,7 @@ namespace View.Properties.Langs {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Tu cuenta está bloqueada durante una semana, hasta {chatAccountBanEndsAtLocalTime}..
+        ///   Busca una cadena traducida similar a Tu cuenta está bloqueada durante una semana, hasta {0}. {1}.
         /// </summary>
         public static string Chat_TemporaryAccountBan {
             get {

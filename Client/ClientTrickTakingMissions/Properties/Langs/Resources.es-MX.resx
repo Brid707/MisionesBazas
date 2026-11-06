@@ -495,8 +495,8 @@
   <data name="Chat_MessageInput" xml:space="preserve"><value>Mensaje para enviar al chat</value></data>
   <data name="Chat_RegisteredAccountsOnly" xml:space="preserve"><value>El chat está disponible solo para cuentas registradas.</value></data>
   <data name="Chat_AccountBanned" xml:space="preserve"><value>Tu cuenta está bloqueada por infracciones del chat.</value></data>
-  <data name="Chat_InfractionWarning" xml:space="preserve"><value>Acumulas {accumulatedChatInfractionPoints} de {chatInfractionPointThreshold} puntos por infracciones del chat. Te faltan {remainingChatInfractionPointsBeforeBan} puntos para bloquear tu cuenta.</value></data>
-  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Tu cuenta está bloqueada durante una semana, hasta {chatAccountBanEndsAtLocalTime}.</value></data>
+  <data name="Chat_InfractionWarning" xml:space="preserve"><value>Acumulas {0} de {1} puntos por infracciones del chat. Te faltan {2} puntos para bloquear tu cuenta.</value></data>
+  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Tu cuenta está bloqueada durante una semana, hasta {0}. {1}</value></data>
   <data name="Chat_PermanentAccountBan" xml:space="preserve"><value>Tu cuenta fue bloqueada permanentemente por infracciones del chat.</value></data>
   <data name="Chat_InvalidChatMessage" xml:space="preserve"><value>Escribe un mensaje de hasta 500 caracteres.</value></data>
   <data name="Chat_ChatAuthenticationRequired" xml:space="preserve"><value>Inicia sesión nuevamente para utilizar el chat.</value></data>
@@ -513,7 +513,7 @@
   <data name="Lobby_HostChanged" xml:space="preserve"><value>Nuevo anfitrión: </value></data>
   <data name="Lobby_PlayerLimit" xml:space="preserve"><value>Máximo de jugadores: </value></data>
   <data name="Register_EmailPermanentlyBlocked" xml:space="preserve"><value>Este correo está bloqueado permanentemente y no puede usarse para registrar otra cuenta.</value></data>
-  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Tiempo restante: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s.</value></data>
+  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Tiempo restante: {0} d, {1} h, {2} min, {3} s.</value></data>
   <data name="Chat_TemporaryBanExpired" xml:space="preserve"><value>El bloqueo temporal terminó. Puedes intentar iniciar sesión nuevamente.</value></data>
   <data name="Account_StorageUnavailable" xml:space="preserve"><value>No se pudo consultar la base de datos de cuentas. Inténtalo cuando se restablezca el servicio.</value></data>
   <data name="Lobby_PlayerActions" xml:space="preserve"><value>Opciones del jugador</value></data>

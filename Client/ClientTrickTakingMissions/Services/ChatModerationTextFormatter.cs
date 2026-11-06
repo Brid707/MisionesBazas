@@ -6,7 +6,7 @@ using View.Properties.Langs;
 
 namespace View.Services
 {
-    /// <summary>Resolves moderation resources and expands explicitly named infraction placeholders.</summary>
+    /// <summary>Formats localized moderation notices using positional resource placeholders.</summary>
     public static class ChatModerationTextFormatter
     {
         public static string FormatSubmissionFeedback(LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome)
@@ -35,11 +35,11 @@ namespace View.Services
             {
                 string localBanEndText = chatAccountBanNotice.ChatAccountBanEndsAtUtc?.ToLocalTime()
                     .ToString("g", CultureInfo.CurrentCulture) ?? string.Empty;
-                localizedAccountBanNotice = GetChatResource("Chat_TemporaryAccountBan")
-                    .Replace("{chatAccountBanEndsAtLocalTime}", localBanEndText);
                 TimeSpan remainingBanDuration = chatAccountBanNotice.ChatAccountBanEndsAtUtc.GetValueOrDefault() -
                     chatAccountBanNotice.EvaluatedAtUtc;
-                localizedAccountBanNotice += " " + FormatRemainingBanDuration(remainingBanDuration);
+                localizedAccountBanNotice = string.Format(CultureInfo.CurrentCulture,
+                    Resources.Chat_TemporaryAccountBan,
+                    new object[] { localBanEndText, FormatRemainingBanDuration(remainingBanDuration) });
             }
 
             return localizedAccountBanNotice;
@@ -50,12 +50,14 @@ namespace View.Services
             string remainingBanText = GetChatResource("Chat_TemporaryBanExpired");
             if (remainingBanDuration > TimeSpan.Zero)
             {
-                remainingBanText = GetChatResource("Chat_RemainingBanDuration")
-                    .Replace("{remainingBanDays}", remainingBanDuration.Days.ToString(CultureInfo.CurrentCulture))
-                    .Replace("{remainingBanHours}", remainingBanDuration.Hours.ToString(CultureInfo.CurrentCulture))
-                    .Replace("{remainingBanMinutes}", remainingBanDuration.Minutes.ToString(CultureInfo.CurrentCulture))
-                    .Replace("{remainingBanSeconds}",
-                    remainingBanDuration.Seconds.ToString(CultureInfo.CurrentCulture));
+                remainingBanText = string.Format(CultureInfo.CurrentCulture, Resources.Chat_RemainingBanDuration,
+                    new object[]
+                    {
+                        remainingBanDuration.Days,
+                        remainingBanDuration.Hours,
+                        remainingBanDuration.Minutes,
+                        remainingBanDuration.Seconds
+                    });
             }
 
             return remainingBanText;
@@ -63,14 +65,13 @@ namespace View.Services
 
         private static string FormatInfractionNotice(ChatInfractionNotice chatInfractionNotice)
         {
-            return GetChatResource("Chat_InfractionWarning")
-                .Replace("{accumulatedChatInfractionPoints}", chatInfractionNotice.AccumulatedChatInfractionPoints
-                    .ToString(CultureInfo.CurrentCulture))
-                .Replace("{chatInfractionPointThreshold}", chatInfractionNotice.ChatInfractionPointThreshold
-                    .ToString(CultureInfo.CurrentCulture))
-                .Replace("{remainingChatInfractionPointsBeforeBan}",
-                chatInfractionNotice.RemainingChatInfractionPointsBeforeBan
-                    .ToString(CultureInfo.CurrentCulture));
+            return string.Format(CultureInfo.CurrentCulture, Resources.Chat_InfractionWarning,
+                new object[]
+                {
+                    chatInfractionNotice.AccumulatedChatInfractionPoints,
+                    chatInfractionNotice.ChatInfractionPointThreshold,
+                    chatInfractionNotice.RemainingChatInfractionPointsBeforeBan
+                });
         }
 
         private static string GetChatResource(string chatResourceName)

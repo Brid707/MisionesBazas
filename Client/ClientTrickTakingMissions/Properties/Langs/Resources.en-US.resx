@@ -495,8 +495,8 @@
   <data name="Chat_MessageInput" xml:space="preserve"><value>Message to send to chat</value></data>
   <data name="Chat_RegisteredAccountsOnly" xml:space="preserve"><value>Chat is available to registered accounts only.</value></data>
   <data name="Chat_AccountBanned" xml:space="preserve"><value>Your account is banned for chat infractions.</value></data>
-  <data name="Chat_InfractionWarning" xml:space="preserve"><value>You have {accumulatedChatInfractionPoints} of {chatInfractionPointThreshold} chat infraction points. {remainingChatInfractionPointsBeforeBan} more points will trigger an account ban.</value></data>
-  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Your account is banned for one week, until {chatAccountBanEndsAtLocalTime}.</value></data>
+  <data name="Chat_InfractionWarning" xml:space="preserve"><value>You have {0} of {1} chat infraction points. {2} more points will trigger an account ban.</value></data>
+  <data name="Chat_TemporaryAccountBan" xml:space="preserve"><value>Your account is banned for one week, until {0}. {1}</value></data>
   <data name="Chat_PermanentAccountBan" xml:space="preserve"><value>Your account has been permanently banned for chat infractions.</value></data>
   <data name="Chat_InvalidChatMessage" xml:space="preserve"><value>Enter a message of up to 500 characters.</value></data>
   <data name="Chat_ChatAuthenticationRequired" xml:space="preserve"><value>Sign in again to use chat.</value></data>
@@ -513,7 +513,7 @@
   <data name="Lobby_HostChanged" xml:space="preserve"><value>New host: </value></data>
   <data name="Lobby_PlayerLimit" xml:space="preserve"><value>Maximum players: </value></data>
   <data name="Register_EmailPermanentlyBlocked" xml:space="preserve"><value>This email is permanently blocked and cannot register another account.</value></data>
-  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Time remaining: {remainingBanDays} d, {remainingBanHours} h, {remainingBanMinutes} min, {remainingBanSeconds} s.</value></data>
+  <data name="Chat_RemainingBanDuration" xml:space="preserve"><value>Time remaining: {0} d, {1} h, {2} min, {3} s.</value></data>
   <data name="Chat_TemporaryBanExpired" xml:space="preserve"><value>The temporary restriction has expired. You can try signing in again.</value></data>
   <data name="Account_StorageUnavailable" xml:space="preserve"><value>The account database could not be reached. Try again when the service is available.</value></data>
   <data name="Lobby_PlayerActions" xml:space="preserve"><value>Player options</value></data>
