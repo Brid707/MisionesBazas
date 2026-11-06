@@ -241,9 +241,7 @@ namespace Services.Services
             }
         }
 
-        private static void TrySendFriendRemovedCallback(
-            int targetSubscriberUserId,
-            IFriendshipServiceCallback callback,
+        private static void TrySendFriendRemovedCallback(int targetSubscriberUserId, IFriendshipServiceCallback callback,
             int removedByUserId)
         {
             try
