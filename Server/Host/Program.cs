@@ -1,17 +1,20 @@
-using System;
-using System.IO;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
-
 using Application;
 using Application.Ports;
+using Application.Ports.Logger;
 using Application.UseCases;
 using Host.DependencyInjection;
+using Host.LoggingConfiguration;
+using Infrastructure.Logging;
 using Infrastructure.Moderation;
 using Persistence.Repository;
 using Services.Security;
 using Services.Services;
+using System;
+using System.Globalization;
+using System.IO;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 
 namespace Host
 {
@@ -20,16 +23,32 @@ namespace Host
     /// </summary>
     internal static class Program
     {
+        private const int Port = 8090;
+        private const string ServerLogFileName = "ServerTrickTakingMissions.log";
+        private const string TimeoutFatalTemplate =
+            "Server host operation timed out on TCP port {Port}.";
+        private const string CommunicationFatalTemplate =
+            "WCF communication failure occurred on TCP port {Port}.";
+        private const string InvalidOperationFatalTemplate =
+            "Invalid service configuration prevented server startup on TCP port {Port}.";
+
         /// <summary>
         /// Defines the entry point of the server application, assembling dependencies and hosting WCF services.
         /// </summary>
         private static void Main()
         {
+            CultureInfo serverCulture = CultureInfo.GetCultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = serverCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = serverCulture;
+
             ServiceHost loginHost = null;
             ServiceHost lobbyHost = null;
             ServiceHost accountManagementHost = null;
             ServiceHost friendshipHost = null;
             ServiceHost friendsRequestHost = null;
+
+            Log4NetConfigurator.Configure(ServerLogFileName);
+            ILoggerService hostLogger = new LoggerService(typeof(Program));
 
             try
             {
@@ -73,32 +92,35 @@ namespace Host
                 lobbyHost.Close();
                 loginHost.Close();
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
                 lobbyHost?.Abort();
                 loginHost?.Abort();
-                // TODO: Log timeout failure using official logging component once available.
+
+                hostLogger.Fatal(ex, TimeoutFatalTemplate, Port);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
                 lobbyHost?.Abort();
                 loginHost?.Abort();
-                // TODO: Log communication failure using official logging component once available.
+
+                hostLogger.Fatal(ex, CommunicationFatalTemplate, Port);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
                 lobbyHost?.Abort();
                 loginHost?.Abort();
-                // TODO: Log configuration/service startup failure using official logging component once available.
+
+                hostLogger.Fatal(ex, InvalidOperationFatalTemplate, Port);
             }
         }
 

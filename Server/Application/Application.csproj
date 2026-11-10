@@ -46,13 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ports\IBlockedAccountEmailRepository.cs" />
-    <Compile Include="Ports\ILobbyHostSelection.cs" />
+    <Compile Include="Ports\Lobby\ILobbyHostSelection.cs" />
     <Compile Include="..\ServerTrickTakingMissions\Domain\IsExternalInit.cs">
       <Link>Compatibility\IsExternalInit.cs</Link>
     </Compile>
     <Compile Include="Models\LobbyConfiguration.cs" />
     <Compile Include="Models\ChatMessageRejectionReason.cs" />
     <Compile Include="Ports\IChatModerationLogger.cs" />
+    <Compile Include="Ports\Logger\ILoggerService.cs" />
     <Compile Include="UseCases\AccountAccessPolicy.cs" />
     <Compile Include="Ports\IAccountAccessPolicy.cs" />
     <Compile Include="UseCases\LobbyChatMessageUseCase.cs" />
@@ -75,9 +76,9 @@
     <Compile Include="Models\Friendship\FriendSummaryData.cs" />
     <Compile Include="Models\Friendship\FriendshipActionOutcome.cs" />
     <Compile Include="Models\Friendship\FriendshipRecordData.cs" />
-    <Compile Include="Ports\IFriendshipRepository.cs" />
-    <Compile Include="Ports\IFriendshipUseCase.cs" />
-    <Compile Include="Ports\ILobbyUseCase.cs" />
+    <Compile Include="Ports\Friendship\IFriendshipRepository.cs" />
+    <Compile Include="Ports\Friendship\IFriendshipUseCase.cs" />
+    <Compile Include="Ports\Lobby\ILobbyUseCase.cs" />
     <Compile Include="Ports\INotificationService.cs" />
     <Compile Include="Ports\IUserLoginUseCase.cs" />
     <Compile Include="Ports\IAccountManagementUseCase.cs" />

@@ -24,11 +24,8 @@ namespace Host.DependencyInjection
             _instanceProvider = instanceProvider;
         }
 
-        public void AddBindingParameters(
-            ServiceDescription serviceDescription,
-            ServiceHostBase serviceHostBase,
-            Collection<ServiceEndpoint> endpoints,
-            BindingParameterCollection bindingParameters)
+        public void AddBindingParameters(ServiceDescription serviceDescription, ServiceHostBase serviceHostBase,
+            Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters)
         {
         }
 

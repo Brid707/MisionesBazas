@@ -35,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=3.5.0.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\ServerTrickTakingMissions\packages\log4net.3.5.0\lib\net462\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\ServerTrickTakingMissions\packages\EntityFramework.6.5.2\lib\net45\EntityFramework.dll</HintPath>
@@ -45,7 +48,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,11 +63,13 @@
     <Compile Include="LobbyHostSelection.cs" />
     <Compile Include="DependencyInjection\DependencyInjectionServiceBehavior.cs" />
     <Compile Include="DependencyInjection\FuncInstanceProvider.cs" />
+    <Compile Include="LoggingConfiguration\Log4NetConfigurator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj">
@@ -77,6 +84,10 @@
       <Project>{C36681C2-ACEC-4779-B280-E9B8CE8FDAB7}</Project>
       <Name>Persistence</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerTrickTakingMissions\Infrastructure.Logging\Infrastructure.Logging.csproj">
+      <Project>{52b22fcd-4c12-4079-a1d4-c86ef4fbf006}</Project>
+      <Name>Infrastructure.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Services\Services.csproj">
       <Project>{C3CE4B74-C003-42A1-9DBD-75F8213916EB}</Project>
       <Name>Services</Name>
@@ -85,7 +96,8 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.Moderation\Infrastructure.Moderation.csproj">
-      <Project>{A53B0772-76DF-4F1D-A540-B8C73E0F1F17}</Project><Name>Infrastructure.Moderation</Name>
+      <Project>{A53B0772-76DF-4F1D-A540-B8C73E0F1F17}</Project>
+      <Name>Infrastructure.Moderation</Name>
     </ProjectReference>
     <Content Include="ModerationCatalogs\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
