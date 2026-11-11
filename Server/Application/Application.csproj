@@ -90,6 +90,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
+      <Name>TrickTakingMissions.Rules</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
       <Name>Domain</Name>

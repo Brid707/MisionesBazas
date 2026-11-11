@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TrickTakingMissions.Rules.Enums
 {
+    /// <summary>
+    /// Identifies the special K trump card symbol ordered from highest to lowest rank.
+    /// </summary>
     public enum SpecialCardSymbol
     {
         None = 0,
-        Spade = 1,
+        Diamond = 1,
+        Club = 2,
         Heart = 2,
-        Club = 3,
-        Diamond = 4
+        Spade = 1
     }
 }

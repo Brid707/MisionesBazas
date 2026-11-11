@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace TrickTakingMissions.Rules.Enums
 {
+    /// <summary>
+    /// Identifies the four numeric card suits and the special trump suit.
+    /// </summary>
     public enum CardSuit
     {
         ColorOne = 1,

@@ -81,6 +81,10 @@
     <Compile Include="ViewModels\SendFriendRequestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
+      <Name>TrickTakingMissions.Rules</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{32c771cd-15cc-4a90-b9b8-cb1004d90b79}</Project>
       <Name>Model</Name>
