@@ -250,5 +250,48 @@
       <Name>Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Images\Cards\Card_Back_Default.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Eight.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Five.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Four.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_King.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Nine.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_One.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Seven.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Six.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Three.png" />
+    <Resource Include="Assets\Images\Cards\Card_Club_Two.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Eight.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Five.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Four.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_King.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Nine.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_One.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Seven.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Six.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Three.png" />
+    <Resource Include="Assets\Images\Cards\Card_Diamond_Two.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Eight.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Five.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Four.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_King.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Nine.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_One.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Seven.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Six.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Three.png" />
+    <Resource Include="Assets\Images\Cards\Card_Heart_Two.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Eight.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Five.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Four.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_King.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Nine.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_One.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Seven.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Six.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Three.png" />
+    <Resource Include="Assets\Images\Cards\Card_Spade_Two.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
