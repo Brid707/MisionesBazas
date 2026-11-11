@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -565,7 +565,7 @@ namespace Services.Services
                 : lobbyCode.Trim().ToUpperInvariant();
         }
 
-        private static LobbyResult MapToLobbyResult(LobbyActionOutcome lobbyActionOutcome)
+        private LobbyResult MapToLobbyResult(LobbyActionOutcome lobbyActionOutcome)
         {
             Lobby mappedLobby = null;
             if (lobbyActionOutcome.Lobby != null)
@@ -578,6 +578,7 @@ namespace Services.Services
                     PlayerLimit = lobbyActionOutcome.Lobby.PlayerLimit,
                     Status = lobbyActionOutcome.Lobby.Status,
                     IsPrivate = lobbyActionOutcome.Lobby.IsPrivate,
+                    IsChatSendingAvailable = _lobbyChatMessageUseCase.IsChatSendingAvailable,
                     StateVersion = lobbyActionOutcome.Lobby.StateVersion,
                     Players = lobbyActionOutcome.Lobby.Players.Select(MapToPlayerDto).ToList()
                 };

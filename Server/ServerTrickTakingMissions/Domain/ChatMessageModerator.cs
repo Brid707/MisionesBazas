@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Text;
 using System;
-
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Domain
 {
@@ -11,35 +11,43 @@ namespace Domain
     {
         private const string ObfuscationSeparatorPattern = @"[\s._*\-]{0,2}";
         private const int MaximumRegexMatchMilliseconds = 50;
+        private const int MaximumPreparationMilliseconds = 2000;
+        private const int MaximumMessageModerationMilliseconds = 100;
         private readonly ChatMessageTextNormalizer _chatMessageTextNormalizer;
-        private readonly List<KeyValuePair<Regex, ChatInfractionCategory>> _compiledChatExpressionPatterns;
+        private readonly List<KeyValuePair<Regex, ChatInfractionCategory>> _chatExpressionPatterns;
 
         public ChatMessageModerator(IEnumerable<ProhibitedChatExpression> prohibitedChatExpressions)
         {
             _chatMessageTextNormalizer = new ChatMessageTextNormalizer();
-            _compiledChatExpressionPatterns = new List<KeyValuePair<Regex, ChatInfractionCategory>>();
+            _chatExpressionPatterns = new List<KeyValuePair<Regex, ChatInfractionCategory>>();
+            Stopwatch preparationTimer = Stopwatch.StartNew();
             foreach (ProhibitedChatExpression prohibitedChatExpression in prohibitedChatExpressions)
             {
-                Regex compiledExpressionPattern = new Regex(BuildExpressionPattern(prohibitedChatExpression),
-                    RegexOptions.CultureInvariant | RegexOptions.Compiled,
+                EnsureWithinTimeBudget(preparationTimer, MaximumPreparationMilliseconds);
+                Regex expressionPattern = new Regex(BuildExpressionPattern(prohibitedChatExpression),
+                    RegexOptions.CultureInvariant,
                     TimeSpan.FromMilliseconds(MaximumRegexMatchMilliseconds));
-                _compiledChatExpressionPatterns.Add(new KeyValuePair<Regex, ChatInfractionCategory>(
-                    compiledExpressionPattern, prohibitedChatExpression.InfractionCategory));
+                _chatExpressionPatterns.Add(new KeyValuePair<Regex, ChatInfractionCategory>(
+                    expressionPattern, prohibitedChatExpression.InfractionCategory));
+                EnsureWithinTimeBudget(preparationTimer, MaximumPreparationMilliseconds);
             }
         }
 
         public ChatMessageModerationDecision EvaluateChatMessage(string originalChatMessageText)
         {
+            Stopwatch moderationTimer = Stopwatch.StartNew();
             NormalizedChatMessageText normalizedChatMessageText =
                 _chatMessageTextNormalizer.NormalizeChatMessageText(originalChatMessageText);
             bool[] censoredOriginalCharacters = new bool[originalChatMessageText.Length];
             ChatInfractionCategory detectedInfractionCategory = ChatInfractionCategory.None;
-            foreach (KeyValuePair<Regex, ChatInfractionCategory> expressionPattern in _compiledChatExpressionPatterns)
+            foreach (KeyValuePair<Regex, ChatInfractionCategory> expressionPattern in _chatExpressionPatterns)
             {
+                EnsureWithinTimeBudget(moderationTimer, MaximumMessageModerationMilliseconds);
                 MatchCollection expressionMatches = expressionPattern.Key.Matches(
                     normalizedChatMessageText.ComparableChatMessageText);
                 foreach (Match expressionMatch in expressionMatches)
                 {
+                    EnsureWithinTimeBudget(moderationTimer, MaximumMessageModerationMilliseconds);
                     MarkOriginalCharacters(censoredOriginalCharacters, normalizedChatMessageText, expressionMatch);
                     if (expressionPattern.Value > detectedInfractionCategory)
                     {
@@ -48,11 +56,20 @@ namespace Domain
                 }
             }
 
+            EnsureWithinTimeBudget(moderationTimer, MaximumMessageModerationMilliseconds);
             return new ChatMessageModerationDecision
             {
                 CensoredChatMessageText = MaskOriginalCharacters(originalChatMessageText, censoredOriginalCharacters),
                 DetectedInfractionCategory = detectedInfractionCategory
             };
+        }
+
+        private static void EnsureWithinTimeBudget(Stopwatch operationTimer, int maximumElapsedMilliseconds)
+        {
+            if (operationTimer.ElapsedMilliseconds > maximumElapsedMilliseconds)
+            {
+                throw new TimeoutException("The chat moderation operation exceeded its processing budget.");
+            }
         }
 
         private string BuildExpressionPattern(ProhibitedChatExpression prohibitedChatExpression)

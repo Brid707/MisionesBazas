@@ -1,9 +1,11 @@
+using System;
 using System.Security.Cryptography;
 using System.Text;
-using System;
+using System.Text.RegularExpressions;
 
 using Application.Models;
 using Application.Ports;
+using Application.Ports.Logger;
 using Domain;
 
 namespace Application
@@ -14,13 +16,17 @@ namespace Application
         private readonly ChatMessageModerator _chatMessageModerator;
         private readonly IChatInfractionRepository _chatInfractionRepository;
 
-        public LobbyChatMessageUseCase(IProhibitedChatExpressionCatalog prohibitedChatExpressionCatalog,
-            IChatInfractionRepository chatInfractionRepository)
+        private readonly ILoggerService _moderationLogger;
+
+        public LobbyChatMessageUseCase(ChatModerationPreparation moderationPreparation,
+            IChatInfractionRepository chatInfractionRepository, ILoggerService moderationLogger)
         {
-            _chatMessageModerator = new ChatMessageModerator(
-                prohibitedChatExpressionCatalog.GetAllSupportedLanguageExpressions());
+            _chatMessageModerator = moderationPreparation.MessageModerator;
             _chatInfractionRepository = chatInfractionRepository;
+            _moderationLogger = moderationLogger;
         }
+
+        public bool IsChatSendingAvailable => _chatMessageModerator != null;
 
         public LobbyChatMessageProcessing ProcessChatMessage(AuthenticatedChatMessageSubmission chatMessageSubmission)
         {
@@ -28,9 +34,32 @@ namespace Application
             {
                 ChatMessageRejectionReason = ChatMessageRejectionReason.InvalidChatMessage
             };
-            if (IsValidChatMessageSubmission(chatMessageSubmission))
+            if (!IsChatSendingAvailable)
             {
-                chatMessageProcessing = ModerateAndRecordChatMessage(chatMessageSubmission);
+                chatMessageProcessing.ChatMessageRejectionReason = ChatMessageRejectionReason.ChatModerationUnavailable;
+            }
+            else if (IsValidChatMessageSubmission(chatMessageSubmission))
+            {
+                try
+                {
+                    chatMessageProcessing = ModerateAndRecordChatMessage(chatMessageSubmission);
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    _moderationLogger.Warning(
+                        "Chat moderation exceeded its matching budget. Failure type {FailureType}.",
+                        ex.GetType().Name);
+                    chatMessageProcessing.ChatMessageRejectionReason =
+                        ChatMessageRejectionReason.ChatModerationUnavailable;
+                }
+                catch (TimeoutException ex)
+                {
+                    _moderationLogger.Warning(
+                        "Chat moderation exceeded its message budget. Failure type {FailureType}.",
+                        ex.GetType().Name);
+                    chatMessageProcessing.ChatMessageRejectionReason =
+                        ChatMessageRejectionReason.ChatModerationUnavailable;
+                }
             }
 
             return chatMessageProcessing;

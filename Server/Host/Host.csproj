@@ -99,6 +99,9 @@
       <Project>{A53B0772-76DF-4F1D-A540-B8C73E0F1F17}</Project>
       <Name>Infrastructure.Moderation</Name>
     </ProjectReference>
+    <Content Include="ModerationCatalogBackups\ValidatedCatalog.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ModerationCatalogs\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

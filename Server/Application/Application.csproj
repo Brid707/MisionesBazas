@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ChatModerationPreparation.cs" />
+    <Compile Include="Ports\IChatModerationCatalogBackup.cs" />
+    <Compile Include="UseCases\ChatModerationStartup.cs" />
     <Compile Include="Ports\IBlockedAccountEmailRepository.cs" />
     <Compile Include="Ports\Lobby\ILobbyHostSelection.cs" />
     <Compile Include="..\ServerTrickTakingMissions\Domain\IsExternalInit.cs">

@@ -1,8 +1,8 @@
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Input;
 using System;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
 
 using Model.GameServices;
 using Model.Services;
@@ -28,6 +28,8 @@ namespace ViewModel.ViewModels
         private string _draftChatMessageText;
         private LobbyChatMessageSubmission _pendingChatMessageSubmission;
         private LobbyChatMessageSubmissionOutcome _chatSubmissionFeedback;
+        private bool _isChatSendingAvailable;
+        private long _chatAvailabilityStateVersion;
         private bool _hasAppliedAccountBan;
         private bool _isChatDisposed;
 
@@ -40,9 +42,16 @@ namespace ViewModel.ViewModels
             _chatModerationPresenter = chatModerationPresenter;
             _chatUiSynchronizationContext = SynchronizationContext.Current;
             _chatLobbyCode = lobbySession.CurrentLobby?.LobbyCode ?? string.Empty;
+            _isChatSendingAvailable = lobbySession.CurrentLobby?.IsChatSendingAvailable == true;
+            _chatAvailabilityStateVersion = lobbySession.CurrentLobby?.StateVersion ?? 0;
             _draftChatMessageText = string.Empty;
+            if (!_isChatSendingAvailable)
+            {
+                ShowChatUnavailableFeedback();
+            }
             ChatMessages = new ObservableCollection<LobbyMessage>();
             SendChatMessageCommand = new AsyncRelayCommand(SendChatMessageAsync, CanSendChatMessage);
+            _chatLobbyClient.LobbyStateChanged += OnChatLobbyStateChanged;
             _chatLobbyClient.ChatMessageReceived += OnLobbyChatMessageReceived;
             _chatLobbyClient.ChatAccountBanApplied += OnChatAccountBanApplied;
         }
@@ -60,6 +69,7 @@ namespace ViewModel.ViewModels
         }
 
         public bool IsRegisteredAccountChatAvailable =>
+            _isChatSendingAvailable &&
             !string.IsNullOrEmpty(UserSession.Current.CurrentUser?.AccountSessionToken) && !_hasAppliedAccountBan;
 
         public LobbyChatMessageSubmissionOutcome ChatSubmissionFeedback
@@ -82,6 +92,7 @@ namespace ViewModel.ViewModels
         public void Dispose()
         {
             _isChatDisposed = true;
+            _chatLobbyClient.LobbyStateChanged -= OnChatLobbyStateChanged;
             _chatLobbyClient.ChatMessageReceived -= OnLobbyChatMessageReceived;
             _chatLobbyClient.ChatAccountBanApplied -= OnChatAccountBanApplied;
         }
@@ -150,6 +161,40 @@ namespace ViewModel.ViewModels
             {
                 DraftChatMessageText = string.Empty;
             }
+        }
+
+        private void OnChatLobbyStateChanged(object sender, LobbyStateChangedEventArgs e)
+        {
+            DispatchChatUiAction(() => ApplyChatAvailability(e.ConfirmedLobby));
+        }
+
+        private void ApplyChatAvailability(Lobby confirmedLobby)
+        {
+            if (!_isChatDisposed && confirmedLobby?.LobbyCode == _chatLobbyCode &&
+                confirmedLobby.StateVersion >= _chatAvailabilityStateVersion)
+            {
+                _chatAvailabilityStateVersion = confirmedLobby.StateVersion;
+                _isChatSendingAvailable = confirmedLobby.IsChatSendingAvailable;
+                OnPropertyChanged(nameof(IsRegisteredAccountChatAvailable));
+                CommandManager.InvalidateRequerySuggested();
+                if (!_isChatSendingAvailable)
+                {
+                    ShowChatUnavailableFeedback();
+                }
+                else if (ChatSubmissionFeedback?.ChatMessageRejectionReason ==
+                    ChatMessageRejectionReason.ChatModerationUnavailable)
+                {
+                    ChatSubmissionFeedback = null;
+                }
+            }
+        }
+
+        private void ShowChatUnavailableFeedback()
+        {
+            ChatSubmissionFeedback = new LobbyChatMessageSubmissionOutcome
+            {
+                ChatMessageRejectionReason = ChatMessageRejectionReason.ChatModerationUnavailable
+            };
         }
 
         private void OnLobbyChatMessageReceived(LobbyMessage publishedChatMessage)
