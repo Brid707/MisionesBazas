@@ -1067,7 +1067,7 @@ namespace Model.GameServices
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Model.GameServices.ILobbyService", CallbackContract=typeof(Model.GameServices.ILobbyServiceCallback))]
-    public interface ILobbyService
+    public interface ILobbyService : Gameplay.IMatchService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/UpdateLobbySettings", ReplyAction="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse")]
@@ -1118,16 +1118,23 @@ namespace Model.GameServices
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/SendLobbyChatMessage", ReplyAction="http://tempuri.org/ILobbyService/SendLobbyChatMessageResponse")]
         System.Threading.Tasks.Task<Model.GameServices.LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(Model.GameServices.LobbyChatMessageSubmission chatMessageSubmission);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/StartGameFromLobby")]
+        [System.ServiceModel.OperationContractAttribute(
+            Action="http://tempuri.org/ILobbyService/StartGameFromLobby",
+            ReplyAction="http://tempuri.org/ILobbyService/StartGameFromLobbyResponse")]
         void StartGameFromLobby(string lobbyCode, int hostUserId);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/StartGameFromLobby")]
+        [System.ServiceModel.OperationContractAttribute(
+            Action="http://tempuri.org/ILobbyService/StartGameFromLobby",
+            ReplyAction="http://tempuri.org/ILobbyService/StartGameFromLobbyResponse")]
         System.Threading.Tasks.Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface ILobbyServiceCallback
     {
+        [System.ServiceModel.OperationContract(IsOneWay = true, Action = "urn:misiones-bazas:match:StateChanged")]
+        void OnMatchStateChanged(long matchStateVersion);
+
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnLobbyStateChanged")]
         void OnLobbyStateChanged(Model.GameServices.Lobby lobby);

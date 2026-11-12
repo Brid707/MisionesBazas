@@ -4,12 +4,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:local="clr-namespace:View.Views"
+      xmlns:converters="clr-namespace:View.Converters"
       xmlns:styles="clr-namespace:View.Styles"
       xmlns:language="clr-namespace:View.Properties.Langs"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="Lobby">
     <Page.Resources>
+        <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="LobbyAvatarTemplate">
             <Grid Width="50" Height="50">
@@ -35,6 +37,11 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="260" />
         </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,205,0,0"
+                   Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
+                   Text="{Binding Source=Match_StartFailed, Converter={StaticResource MatchTextConverter}}"
+                   Visibility="{Binding HasLobbyStartFailure, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <!-- Main Lobby Content -->
         <Grid Grid.Column="0" Margin="120,12,70,20">

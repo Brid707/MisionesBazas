@@ -20,6 +20,8 @@ namespace Model.Session
         /// </summary>
         public string Email { get; set; }
 
+        public string GuestSessionToken { get; set; }
+
         public string AccountSessionToken { get; set; }
     }
 }

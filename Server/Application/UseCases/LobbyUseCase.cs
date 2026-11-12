@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,17 +46,21 @@ namespace Application
         private readonly ILobbyHostSelection _lobbyHostSelection;
         private readonly ConcurrentDictionary<string, LobbyRoomData> _activeLobbies;
 
-        public LobbyUseCase(IUserRepository userRepository, ILobbyHostSelection lobbyHostSelection)
+        public LobbyUseCase(IUserRepository userRepository, ILobbyHostSelection lobbyHostSelection,
+            IMatchUseCase matchUseCase = null)
         {
             if (userRepository == null)
             {
                 throw new ArgumentNullException(nameof(userRepository));
             }
 
+            Match = matchUseCase;
             _userRepository = userRepository;
             _lobbyHostSelection = lobbyHostSelection;
             _activeLobbies = new ConcurrentDictionary<string, LobbyRoomData>(StringComparer.OrdinalIgnoreCase);
         }
+
+        public IMatchUseCase Match { get; }
 
         public LobbyActionOutcome CreateLobby(int hostUserId, LobbyConfiguration lobbyConfiguration)
         {
@@ -189,12 +193,23 @@ namespace Application
                 lock (lobby)
                 {
                     bool isRequestedByHost = lobby.HostUserId == hostUserId;
+                    if (isRequestedByHost && lobby.Status == LobbyRoomRules.StatusInGame)
+                    {
+                        canStart = true;
+                    }
                     bool isEveryPlayerReady = lobby.Players.All(player => player.IsReady || player.IsHost);
 
                     if (isRequestedByHost &&
                         LobbyRoomRules.CanLaunchMatch(lobby.Players.Count, isEveryPlayerReady, lobby.Status))
                     {
+                        if (Match == null)
+                        {
+                            throw new InvalidOperationException("MatchNotConfigured");
+                        }
+                        Match.StartMatch(lobby.LobbyCode, lobby.Players.Select(player => player.IdUser).ToArray(),
+                            lobby.LobbyInstanceId);
                         lobby.Status = LobbyRoomRules.StatusInGame;
+                        lobby.StateVersion++;
                         canStart = true;
                     }
                 }

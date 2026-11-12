@@ -167,6 +167,17 @@ namespace ViewModel.ViewModels
 
         public ICommand HowToPlayCommand { get; }
 
+        public MatchBoardViewModel MatchBoard { get; private set; }
+
+        public void ConfigureMatch(IMatchClient matchClient)
+        {
+            MatchBoard?.Dispose();
+            MatchBoard = new MatchBoardViewModel(_lobbySession.CurrentLobby.LobbyCode, _currentUserId, matchClient);
+            MatchBoard.ConfigureParticipantNames(Players);
+            OnPropertyChanged(nameof(MatchBoard));
+            _ = MatchBoard.SynchronizeMatchAsync();
+        }
+
         public void ConfigureProfileImages(IProfileImageCache profileImageCache)
         {
             foreach (LobbyPlayerItemViewModel player in Players)
@@ -177,6 +188,7 @@ namespace ViewModel.ViewModels
 
         public void Dispose()
         {
+            MatchBoard?.Dispose();
             foreach (LobbyPlayerItemViewModel player in Players)
             {
                 player.Dispose();
@@ -234,8 +246,9 @@ namespace ViewModel.ViewModels
 
             BottomPlayer = orderedItems.ElementAtOrDefault(0);
             LeftPlayer = orderedItems.ElementAtOrDefault(1);
-            TopPlayer = orderedItems.ElementAtOrDefault(2);
-            RightPlayer = orderedItems.ElementAtOrDefault(3);
+            TopPlayer = orderedItems.Count == 4 ? orderedItems.ElementAtOrDefault(2) : null;
+            RightPlayer = orderedItems.Count == 3
+                ? orderedItems.ElementAtOrDefault(2) : orderedItems.ElementAtOrDefault(3);
         }
 
         private void ExecuteHowToPlay()

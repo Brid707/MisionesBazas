@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -35,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -137,4 +139,24 @@
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />
+    <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\MatchState.cs" />
+    <Compile Include="Models\ProcessedCardPlay.cs" />
+    <Compile Include="Ports\IMatchStateStore.cs" />
+    <Compile Include="Ports\IMissionDeckDealer.cs" />
+    <Compile Include="Ports\IMatchUseCase.cs" />
+    <Compile Include="UseCases\MatchUseCase.cs" />
+    <Compile Include="UseCases\MatchSnapshotProjection.cs" />
+    <Compile Include="UseCases\MatchPlayValidation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
+  </ItemGroup>
 </Project>

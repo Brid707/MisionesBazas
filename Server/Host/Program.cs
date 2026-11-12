@@ -10,6 +10,7 @@ using Application.Ports;
 using Application.Ports.Logger;
 using Application.UseCases;
 using Host.DependencyInjection;
+using Host.Gameplay;
 using Host.LoggingConfiguration;
 using Infrastructure.Logging;
 using Infrastructure.Moderation;
@@ -151,9 +152,13 @@ namespace Host
         private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository,
             ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy)
         {
-            ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection());
+            var lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection(),
+                new MatchUseCase(new InMemoryMatchStateStore(), new SecureMissionDeckDealer()));
             var instanceProvider = new FuncInstanceProvider<LobbyService>(
-                () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy));
+                () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy)
+                {
+                    MatchLogger = new LoggerService(typeof(LobbyService))
+                });
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));

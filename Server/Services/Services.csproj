@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -119,5 +120,12 @@
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\LobbyService.Match.cs" />
+    <Compile Include="Security\GuestParticipantCredentials.cs" />
   </ItemGroup>
 </Project>

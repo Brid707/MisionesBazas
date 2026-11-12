@@ -9,6 +9,9 @@ namespace Services.DataContracts
     public sealed class LobbyResult : OperationResult
     {
         [DataMember]
+        public string GuestSessionToken { get; set; }
+
+        [DataMember]
         public Lobby Lobby { get; set; }
     }
 }

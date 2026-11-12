@@ -577,4 +577,27 @@
   <data name="Profile_Image_OperationFailed" xml:space="preserve">
     <value>No pudimos procesar la foto. Inténtalo de nuevo.</value>
   </data>
+  <data name="Match_Connecting" xml:space="preserve"><value>Conectando con la partida…</value></data>
+  <data name="Match_YourTurn" xml:space="preserve"><value>Es tu turno. Selecciona una carta.</value></data>
+  <data name="Match_WaitingTurn" xml:space="preserve"><value>Esperando el turno de otro jugador.</value></data>
+  <data name="Match_Confirming" xml:space="preserve"><value>Confirmando tu jugada…</value></data>
+  <data name="Match_ConnectionLost" xml:space="preserve"><value>Sin conexión. Tu jugada pendiente se confirmará al reconectar.</value></data>
+  <data name="Match_AccessUnavailable" xml:space="preserve"><value>No se pudo acceder a la partida. Revisa tu sesión y la conexión del servidor.</value></data>
+  <data name="Match_DealCompleted" xml:space="preserve"><value>Reparto finalizado. No hay más bazas en este intento.</value></data>
+  <data name="Match_MatchUnavailable" xml:space="preserve"><value>La partida ya no está disponible.</value></data>
+  <data name="Match_ParticipantNotAllowed" xml:space="preserve"><value>No tienes acceso a esta partida.</value></data>
+  <data name="Match_InvalidSubmission" xml:space="preserve"><value>La solicitud de jugada no es válida.</value></data>
+  <data name="Match_SubmissionIdentityReused" xml:space="preserve"><value>El identificador de la jugada no coincide con la solicitud original.</value></data>
+  <data name="Match_StaleMatchState" xml:space="preserve"><value>La mesa cambió. Se actualizó tu mano; selecciona de nuevo.</value></data>
+  <data name="Match_NotPlayerTurn" xml:space="preserve"><value>Todavía no es tu turno.</value></data>
+  <data name="Match_CardNotInHand" xml:space="preserve"><value>Esa carta no está en tu mano actual.</value></data>
+  <data name="Match_MustFollowLeadSuit" xml:space="preserve"><value>Debes seguir el palo de salida si tienes una carta de ese palo.</value></data>
+  <data name="Match_SubmissionCapacityReached" xml:space="preserve"><value>No se pueden procesar más solicitudes en esta partida.</value></data>
+  <data name="Match_Retry" xml:space="preserve"><value>Confirmar jugada pendiente</value></data>
+  <data name="Match_CurrentTrick" xml:space="preserve"><value>Baza actual</value></data>
+  <data name="Match_LastTrick" xml:space="preserve"><value>Última baza completada</value></data>
+  <data name="Match_OwnHand" xml:space="preserve"><value>Tu mano</value></data>
+  <data name="Match_TurnPlayer" xml:space="preserve"><value>Turno:</value></data>
+  <data name="Match_TrickWinner" xml:space="preserve"><value>Ganador de la última baza:</value></data>
+  <data name="Match_StartFailed" xml:space="preserve"><value>No se pudo iniciar la partida. Inténtalo nuevamente.</value></data>
 </root>

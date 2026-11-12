@@ -1,0 +1,20 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+csharp_new_line_before_open_brace = all
+csharp_using_directive_placement = outside_namespace
+
+[*.{Designer.cs,g.cs,g.i.cs}]
+generated_code = true
+
+[**/Connected Services/**/Reference.cs]
+generated_code = true

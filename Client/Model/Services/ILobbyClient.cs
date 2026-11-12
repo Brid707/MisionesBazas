@@ -8,7 +8,7 @@ namespace Model.Services
     /// <summary>
     /// Abstraction of the client-side lobby channel, used to request room operations and receive server push events.
     /// </summary>
-    public interface ILobbyClient : IDisposable
+    public interface ILobbyClient : IDisposable, IMatchClient
     {
         event EventHandler<LobbyStateChangedEventArgs> LobbyStateChanged;
 
@@ -52,6 +52,6 @@ namespace Model.Services
         Task<LobbyChatMessageSubmissionOutcome> SendLobbyChatMessageAsync(
             LobbyChatMessageSubmission chatMessageSubmission);
 
-        Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId);
+        Task<bool> StartGameFromLobbyAsync(string lobbyCode, int hostUserId);
     }
 }

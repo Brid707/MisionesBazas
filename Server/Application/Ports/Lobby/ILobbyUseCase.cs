@@ -1,4 +1,4 @@
-﻿using Application.Models;
+using Application.Models;
 
 namespace Application.Ports
 {
@@ -7,6 +7,9 @@ namespace Application.Ports
     /// </summary>
     public interface ILobbyUseCase
     {
+        /// <summary>Provides the match coordinator associated with this lobby lifetime.</summary>
+        IMatchUseCase Match { get; }
+
         /// <summary>
         /// Creates a new multiplayer lobby room hosted by the specified user.
         /// </summary>

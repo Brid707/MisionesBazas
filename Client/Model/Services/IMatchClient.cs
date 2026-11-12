@@ -1,0 +1,14 @@
+using System;
+using System.Threading.Tasks;
+using Gameplay;
+
+namespace Model.Services
+{
+    /// <summary>Provides recipient-specific match state and retry-safe play requests on the lobby channel.</summary>
+    public interface IMatchClient
+    {
+        event Action<long> MatchStateChanged;
+        Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId);
+        Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId);
+    }
+}

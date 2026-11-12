@@ -22,10 +22,12 @@
     <Compile Include="ChatModerationLogger.cs" />
     <Compile Include="ProhibitedChatExpressionCatalog.cs" />
     <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project><Name>Application</Name>
+      <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project>
+      <Name>Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
-      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
+      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
+      <Name>Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

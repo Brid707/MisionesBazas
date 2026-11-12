@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
@@ -11,6 +12,8 @@ namespace Domain
     /// </summary>
     public static class DeckDealRules
     {
+        private const int NormalDeckCardCount = 36;
+
         public static IReadOnlyList<Card> ShuffleDeck(IReadOnlyList<Card> deck, Random randomGenerator)
         {
             if (deck is null)
@@ -35,7 +38,8 @@ namespace Domain
             return shuffledCards.AsReadOnly();
         }
 
-        public static MissionDeal DealCards(IReadOnlyList<Card> shuffledDeck, int playerCount)
+        public static MissionDeal DealCards(IReadOnlyList<Card> shuffledDeck, int playerCount,
+            int firstSpecialCardReceivingSeat = 0)
         {
             if (shuffledDeck is null)
             {
@@ -52,18 +56,21 @@ namespace Domain
                 throw new ArgumentOutOfRangeException(nameof(playerCount));
             }
 
+            if (firstSpecialCardReceivingSeat < 0 || firstSpecialCardReceivingSeat >= playerCount)
+            {
+                throw new ArgumentOutOfRangeException(nameof(firstSpecialCardReceivingSeat));
+            }
+
             List<List<Card>> handsBySeat = CreateEmptyHands(playerCount);
             byte captainSeat = 0;
             bool hasCaptainCard = false;
-            for (int cardIndex = 0; cardIndex < shuffledDeck.Count; cardIndex++)
+            ValidateOfficialDeck(shuffledDeck);
+            List<Card> separatedDeck = shuffledDeck.Where(card => card.Suit != CardSuit.Special)
+                .Concat(shuffledDeck.Where(card => card.Suit == CardSuit.Special)).ToList();
+            for (int cardIndex = 0; cardIndex < separatedDeck.Count; cardIndex++)
             {
-                Card dealtCard = shuffledDeck[cardIndex];
-                if (dealtCard is null)
-                {
-                    throw new ArgumentException(nameof(shuffledDeck));
-                }
-
-                int receivingSeat = cardIndex % playerCount;
+                Card dealtCard = separatedDeck[cardIndex];
+                int receivingSeat = GetReceivingPlayerSeat(cardIndex, playerCount, firstSpecialCardReceivingSeat);
                 handsBySeat[receivingSeat].Add(dealtCard);
                 if (IsCaptainCard(dealtCard))
                 {
@@ -83,6 +90,28 @@ namespace Domain
                 CaptainSeat = captainSeat,
                 TotalTricksInMission = DeckRules.TotalDeckSize / playerCount
             };
+        }
+
+        private static int GetReceivingPlayerSeat(int dealtCardIndex, int participantCount,
+            int firstSpecialCardReceivingSeat)
+        {
+            int receivingPlayerSeat = dealtCardIndex % participantCount;
+            if (dealtCardIndex >= NormalDeckCardCount)
+            {
+                receivingPlayerSeat = (dealtCardIndex - NormalDeckCardCount + firstSpecialCardReceivingSeat)
+                    % participantCount;
+            }
+            return receivingPlayerSeat;
+        }
+
+        private static void ValidateOfficialDeck(IReadOnlyList<Card> shuffledDeck)
+        {
+            if (shuffledDeck.Any(card => card == null) ||
+                shuffledDeck.Select(card => card.IdCard).Distinct().Count() != DeckRules.TotalDeckSize ||
+                shuffledDeck.Any(card => !IsOfficialCard(card)))
+            {
+                throw new ArgumentException(nameof(shuffledDeck));
+            }
         }
 
         private static List<List<Card>> CreateEmptyHands(int playerCount)
@@ -105,6 +134,14 @@ namespace Domain
             }
 
             return readOnlyHands.AsReadOnly();
+        }
+
+        private static bool IsOfficialCard(Card card)
+        {
+            Card officialCard = card.IdCard >= 1 && card.IdCard <= DeckRules.TotalDeckSize
+                ? DeckRules.GetCardById(card.IdCard) : null;
+            return officialCard != null && card.Suit == officialCard.Suit &&
+                card.Number == officialCard.Number && card.SpecialSymbol == officialCard.SpecialSymbol;
         }
 
         private static bool IsCaptainCard(Card card)

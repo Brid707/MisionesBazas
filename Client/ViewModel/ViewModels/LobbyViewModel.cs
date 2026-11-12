@@ -40,6 +40,7 @@ namespace ViewModel.ViewModels
         private bool _isDisposed;
         private long _lastAppliedLobbyVersion;
         private bool _hasLobbyConnectionFailure;
+        private bool _hasLobbyStartFailure;
         private bool _hasLobbyHostChanged;
         private string _currentLobbyHostUsername;
         private int _lastConfirmedHostUserId;
@@ -87,6 +88,12 @@ namespace ViewModel.ViewModels
         {
             get => _hasLobbyConnectionFailure;
             private set => SetProperty(ref _hasLobbyConnectionFailure, value);
+        }
+
+        public bool HasLobbyStartFailure
+        {
+            get => _hasLobbyStartFailure;
+            private set => SetProperty(ref _hasLobbyStartFailure, value);
         }
 
         public bool HasLobbyHostChanged
@@ -454,7 +461,9 @@ namespace ViewModel.ViewModels
         {
             if (CanStartGame() && !string.IsNullOrWhiteSpace(_lobbyCode))
             {
-                await _lobbyClient.StartGameFromLobbyAsync(_lobbyCode, _currentUserId);
+                HasLobbyStartFailure = false;
+                bool isStartConfirmed = await _lobbyClient.StartGameFromLobbyAsync(_lobbyCode, _currentUserId);
+                HasLobbyStartFailure = !isStartConfirmed;
             }
         }
 

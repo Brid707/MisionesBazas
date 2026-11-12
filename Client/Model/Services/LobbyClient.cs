@@ -11,7 +11,7 @@ namespace Model.Services
     /// Manages client-side WCF duplex communication for lobby rooms and handles server push callbacks.
     /// </summary>
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
-    public sealed class LobbyClient : ILobbyClient, ILobbyServiceCallback
+    public sealed partial class LobbyClient : ILobbyClient, ILobbyServiceCallback
     {
         private LobbyServiceClient _client;
         private bool _isLobbyClientDisposed;
@@ -52,6 +52,7 @@ namespace Model.Services
             {
                 EnsureClientIsOpen();
                 result = await _client.CreateLobbyAsync(hostUserId, lobbySettings);
+                PreserveGuestCredential(result);
             }
             catch (EndpointNotFoundException)
             {
@@ -137,6 +138,7 @@ namespace Model.Services
             {
                 EnsureClientIsOpen();
                 result = await _client.JoinLobbyByCodeAsync(lobbyCode, userId);
+                PreserveGuestCredential(result);
             }
             catch (EndpointNotFoundException)
             {
@@ -263,12 +265,18 @@ namespace Model.Services
             return chatMessageSubmissionOutcome;
         }
 
-        public async Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId)
+        public async Task<bool> StartGameFromLobbyAsync(string lobbyCode, int hostUserId)
         {
+            bool isStartConfirmed = false;
             try
             {
                 EnsureClientIsOpen();
                 await _client.StartGameFromLobbyAsync(lobbyCode, hostUserId);
+                isStartConfirmed = true;
+            }
+            catch (FaultException ex)
+            {
+                System.Diagnostics.Trace.TraceWarning("Match start rejected: {0}", ex.GetType().Name);
             }
             catch (EndpointNotFoundException)
             {
@@ -282,6 +290,7 @@ namespace Model.Services
             {
                 ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
             }
+            return isStartConfirmed;
         }
 
         public void OnChatAccountBanApplied(ChatAccountBanNotice chatAccountBanNotice)

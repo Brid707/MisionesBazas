@@ -19,7 +19,8 @@
     <Compile Include="ProfileImageProcessor.cs" />
     <Compile Include="ProfileImageHeader.cs" />
     <ProjectReference Include="..\Application\Application.csproj">
-      <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project><Name>Application</Name>
+      <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project>
+      <Name>Application</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
