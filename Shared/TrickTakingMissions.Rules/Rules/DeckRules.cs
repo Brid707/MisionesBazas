@@ -5,14 +5,18 @@ using TrickTakingMissions.Rules.Models;
 
 namespace TrickTakingMissions.Rules.Rules
 {
+    /// <summary>
+    /// Builds the official 40-card deck and resolves cards by their identifier.
+    /// </summary>
     public static class DeckRules
     {
-        private const int TotalDeckSize = 40;
+        public const int TotalDeckSize = 40;
         private const int FirstNormalCardId = 1;
         private const int FirstSpecialCardId = 37;
         private const int MinimumNormalNumber = 1;
         private const int MaximumNormalNumber = 9;
         private const int SpecialCardNumber = 0;
+
         private static readonly CardSuit[] _normalSuits =
         {
             CardSuit.Diamond,
@@ -20,6 +24,7 @@ namespace TrickTakingMissions.Rules.Rules
             CardSuit.Heart,
             CardSuit.Spade
         };
+
         private static readonly SpecialCardSymbol[] _specialSymbolsInCardIdOrder =
         {
             SpecialCardSymbol.Spade,
@@ -27,14 +32,15 @@ namespace TrickTakingMissions.Rules.Rules
             SpecialCardSymbol.Club,
             SpecialCardSymbol.Diamond
         };
+
+        // Declared after the suit arrays because static initializers run in textual order.
         private static readonly IReadOnlyList<Card> _standardDeck = CreateStandardDeck();
 
         public static IReadOnlyList<Card> CreateStandardDeck()
         {
-            List<Card> deckCards = new List<Card>(TotalDeckSize);
+            var deckCards = new List<Card>(TotalDeckSize);
             AddNormalCards(deckCards);
             AddSpecialCards(deckCards);
-
             return deckCards.AsReadOnly();
         }
 
@@ -51,7 +57,6 @@ namespace TrickTakingMissions.Rules.Rules
         private static void AddNormalCards(List<Card> cards)
         {
             int nextCardId = FirstNormalCardId;
-
             foreach (CardSuit suit in _normalSuits)
             {
                 for (int cardNumber = MinimumNormalNumber; cardNumber <= MaximumNormalNumber; cardNumber++)
@@ -67,6 +72,7 @@ namespace TrickTakingMissions.Rules.Rules
                 }
             }
         }
+
         private static void AddSpecialCards(List<Card> cards)
         {
             int nextCardId = FirstSpecialCardId;

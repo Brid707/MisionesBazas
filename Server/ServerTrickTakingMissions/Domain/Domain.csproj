@@ -53,15 +53,25 @@
     <Compile Include="ChatInfractionRules.cs" />
     <Compile Include="ChatInfractionCategory.cs" />
     <Compile Include="ChatAccountInfractionState.cs" />
+    <Compile Include="DeckDealRules.cs" />
     <Compile Include="IsExternalInit.cs" />
     <Compile Include="GuestIdentityRules.cs" />
     <Compile Include="LobbyCodeRules.cs" />
     <Compile Include="LobbyRoomRules.cs" />
+    <Compile Include="MatchPlayerCountRules.cs" />
+    <Compile Include="MissionDeal.cs" />
+    <Compile Include="TrickTurnRules.cs" />
     <Compile Include="UserAccountRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
+      <Name>TrickTakingMissions.Rules</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
