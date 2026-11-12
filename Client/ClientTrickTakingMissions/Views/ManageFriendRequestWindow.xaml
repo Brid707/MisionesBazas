@@ -10,23 +10,23 @@
         Height="550" Width="440"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
+        Background="{StaticResource BrushTransparent}"
         WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
-    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
+    <Border BorderBrush="{StaticResource BrushTextDark}" BorderThickness="3">
         <Grid>
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStartColor}"
+                    <GradientStop Color="{StaticResource ColorDialogBackgroundGradientStart}"
                                   Offset="0.0" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStep1Color}"
+                    <GradientStop Color="{StaticResource ColorDialogBackgroundGradientStep1}"
                                   Offset="0.25" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientStep2Color}"
+                    <GradientStop Color="{StaticResource ColorDialogBackgroundGradientStep2}"
                                   Offset="0.6" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.DialogBackgroundGradientEndColor}"
+                    <GradientStop Color="{StaticResource ColorDialogBackgroundGradientEnd}"
                                   Offset="1.0" />
                 </LinearGradientBrush>
             </Grid.Background>
@@ -36,9 +36,9 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+            <Border Grid.Row="0" BorderBrush="{StaticResource BrushTextDark}"
                     BorderThickness="0,0,0,3"
-                    Background="{x:Static styles:ColorPalette.DialogHeaderBackgroundBrush}">
+                    Background="{StaticResource BrushDialogHeaderBackground}">
                 <Grid Margin="12,10,12,12">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="44" />
@@ -52,7 +52,7 @@
                                Text="{x:Static language:Resources.ManageFriendRequest_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
@@ -64,18 +64,18 @@
                             Width="38" Height="38"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            Background="Transparent"
+                            Background="{StaticResource BrushTransparent}"
                             BorderThickness="0"
                             Cursor="Hand"
                             Command="{Binding CloseCommand}">
                         <Grid Width="36" Height="36">
-                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                     StrokeThickness="3.5" Fill="Transparent" />
+                            <Ellipse Stroke="{StaticResource BrushTextDark}"
+                                     StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                             <TextBlock Text="✕"
                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                        FontWeight="Bold"
-                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                       Foreground="{StaticResource BrushTextDark}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
                                        Margin="0,-1,0,0" />
@@ -90,9 +90,9 @@
                                   ItemsSource="{Binding PendingRequests}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                <Border BorderBrush="{StaticResource BrushTextDark}"
                                         BorderThickness="0,0,0,3"
-                                        Background="{x:Static styles:ColorPalette.RequestCardBackgroundBrush}"
+                                        Background="{StaticResource BrushRequestCardBackground}"
                                         Padding="16,12">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -103,12 +103,12 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Grid Grid.Column="0" Width="48" Height="48">
-                                            <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                                            <Ellipse Fill="{StaticResource BrushTextDark}" />
                                             <Ellipse Width="16" Height="16"
-                                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                     Fill="{StaticResource BrushTextLight}"
                                                      Margin="0,7,0,0" VerticalAlignment="Top" />
                                             <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40"
-                                                  Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                                                  Fill="{StaticResource BrushTextLight}" />
                                         </Grid>
 
                                         <TextBlock Grid.Column="1"
@@ -116,7 +116,7 @@
                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                                    FontWeight="Bold"
-                                                   Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                   Foreground="{StaticResource BrushTextDark}"
                                                    VerticalAlignment="Center"
                                                    Margin="14,0,8,0"
                                                    TextTrimming="CharacterEllipsis" />
@@ -124,7 +124,7 @@
                                         <Button Grid.Column="2"
                                                 Width="38" Height="38"
                                                 Margin="0,0,10,0"
-                                                Background="Transparent"
+                                                Background="{StaticResource BrushTransparent}"
                                                 BorderThickness="0"
                                                 Cursor="Hand"
                                                 ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
@@ -132,10 +132,10 @@
                                                     RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding}">
                                             <Grid Width="36" Height="36">
-                                                <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                         StrokeThickness="3.5" Fill="Transparent" />
+                                                <Ellipse Stroke="{StaticResource BrushTextDark}"
+                                                         StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                                                 <Path Data="M 9 18 L 15 24 L 27 11"
-                                                      Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                      Stroke="{StaticResource BrushTextDark}"
                                                       StrokeThickness="3.5"
                                                       StrokeStartLineCap="Round"
                                                       StrokeEndLineCap="Round"
@@ -147,7 +147,7 @@
 
                                         <Button Grid.Column="3"
                                                 Width="38" Height="38"
-                                                Background="Transparent"
+                                                Background="{StaticResource BrushTransparent}"
                                                 BorderThickness="0"
                                                 Cursor="Hand"
                                                 ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
@@ -155,10 +155,10 @@
                                                     RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding}">
                                             <Grid Width="36" Height="36">
-                                                <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                         StrokeThickness="3.5" Fill="Transparent" />
+                                                <Ellipse Stroke="{StaticResource BrushTextDark}"
+                                                         StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                                                 <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
-                                                      Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                      Stroke="{StaticResource BrushTextDark}"
                                                       StrokeThickness="3.5"
                                                       StrokeStartLineCap="Round"
                                                       StrokeEndLineCap="Round"
@@ -178,7 +178,7 @@
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                FontWeight="SemiBold"
-                               Foreground="{x:Static styles:ColorPalette.EmptyStateTextBrush}"
+                               Foreground="{StaticResource BrushEmptyStateText}"
                                HorizontalAlignment="Center"
                                Margin="0,40,0,0"
                                Visibility="{Binding HasNoPendingRequests,

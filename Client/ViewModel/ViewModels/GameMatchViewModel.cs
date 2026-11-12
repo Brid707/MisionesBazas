@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-
 using Model.GameServices;
+using Model.Services;
 using Model.Session;
 using ViewModel.Base;
 using ViewModel.Constants;
@@ -16,7 +16,7 @@ namespace ViewModel.ViewModels
     /// <summary>
     /// Base ViewModel for the active match board, transporting players and mission settings from the lobby.
     /// </summary>
-    public sealed class GameMatchViewModel : ViewModelBase
+    public sealed class GameMatchViewModel : ViewModelBase, IDisposable
     {
         private const int DefaultStartingMission = 1;
         private const int DefaultTargetMissions = 50;
@@ -166,6 +166,22 @@ namespace ViewModel.ViewModels
         public bool HasRightPlayer => RightPlayer != null;
 
         public ICommand HowToPlayCommand { get; }
+
+        public void ConfigureProfileImages(IProfileImageCache profileImageCache)
+        {
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.AttachProfileImage(profileImageCache);
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.Dispose();
+            }
+        }
 
         private void LoadTransportedLobbyData()
         {

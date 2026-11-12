@@ -1,5 +1,4 @@
 using System.Windows.Controls;
-
 using Model.Session;
 using View.Services;
 using ViewModel.Services;
@@ -17,7 +16,11 @@ namespace View.Views
             InitializeComponent();
 
             INavigationService navigationService = new WpfNavigationService();
-            DataContext = new GameMatchViewModel(navigationService, LobbySession.Current);
+            var viewModel = new GameMatchViewModel(navigationService, LobbySession.Current);
+            Loaded += (_, __) =>
+                viewModel.ConfigureProfileImages(((App)System.Windows.Application.Current).ProfileImages);
+            DataContext = viewModel;
+            Unloaded += (_, __) => viewModel.Dispose();
         }
     }
 }

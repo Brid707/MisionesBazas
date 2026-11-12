@@ -30,6 +30,17 @@ namespace View.Views
 
             _viewModel = viewModel;
             DataContext = _viewModel;
+            Loaded += OnGameMenuLoaded;
+            Unloaded += OnGameMenuUnloaded;
+        }
+        private void OnGameMenuLoaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _viewModel.ConfigureProfileImages(((App)System.Windows.Application.Current).ProfileImages);
+        }
+
+        private void OnGameMenuUnloaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _viewModel.Dispose();
         }
     }
 }

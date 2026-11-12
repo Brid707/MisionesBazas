@@ -9,11 +9,11 @@
         mc:Ignorable="d"
         Title="GameSettings" Height="520" Width="420"
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}">
+        Background="{StaticResource BrushBurgundySurface}">
     <Grid>
         <Border x:Name="MainBorder" BorderThickness="3"
-                BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                Padding="12" Background="Transparent">
+                BorderBrush="{StaticResource BrushTextDark}"
+                Padding="12" Background="{StaticResource BrushTransparent}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -30,19 +30,19 @@
                     <TextBlock Grid.Column="1" Text="{x:Static language:Resources.GameSettings_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.MediumTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" />
 
                     <Button x:Name="CloseButton" Grid.Column="2"
                             Content="{x:Static language:Resources.Common_Button_Close}"
                             Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            Background="{StaticResource BrushBurgundyDark}"
+                            Foreground="{StaticResource BrushTextDark}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontWeight="Bold"
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             BorderThickness="2"
-                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            BorderBrush="{StaticResource BrushTextDark}"
                             Command="{Binding CloseCommand}" />
                 </Grid>
 
@@ -52,7 +52,7 @@
                         <TextBlock Text="{x:Static language:Resources.GameSettings_NumberPlayers}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    Margin="0,0,0,6" />
                         <ComboBox x:Name="PlayersComboBox" Width="160" Height="36"
                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
@@ -64,7 +64,7 @@
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Missions}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    Margin="0,6,0,6" />
                         <ComboBox x:Name="MissionsComboBox" Width="160" Height="36"
                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
@@ -76,7 +76,7 @@
                         <TextBlock Text="{x:Static language:Resources.GameSettings_Privacy}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    Margin="0,6,0,6" />
                         <StackPanel Orientation="Vertical" Margin="8,6,0,6">
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,6">
@@ -84,7 +84,7 @@
                                              Width="18" Height="18" VerticalAlignment="Center"
                                              IsChecked="{Binding IsPrivate}" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PrivateRButton}"
-                                           Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
+                                           Foreground="{StaticResource BrushOptionLabelText}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                            VerticalAlignment="Center" Margin="8,0,0,0" />
@@ -95,7 +95,7 @@
                                              Width="18" Height="18" VerticalAlignment="Center"
                                              IsChecked="{Binding IsPublic}" />
                                 <TextBlock Text="{x:Static language:Resources.GameSettings_PublicRButton}"
-                                           Foreground="{x:Static styles:ColorPalette.OptionLabelTextBrush}"
+                                           Foreground="{StaticResource BrushOptionLabelText}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                            VerticalAlignment="Center" Margin="8,0,0,0" />
@@ -105,8 +105,8 @@
                         <Button x:Name="ConfirmButton"
                                 Content="{x:Static language:Resources.GameSettings_ConfirmButton}"
                                 Width="200" Height="48"
-                                Background="{x:Static styles:ColorPalette.SuccessAlternativeButtonBackgroundBrush}"
-                                Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                Background="{StaticResource BrushSuccess}"
+                                Foreground="{StaticResource BrushTextDark}"
                                 FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                 FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                 FontWeight="SemiBold" BorderThickness="0" Margin="0,18,0,0"

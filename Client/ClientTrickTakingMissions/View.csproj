@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Security" />
@@ -57,6 +58,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -114,7 +119,6 @@
     <Compile Include="Views\GameMatch.xaml.cs">
       <DependentUpon>GameMatch.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Styles\ColorPalette.cs" />
     <Compile Include="Styles\FontTypography.cs" />
     <Compile Include="Services\WpfNavigationService.cs" />
     <Compile Include="Services\WpfDialogService.cs" />
@@ -292,6 +296,20 @@
     <Resource Include="Assets\Images\Cards\Card_Spade_Six.png" />
     <Resource Include="Assets\Images\Cards\Card_Spade_Three.png" />
     <Resource Include="Assets\Images\Cards\Card_Spade_Two.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\ByteArrayToImageSourceConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\ProfileImageFeedbackToStringConverter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\WpfProfileImagePicker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\ProfileImages.xaml">
+      <Generator>MSBuild:Compile</Generator><SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

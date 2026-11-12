@@ -8,9 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="260">
 
-    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+    <Border BorderBrush="{StaticResource BrushTextDark}"
             BorderThickness="3,0,0,0"
-            Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}">
+            Background="{StaticResource BrushBurgundySurface}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="120" />
@@ -20,33 +20,33 @@
             </Grid.RowDefinitions>
 
             <!-- Friends header -->
-            <Border Grid.Row="0" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+            <Border Grid.Row="0" BorderBrush="{StaticResource BrushTextDark}"
                     BorderThickness="0,0,0,3">
                 <Button x:Name="FriendsButton"
-                        Background="Transparent"
+                        Background="{StaticResource BrushTransparent}"
                         BorderThickness="0"
                         Cursor="Hand"
                         Command="{Binding FilterFriendsCommand}"
                         ToolTip="{x:Static language:Resources.GameMenu_Friends}">
                     <Canvas Width="70" Height="50">
                         <Ellipse Canvas.Left="16" Canvas.Top="0" Width="22" Height="22"
-                                 Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                 StrokeThickness="3.5" Fill="Transparent" />
+                                 Stroke="{StaticResource BrushTextDark}"
+                                 StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                         <Path Data="M 6 48 C 6 36 14 30 27 30 C 40 30 48 36 48 48"
-                              Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                              StrokeThickness="3.5" Fill="Transparent" />
+                              Stroke="{StaticResource BrushTextDark}"
+                              StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                         <Ellipse Canvas.Left="38" Canvas.Top="6" Width="18" Height="18"
-                                 Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                 StrokeThickness="3.5" Fill="Transparent" />
+                                 Stroke="{StaticResource BrushTextDark}"
+                                 StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                         <Path Data="M 44 32 C 48 31 52 32 56 36 C 60 40 60 46 60 48"
-                              Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                              StrokeThickness="3.5" Fill="Transparent" />
+                              Stroke="{StaticResource BrushTextDark}"
+                              StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                     </Canvas>
                 </Button>
             </Border>
 
             <!-- Action buttons (Messages / Requests and Add Friend) -->
-            <Border Grid.Row="1" BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+            <Border Grid.Row="1" BorderBrush="{StaticResource BrushTextDark}"
                     BorderThickness="0,0,0,3">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -56,42 +56,42 @@
 
                     <Button x:Name="MessagesButton"
                             Grid.Column="0"
-                            Background="Transparent"
+                            Background="{StaticResource BrushTransparent}"
                             BorderThickness="0"
                             Cursor="Hand"
                             Command="{Binding OpenManageFriendRequestsCommand}"
                             ToolTip="{x:Static language:Resources.GameMenu_Messages}">
                         <Canvas Width="48" Height="36">
                             <Rectangle Width="46" Height="32" Canvas.Left="1" Canvas.Top="2"
-                                       Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                       StrokeThickness="3.5" Fill="Transparent" />
+                                       Stroke="{StaticResource BrushTextDark}"
+                                       StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                             <Path Data="M 2 3 L 24 20 L 46 3"
-                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  Stroke="{StaticResource BrushTextDark}"
                                   StrokeThickness="3.5"
-                                  Fill="Transparent" />
+                                  Fill="{StaticResource BrushTransparent}" />
                         </Canvas>
                     </Button>
 
                     <Button x:Name="AddFriendButton"
                             Grid.Column="1"
-                            Background="Transparent"
+                            Background="{StaticResource BrushTransparent}"
                             BorderThickness="0"
                             Cursor="Hand"
                             Command="{Binding AddFriendCommand}"
                             ToolTip="{x:Static language:Resources.GameMenu_AddFriend}">
                         <Canvas Width="48" Height="36">
                             <Ellipse Canvas.Left="12" Canvas.Top="0" Width="16" Height="16"
-                                     Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                     StrokeThickness="3.5" Fill="Transparent" />
+                                     Stroke="{StaticResource BrushTextDark}"
+                                     StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                             <Path Data="M 2 34 C 2 24 9 20 20 20 C 31 20 38 24 38 34"
-                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                  StrokeThickness="3.5" Fill="Transparent" />
+                                  Stroke="{StaticResource BrushTextDark}"
+                                  StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
                             <Line X1="41" Y1="14" X2="41" Y2="24"
-                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  Stroke="{StaticResource BrushTextDark}"
                                   StrokeThickness="3.5"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
                             <Line X1="36" Y1="19" X2="46" Y2="19"
-                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                  Stroke="{StaticResource BrushTextDark}"
                                   StrokeThickness="3.5"
                                   StrokeStartLineCap="Round" StrokeEndLineCap="Round" />
                         </Canvas>
@@ -105,13 +105,13 @@
                           ItemsSource="{Binding GameInvitations}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        <Border BorderBrush="{StaticResource BrushTextDark}"
                                 BorderThickness="0,0,0,3"
-                                Background="{x:Static styles:ColorPalette.DangerButtonBackgroundBrush}"
+                                Background="{StaticResource BrushDanger}"
                                 Padding="12,10">
                             <StackPanel>
                                 <TextBlock TextWrapping="Wrap"
-                                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                           Foreground="{StaticResource BrushTextDark}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}">
                                     <Run Text="{Binding SenderUsername, Mode=OneWay}" />
@@ -119,7 +119,7 @@
                                     <Run Text="{x:Static language:Resources.FriendsBar_GameInvitation}" />
                                 </TextBlock>
 
-                                <TextBlock Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                <TextBlock Foreground="{StaticResource BrushTextDark}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                                            Margin="0,4,0,10">
@@ -141,7 +141,7 @@
                                     <Button Grid.Column="0"
                                             Width="38" Height="38"
                                             HorizontalAlignment="Center"
-                                            Background="Transparent"
+                                            Background="{StaticResource BrushTransparent}"
                                             BorderThickness="0"
                                             Cursor="Hand"
                                             ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Accept}"
@@ -149,10 +149,10 @@
                                                 RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}">
                                         <Grid Width="36" Height="36">
-                                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                     StrokeThickness="3" Fill="Transparent" />
+                                            <Ellipse Stroke="{StaticResource BrushTextDark}"
+                                                     StrokeThickness="3" Fill="{StaticResource BrushTransparent}" />
                                             <Path Data="M 9 18 L 15 24 L 27 11"
-                                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                  Stroke="{StaticResource BrushTextDark}"
                                                   StrokeThickness="3"
                                                   StrokeStartLineCap="Round"
                                                   StrokeEndLineCap="Round"
@@ -165,7 +165,7 @@
                                     <Button Grid.Column="1"
                                             Width="38" Height="38"
                                             HorizontalAlignment="Center"
-                                            Background="Transparent"
+                                            Background="{StaticResource BrushTransparent}"
                                             BorderThickness="0"
                                             Cursor="Hand"
                                             ToolTip="{x:Static language:Resources.ManageFriendRequest_Tooltip_Reject}"
@@ -173,10 +173,10 @@
                                                 RelativeSource={RelativeSource AncestorType=UserControl}}"
                                             CommandParameter="{Binding}">
                                         <Grid Width="36" Height="36">
-                                            <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                     StrokeThickness="3" Fill="Transparent" />
+                                            <Ellipse Stroke="{StaticResource BrushTextDark}"
+                                                     StrokeThickness="3" Fill="{StaticResource BrushTransparent}" />
                                             <Path Data="M 11 11 L 25 25 M 25 11 L 11 25"
-                                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                  Stroke="{StaticResource BrushTextDark}"
                                                   StrokeThickness="3"
                                                   StrokeStartLineCap="Round"
                                                   StrokeEndLineCap="Round"
@@ -199,13 +199,13 @@
                                   Margin="10">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{x:Static styles:ColorPalette.FriendCardBackgroundBrush}"
+                                <Border Background="{StaticResource BrushFriendCardBackground}"
                                         CornerRadius="4"
                                         Padding="8"
                                         Margin="0,0,0,8">
                                     <StackPanel>
                                         <TextBlock Text="{Binding Username}"
-                                                   Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                   Foreground="{StaticResource BrushTextLight}"
                                                    FontWeight="Bold"
                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                    FontSize="{x:Static styles:FontTypography.CaptionFontSize}" />
@@ -217,13 +217,13 @@
                                                     <Setter Property="Text"
                                                             Value="{x:Static language:Resources.FriendsBar_Online}" />
                                                     <Setter Property="Foreground"
-                                                            Value="{x:Static styles:ColorPalette.OnlineStatusTextBrush}" />
+                                                            Value="{StaticResource BrushOnlineStatusText}" />
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsOnline}" Value="False">
                                                             <Setter Property="Text"
                                                                     Value="{x:Static language:Resources.FriendsBar_Offline}" />
                                                             <Setter Property="Foreground"
-                                                                    Value="{x:Static styles:ColorPalette.LightBodyTextBrush}" />
+                                                                    Value="{StaticResource BrushLightBodyText}" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
@@ -231,8 +231,8 @@
                                         </TextBlock>
                                         <WrapPanel Orientation="Horizontal">
                                             <Button Content="{x:Static language:Resources.FriendsBar_ViewProfile}"
-                                                    Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                                                    Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                    Background="{StaticResource BrushGoldAccent}"
+                                                    Foreground="{StaticResource BrushTextDark}"
                                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                     FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                                     Padding="6,2"
@@ -241,8 +241,8 @@
                                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                     CommandParameter="{Binding}" />
                                             <Button Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
-                                                    Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
-                                                    Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                    Background="{StaticResource BrushDeleteButtonBackground}"
+                                                    Foreground="{StaticResource BrushTextLight}"
                                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                     FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                                     Padding="6,2"
@@ -251,8 +251,8 @@
                                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                     CommandParameter="{Binding}" />
                                             <Button Content="{x:Static language:Resources.FriendsBar_InviteButton}"
-                                                    Background="{x:Static styles:ColorPalette.InviteButtonBackgroundBrush}"
-                                                    Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                    Background="{StaticResource BrushInviteButtonBackground}"
+                                                    Foreground="{StaticResource BrushTextLight}"
                                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                     FontSize="{x:Static styles:FontTypography.MicroFontSize}"
                                                     Padding="6,2"

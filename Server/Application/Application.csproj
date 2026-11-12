@@ -105,5 +105,36 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\PlayerProfileImageData.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\ProfileImageException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ports\IProfileImageProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ports\IProfileImageStorage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ports\IPlayerProfileRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UseCases\ProfileImageUseCase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\ProfileImages\ProfileImageLimits.cs">
+      <Link>ProfileImages\ProfileImageLimits.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\ProfileImages\ProfileImageFailureCodes.cs">
+      <Link>ProfileImages\ProfileImageFailureCodes.cs</Link>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -13,13 +13,13 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStartColor}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStart}"
                               Offset="0.0" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep1Color}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep1}"
                               Offset="0.3" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep2Color}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep2}"
                               Offset="0.8" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientEndColor}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientEnd}"
                               Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
@@ -36,21 +36,16 @@
                         Margin="40,30,0,0">
                 <Button x:Name="ProfileButton"
                         Width="64" Height="64"
-                        Background="Transparent" BorderThickness="0" Cursor="Hand"
+                        Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                         Command="{Binding ProfileCommand}"
                         ToolTip="{x:Static language:Resources.GameMenu_Profile}">
-                    <Grid Width="56" Height="56">
-                        <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
-                        <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                 Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
-                        <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                              Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
-                    </Grid>
+                    <ContentControl Content="{Binding CurrentPlayerProfileImage}" Width="56" Height="56"
+                                    ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
                 </Button>
 
                 <TextBlock x:Name="UsernameTextBlock"
                            Text="{Binding Username}"
-                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                           Foreground="{StaticResource BrushTextLight}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                            FontWeight="SemiBold"
@@ -61,7 +56,7 @@
             <Button x:Name="TrophyButton"
                     Width="44" Height="44"
                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,120,0"
-                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                     Command="{Binding ScoreBoardCommand}"
                     ToolTip="{x:Static language:Resources.GameMenu_Tooltip_ScoreBoard}">
                 <TextBlock Text="🏆"
@@ -73,7 +68,7 @@
                 <Viewbox MaxWidth="800" MaxHeight="110" HorizontalAlignment="Center" Margin="0,0,0,44">
                     <TextBlock x:Name="GameTitleTextBlock"
                                Text="{x:Static language:Resources.GameMenu_Title}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontWeight="Bold"
                                FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
@@ -85,8 +80,8 @@
                     <Button x:Name="CreateRoomButton"
                             Content="{x:Static language:Resources.GameMenu_CreateRoom}"
                             Width="440" Height="72"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
@@ -96,8 +91,8 @@
                     <Button x:Name="JoinLobbyButton"
                             Content="{x:Static language:Resources.GameMenu_JoinLobby}"
                             Width="440" Height="72"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
@@ -107,8 +102,8 @@
                     <Button x:Name="HowToPlayButton"
                             Content="{x:Static language:Resources.GameMenu_HowToPlay}"
                             Width="440" Height="72"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                             FontWeight="SemiBold"
@@ -118,8 +113,8 @@
                     <Button x:Name="SignOutButton"
                             Content="{x:Static language:Resources.GameMenu_SignOut}"
                             Width="440" Height="72"
-                            Background="{x:Static styles:ColorPalette.DangerButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                            Background="{StaticResource BrushDanger}"
+                            Foreground="{StaticResource BrushTextLight}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             FontWeight="SemiBold"

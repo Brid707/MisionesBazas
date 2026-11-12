@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="ColorWindowBackgroundGradientStart">#4A0003</Color>
+    <Color x:Key="ColorWindowBackgroundGradientStep1">#700006</Color>
+    <Color x:Key="ColorWindowBackgroundGradientStep2">#8A0B0B</Color>
+    <Color x:Key="ColorWindowBackgroundGradientEnd">#910000</Color>
+    <Color x:Key="ColorAuthBackgroundGradientStart">#7A0006</Color>
+    <Color x:Key="ColorAuthBackgroundGradientStep">#B90A0A</Color>
+    <Color x:Key="ColorAuthBackgroundGradientEnd">#C60B0B</Color>
+    <Color x:Key="ColorDialogBackgroundGradientStart">#540003</Color>
+    <Color x:Key="ColorDialogBackgroundGradientStep1">#6E0005</Color>
+    <Color x:Key="ColorDialogBackgroundGradientStep2">#7C0107</Color>
+    <Color x:Key="ColorDialogBackgroundGradientEnd">#8A0B0B</Color>
+    <Color x:Key="ColorModalAccentGradientStart">#8B0000</Color>
+    <Color x:Key="ColorModalAccentGradientEnd">#D22020</Color>
+    <Color x:Key="ColorLobbyBackgroundGradientStart">#830015</Color>
+    <Color x:Key="ColorLobbyBackgroundGradientEnd">#B00000</Color>
+    <Color x:Key="ColorGoldAccent">#FFF36B</Color>
+    <SolidColorBrush x:Key="BrushGoldAccent" Color="{StaticResource ColorGoldAccent}" />
+    <Color x:Key="ColorSecondaryButtonBackground">#FF6B6B</Color>
+    <SolidColorBrush x:Key="BrushSecondaryButtonBackground" Color="{StaticResource ColorSecondaryButtonBackground}" />
+    <Color x:Key="ColorDanger">#D22020</Color>
+    <SolidColorBrush x:Key="BrushDanger" Color="{StaticResource ColorDanger}" />
+    <Color x:Key="ColorDeleteButtonBackground">#EA4444</Color>
+    <SolidColorBrush x:Key="BrushDeleteButtonBackground" Color="{StaticResource ColorDeleteButtonBackground}" />
+    <Color x:Key="ColorSubmitButtonBackground">#D49B2A</Color>
+    <SolidColorBrush x:Key="BrushSubmitButtonBackground" Color="{StaticResource ColorSubmitButtonBackground}" />
+    <Color x:Key="ColorSuccessButtonBackground">#1A8A2B</Color>
+    <SolidColorBrush x:Key="BrushSuccessButtonBackground" Color="{StaticResource ColorSuccessButtonBackground}" />
+    <Color x:Key="ColorSuccess">#127A20</Color>
+    <SolidColorBrush x:Key="BrushSuccess" Color="{StaticResource ColorSuccess}" />
+    <Color x:Key="ColorInviteButtonBackground">#2ECC71</Color>
+    <SolidColorBrush x:Key="BrushInviteButtonBackground" Color="{StaticResource ColorInviteButtonBackground}" />
+    <Color x:Key="ColorBurgundyDark">#2A0000</Color>
+    <SolidColorBrush x:Key="BrushBurgundyDark" Color="{StaticResource ColorBurgundyDark}" />
+    <Color x:Key="ColorBurgundySurface">#8A0000</Color>
+    <SolidColorBrush x:Key="BrushBurgundySurface" Color="{StaticResource ColorBurgundySurface}" />
+    <Color x:Key="ColorLobbyContainerBackground">#7A0000</Color>
+    <SolidColorBrush x:Key="BrushLobbyContainerBackground" Color="{StaticResource ColorLobbyContainerBackground}" />
+    <Color x:Key="ColorLobbyMatchSurface">#AB0000</Color>
+    <SolidColorBrush x:Key="BrushLobbyMatchSurface" Color="{StaticResource ColorLobbyMatchSurface}" />
+    <Color x:Key="ColorCompactDialogBackground">#6A0B0B</Color>
+    <SolidColorBrush x:Key="BrushCompactDialogBackground" Color="{StaticResource ColorCompactDialogBackground}" />
+    <Color x:Key="ColorDialogHeaderBackground">#5A0002</Color>
+    <SolidColorBrush x:Key="BrushDialogHeaderBackground" Color="{StaticResource ColorDialogHeaderBackground}" />
+    <Color x:Key="ColorDialogContainerBackground">#540003</Color>
+    <SolidColorBrush x:Key="BrushDialogContainerBackground" Color="{StaticResource ColorDialogContainerBackground}" />
+    <Color x:Key="ColorFriendCardBackground">#680000</Color>
+    <SolidColorBrush x:Key="BrushFriendCardBackground" Color="{StaticResource ColorFriendCardBackground}" />
+    <Color x:Key="ColorRequestCardBackground">#6F0004</Color>
+    <SolidColorBrush x:Key="BrushRequestCardBackground" Color="{StaticResource ColorRequestCardBackground}" />
+    <Color x:Key="ColorPlayerSlotBackground">#8A0000</Color>
+    <SolidColorBrush x:Key="BrushPlayerSlotBackground" Color="{StaticResource ColorPlayerSlotBackground}" />
+    <Color x:Key="ColorTableRowBackground">#8A0B0B</Color>
+    <SolidColorBrush x:Key="BrushTableRowBackground" Color="{StaticResource ColorTableRowBackground}" />
+    <Color x:Key="ColorTableAlternateRowBackground">#94040D</Color>
+    <SolidColorBrush x:Key="BrushTableAlternateRowBackground" Color="{StaticResource ColorTableAlternateRowBackground}" />
+    <Color x:Key="ColorSecondaryTitleText">#F23A23</Color>
+    <SolidColorBrush x:Key="BrushSecondaryTitleText" Color="{StaticResource ColorSecondaryTitleText}" />
+    <Color x:Key="ColorOnlineStatusText">#66FF66</Color>
+    <SolidColorBrush x:Key="BrushOnlineStatusText" Color="{StaticResource ColorOnlineStatusText}" />
+    <Color x:Key="ColorDarkText">#0B0B0B</Color>
+    <SolidColorBrush x:Key="BrushDarkText" Color="{StaticResource ColorDarkText}" />
+    <Color x:Key="ColorOptionLabelText">#140000</Color>
+    <SolidColorBrush x:Key="BrushOptionLabelText" Color="{StaticResource ColorOptionLabelText}" />
+    <Color x:Key="ColorTextDark">#000000</Color>
+    <SolidColorBrush x:Key="BrushTextDark" Color="{StaticResource ColorTextDark}" />
+    <Color x:Key="ColorTextLight">#FFFFFF</Color>
+    <SolidColorBrush x:Key="BrushTextLight" Color="{StaticResource ColorTextLight}" />
+    <Color x:Key="ColorLightBodyText">#ECECEC</Color>
+    <SolidColorBrush x:Key="BrushLightBodyText" Color="{StaticResource ColorLightBodyText}" />
+    <Color x:Key="ColorEmptyStateText">#FFDDDD</Color>
+    <SolidColorBrush x:Key="BrushEmptyStateText" Color="{StaticResource ColorEmptyStateText}" />
+    <Color x:Key="ColorAccentLinkText">#FF0099</Color>
+    <SolidColorBrush x:Key="BrushAccentLinkText" Color="{StaticResource ColorAccentLinkText}" />
+    <Color x:Key="ColorInputFieldBackground">#F04A4A</Color>
+    <SolidColorBrush x:Key="BrushInputFieldBackground" Color="{StaticResource ColorInputFieldBackground}" />
+    <Color x:Key="ColorInputFieldBorder">#8B0000</Color>
+    <SolidColorBrush x:Key="BrushInputFieldBorder" Color="{StaticResource ColorInputFieldBorder}" />
+    <Color x:Key="ColorTransparent">#00FFFFFF</Color>
+    <SolidColorBrush x:Key="BrushTransparent" Color="{StaticResource ColorTransparent}" />
+</ResourceDictionary>

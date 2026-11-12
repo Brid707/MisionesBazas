@@ -3,6 +3,8 @@
   <Project Path="../Host/Host.csproj" Id="26ce1c4b-e520-4c14-b7e6-9e6f5a5805c2" />
   <Project Path="../Infrastructure.Email/Infrastructure.Email.csproj" Id="84a9f63d-9b2e-4d1c-8a54-7e319c04e6b2" />
   <Project Path="../Infrastructure.Moderation/Infrastructure.Moderation.csproj" Id="a53b0772-76df-4f1d-a540-b8c73e0f1f17" />
+  <Project Path="../Infrastructure.ProfileImages/Infrastructure.ProfileImages.csproj"
+           Id="3a42c25b-7e6d-4fcc-968c-3a7641118b4e" />
   <Project Path="../Persistence/Persistence.csproj" Id="c36681c2-acec-4779-b280-e9b8ce8fdab7" />
   <Project Path="../Services/Services.csproj" Id="c3ce4b74-c003-42a1-9dbd-75f8213916eb" />
   <Project Path="../../Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" Id="439733c3-c43d-4c1a-be6d-c25edc280575" />

@@ -90,6 +90,30 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContracts\ProfileImageUpload.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\ProfileImageSubscriptions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContracts\PlayerProfileImageReference.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\IProfileImageCallback.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Contracts\IProfileImageService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContracts\ProfileImageContent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\ProfileImageService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContracts\ProfileImageFault.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">

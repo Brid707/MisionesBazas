@@ -4,7 +4,6 @@ using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-
 using Application;
 using Application.Models;
 using Application.Ports;
@@ -43,6 +42,7 @@ namespace Host
             CultureInfo.DefaultThreadCurrentCulture = serverCulture;
             CultureInfo.DefaultThreadCurrentUICulture = serverCulture;
 
+            ServiceHost profileImageHost = null;
             ServiceHost loginHost = null;
             ServiceHost lobbyHost = null;
             ServiceHost accountManagementHost = null;
@@ -58,24 +58,26 @@ namespace Host
                 IFriendshipRepository friendshipRepository = new FriendshipRepository();
                 IFriendshipUseCase friendshipUseCase = new FriendshipUseCase(friendshipRepository, userRepository);
 
-                IChatInfractionRepository chatInfractionRepository =
+                var chatInfractionRepository =
                     new ChatInfractionRepository(new ChatModerationLogger());
-                IAccountAccessPolicy accountAccessPolicy = new AccountAccessPolicy(
+                var accountAccessPolicy = new AccountAccessPolicy(
                     new AuthenticatedAccountSessionRegistry(), chatInfractionRepository);
-                IChatModerationCatalogBackup catalogBackup = new ChatModerationCatalogBackup(
+                var catalogBackup = new ChatModerationCatalogBackup(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                         "ModerationCatalogBackups", "ValidatedCatalog.xml"));
                 ChatModerationStartup moderationStartup = new ChatModerationStartup(catalogBackup, hostLogger);
                 ChatModerationPreparation moderationPreparation = moderationStartup.PrepareChatModeration(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ModerationCatalogs"));
-                ILobbyChatMessageUseCase lobbyChatMessageUseCase = new LobbyChatMessageUseCase(
+                var lobbyChatMessageUseCase = new LobbyChatMessageUseCase(
                     moderationPreparation, chatInfractionRepository, hostLogger);
+                profileImageHost = ProfileImageHosting.Create(accountAccessPolicy, hostLogger);
                 loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy);
                 lobbyHost = CreateLobbyServiceHost(userRepository, lobbyChatMessageUseCase, accountAccessPolicy);
                 accountManagementHost = CreateAccountManagementServiceHost(userRepository);
                 friendshipHost = CreateFriendshipServiceHost(friendshipUseCase);
                 friendsRequestHost = CreateFriendsRequestServiceHost(friendshipUseCase);
 
+                profileImageHost.Open();
                 loginHost.Open();
                 lobbyHost.Open();
                 accountManagementHost.Open();
@@ -91,6 +93,7 @@ namespace Host
                 Console.WriteLine("Press [Enter] to terminate the server.");
                 Console.ReadLine();
 
+                profileImageHost.Close();
                 friendsRequestHost.Close();
                 friendshipHost.Close();
                 accountManagementHost.Close();
@@ -99,6 +102,7 @@ namespace Host
             }
             catch (TimeoutException ex)
             {
+                profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
@@ -109,6 +113,7 @@ namespace Host
             }
             catch (CommunicationException ex)
             {
+                profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
@@ -119,6 +124,7 @@ namespace Host
             }
             catch (InvalidOperationException ex)
             {
+                profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
                 accountManagementHost?.Abort();
@@ -133,7 +139,7 @@ namespace Host
             IAccountAccessPolicy accountAccessPolicy)
         {
             IUserLoginUseCase userLoginUseCase = new UserLoginUseCase(userRepository);
-            IInstanceProvider instanceProvider = new FuncInstanceProvider<UserLoginService>(
+            var instanceProvider = new FuncInstanceProvider<UserLoginService>(
                 () => new UserLoginService(userLoginUseCase, accountAccessPolicy));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
@@ -146,7 +152,7 @@ namespace Host
             ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy)
         {
             ILobbyUseCase lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection());
-            IInstanceProvider instanceProvider = new FuncInstanceProvider<LobbyService>(
+            var instanceProvider = new FuncInstanceProvider<LobbyService>(
                 () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
@@ -157,9 +163,9 @@ namespace Host
 
         private static ServiceHost CreateAccountManagementServiceHost(IUserRepository userRepository)
         {
-            IAccountManagementUseCase accountManagementUseCase = new AccountManagementUseCase(userRepository,
+            var accountManagementUseCase = new AccountManagementUseCase(userRepository,
                 new BlockedAccountEmailRepository(new ChatModerationLogger()));
-            IInstanceProvider instanceProvider = new FuncInstanceProvider<AccountManagementService>(
+            var instanceProvider = new FuncInstanceProvider<AccountManagementService>(
                 () => new AccountManagementService(accountManagementUseCase));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
@@ -170,7 +176,7 @@ namespace Host
 
         private static ServiceHost CreateFriendshipServiceHost(IFriendshipUseCase friendshipUseCase)
         {
-            IInstanceProvider instanceProvider = new FuncInstanceProvider<FriendshipService>(
+            var instanceProvider = new FuncInstanceProvider<FriendshipService>(
                 () => new FriendshipService(friendshipUseCase));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
@@ -181,7 +187,7 @@ namespace Host
 
         private static ServiceHost CreateFriendsRequestServiceHost(IFriendshipUseCase friendshipUseCase)
         {
-            IInstanceProvider instanceProvider = new FuncInstanceProvider<FriendsRequestService>(
+            var instanceProvider = new FuncInstanceProvider<FriendsRequestService>(
                 () => new FriendsRequestService(friendshipUseCase));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 

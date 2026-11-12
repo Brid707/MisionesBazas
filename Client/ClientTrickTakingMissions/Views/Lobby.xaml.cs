@@ -1,5 +1,4 @@
-﻿using System.Windows.Controls;
-
+using System.Windows.Controls;
 using Model.Session;
 using View.Services;
 using ViewModel.Services;
@@ -22,6 +21,8 @@ namespace View.Views
             INavigationService navigationService = new WpfNavigationService();
             LobbyViewModel viewModel = new LobbyViewModel(navigationService, LobbySession.Current,
                 new ChatModerationPresenter());
+            Loaded += (_, __) =>
+                viewModel.ConfigureProfileImages(((App)System.Windows.Application.Current).ProfileImages);
             DataContext = viewModel;
             viewModel.CurrentPlayerKicked += OnCurrentPlayerKicked;
             Unloaded += OnLobbyUnloaded;

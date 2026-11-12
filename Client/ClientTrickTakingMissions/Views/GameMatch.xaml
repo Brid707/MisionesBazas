@@ -12,13 +12,9 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="MatchPlayerSeatTemplate">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid Width="68" Height="68" HorizontalAlignment="Center">
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
-                    <Ellipse Width="22" Height="22" Margin="0,11,0,0" VerticalAlignment="Top"
-                             Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
-                    <Path Data="M 13 58 C 13 39 55 39 55 58 Q 34 70 13 58"
-                          Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
-                </Grid>
+                <ContentControl Width="68" Height="68" HorizontalAlignment="Center"
+                                Content="{Binding ProfileImage}"
+                                ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
                 <TextBlock Text="{Binding Username}"
                            Margin="0,6,0,0"
                            HorizontalAlignment="Center"
@@ -26,12 +22,12 @@
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                            FontWeight="Bold"
-                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                           Foreground="{StaticResource BrushTextLight}" />
             </StackPanel>
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+    <Grid Background="{StaticResource BrushLobbyMatchSurface}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -51,7 +47,7 @@
                        VerticalAlignment="Top"
                        FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                        FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
-                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}">
+                       Foreground="{StaticResource BrushTextDark}">
                 <Run Text="{x:Static language:Resources.GameMatch_Mission}" />
                 <Run Text=" " />
                 <Run Text="{Binding MissionProgressDisplay, Mode=OneWay}" />
@@ -64,7 +60,7 @@
                            TextAlignment="Center"
                            FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                            FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
-                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}">
+                           Foreground="{StaticResource BrushTextDark}">
                     <Run Text="{x:Static language:Resources.GameMatch_Trick}" />
                     <Run Text=" " />
                     <Run Text="{Binding TrickProgressDisplay, Mode=OneWay}" />
@@ -81,15 +77,15 @@
                     Width="76" Height="76"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
-                    Background="Transparent"
+                    Background="{StaticResource BrushTransparent}"
                     BorderThickness="0"
                     Cursor="Hand"
                     ToolTip="{x:Static language:Resources.GameMenu_HowToPlay}"
                     Command="{Binding HowToPlayCommand}">
                 <Grid Width="72" Height="72">
-                    <Ellipse Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    <Ellipse Stroke="{StaticResource BrushTextDark}"
                              StrokeThickness="5"
-                             Fill="Transparent" />
+                             Fill="{StaticResource BrushTransparent}" />
                     <TextBlock Text="?"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
@@ -97,7 +93,7 @@
                                FontFamily="Georgia, Times New Roman, Segoe UI"
                                FontSize="48"
                                FontWeight="Bold"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                               Foreground="{StaticResource BrushTextDark}" />
                 </Grid>
             </Button>
         </Grid>

@@ -6,12 +6,12 @@
         Title="{x:Static language:Resources.SelectLanguage_Title}" Height="220" Width="520"
         WindowStyle="None" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        Background="{x:Static styles:ColorPalette.CompactDialogBackgroundBrush}"
+        Background="{StaticResource BrushCompactDialogBackground}"
         AllowsTransparency="False">
 
     <Border BorderThickness="3"
-            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-            Padding="12" Background="Transparent">
+            BorderBrush="{StaticResource BrushTextDark}"
+            Padding="12" Background="{StaticResource BrushTransparent}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -20,36 +20,36 @@
 
             <Button x:Name="CloseButton" Content="{x:Static language:Resources.Common_Button_Close}"
                     Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
-                    Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    Background="{StaticResource BrushBurgundyDark}"
+                    Foreground="{StaticResource BrushTextDark}"
                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                     FontWeight="Bold"
                     FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                     BorderThickness="2"
-                    BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    BorderBrush="{StaticResource BrushTextDark}"
                     Command="{Binding CloseCommand}" />
 
             <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,6,0,6">
                 <TextBlock Text="{x:Static language:Resources.SelectLanguage_Title}"
                            FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                            FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            HorizontalAlignment="Center" TextAlignment="Center" />
             </StackPanel>
 
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                 <Button x:Name="SpanishButton" Width="200" Height="64"
-                        Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        Background="{StaticResource BrushGoldAccent}"
+                        Foreground="{StaticResource BrushDarkText}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" Margin="0,0,12,0"
                         Content="{x:Static language:Resources.SelectLanguage_SpanishButton}"
                         Command="{Binding SelectSpanishCommand}" />
                 <Button x:Name="EnglishButton" Width="200" Height="64"
-                        Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        Background="{StaticResource BrushGoldAccent}"
+                        Foreground="{StaticResource BrushDarkText}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" Margin="12,0,0,0"

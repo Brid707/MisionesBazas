@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:View.Converters">
+    <converters:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+    <converters:ProfileImageFeedbackToStringConverter x:Key="ProfileImageFeedbackToStringConverter" />
+    <DrawingImage x:Key="DefaultProfileAvatarImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="{StaticResource BrushTextDark}">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="64,64" RadiusX="64" RadiusY="64" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="{StaticResource BrushTextLight}">
+                    <GeometryDrawing.Geometry>
+                        <EllipseGeometry Center="64,43" RadiusX="18" RadiusY="18" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="{StaticResource BrushTextLight}"
+                                 Geometry="M 27 105 C 27 75 45 67 64 67 C 83 67 101 75 101 105 Z" />
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DataTemplate x:Key="ProfileAvatarTemplate">
+        <Viewbox Stretch="Uniform">
+            <Grid Width="128" Height="128">
+                <Ellipse Fill="{StaticResource BrushTextDark}" />
+                <Image Width="128" Height="128" Stretch="Uniform"
+                       Source="{Binding ProfileImageBytes, Converter={StaticResource ByteArrayToImageSourceConverter},
+                           TargetNullValue={StaticResource DefaultProfileAvatarImage},
+                           FallbackValue={StaticResource DefaultProfileAvatarImage}}">
+                    <Image.Clip>
+                        <EllipseGeometry Center="64,64" RadiusX="64" RadiusY="64" />
+                    </Image.Clip>
+                </Image>
+            </Grid>
+        </Viewbox>
+    </DataTemplate>
+</ResourceDictionary>

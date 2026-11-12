@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\LobbyChatViewModel.cs" />
+    <Compile Include="ViewModels\LobbyChatMessageViewModel.cs" />
     <Compile Include="Services\IChatModerationPresenter.cs" />
     <Compile Include="Base\AsyncRelayCommand.cs" />
     <Compile Include="Base\RelayCommand.cs" />
@@ -89,6 +90,18 @@
       <Project>{32c771cd-15cc-4a90-b9b8-cb1004d90b79}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\IProfileImagePicker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\ProfileImageViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants\ProfileImageFeedback.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\ProfileImageSelection.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

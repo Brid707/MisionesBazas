@@ -7,147 +7,183 @@
       xmlns:styles="clr-namespace:View.Styles"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
-      Title="Profile">
-
-    <Grid Background="{x:Static styles:ColorPalette.TableAlternateRowBackgroundBrush}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Image Grid.Column="0"
-               Source="ProfileCards.png"
-               Stretch="Fill"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Stretch"
-               Width="150" />
-
-        <Grid Grid.Column="1" Margin="30,24,40,30">
-            <Button x:Name="CloseButton"
-                    Width="50" Height="50"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Cursor="Hand"
-                    Command="{Binding CloseCommand}">
-                <Grid Width="44" Height="44">
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="44" Height="44" />
-                    <Path Stroke="{x:Static styles:ColorPalette.TableAlternateRowBackgroundBrush}"
-                          StrokeThickness="4"
-                          StrokeStartLineCap="Round"
-                          StrokeEndLineCap="Round"
-                          Data="M 14 14 L 30 30 M 30 14 L 14 30" />
-                </Grid>
-            </Button>
-
-            <StackPanel Margin="30,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,32">
-                    <Grid Width="96" Height="96">
-                        <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                 Width="96" Height="96" />
-                        <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                                 Width="30" Height="30" Margin="0,18,0,0" VerticalAlignment="Top" />
-                        <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                              Data="M 20 78 C 20 58 34 52 48 52 C 62 52 76 58 76 78 Z" />
+      Title="{x:Static language:Resources.Profile_Title}">
+    <Page.Resources>
+        <Style x:Key="ProfileActionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BrushGoldAccent}" />
+            <Setter Property="Foreground" Value="{StaticResource BrushTextDark}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BrushTextDark}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Padding" Value="18,10" />
+            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
+            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.ActionButtonFontSize}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="ActionBorder" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                            <ContentPresenter Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="ActionBorder" Property="Opacity" Value="0.9" />
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="ActionBorder" Property="BorderBrush"
+                                        Value="{StaticResource BrushTextLight}" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="ActionBorder" Property="Opacity" Value="0.7" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+            <Setter Property="ToolTip" Value="{x:Static language:Resources.Profile_EditingPending}" />
+        </Style>
+        <Style x:Key="ProfileLabelStyle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
+            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.SubtitleFontSize}" />
+            <Setter Property="Foreground" Value="{StaticResource BrushTextLight}" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Page.Resources>
+    <Grid Background="{StaticResource BrushBurgundySurface}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid Margin="48,32,48,40" MaxWidth="1240" HorizontalAlignment="Stretch">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{x:Static language:Resources.Profile_Title}"
+                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                           FontSize="{x:Static styles:FontTypography.DisplayTitleFontSize}"
+                           Foreground="{StaticResource BrushGoldAccent}"
+                           Margin="0,0,64,24" TextWrapping="Wrap" />
+                <Button x:Name="CloseButton" Width="48" Height="48" Padding="0"
+                        HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Background="{StaticResource BrushTransparent}" BorderThickness="0"
+                        Command="{Binding CloseCommand}" Cursor="Hand"
+                        ToolTip="{x:Static language:Resources.Common_Button_Close}"
+                        AutomationProperties.Name="{x:Static language:Resources.Common_Button_Close}">
+                    <Grid Width="44" Height="44">
+                        <Ellipse Fill="{StaticResource BrushTextDark}" />
+                        <Path Stroke="{StaticResource BrushDanger}" StrokeThickness="4"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                              Data="M 14 14 L 30 30 M 30 14 L 14 30" />
                     </Grid>
-
-                    <TextBlock x:Name="UsernameTextBlock"
-                               Text="{Binding Username}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.ProfileTitleFontSize}"
-                               FontWeight="Normal"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                               VerticalAlignment="Center"
-                               Margin="28,0,0,0" />
-                </StackPanel>
-
-                <WrapPanel Orientation="Horizontal" Margin="0,0,0,24">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,80,0">
-                        <Label x:Name="AccountCreationLabel"
-                               Content="{x:Static language:Resources.Profile_AccountCreation}"
-                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                               FontWeight="Normal"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                               Padding="0"
-                               VerticalAlignment="Center" />
-                        <Label x:Name="DateLabel"
-                               Content="{Binding AccountCreationDate}"
-                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                               FontWeight="Normal"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                               Padding="0"
-                               Margin="10,0,0,0"
-                               VerticalAlignment="Center" />
+                </Button>
+                <Grid Grid.Row="1" Margin="0,0,0,28">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel>
+                        <Grid Width="144" Height="144" HorizontalAlignment="Left">
+                            <ContentControl Content="{Binding ProfileImage}" Margin="0,0,8,8"
+                                            ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
+                            <Button x:Name="ChangeProfilePhotoButton"
+                                    Style="{StaticResource ProfileActionButtonStyle}"
+                                    Command="{Binding ChangeProfilePhotoCommand}"
+                                    Width="48" Height="44" Padding="8"
+                                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                    ToolTip="{x:Static language:Resources.Profile_ChangePhoto}"
+                                    AutomationProperties.Name="{x:Static language:Resources.Profile_ChangePhoto}">
+                                <Viewbox Width="26" Height="22" Stretch="Uniform">
+                                    <Canvas Width="28" Height="24">
+                                        <Path Stroke="{StaticResource BrushTextDark}" StrokeThickness="2"
+                                              StrokeLineJoin="Round"
+                                              Data="M 2 6 L 8 6 L 10 2 L 18 2 L 20 6 L 26 6 L 26 22 L 2 22 Z" />
+                                        <Ellipse Width="10" Height="10" Canvas.Left="9" Canvas.Top="9"
+                                                 Stroke="{StaticResource BrushTextDark}" StrokeThickness="2" />
+                                    </Canvas>
+                                </Viewbox>
+                            </Button>
+                        </Grid>
+                        <TextBlock Text="{x:Static language:Resources.Profile_ChangePhoto}"
+                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                                   Foreground="{StaticResource BrushTextLight}" Margin="0,8,0,0"
+                                   TextWrapping="Wrap" />
                     </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <Label x:Name="MissionsLabel"
-                               Content="{x:Static language:Resources.Profile_Missions}"
-                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                               FontWeight="Normal"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                               Padding="0"
-                               VerticalAlignment="Center" />
-                        <Label x:Name="MissionsValueLabel"
-                               Content="{Binding MissionsCount}"
-                               FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                               FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                               FontWeight="Normal"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                               Padding="0"
-                               Margin="10,0,0,0"
-                               VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="24,0,0,28">
+                        <TextBlock x:Name="UsernameTextBlock"
+                                   Text="{Binding Username}" d:Text="Bridget"
+                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.ProfileTitleFontSize}"
+                                   FontWeight="SemiBold" Foreground="{StaticResource BrushTextLight}"
+                                   VerticalAlignment="Center" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding ProfileImageFeedbackCode,
+                                       Converter={StaticResource ProfileImageFeedbackToStringConverter}}"
+                                   Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
+                                   FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                   FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                                   Margin="0,12,0,0" AutomationProperties.LiveSetting="Polite" />
                     </StackPanel>
+                </Grid>
+                <WrapPanel Grid.Row="2" Margin="0,0,0,28">
+                    <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,44,12">
+                        <Run Text="{x:Static language:Resources.Profile_AccountCreation}" />
+                        <Run Text="{Binding AccountCreationDate, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,0,12">
+                        <Run Text="{x:Static language:Resources.Profile_Missions}" />
+                        <Run Text="{Binding MissionsCount, Mode=OneWay}" FontWeight="SemiBold" />
+                    </TextBlock>
                 </WrapPanel>
+                <Grid Grid.Row="3" Margin="0,0,0,28">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{x:Static language:Resources.Profile_Biography}"
+                               Style="{StaticResource ProfileLabelStyle}" FontWeight="SemiBold"
+                               VerticalAlignment="Center" Margin="0,0,160,12" />
+                    <Button x:Name="EditBiographyButton" HorizontalAlignment="Right"
+                            Style="{StaticResource ProfileActionButtonStyle}"
+                            Command="{Binding PendingProfileEditingCommand}" Margin="0,0,0,12"
+                            AutomationProperties.Name="{x:Static language:Resources.Profile_EditBiography}">
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="18" Height="18" Margin="0,0,8,0">
+                                <Path Fill="{StaticResource BrushTextDark}"
+                                      Data="M 2 16 L 0 24 L 8 22 L 22 8 L 16 2 Z M 18 0 L 24 6 L 26 4 L 20 -2 Z" />
+                            </Viewbox>
+                            <TextBlock Text="{x:Static language:Resources.Profile_EditBiography}" />
+                        </StackPanel>
+                    </Button>
+                    <Border Grid.Row="1" Background="{StaticResource BrushBurgundyDark}"
+                            CornerRadius="6" Padding="20" MinHeight="132">
+                        <TextBlock x:Name="BiographyTextBlock">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource ProfileLabelStyle}">
+                                    <Setter Property="Text" Value="{Binding Biography, Mode=OneWay}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Biography}" Value="">
+                                            <Setter Property="Text"
+                                                    Value="{x:Static language:Resources.Profile_EmptyBiography}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                </Grid>
+                <StackPanel Grid.Row="4">
 
-                <Label x:Name="BiographyLabel"
-                       Content="{x:Static language:Resources.Profile_Biography}"
-                       FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                       FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                       FontWeight="Normal"
-                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                       Padding="0"
-                       Margin="0,0,0,10" />
-
-                <TextBox x:Name="BiographyTextBox"
-                         Text="{Binding Biography, UpdateSourceTrigger=PropertyChanged}"
-                         Width="660"
-                         Height="160"
-                         Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                         Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                         Padding="12"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         BorderThickness="0"
-                         HorizontalAlignment="Left"
-                         Margin="0,0,0,24" />
-
-                <StackPanel Orientation="Horizontal">
-                    <Label x:Name="EmailLabel"
-                           Content="{x:Static language:Resources.Profile_Email}"
-                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                           FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                           FontWeight="Normal"
-                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                           Padding="0"
-                           VerticalAlignment="Center" />
-                    <Label x:Name="EmailValueLabel"
-                           Content="{Binding Email}"
-                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                           FontSize="{x:Static styles:FontTypography.SubtitleFontSize}"
-                           FontWeight="Normal"
-                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
-                           Padding="0"
-                           Margin="10,0,0,0"
-                           VerticalAlignment="Center" />
+                    <TextBlock Text="{x:Static language:Resources.Profile_Email}"
+                               Style="{StaticResource ProfileLabelStyle}" FontWeight="SemiBold" />
+                    <TextBlock x:Name="EmailValueTextBlock" Text="{Binding Email}"
+                               Style="{StaticResource ProfileLabelStyle}" Margin="0,8,0,0" />
                 </StackPanel>
-            </StackPanel>
-        </Grid>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>

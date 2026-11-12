@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using Model.GameServices;
 using Model.Services;
 using Model.Session;
@@ -37,6 +36,7 @@ namespace ViewModel.ViewModels
         private string _missionsTarget;
         private string _lobbyCode;
         private bool _isReady;
+        private IProfileImageCache _profileImageCache;
         private bool _isDisposed;
         private long _lastAppliedLobbyVersion;
         private bool _hasLobbyConnectionFailure;
@@ -70,7 +70,9 @@ namespace ViewModel.ViewModels
             SubscribeToLobbyEvents();
         }
 
-        /// <summary>Notifies the view that the local participant was removed by the host.</summary>
+        /// <summary>
+        /// Notifies the view that the local participant was removed by the host.
+        /// </summary>
         public event EventHandler CurrentPlayerKicked;
 
         public bool CanEditCurrentLobby => _lobbySession.CurrentLobby?.HostUserId == _currentUserId &&
@@ -100,6 +102,8 @@ namespace ViewModel.ViewModels
         }
 
         public int MaximumLobbyPlayerCount => _lobbySession.CurrentLobby?.PlayerLimit ?? 0;
+
+        public ProfileImageViewModel CurrentPlayerProfileImage { get; private set; }
 
         public LobbyChatViewModel Chat { get; }
 
@@ -136,12 +140,30 @@ namespace ViewModel.ViewModels
 
         public ICommand ToggleReadyCommand { get; }
 
+        public void ConfigureProfileImages(IProfileImageCache profileImageCache)
+        {
+            _profileImageCache = profileImageCache;
+            CurrentPlayerProfileImage?.Dispose();
+            CurrentPlayerProfileImage = new ProfileImageViewModel(_currentUserId, profileImageCache);
+            OnPropertyChanged(nameof(CurrentPlayerProfileImage));
+            Chat.ConfigureProfileImages(profileImageCache);
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.AttachProfileImage(profileImageCache);
+            }
+        }
+
         public void Dispose()
         {
             _isDisposed = true;
             Players.CollectionChanged -= OnLobbyParticipantsChanged;
             UnsubscribeFromLobbyEvents();
             Chat.Dispose();
+            CurrentPlayerProfileImage?.Dispose();
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.Dispose();
+            }
         }
 
         private void OnLobbyParticipantsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -182,6 +204,10 @@ namespace ViewModel.ViewModels
 
         private void SynchronizeLobbyPlayers(Lobby confirmedLobby)
         {
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.Dispose();
+            }
             Players.Clear();
             foreach (LobbyPlayer participant in confirmedLobby.Players)
             {
@@ -311,6 +337,10 @@ namespace ViewModel.ViewModels
                     IsCurrentPlayer = isLocalPlayer,
                     IsReady = participant.IsReady
                 };
+                if (_profileImageCache != null)
+                {
+                    newItem.AttachProfileImage(_profileImageCache);
+                }
                 Players.Add(newItem);
             }
             else
@@ -331,6 +361,7 @@ namespace ViewModel.ViewModels
             LobbyPlayerItemViewModel existing = Players.FirstOrDefault(item => item.IdUser == userId);
             if (existing != null)
             {
+                existing.Dispose();
                 Players.Remove(existing);
                 SyncSessionLobbyPlayers();
             }

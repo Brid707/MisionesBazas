@@ -523,4 +523,58 @@
   <data name="Lobby_StartGameButton" xml:space="preserve"><value>Iniciar partida</value></data>
   <data name="GameMatch_Mission" xml:space="preserve"><value>Misión</value></data>
   <data name="GameMatch_Trick" xml:space="preserve"><value>Baza</value></data>
+  <data name="Profile_Title" xml:space="preserve">
+    <value>MI PERFIL</value>
+  </data>
+  <data name="Profile_ChangePhoto" xml:space="preserve">
+    <value>Cambiar foto</value>
+  </data>
+  <data name="Profile_EditBiography" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Profile_EmptyBiography" xml:space="preserve">
+    <value>Aún no has agregado una biografía.</value>
+  </data>
+  <data name="Profile_EditingPending" xml:space="preserve">
+    <value>La edición del perfil estará disponible en una próxima etapa.</value>
+  </data>
+  <data name="Profile_SelectImage" xml:space="preserve">
+    <value>Seleccionar foto de perfil</value>
+  </data>
+  <data name="Profile_ImageFileFilter" xml:space="preserve">
+    <value>Imágenes PNG o JPEG|*.png;*.jpg;*.jpeg</value>
+  </data>
+  <data name="Profile_Image_Uploading" xml:space="preserve">
+    <value>Subiendo foto de perfil…</value>
+  </data>
+  <data name="Profile_Image_UploadSucceeded" xml:space="preserve">
+    <value>Tu foto de perfil se actualizó.</value>
+  </data>
+  <data name="Profile_Image_ImageSizeExceeded" xml:space="preserve">
+    <value>Selecciona una imagen de hasta 2 MB.</value>
+  </data>
+  <data name="Profile_Image_InvalidImageFormat" xml:space="preserve">
+    <value>Selecciona una imagen PNG o JPEG válida.</value>
+  </data>
+  <data name="Profile_Image_ImageDimensionsExceeded" xml:space="preserve">
+    <value>La imagen excede 4096 píxeles por lado o 4 megapíxeles.</value>
+  </data>
+  <data name="Profile_Image_AuthenticationRequired" xml:space="preserve">
+    <value>Inicia sesión con una cuenta para cambiar tu foto.</value>
+  </data>
+  <data name="Profile_Image_ImageServiceBusy" xml:space="preserve">
+    <value>El servicio de fotos está ocupado. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Profile_Image_ImageFileUnavailable" xml:space="preserve">
+    <value>No se pudo leer la imagen seleccionada.</value>
+  </data>
+  <data name="Profile_Image_ImageStorageUnavailable" xml:space="preserve">
+    <value>No pudimos guardar tu foto en este momento. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Profile_Image_ImageConnectionUnavailable" xml:space="preserve">
+    <value>No se pudo conectar con el servicio de fotos. Puedes seguir jugando.</value>
+  </data>
+  <data name="Profile_Image_OperationFailed" xml:space="preserve">
+    <value>No pudimos procesar la foto. Inténtalo de nuevo.</value>
+  </data>
 </root>

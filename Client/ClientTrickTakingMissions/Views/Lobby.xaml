@@ -1,4 +1,4 @@
-﻿<Page x:Class="View.Views.Lobby"
+<Page x:Class="View.Views.Lobby"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,20 +13,20 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="LobbyAvatarTemplate">
             <Grid Width="50" Height="50">
-                <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                <Ellipse Fill="{StaticResource BrushTextDark}" />
                 <Ellipse Width="17" Height="17" Margin="0,8,0,0" VerticalAlignment="Top"
-                         Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                         Fill="{StaticResource BrushTextLight}" />
                 <Path Data="M 10 43 C 10 29 40 29 40 43 Q 25 53 10 43"
-                      Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                      Fill="{StaticResource BrushTextLight}" />
             </Grid>
         </DataTemplate>
     </Page.Resources>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{x:Static styles:ColorPalette.LobbyBackgroundGradientStartColor}"
+                <GradientStop Color="{StaticResource ColorLobbyBackgroundGradientStart}"
                               Offset="0.0" />
-                <GradientStop Color="{x:Static styles:ColorPalette.LobbyBackgroundGradientEndColor}"
+                <GradientStop Color="{StaticResource ColorLobbyBackgroundGradientEnd}"
                               Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
@@ -48,11 +48,11 @@
                     Width="56" Height="56"
                     HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="0,0,0,0"
-                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                     Command="{Binding BackCommand}">
                 <Canvas Width="40" Height="40">
-                    <Path Stroke="{x:Static styles:ColorPalette.PureBlackBrush}"
-                          StrokeThickness="5" Data="M 30 6 L 10 20 L 30 34" Fill="Transparent" />
+                    <Path Stroke="{StaticResource BrushTextDark}"
+                          StrokeThickness="5" Data="M 30 6 L 10 20 L 30 34" Fill="{StaticResource BrushTransparent}" />
                 </Canvas>
             </Button>
 
@@ -60,15 +60,10 @@
                     Width="56" Height="56"
                     HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="76,0,0,0"
-                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                     Command="{Binding ProfileCommand}">
-                <Grid Width="56" Height="56">
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureBlackBrush}" Width="56" Height="56" />
-                    <Ellipse Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                             Width="18" Height="18" Margin="0,10,0,0" VerticalAlignment="Top" />
-                    <Path Fill="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                          Data="M 12 46 C 12 34 20 30 28 30 C 36 30 44 34 44 46 Z" />
-                </Grid>
+                <ContentControl Content="{Binding CurrentPlayerProfileImage}" Width="50" Height="50"
+                                ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
             </Button>
 
             <Viewbox Grid.Row="0" MaxWidth="600" MaxHeight="190" HorizontalAlignment="Center"
@@ -77,13 +72,13 @@
                     <TextBlock Text="{x:Static language:Resources.Lobby_Title1}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center" />
                     <TextBlock Text="{x:Static language:Resources.Lobby_Title2}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.DisplayTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.SecondaryTitleTextBrush}"
+                               Foreground="{StaticResource BrushSecondaryTitleText}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,-28,0,0" />
@@ -101,7 +96,7 @@
                         <TextBlock Text="{x:Static language:Resources.Lobby_Missions}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                   Foreground="{StaticResource BrushGoldAccent}" />
                         <TextBlock Text="{Binding MissionsTarget}" Margin="8,0,0,0"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}" />
@@ -110,13 +105,13 @@
                         <TextBlock Text="{x:Static language:Resources.Lobby_Code}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                   Foreground="{StaticResource BrushGoldAccent}" />
                         <TextBlock Text="{Binding LobbyCode}" Margin="8,0,0,0"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}" />
                     </StackPanel>
                     <TextBlock Margin="0,6,0,0"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}">
                         <Run Text="{x:Static language:Resources.Lobby_PlayerLimit}" />
                         <Run Text="{Binding MaximumLobbyPlayerCount, Mode=OneWay}" />
@@ -131,8 +126,8 @@
                             Content="{x:Static language:Resources.Lobby_StartGameButton}"
                             Width="180" Height="44"
                             Margin="0,0,12,0"
-                            Background="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                            Background="{StaticResource BrushSuccessButtonBackground}"
+                            Foreground="{StaticResource BrushTextLight}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                             BorderThickness="0"
@@ -142,8 +137,8 @@
                     <Button x:Name="SettingsButton"
                             Content="{x:Static language:Resources.Lobby_SettingsButton}"
                             Width="230" Height="44"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                             BorderThickness="0"
@@ -153,22 +148,22 @@
             </Grid>
 
             <Border Grid.Row="2"
-                    BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                    BorderBrush="{StaticResource BrushTextDark}"
                     BorderThickness="4"
                     Margin="12,12,12,12"
                     Padding="0"
-                    Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+                    Background="{StaticResource BrushLobbyMatchSurface}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>
                     <ItemsControl x:Name="PlayersItemsControl"
                                   ItemsSource="{Binding Players}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                <Border BorderBrush="{StaticResource BrushTextDark}"
                                         BorderThickness="3"
                                         Margin="0"
                                         MinHeight="84" Padding="16,10"
-                                        Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+                                        Background="{StaticResource BrushLobbyMatchSurface}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="56" />
@@ -179,7 +174,8 @@
                                         <Grid Grid.Column="0"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center">
-                                            <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}" />
+                                            <ContentControl Content="{Binding ProfileImage}" Width="50" Height="50"
+                                                ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
                                         </Grid>
 
                                         <StackPanel Grid.Column="1"
@@ -187,12 +183,12 @@
                                                     Orientation="Horizontal"
                                                     Margin="8,0,0,0">
                                             <TextBlock Text="{Binding Username}"
-                                                       Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                                                       Foreground="{StaticResource BrushDarkText}"
                                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                        FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                                        VerticalAlignment="Center" />
                                             <Button Content="&#x22EE;" Width="28" Height="30" Margin="8,0,0,0"
-                                                    Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                                                     FontSize="20" Click="OnPlayerActionsButtonClick"
                                                     ToolTip="{x:Static language:Resources.Lobby_PlayerActions}"
                                                     Visibility="{Binding CanBeKickedByCurrentHost,
@@ -219,8 +215,8 @@
                                                     VerticalAlignment="Center">
                                             <Button x:Name="ReadyButton"
                                                     Width="96" Height="36" Margin="8,0,0,0"
-                                                    Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
-                                                    BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                    Foreground="{StaticResource BrushDarkText}"
+                                                    BorderBrush="{StaticResource BrushTextDark}"
                                                     BorderThickness="2"
                                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                     FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
@@ -233,13 +229,13 @@
                                                         <Setter Property="Content"
                                                             Value="{x:Static language:Resources.Lobby_NotReadyButton}" />
                                                         <Setter Property="Background"
-                                                            Value="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}" />
+                                                            Value="{StaticResource BrushGoldAccent}" />
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding IsReady}" Value="True">
                                                                 <Setter Property="Content"
                                                                     Value="{x:Static language:Resources.Lobby_ReadyButton}" />
                                                                 <Setter Property="Background"
-                                                                    Value="{x:Static styles:ColorPalette.SuccessButtonBackgroundBrush}" />
+                                                                    Value="{StaticResource BrushSuccessButtonBackground}" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
@@ -250,7 +246,7 @@
                                                        Margin="8,0,8,0"
                                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                        FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                                       Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                                                       Foreground="{StaticResource BrushDarkText}"
                                                        Visibility="{Binding IsOtherPlayer,
                                                            Converter={StaticResource BooleanToVisibilityConverter}}">
                                                 <TextBlock.Style>
@@ -276,9 +272,9 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border MinHeight="84" Padding="16,10"
-                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                        BorderBrush="{StaticResource BrushTextDark}"
                                         BorderThickness="3"
-                                        Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}">
+                                        Background="{StaticResource BrushLobbyMatchSurface}">
                                     <Grid>
                                         <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}"
                                                         HorizontalAlignment="Left" />
@@ -294,13 +290,13 @@
 
         <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
                     Margin="132,180,12,0">
-            <TextBlock Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+            <TextBlock Foreground="{StaticResource BrushGoldAccent}"
                        Visibility="{Binding HasLobbyHostChanged, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Run Text="{x:Static language:Resources.Lobby_HostChanged}" />
                 <Run Text="{Binding CurrentLobbyHostUsername, Mode=OneWay}" />
             </TextBlock>
             <TextBlock Text="{x:Static language:Resources.Lobby_ConnectionLost}" TextWrapping="Wrap" MaxWidth="700"
-                       Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                       Foreground="{StaticResource BrushGoldAccent}"
                        Visibility="{Binding HasLobbyConnectionFailure,
                            Converter={StaticResource BooleanToVisibilityConverter}}" />
         </StackPanel>
@@ -313,16 +309,16 @@
                       ToolTip="{x:Static language:Resources.Chat_Title}">
             <ToggleButton.Template>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Border Background="{x:Static styles:ColorPalette.PureBlackBrush}" CornerRadius="28">
+                    <Border Background="{StaticResource BrushTextDark}" CornerRadius="28">
                         <Canvas Width="34" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Path Data="M 3 2 L 31 2 L 31 23 L 20 23 L 12 29 L 12 23 L 3 23 Z"
-                                  Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}" StrokeThickness="2" />
+                                  Stroke="{StaticResource BrushTextLight}" StrokeThickness="2" />
                             <Ellipse Width="3" Height="3" Canvas.Left="9" Canvas.Top="11"
-                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                                     Fill="{StaticResource BrushTextLight}" />
                             <Ellipse Width="3" Height="3" Canvas.Left="16" Canvas.Top="11"
-                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                                     Fill="{StaticResource BrushTextLight}" />
                             <Ellipse Width="3" Height="3" Canvas.Left="23" Canvas.Top="11"
-                                     Fill="{x:Static styles:ColorPalette.PureWhiteBrush}" />
+                                     Fill="{StaticResource BrushTextLight}" />
                         </Canvas>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -340,8 +336,8 @@
         <Border x:Name="LobbyChatPanel" Grid.Column="0" Panel.ZIndex="1"
                 Width="485" Height="380" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                 Margin="0,0,0,72" Padding="34,10,34,12"
-                Background="{x:Static styles:ColorPalette.LobbyMatchSurfaceBrush}"
-                BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3"
+                Background="{StaticResource BrushLobbyMatchSurface}"
+                BorderBrush="{StaticResource BrushTextDark}" BorderThickness="3"
                 Visibility="{Binding IsChecked, ElementName=LobbyChatToggleButton,
                     Converter={StaticResource BooleanToVisibilityConverter}}"
                 DataContext="{Binding Chat}">
@@ -353,12 +349,12 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Text="{x:Static language:Resources.Chat_Title}" Margin="0,0,0,8"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                            FontSize="{x:Static styles:FontTypography.ProfileTitleFontSize}" />
                 <ListBox Grid.Row="1" ItemsSource="{Binding ChatMessages}" Padding="10"
-                         Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                         BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3"
+                         Background="{StaticResource BrushTextLight}"
+                         BorderBrush="{StaticResource BrushTextDark}" BorderThickness="3"
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                          HorizontalContentAlignment="Stretch"
                          FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
@@ -379,14 +375,15 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            <Border BorderBrush="{StaticResource BrushTextDark}"
                                     BorderThickness="3" Padding="12,6">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="56" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
-                                    <ContentControl ContentTemplate="{StaticResource LobbyAvatarTemplate}"
+                                    <ContentControl Content="{Binding ProfileImage}" Width="50" Height="50"
+                                                    ContentTemplate="{StaticResource ProfileAvatarTemplate}"
                                                     VerticalAlignment="Center" />
                                     <StackPanel Grid.Column="1" Margin="12,0,0,0">
                                         <TextBlock Text="{Binding SenderUsername}" TextTrimming="CharacterEllipsis" />
@@ -398,10 +395,10 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <TextBlock Grid.Row="2" TextWrapping="Wrap" Margin="0,4"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            Text="{Binding ChatSubmissionFeedbackText}" />
-                <Border Grid.Row="3" Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}" BorderThickness="3">
+                <Border Grid.Row="3" Background="{StaticResource BrushTextLight}"
+                        BorderBrush="{StaticResource BrushTextDark}" BorderThickness="3">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -433,12 +430,12 @@
                             </TextBlock.Style>
                         </TextBlock>
                         <Button Grid.Column="1" Command="{Binding SendChatMessageCommand}"
-                                Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
                                 AutomationProperties.Name="{x:Static language:Resources.Chat_Send}"
                                 ToolTip="{x:Static language:Resources.Chat_Send}">
                             <Path Width="28" Height="28" Stretch="Uniform"
                                   Data="M 2 2 L 30 16 L 2 30 L 7 16 Z M 7 16 L 30 16"
-                                  Stroke="{x:Static styles:ColorPalette.PureBlackBrush}" StrokeThickness="1.5" />
+                                  Stroke="{StaticResource BrushTextDark}" StrokeThickness="1.5" />
                         </Button>
                     </Grid>
                 </Border>
