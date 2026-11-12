@@ -523,4 +523,81 @@
   <data name="Lobby_StartGameButton" xml:space="preserve"><value>Start match</value></data>
   <data name="GameMatch_Mission" xml:space="preserve"><value>Mission</value></data>
   <data name="GameMatch_Trick" xml:space="preserve"><value>Trick</value></data>
+  <data name="Profile_Title" xml:space="preserve">
+    <value>MY PROFILE</value>
+  </data>
+  <data name="Profile_ChangePhoto" xml:space="preserve">
+    <value>Change photo</value>
+  </data>
+  <data name="Profile_EditBiography" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Profile_EmptyBiography" xml:space="preserve">
+    <value>You have not added a biography yet.</value>
+  </data>
+  <data name="Profile_EditingPending" xml:space="preserve">
+    <value>Profile editing will be available in a later stage.</value>
+  </data>
+  <data name="Profile_SelectImage" xml:space="preserve">
+    <value>Select profile photo</value>
+  </data>
+  <data name="Profile_ImageFileFilter" xml:space="preserve">
+    <value>PNG or JPEG images|*.png;*.jpg;*.jpeg</value>
+  </data>
+  <data name="Profile_Image_Uploading" xml:space="preserve">
+    <value>Uploading profile photo…</value>
+  </data>
+  <data name="Profile_Image_UploadSucceeded" xml:space="preserve">
+    <value>Your profile photo was updated.</value>
+  </data>
+  <data name="Profile_Image_ImageSizeExceeded" xml:space="preserve">
+    <value>Select an image up to 2 MB.</value>
+  </data>
+  <data name="Profile_Image_InvalidImageFormat" xml:space="preserve">
+    <value>Select a valid PNG or JPEG image.</value>
+  </data>
+  <data name="Profile_Image_ImageDimensionsExceeded" xml:space="preserve">
+    <value>The image exceeds 4096 pixels per side or 4 megapixels.</value>
+  </data>
+  <data name="Profile_Image_AuthenticationRequired" xml:space="preserve">
+    <value>Sign in with an account to change your photo.</value>
+  </data>
+  <data name="Profile_Image_ImageServiceBusy" xml:space="preserve">
+    <value>The photo service is busy. Please try again.</value>
+  </data>
+  <data name="Profile_Image_ImageFileUnavailable" xml:space="preserve">
+    <value>The selected image could not be read.</value>
+  </data>
+  <data name="Profile_Image_ImageStorageUnavailable" xml:space="preserve">
+    <value>We could not save your photo right now. Please try again.</value>
+  </data>
+  <data name="Profile_Image_ImageConnectionUnavailable" xml:space="preserve">
+    <value>Could not connect to the photo service. You can keep playing.</value>
+  </data>
+  <data name="Profile_Image_OperationFailed" xml:space="preserve">
+    <value>We could not process the photo. Please try again.</value>
+  </data>
+  <data name="Match_Connecting" xml:space="preserve"><value>Connecting to the match…</value></data>
+  <data name="Match_YourTurn" xml:space="preserve"><value>Your turn. Select a card.</value></data>
+  <data name="Match_WaitingTurn" xml:space="preserve"><value>Waiting for another player.</value></data>
+  <data name="Match_Confirming" xml:space="preserve"><value>Confirming your play…</value></data>
+  <data name="Match_ConnectionLost" xml:space="preserve"><value>Disconnected. Your pending play will be checked when reconnected.</value></data>
+  <data name="Match_AccessUnavailable" xml:space="preserve"><value>Match access is unavailable. Check your session and server connection.</value></data>
+  <data name="Match_DealCompleted" xml:space="preserve"><value>Deal completed. No more tricks in this attempt.</value></data>
+  <data name="Match_MatchUnavailable" xml:space="preserve"><value>The match is no longer available.</value></data>
+  <data name="Match_ParticipantNotAllowed" xml:space="preserve"><value>You cannot access this match.</value></data>
+  <data name="Match_InvalidSubmission" xml:space="preserve"><value>The play request is invalid.</value></data>
+  <data name="Match_SubmissionIdentityReused" xml:space="preserve"><value>The play identifier does not match the original request.</value></data>
+  <data name="Match_StaleMatchState" xml:space="preserve"><value>The table changed. Your hand was refreshed; select again.</value></data>
+  <data name="Match_NotPlayerTurn" xml:space="preserve"><value>It is not your turn yet.</value></data>
+  <data name="Match_CardNotInHand" xml:space="preserve"><value>That card is not in your current hand.</value></data>
+  <data name="Match_MustFollowLeadSuit" xml:space="preserve"><value>Follow the lead suit if you hold a card of that suit.</value></data>
+  <data name="Match_SubmissionCapacityReached" xml:space="preserve"><value>No more requests can be processed in this match.</value></data>
+  <data name="Match_Retry" xml:space="preserve"><value>Check pending play</value></data>
+  <data name="Match_CurrentTrick" xml:space="preserve"><value>Current trick</value></data>
+  <data name="Match_LastTrick" xml:space="preserve"><value>Last completed trick</value></data>
+  <data name="Match_OwnHand" xml:space="preserve"><value>Your hand</value></data>
+  <data name="Match_TurnPlayer" xml:space="preserve"><value>Turn:</value></data>
+  <data name="Match_TrickWinner" xml:space="preserve"><value>Last trick winner:</value></data>
+  <data name="Match_StartFailed" xml:space="preserve"><value>The match could not start. Please try again.</value></data>
 </root>

@@ -523,4 +523,81 @@
   <data name="Lobby_StartGameButton" xml:space="preserve"><value>Iniciar partida</value></data>
   <data name="GameMatch_Mission" xml:space="preserve"><value>Misión</value></data>
   <data name="GameMatch_Trick" xml:space="preserve"><value>Baza</value></data>
+  <data name="Profile_Title" xml:space="preserve">
+    <value>MI PERFIL</value>
+  </data>
+  <data name="Profile_ChangePhoto" xml:space="preserve">
+    <value>Cambiar foto</value>
+  </data>
+  <data name="Profile_EditBiography" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Profile_EmptyBiography" xml:space="preserve">
+    <value>Aún no has agregado una biografía.</value>
+  </data>
+  <data name="Profile_EditingPending" xml:space="preserve">
+    <value>La edición del perfil estará disponible en una próxima etapa.</value>
+  </data>
+  <data name="Profile_SelectImage" xml:space="preserve">
+    <value>Seleccionar foto de perfil</value>
+  </data>
+  <data name="Profile_ImageFileFilter" xml:space="preserve">
+    <value>Imágenes PNG o JPEG|*.png;*.jpg;*.jpeg</value>
+  </data>
+  <data name="Profile_Image_Uploading" xml:space="preserve">
+    <value>Subiendo foto de perfil…</value>
+  </data>
+  <data name="Profile_Image_UploadSucceeded" xml:space="preserve">
+    <value>Tu foto de perfil se actualizó.</value>
+  </data>
+  <data name="Profile_Image_ImageSizeExceeded" xml:space="preserve">
+    <value>Selecciona una imagen de hasta 2 MB.</value>
+  </data>
+  <data name="Profile_Image_InvalidImageFormat" xml:space="preserve">
+    <value>Selecciona una imagen PNG o JPEG válida.</value>
+  </data>
+  <data name="Profile_Image_ImageDimensionsExceeded" xml:space="preserve">
+    <value>La imagen excede 4096 píxeles por lado o 4 megapíxeles.</value>
+  </data>
+  <data name="Profile_Image_AuthenticationRequired" xml:space="preserve">
+    <value>Inicia sesión con una cuenta para cambiar tu foto.</value>
+  </data>
+  <data name="Profile_Image_ImageServiceBusy" xml:space="preserve">
+    <value>El servicio de fotos está ocupado. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Profile_Image_ImageFileUnavailable" xml:space="preserve">
+    <value>No se pudo leer la imagen seleccionada.</value>
+  </data>
+  <data name="Profile_Image_ImageStorageUnavailable" xml:space="preserve">
+    <value>No pudimos guardar tu foto en este momento. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Profile_Image_ImageConnectionUnavailable" xml:space="preserve">
+    <value>No se pudo conectar con el servicio de fotos. Puedes seguir jugando.</value>
+  </data>
+  <data name="Profile_Image_OperationFailed" xml:space="preserve">
+    <value>No pudimos procesar la foto. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Match_Connecting" xml:space="preserve"><value>Conectando con la partida…</value></data>
+  <data name="Match_YourTurn" xml:space="preserve"><value>Es tu turno. Selecciona una carta.</value></data>
+  <data name="Match_WaitingTurn" xml:space="preserve"><value>Esperando el turno de otro jugador.</value></data>
+  <data name="Match_Confirming" xml:space="preserve"><value>Confirmando tu jugada…</value></data>
+  <data name="Match_ConnectionLost" xml:space="preserve"><value>Sin conexión. Tu jugada pendiente se confirmará al reconectar.</value></data>
+  <data name="Match_AccessUnavailable" xml:space="preserve"><value>No se pudo acceder a la partida. Revisa tu sesión y la conexión del servidor.</value></data>
+  <data name="Match_DealCompleted" xml:space="preserve"><value>Reparto finalizado. No hay más bazas en este intento.</value></data>
+  <data name="Match_MatchUnavailable" xml:space="preserve"><value>La partida ya no está disponible.</value></data>
+  <data name="Match_ParticipantNotAllowed" xml:space="preserve"><value>No tienes acceso a esta partida.</value></data>
+  <data name="Match_InvalidSubmission" xml:space="preserve"><value>La solicitud de jugada no es válida.</value></data>
+  <data name="Match_SubmissionIdentityReused" xml:space="preserve"><value>El identificador de la jugada no coincide con la solicitud original.</value></data>
+  <data name="Match_StaleMatchState" xml:space="preserve"><value>La mesa cambió. Se actualizó tu mano; selecciona de nuevo.</value></data>
+  <data name="Match_NotPlayerTurn" xml:space="preserve"><value>Todavía no es tu turno.</value></data>
+  <data name="Match_CardNotInHand" xml:space="preserve"><value>Esa carta no está en tu mano actual.</value></data>
+  <data name="Match_MustFollowLeadSuit" xml:space="preserve"><value>Debes seguir el palo de salida si tienes una carta de ese palo.</value></data>
+  <data name="Match_SubmissionCapacityReached" xml:space="preserve"><value>No se pueden procesar más solicitudes en esta partida.</value></data>
+  <data name="Match_Retry" xml:space="preserve"><value>Confirmar jugada pendiente</value></data>
+  <data name="Match_CurrentTrick" xml:space="preserve"><value>Baza actual</value></data>
+  <data name="Match_LastTrick" xml:space="preserve"><value>Última baza completada</value></data>
+  <data name="Match_OwnHand" xml:space="preserve"><value>Tu mano</value></data>
+  <data name="Match_TurnPlayer" xml:space="preserve"><value>Turno:</value></data>
+  <data name="Match_TrickWinner" xml:space="preserve"><value>Ganador de la última baza:</value></data>
+  <data name="Match_StartFailed" xml:space="preserve"><value>No se pudo iniciar la partida. Inténtalo nuevamente.</value></data>
 </root>

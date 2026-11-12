@@ -9,7 +9,7 @@
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="LoginPage">
 
-    <Grid Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+    <Grid Background="{StaticResource BrushTextDark}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.45*" />
             <ColumnDefinition Width="0.55*" />
@@ -18,11 +18,11 @@
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStartColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStart}"
                                   Offset="0" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStepColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStep}"
                                   Offset="0.5" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientEndColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientEnd}"
                                   Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
@@ -31,7 +31,7 @@
                             Margin="40,0,0,120" Width="500">
                     <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
                         <TextBlock x:Name="TitleTextBlock" Text="{x:Static language:Resources.Login_Title}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontWeight="Bold"
                                    FontSize="{x:Static styles:FontTypography.DisplayTitleFontSize}"
@@ -42,7 +42,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+        <Grid Grid.Column="1" Background="{StaticResource BrushTextDark}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -58,13 +58,13 @@
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
                 <TextBlock x:Name="LoginTitleTextBlock"
                            Text="{x:Static language:Resources.Login_LoginTitle}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                            FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
                            FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,18" />
 
                 <TextBlock Text="{x:Static language:Resources.Login_Email}"
-                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                           Foreground="{StaticResource BrushTextLight}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                            Margin="6,0,0,6" />
@@ -75,7 +75,7 @@
                          Padding="12" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Login_Password}"
-                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                           Foreground="{StaticResource BrushTextLight}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                            Margin="6,0,0,6" />
@@ -87,21 +87,21 @@
 
                 <Button x:Name="ForgotPasswordButton"
                         Content="{x:Static language:Resources.Login_ForgotPassword}"
-                        Height="32" Width="220" Background="Transparent"
-                        Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                        Height="32" Width="220" Background="{StaticResource BrushTransparent}"
+                        Foreground="{StaticResource BrushGoldAccent}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
                         BorderThickness="0" HorizontalAlignment="Left" Margin="0,0,0,12"
                         Command="{Binding ForgotPasswordCommand}" />
 
                 <TextBlock Text="{Binding AccountBanFeedbackText}" TextWrapping="Wrap" Margin="0,0,0,12"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}" />
 
                 <Button x:Name="LoginButton" Content="{x:Static language:Resources.Login_Enter}"
                         Height="64" Width="220"
-                        Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        Background="{StaticResource BrushSubmitButtonBackground}"
+                        Foreground="{StaticResource BrushTextDark}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                         FontWeight="Bold"

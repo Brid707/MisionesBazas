@@ -1,0 +1,134 @@
+using System;
+using System.Data.SqlClient;
+using System.IO;
+using System.Linq;
+using System.ServiceModel;
+using Application.Models;
+using Application.Ports;
+using Application.Ports.Logger;
+using Application.UseCases;
+using ProfileImages;
+using Services.Contracts;
+using Services.DataContracts;
+using Services.Security;
+
+namespace Services.Services
+{
+    /// <summary>
+    /// Adapts authenticated profile image use cases to isolated typed WCF operations.
+    /// </summary>
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple,
+        IncludeExceptionDetailInFaults = false)]
+    public sealed class ProfileImageService : IProfileImageService
+    {
+        private readonly ProfileImageUseCase _profileImageUseCase;
+        private readonly IAccountAccessPolicy _accountAccessPolicy;
+        private readonly ILoggerService _logger;
+        private readonly ProfileImageSubscriptions _subscriptions;
+
+        public ProfileImageService(ProfileImageUseCase profileImageUseCase,
+            IAccountAccessPolicy accountAccessPolicy, ILoggerService logger)
+        {
+            _profileImageUseCase = profileImageUseCase;
+            _accountAccessPolicy = accountAccessPolicy;
+            _logger = logger;
+            _subscriptions = new ProfileImageSubscriptions(logger);
+        }
+
+        public PlayerProfileImageReference ChangeOwnProfileImage(ProfileImageUpload profileImageUpload)
+        {
+            return ExecuteImageOperation(() => ChangeAuthenticatedProfileImage(profileImageUpload));
+        }
+
+        private PlayerProfileImageReference ChangeAuthenticatedProfileImage(ProfileImageUpload upload)
+        {
+            int accountUserId = _accountAccessPolicy.ResolveAllowedAccountUserId(
+                AccountSessionHeader.ReadCurrentAccountSessionToken());
+            PlayerProfileImageData changedImage = _profileImageUseCase.ChangeOwnProfileImage(
+                accountUserId, upload?.SelectedProfileImageBytes);
+            _logger.Information("Profile image updated for account {AccountId}.", accountUserId);
+            _subscriptions.Publish(accountUserId);
+            return MapProfileImage(changedImage);
+        }
+
+        public PlayerProfileImageReference[] GetPlayerProfileImages(int[] profileOwnerUserIds)
+        {
+            return ExecuteImageOperation(() => _profileImageUseCase.GetPlayerProfileImages(profileOwnerUserIds)
+                .Select(MapProfileImage).ToArray());
+        }
+
+        public ProfileImageContent GetProfileImage(Guid profileImageId)
+        {
+            return ExecuteImageOperation(() => new ProfileImageContent
+            {
+                ProfileImageId = profileImageId,
+                NormalizedProfileImageBytes = _profileImageUseCase.GetProfileImage(profileImageId)
+            });
+        }
+
+        public void SubscribeProfileImageChanges(int[] profileOwnerUserIds)
+        {
+            ExecuteImageOperation(() => IsImageSubscriptionRegistered(profileOwnerUserIds));
+        }
+
+        private bool IsImageSubscriptionRegistered(int[] profileOwnerUserIds)
+        {
+            _subscriptions.Subscribe(profileOwnerUserIds);
+            return true;
+        }
+
+        private T ExecuteImageOperation<T>(Func<T> imageOperation)
+        {
+            T result;
+            try
+            {
+                result = imageOperation();
+            }
+            catch (ProfileImageException ex)
+            {
+                _logger.Warning("Profile image operation rejected: {FailureCode}.", ex.FailureCode);
+                if (ex.InnerException != null)
+                {
+                    _logger.Error(ex, "Profile image validation preserved an underlying infrastructure failure.");
+                }
+                throw CreateImageFault(ex.FailureCode);
+            }
+            catch (SqlException ex)
+            {
+                _logger.Error(ex, "Profile image account authorization storage is unavailable.");
+                throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
+            }
+            catch (IOException ex)
+            {
+                _logger.Error(ex, "Profile image storage is unavailable.");
+                throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                _logger.Error(ex, "Profile image storage permission was denied.");
+                throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.Error(ex, "Profile image metadata is unavailable.");
+                throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
+            }
+            return result;
+        }
+
+        private static PlayerProfileImageReference MapProfileImage(PlayerProfileImageData image)
+        {
+            return new PlayerProfileImageReference
+            {
+                ProfileOwnerUserId = image.ProfileOwnerUserId,
+                ProfileImageId = image.ProfileImageId
+            };
+        }
+
+        private static FaultException<ProfileImageFault> CreateImageFault(string failureCode)
+        {
+            return new FaultException<ProfileImageFault>(new ProfileImageFault { FailureCode = failureCode },
+                new FaultReason("The profile image operation could not be completed."));
+        }
+    }
+}

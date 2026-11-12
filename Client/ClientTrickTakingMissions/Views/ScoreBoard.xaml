@@ -7,7 +7,7 @@
         xmlns:styles="clr-namespace:View.Styles"
         mc:Ignorable="d"
         Title="ScoreBoard" Height="380" Width="780"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStyle="None" AllowsTransparency="True" Background="{StaticResource BrushTransparent}"
         WindowStartupLocation="CenterOwner">
 
     <Window.Resources>
@@ -22,28 +22,28 @@
 
         <Style x:Key="HeaderStyle" TargetType="DataGridColumnHeader">
             <Setter Property="Background"
-                    Value="{x:Static styles:ColorPalette.LobbyContainerBackgroundBrush}" />
+                    Value="{StaticResource BrushLobbyContainerBackground}" />
             <Setter Property="Foreground"
-                    Value="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                    Value="{StaticResource BrushTextDark}" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="Padding" Value="6" />
             <Setter Property="BorderBrush"
-                    Value="{x:Static styles:ColorPalette.PureBlackBrush}" />
+                    Value="{StaticResource BrushTextDark}" />
             <Setter Property="BorderThickness" Value="0,0,0,2" />
             <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
             <Setter Property="FontSize" Value="{x:Static styles:FontTypography.FormLabelFontSize}" />
         </Style>
     </Window.Resources>
 
-    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-            BorderThickness="3" CornerRadius="4" Background="Transparent" Padding="8">
+    <Border BorderBrush="{StaticResource BrushTextDark}"
+            BorderThickness="3" CornerRadius="4" Background="{StaticResource BrushTransparent}" Padding="8">
         <Grid>
             <Grid.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="{x:Static styles:ColorPalette.ModalAccentGradientStartColor}"
+                    <GradientStop Color="{StaticResource ColorModalAccentGradientStart}"
                                   Offset="0" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.ModalAccentGradientEndColor}"
+                    <GradientStop Color="{StaticResource ColorModalAccentGradientEnd}"
                                   Offset="1" />
                 </LinearGradientBrush>
             </Grid.Background>
@@ -65,20 +65,20 @@
                                Text="{x:Static language:Resources.ScoreBoard_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                HorizontalAlignment="Center" TextAlignment="Center"
                                TextWrapping="Wrap" MaxWidth="620" />
 
                     <Button Grid.Column="2" x:Name="CloseButton" Width="44" Height="44"
                             HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
-                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            Background="{StaticResource BrushBurgundyDark}"
+                            BorderBrush="{StaticResource BrushTextDark}"
                             BorderThickness="2"
                             Command="{Binding CloseCommand}">
                         <TextBlock Text="✕"
                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                                   Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                   Foreground="{StaticResource BrushTextDark}"
                                    FontWeight="Bold" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
                     </Button>
@@ -97,13 +97,13 @@
                               RowHeight="60"
                               Height="340"
                               GridLinesVisibility="All"
-                              BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              BorderBrush="{StaticResource BrushTextDark}"
                               BorderThickness="2"
                               ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                              HorizontalGridLinesBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                              VerticalGridLinesBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                              Background="{x:Static styles:ColorPalette.InputFieldBorderBrush}"
-                              Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                              HorizontalGridLinesBrush="{StaticResource BrushTextDark}"
+                              VerticalGridLinesBrush="{StaticResource BrushTextDark}"
+                              Background="{StaticResource BrushInputFieldBorder}"
+                              Foreground="{StaticResource BrushTextDark}"
                               ColumnHeaderStyle="{StaticResource HeaderStyle}">
 
                         <DataGrid.Columns>
@@ -117,13 +117,13 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
                                             <Ellipse Width="44" Height="44"
-                                                     Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                     Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                     Fill="{StaticResource BrushTextDark}"
+                                                     Stroke="{StaticResource BrushTextLight}"
                                                      StrokeThickness="6" />
                                             <TextBlock Text="{Binding Username}" VerticalAlignment="Center"
                                                        Margin="8,0"
                                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                                       Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                       Foreground="{StaticResource BrushTextDark}"
                                                        FontSize="{x:Static styles:FontTypography.FormLabelFontSize}" />
                                         </StackPanel>
                                     </DataTemplate>

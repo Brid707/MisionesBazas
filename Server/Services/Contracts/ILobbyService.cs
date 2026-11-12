@@ -1,4 +1,4 @@
-﻿using System.ServiceModel;
+using System.ServiceModel;
 
 using Services.DataContracts;
 
@@ -8,7 +8,7 @@ namespace Services.Contracts
     /// Service contract defining operations for lobby management, player coordination, and match launching.
     /// </summary>
     [ServiceContract(CallbackContract = typeof(ILobbyCallback))]
-    public interface ILobbyService
+    public interface ILobbyService : Gameplay.IMatchService
     {
         /// <summary>Changes waiting-room configuration and returns the server-confirmed room or rejection.</summary>
         /// <param name="lobbyCode">The existing room invitation code.</param>
@@ -81,7 +81,7 @@ namespace Services.Contracts
         /// </summary>
         /// <param name="lobbyCode">The room invitation code.</param>
         /// <param name="hostUserId">The unique identifier of the host initiating the match.</param>
-        [OperationContract(IsOneWay = true)]
+        [OperationContract]
         void StartGameFromLobby(string lobbyCode, int hostUserId);
     }
 }

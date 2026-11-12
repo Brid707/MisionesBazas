@@ -9,7 +9,7 @@
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="HomeScreen">
 
-    <Grid Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+    <Grid Background="{StaticResource BrushTextDark}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.45*" />
             <ColumnDefinition Width="0.55*" />
@@ -18,11 +18,11 @@
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStartColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStart}"
                                   Offset="0" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStepColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStep}"
                                   Offset="0.5" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientEndColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientEnd}"
                                   Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
@@ -32,7 +32,7 @@
                     <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
                         <TextBlock x:Name="GameTitleTextBlock"
                                    Text="{x:Static language:Resources.HomeScreen_Title}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontWeight="Bold"
                                    FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
@@ -44,8 +44,8 @@
 
                     <Button x:Name="LanguageButton" Width="260" Height="56"
                             Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             FontWeight="SemiBold" BorderThickness="0"
@@ -55,28 +55,28 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+        <Grid Grid.Column="1" Background="{StaticResource BrushTextDark}">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
                 <Button x:Name="SignUpButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
-                        Background="{x:Static styles:ColorPalette.SecondaryButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        Background="{StaticResource BrushSecondaryButtonBackground}"
+                        Foreground="{StaticResource BrushDarkText}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
                         Command="{Binding SignUpCommand}" />
                 <Button x:Name="LoginButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_LoginButton}"
-                        Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        Background="{StaticResource BrushDeleteButtonBackground}"
+                        Foreground="{StaticResource BrushDarkText}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
                         Command="{Binding LoginCommand}" />
                 <Button x:Name="GuestButton" Width="420" Height="84"
                         Content="{x:Static language:Resources.HomeScreen_GuestButton}"
-                        Background="{x:Static styles:ColorPalette.DeleteButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.DarkTextBrush}"
+                        Background="{StaticResource BrushDeleteButtonBackground}"
+                        Foreground="{StaticResource BrushDarkText}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                         FontWeight="SemiBold" BorderThickness="0"

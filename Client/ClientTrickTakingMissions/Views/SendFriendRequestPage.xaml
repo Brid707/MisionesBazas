@@ -12,20 +12,20 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStartColor}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStart}"
                               Offset="0.0" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep1Color}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep1}"
                               Offset="0.3" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientStep2Color}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep2}"
                               Offset="0.8" />
-                <GradientStop Color="{x:Static styles:ColorPalette.WindowBackgroundGradientEndColor}"
+                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientEnd}"
                               Offset="1.0" />
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+        <Border BorderBrush="{StaticResource BrushTextDark}"
                 BorderThickness="3" Margin="12"
-                Background="{x:Static styles:ColorPalette.LobbyContainerBackgroundBrush}">
+                Background="{StaticResource BrushLobbyContainerBackground}">
             <Grid Margin="16">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -41,13 +41,13 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Width="44" Height="44" Background="Transparent" />
+                    <Border Grid.Column="0" Width="44" Height="44" Background="{StaticResource BrushTransparent}" />
 
                     <TextBlock Grid.Column="1"
                                Text="{x:Static language:Resources.SendFriendRequest_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                TextWrapping="Wrap"
@@ -56,8 +56,8 @@
 
                     <Button x:Name="CloseButton" Grid.Column="2" Width="44" Height="44"
                             HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Background="Transparent"
-                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            Background="{StaticResource BrushTransparent}"
+                            BorderBrush="{StaticResource BrushTextDark}"
                             BorderThickness="3" Cursor="Hand" Command="{Binding BackCommand}">
                         <TextBlock Text="✕"
                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
@@ -71,23 +71,23 @@
                     <TextBlock Text="{x:Static language:Resources.SendFriendRequest_Information}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                               Foreground="{StaticResource BrushTextDark}"
                                Margin="6,6,6,12" />
 
                     <TextBox x:Name="UsernameTextBox" Height="40"
-                             Background="{x:Static styles:ColorPalette.PureWhiteBrush}"
-                             Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                             Background="{StaticResource BrushTextLight}"
+                             Foreground="{StaticResource BrushTextDark}"
                              FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                              FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
-                             BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                             BorderBrush="{StaticResource BrushTextDark}"
                              BorderThickness="3" Padding="8"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Button x:Name="SendButton"
                             Content="{x:Static language:Resources.SendFriendRequest_SendButton}"
                             Width="120" Height="36" HorizontalAlignment="Right" Margin="0,12,0,0"
-                            Background="{x:Static styles:ColorPalette.PrimaryButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            Background="{StaticResource BrushGoldAccent}"
+                            Foreground="{StaticResource BrushTextDark}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                             BorderThickness="0"
@@ -95,7 +95,7 @@
                 </StackPanel>
 
                 <Border Grid.Row="2"
-                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        BorderBrush="{StaticResource BrushTextDark}"
                         BorderThickness="0,3,0,0" Margin="0,6,0,6" />
 
                 <Grid Grid.Row="3" Margin="4,12,4,4">
@@ -108,7 +108,7 @@
                                Text="{x:Static language:Resources.SendFriendRequest_RequestsSent}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                               Foreground="{StaticResource BrushTextDark}"
                                Margin="4,0,4,8" />
 
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
@@ -116,9 +116,9 @@
                                       ItemsSource="{Binding SentRequests}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                    <Border BorderBrush="{StaticResource BrushTextDark}"
                                             BorderThickness="3"
-                                            Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}"
+                                            Background="{StaticResource BrushBurgundySurface}"
                                             Padding="8" Margin="0,6,0,6">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
@@ -130,15 +130,15 @@
                                             <Grid Grid.Column="0" HorizontalAlignment="Center"
                                                   VerticalAlignment="Center">
                                                 <Ellipse Width="44" Height="44"
-                                                         Fill="{x:Static styles:ColorPalette.PureBlackBrush}"
-                                                         Stroke="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                                         Fill="{StaticResource BrushTextDark}"
+                                                         Stroke="{StaticResource BrushTextLight}"
                                                          StrokeThickness="2" />
                                             </Grid>
 
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding ReceiverUsername}"
                                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                                                           Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                           Foreground="{StaticResource BrushTextDark}"
                                                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                                            VerticalAlignment="Center" />
                                             </StackPanel>
@@ -146,8 +146,8 @@
                                             <StackPanel Grid.Column="2" HorizontalAlignment="Center"
                                                         VerticalAlignment="Center">
                                                 <Button Content="{x:Static language:Resources.Common_Button_Close}"
-                                                        Width="36" Height="36" Background="Transparent"
-                                                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                                                        Width="36" Height="36" Background="{StaticResource BrushTransparent}"
+                                                        BorderBrush="{StaticResource BrushTextDark}"
                                                         BorderThickness="3"
                                                         Cursor="Hand"
                                                         Command="{Binding DataContext.CancelSentRequestCommand,

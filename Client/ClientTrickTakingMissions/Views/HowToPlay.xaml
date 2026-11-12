@@ -9,11 +9,11 @@
         mc:Ignorable="d"
         Title="{x:Static language:Resources.HowToPlay_Title}" Height="580" Width="720"
         WindowStyle="None" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
-        Background="{x:Static styles:ColorPalette.SidebarBackgroundBrush}">
+        Background="{StaticResource BrushBurgundySurface}">
     <Grid>
         <Border x:Name="MainBorder" BorderThickness="3"
-                BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
-                Padding="12" Background="Transparent">
+                BorderBrush="{StaticResource BrushTextDark}"
+                Padding="12" Background="{StaticResource BrushTransparent}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -30,25 +30,25 @@
                     <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center" />
 
                     <Button x:Name="CloseButton" Grid.Column="2"
                             Content="{x:Static language:Resources.Common_Button_Close}"
                             Width="40" Height="40" HorizontalAlignment="Right" VerticalAlignment="Top"
-                            Background="{x:Static styles:ColorPalette.DarkButtonBackgroundBrush}"
-                            Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            Background="{StaticResource BrushBurgundyDark}"
+                            Foreground="{StaticResource BrushTextDark}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontWeight="Bold"
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             BorderThickness="2"
-                            BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                            BorderBrush="{StaticResource BrushTextDark}"
                             Command="{Binding CloseCommand}" />
                 </Grid>
 
                 <Border Grid.Row="1"
-                        Background="{x:Static styles:ColorPalette.DialogContainerBackgroundBrush}"
-                        BorderBrush="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        Background="{StaticResource BrushDialogContainerBackground}"
+                        BorderBrush="{StaticResource BrushTextDark}"
                         BorderThickness="2" CornerRadius="6" Padding="14,10,10,10">
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                         <StackPanel Margin="0,0,10,0">
@@ -60,11 +60,11 @@
                                 <TextBlock Grid.Column="0" Text="a." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleA}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -76,11 +76,11 @@
                                 <TextBlock Grid.Column="0" Text="b." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleB}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -92,11 +92,11 @@
                                 <TextBlock Grid.Column="0" Text="c." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleC}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -108,11 +108,11 @@
                                 <TextBlock Grid.Column="0" Text="d." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleD}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -124,12 +124,12 @@
                                 <TextBlock Grid.Column="0" Text="i." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleD_Sub1}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
+                                           Foreground="{StaticResource BrushLightBodyText}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -141,11 +141,11 @@
                                 <TextBlock Grid.Column="0" Text="e." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleE}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -157,11 +157,11 @@
                                 <TextBlock Grid.Column="0" Text="f." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleF}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -173,11 +173,11 @@
                                 <TextBlock Grid.Column="0" Text="g." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1" Text="{x:Static language:Resources.HowToPlay_RuleG}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.BodyFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.PureWhiteBrush}"
+                                           Foreground="{StaticResource BrushTextLight}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -189,12 +189,12 @@
                                 <TextBlock Grid.Column="0" Text="i." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub1}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
+                                           Foreground="{StaticResource BrushLightBodyText}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -206,12 +206,12 @@
                                 <TextBlock Grid.Column="0" Text="ii." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub2}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
+                                           Foreground="{StaticResource BrushLightBodyText}"
                                            TextWrapping="Wrap" />
                             </Grid>
 
@@ -223,12 +223,12 @@
                                 <TextBlock Grid.Column="0" Text="iii." FontWeight="Bold"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}" />
+                                           Foreground="{StaticResource BrushGoldAccent}" />
                                 <TextBlock Grid.Column="1"
                                            Text="{x:Static language:Resources.HowToPlay_RuleG_Sub3}"
                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                            FontSize="{x:Static styles:FontTypography.CaptionFontSize}"
-                                           Foreground="{x:Static styles:ColorPalette.LightBodyTextBrush}"
+                                           Foreground="{StaticResource BrushLightBodyText}"
                                            TextWrapping="Wrap" />
                             </Grid>
                         </StackPanel>

@@ -1,7 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Model.Services;
 using Model.Session;
 using ViewModel.Base;
+using ViewModel.Constants;
+using ViewModel.Models;
 using ViewModel.Services;
 
 namespace ViewModel.ViewModels
@@ -12,6 +16,11 @@ namespace ViewModel.ViewModels
     public sealed class ProfileViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
+        private readonly IProfileImagePicker _profileImagePicker;
+        private readonly IProfileImageCache _profileImageCache;
+        private bool _isProfileImageUploading;
+        private ProfileImageFeedback _profileImageFeedbackCode;
+        private ProfileImageViewModel _profileImage;
 
         private string _username;
         private string _email;
@@ -23,13 +32,22 @@ namespace ViewModel.ViewModels
         /// Initializes a new instance of the <see cref="ProfileViewModel"/> class.
         /// </summary>
         /// <param name="navigationService">Service for managing view navigation.</param>
-        public ProfileViewModel(INavigationService navigationService)
+        /// <param name="profileImagePicker">Selects the local file through a presentation adapter.</param>
+        /// <param name="profileImageCache">Shares image versions with other player views.</param>
+        public ProfileViewModel(INavigationService navigationService, IProfileImagePicker profileImagePicker,
+            IProfileImageCache profileImageCache)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
+            _profileImagePicker = profileImagePicker ?? throw new ArgumentNullException(nameof(profileImagePicker));
+            _profileImageCache = profileImageCache ?? throw new ArgumentNullException(nameof(profileImageCache));
+            ChangeProfilePhotoCommand = new AsyncRelayCommand(ChangeProfilePhotoAsync, CanChangeProfilePhoto);
             LoadCurrentProfile();
 
             CloseCommand = new RelayCommand(ExecuteClose);
+
+            // Editing remains unavailable until the profile update workflow is implemented.
+            PendingProfileEditingCommand = new RelayCommand(() => { }, () => false);
         }
 
         /// <summary>
@@ -81,6 +99,87 @@ namespace ViewModel.ViewModels
         /// Gets the command that navigates back from the profile view.
         /// </summary>
         public ICommand CloseCommand { get; }
+
+        public ICommand PendingProfileEditingCommand { get; }
+
+        public ICommand ChangeProfilePhotoCommand { get; }
+
+        public ProfileImageViewModel ProfileImage
+        {
+            get => _profileImage;
+            private set => SetProperty(ref _profileImage, value);
+        }
+
+        public bool IsProfileImageUploading
+        {
+            get => _isProfileImageUploading;
+            private set
+            {
+                SetProperty(ref _isProfileImageUploading, value);
+                CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+        public ProfileImageFeedback ProfileImageFeedbackCode
+        {
+            get => _profileImageFeedbackCode;
+            private set => SetProperty(ref _profileImageFeedbackCode, value);
+        }
+
+        public void ActivateProfileImage()
+        {
+            if (ProfileImage == null)
+            {
+                ProfileImage = new ProfileImageViewModel(UserSession.Current.CurrentUser?.IdUser ?? 0,
+                    _profileImageCache);
+            }
+        }
+
+        public void DeactivateProfileImage()
+        {
+            ProfileImage?.Dispose();
+            ProfileImage = null;
+        }
+
+        private bool CanChangeProfilePhoto()
+        {
+            return !IsProfileImageUploading && UserSession.Current.CurrentUser?.IdUser > 0 &&
+                !string.IsNullOrEmpty(UserSession.Current.CurrentUser.AccountSessionToken);
+        }
+
+        private async Task ChangeProfilePhotoAsync()
+        {
+            IsProfileImageUploading = true;
+            ProfileImageFeedbackCode = ProfileImageFeedback.None;
+            try
+            {
+                ProfileImageSelection profileImageSelection = await _profileImagePicker.PickProfileImageAsync();
+                ProfileImageFeedbackCode = profileImageSelection.SelectionFeedback;
+                if (profileImageSelection.SelectedProfileImageBytes != null &&
+                    profileImageSelection.SelectionFeedback == ProfileImageFeedback.None)
+                {
+                    ProfileImageFeedbackCode = ProfileImageFeedback.Uploading;
+                    await _profileImageCache.ChangeOwnProfileImageAsync(
+                        profileImageSelection.SelectedProfileImageBytes);
+                    ProfileImageFeedbackCode = ProfileImageFeedback.UploadSucceeded;
+                }
+            }
+            catch (ProfileImageOperationException ex)
+            {
+                ProfileImageFeedbackCode = ParseProfileImageFailureCode(ex.FailureCode);
+            }
+            finally
+            {
+                IsProfileImageUploading = false;
+            }
+        }
+
+        private static ProfileImageFeedback ParseProfileImageFailureCode(string failureCode)
+        {
+            ProfileImageFeedback profileImageFeedback;
+            bool isKnownFailureCode = Enum.TryParse(failureCode, out profileImageFeedback);
+            return isKnownFailureCode ? profileImageFeedback : ProfileImageFeedback.OperationFailed;
+        }
 
         private void LoadCurrentProfile()
         {

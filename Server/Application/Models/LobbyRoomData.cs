@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 namespace Application.Models
 {
@@ -7,6 +8,8 @@ namespace Application.Models
     /// </summary>
     public sealed class LobbyRoomData
     {
+        public Guid LobbyInstanceId { get; } = Guid.NewGuid();
+
         public string LobbyCode { get; set; }
 
         public int HostUserId { get; set; }

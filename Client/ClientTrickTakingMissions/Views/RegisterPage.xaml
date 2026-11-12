@@ -9,7 +9,7 @@
       d:DesignHeight="768" d:DesignWidth="1365"
       Title="{x:Static language:Resources.Register_Title}">
 
-    <Grid Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+    <Grid Background="{StaticResource BrushTextDark}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.45*" />
             <ColumnDefinition Width="0.55*" />
@@ -18,11 +18,11 @@
         <Border Grid.Column="0">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStartColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStart}"
                                   Offset="0" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientStepColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStep}"
                                   Offset="0.5" />
-                    <GradientStop Color="{x:Static styles:ColorPalette.AuthBackgroundGradientEndColor}"
+                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientEnd}"
                                   Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
@@ -30,7 +30,7 @@
                 <StackPanel VerticalAlignment="Center">
                     <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,12">
                         <TextBlock x:Name="RegisterTitleTextBlock" Text="{x:Static language:Resources.Register_Title}"
-                                   Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                                   Foreground="{StaticResource BrushGoldAccent}"
                                    FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                    FontWeight="Bold"
                                    FontSize="{x:Static styles:FontTypography.DisplayTitleFontSize}"
@@ -40,7 +40,7 @@
 
                     <TextBlock x:Name="RestrictionsTextBlock" Text="{x:Static language:Resources.Register_Restrictions}"
                                TextWrapping="Wrap"
-                               Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                               Foreground="{StaticResource BrushGoldAccent}"
                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                Margin="0,24,0,0" />
@@ -48,7 +48,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Background="{x:Static styles:ColorPalette.PureBlackBrush}">
+        <Grid Grid.Column="1" Background="{StaticResource BrushTextDark}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -65,7 +65,7 @@
 
             <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
                 <TextBlock Text="{x:Static language:Resources.Register_Email}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                            Margin="0,0,0,4" />
@@ -76,7 +76,7 @@
                          Padding="8" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_Username}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                            Margin="0,0,0,4" />
@@ -87,7 +87,7 @@
                          Padding="8" Margin="0,0,0,12" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_Password}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                            Margin="0,0,0,4" />
@@ -98,7 +98,7 @@
                              PasswordChanged="PasswordBox_PasswordChanged" />
 
                 <TextBlock Text="{x:Static language:Resources.Register_ConfirmPassword}"
-                           Foreground="{x:Static styles:ColorPalette.MainTitleTextBrush}"
+                           Foreground="{StaticResource BrushGoldAccent}"
                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                            Margin="0,0,0,4" />
@@ -111,8 +111,8 @@
                 <Button x:Name="SubmitButton"
                         Content="{x:Static language:Resources.Register_SubmitButton}"
                         Height="64" Width="220"
-                        Background="{x:Static styles:ColorPalette.SubmitButtonBackgroundBrush}"
-                        Foreground="{x:Static styles:ColorPalette.PureBlackBrush}"
+                        Background="{StaticResource BrushSubmitButtonBackground}"
+                        Foreground="{StaticResource BrushTextDark}"
                         FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                         FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
                         FontWeight="Bold"

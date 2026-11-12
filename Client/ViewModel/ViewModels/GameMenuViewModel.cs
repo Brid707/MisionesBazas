@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Model.Services;
 using Model.Session;
 using ViewModel.Base;
 using ViewModel.Constants;
@@ -11,7 +12,7 @@ namespace ViewModel.ViewModels
     /// <summary>
     /// ViewModel for managing interactions and navigation options from the primary game menu.
     /// </summary>
-    public sealed class GameMenuViewModel : ViewModelBase
+    public sealed class GameMenuViewModel : ViewModelBase, IDisposable
     {
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
@@ -75,6 +76,21 @@ namespace ViewModel.ViewModels
         /// Gets the command that clears the active user session and returns to the home screen.
         /// </summary>
         public ICommand SignOutCommand { get; }
+
+        public ProfileImageViewModel CurrentPlayerProfileImage { get; private set; }
+
+        public void ConfigureProfileImages(IProfileImageCache profileImageCache)
+        {
+            CurrentPlayerProfileImage?.Dispose();
+            CurrentPlayerProfileImage = new ProfileImageViewModel(
+                UserSession.Current.EnsureActiveUserId(), profileImageCache);
+            OnPropertyChanged(nameof(CurrentPlayerProfileImage));
+        }
+
+        public void Dispose()
+        {
+            CurrentPlayerProfileImage?.Dispose();
+        }
 
         private void LoadCurrentUsername()
         {

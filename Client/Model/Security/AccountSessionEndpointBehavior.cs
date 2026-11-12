@@ -15,7 +15,8 @@ namespace Model.Security
 
         public object BeforeSendRequest(ref Message accountRequestMessage, IClientChannel accountChannel)
         {
-            string accountSessionToken = UserSession.Current.CurrentUser?.AccountSessionToken;
+            string accountSessionToken = UserSession.Current.CurrentUser?.AccountSessionToken ??
+                UserSession.Current.CurrentUser?.GuestSessionToken;
             if (!string.IsNullOrEmpty(accountSessionToken))
             {
                 accountRequestMessage.Headers.Add(MessageHeader.CreateHeader(

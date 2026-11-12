@@ -1456,5 +1456,149 @@ namespace View.Properties.Langs {
                 return ResourceManager.GetString("GameMatch_Trick", resourceCulture);
             }
         }
+        public static string Profile_Title
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Title", resourceCulture);
+            }
+        }
+
+        public static string Profile_ChangePhoto
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_ChangePhoto", resourceCulture);
+            }
+        }
+
+        public static string Profile_EditBiography
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_EditBiography", resourceCulture);
+            }
+        }
+
+        public static string Profile_EmptyBiography
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_EmptyBiography", resourceCulture);
+            }
+        }
+
+        public static string Profile_EditingPending
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_EditingPending", resourceCulture);
+            }
+        }
+
+        public static string Profile_SelectImage
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_SelectImage", resourceCulture);
+            }
+        }
+
+        public static string Profile_ImageFileFilter
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_ImageFileFilter", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_Uploading
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_Uploading", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_UploadSucceeded
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_UploadSucceeded", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageSizeExceeded
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageSizeExceeded", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_InvalidImageFormat
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_InvalidImageFormat", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageDimensionsExceeded
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageDimensionsExceeded", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_AuthenticationRequired
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_AuthenticationRequired", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageServiceBusy
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageServiceBusy", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageFileUnavailable
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageFileUnavailable", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageStorageUnavailable
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageStorageUnavailable", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_ImageConnectionUnavailable
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_ImageConnectionUnavailable", resourceCulture);
+            }
+        }
+
+        public static string Profile_Image_OperationFailed
+        {
+            get
+            {
+                return ResourceManager.GetString("Profile_Image_OperationFailed", resourceCulture);
+            }
+        }
+
     }
 }

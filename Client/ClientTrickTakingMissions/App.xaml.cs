@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,6 +15,16 @@ namespace View
     /// </summary>
     public partial class App : Application
     {
+        public Model.Services.IProfileImageCache ProfileImages { get; } = new Model.Services.ProfileImageCache(
+            new Model.Services.ProfileImageClient(ConfigurationManager.AppSettings["ProfileImageEndpointAddress"] ??
+                "net.tcp://localhost:8090/ProfileImageService"));
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            ProfileImages.Dispose();
+            base.OnExit(e);
+        }
+
         /// <summary>
         /// Applies the specified culture code to the current UI threads and resource manager.
         /// </summary>

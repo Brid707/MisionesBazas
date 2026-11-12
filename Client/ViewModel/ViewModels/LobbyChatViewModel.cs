@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 using Model.GameServices;
 using Model.Services;
 using Model.Session;
@@ -32,6 +31,7 @@ namespace ViewModel.ViewModels
         private long _chatAvailabilityStateVersion;
         private bool _hasAppliedAccountBan;
         private bool _isChatDisposed;
+        private IProfileImageCache _profileImageCache;
 
         public LobbyChatViewModel(ILobbySession lobbySession, INavigationService navigationService,
             IChatModerationPresenter chatModerationPresenter)
@@ -49,14 +49,14 @@ namespace ViewModel.ViewModels
             {
                 ShowChatUnavailableFeedback();
             }
-            ChatMessages = new ObservableCollection<LobbyMessage>();
+            ChatMessages = new ObservableCollection<LobbyChatMessageViewModel>();
             SendChatMessageCommand = new AsyncRelayCommand(SendChatMessageAsync, CanSendChatMessage);
             _chatLobbyClient.LobbyStateChanged += OnChatLobbyStateChanged;
             _chatLobbyClient.ChatMessageReceived += OnLobbyChatMessageReceived;
             _chatLobbyClient.ChatAccountBanApplied += OnChatAccountBanApplied;
         }
 
-        public ObservableCollection<LobbyMessage> ChatMessages { get; }
+        public ObservableCollection<LobbyChatMessageViewModel> ChatMessages { get; }
 
         public string DraftChatMessageText
         {
@@ -89,9 +89,22 @@ namespace ViewModel.ViewModels
 
         public ICommand SendChatMessageCommand { get; }
 
+        public void ConfigureProfileImages(IProfileImageCache profileImageCache)
+        {
+            _profileImageCache = profileImageCache;
+            foreach (LobbyChatMessageViewModel chatMessage in ChatMessages)
+            {
+                chatMessage.AttachProfileImage(profileImageCache);
+            }
+        }
+
         public void Dispose()
         {
             _isChatDisposed = true;
+            foreach (LobbyChatMessageViewModel chatMessage in ChatMessages)
+            {
+                chatMessage.Dispose();
+            }
             _chatLobbyClient.LobbyStateChanged -= OnChatLobbyStateChanged;
             _chatLobbyClient.ChatMessageReceived -= OnLobbyChatMessageReceived;
             _chatLobbyClient.ChatAccountBanApplied -= OnChatAccountBanApplied;
@@ -206,9 +219,15 @@ namespace ViewModel.ViewModels
         {
             if (!_isChatDisposed)
             {
-                ChatMessages.Add(publishedChatMessage);
+                var chatMessage = new LobbyChatMessageViewModel(publishedChatMessage);
+                if (_profileImageCache != null)
+                {
+                    chatMessage.AttachProfileImage(_profileImageCache);
+                }
+                ChatMessages.Add(chatMessage);
                 if (ChatMessages.Count > MaximumVisibleChatMessages)
                 {
+                    ChatMessages[0].Dispose();
                     ChatMessages.RemoveAt(0);
                 }
             }

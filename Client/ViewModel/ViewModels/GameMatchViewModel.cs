@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-
 using Model.GameServices;
+using Model.Services;
 using Model.Session;
 using ViewModel.Base;
 using ViewModel.Constants;
@@ -16,7 +16,7 @@ namespace ViewModel.ViewModels
     /// <summary>
     /// Base ViewModel for the active match board, transporting players and mission settings from the lobby.
     /// </summary>
-    public sealed class GameMatchViewModel : ViewModelBase
+    public sealed class GameMatchViewModel : ViewModelBase, IDisposable
     {
         private const int DefaultStartingMission = 1;
         private const int DefaultTargetMissions = 50;
@@ -167,6 +167,34 @@ namespace ViewModel.ViewModels
 
         public ICommand HowToPlayCommand { get; }
 
+        public MatchBoardViewModel MatchBoard { get; private set; }
+
+        public void ConfigureMatch(IMatchClient matchClient)
+        {
+            MatchBoard?.Dispose();
+            MatchBoard = new MatchBoardViewModel(_lobbySession.CurrentLobby.LobbyCode, _currentUserId, matchClient);
+            MatchBoard.ConfigureParticipantNames(Players);
+            OnPropertyChanged(nameof(MatchBoard));
+            _ = MatchBoard.SynchronizeMatchAsync();
+        }
+
+        public void ConfigureProfileImages(IProfileImageCache profileImageCache)
+        {
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.AttachProfileImage(profileImageCache);
+            }
+        }
+
+        public void Dispose()
+        {
+            MatchBoard?.Dispose();
+            foreach (LobbyPlayerItemViewModel player in Players)
+            {
+                player.Dispose();
+            }
+        }
+
         private void LoadTransportedLobbyData()
         {
             Lobby activeLobby = _lobbySession.CurrentLobby;
@@ -218,8 +246,9 @@ namespace ViewModel.ViewModels
 
             BottomPlayer = orderedItems.ElementAtOrDefault(0);
             LeftPlayer = orderedItems.ElementAtOrDefault(1);
-            TopPlayer = orderedItems.ElementAtOrDefault(2);
-            RightPlayer = orderedItems.ElementAtOrDefault(3);
+            TopPlayer = orderedItems.Count == 4 ? orderedItems.ElementAtOrDefault(2) : null;
+            RightPlayer = orderedItems.Count == 3
+                ? orderedItems.ElementAtOrDefault(2) : orderedItems.ElementAtOrDefault(3);
         }
 
         private void ExecuteHowToPlay()

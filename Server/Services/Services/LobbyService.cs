@@ -19,7 +19,7 @@ namespace Services.Services
     /// WCF service implementation for managing multiplayer lobby rooms and dispatching real-time callbacks.
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public sealed class LobbyService : ILobbyService
+    public sealed partial class LobbyService : ILobbyService
     {
         private const string PlayerLeftReason = "Player left the lobby.";
         private const string PlayerKickedReason = "Player was kicked by the host.";
@@ -164,7 +164,12 @@ namespace Services.Services
                 RegisterCurrentCallback(lobbyActionOutcome.Lobby.LobbyCode, hostUserId);
             }
 
-            return MapToLobbyResult(lobbyActionOutcome);
+            LobbyResult entryDecision = MapToLobbyResult(lobbyActionOutcome);
+            if (hostUserId < 0)
+            {
+                entryDecision.GuestSessionToken = GuestParticipantCredentials.GetCredential(hostUserId);
+            }
+            return entryDecision;
         }
 
         public LobbyResult JoinLobbyByCode(string lobbyCode, int userId)
@@ -185,7 +190,12 @@ namespace Services.Services
                 PublishLobbyState(lobbyActionOutcome);
             }
 
-            return MapToLobbyResult(lobbyActionOutcome);
+            LobbyResult entryDecision = MapToLobbyResult(lobbyActionOutcome);
+            if (userId < 0)
+            {
+                entryDecision.GuestSessionToken = GuestParticipantCredentials.GetCredential(userId);
+            }
+            return entryDecision;
         }
 
         public void LeaveLobby(string lobbyCode, int userId)
@@ -434,6 +444,10 @@ namespace Services.Services
 
         private void EnsureParticipantOperationAllowed(int participantUserId)
         {
+            if (participantUserId < 0)
+            {
+                GuestParticipantCredentials.EnsureGuestAllowed(participantUserId);
+            }
             bool isRegisteredAccountAllowed = _accountAccessPolicy.IsAccountOperationAllowed(
                 participantUserId, AccountSessionHeader.ReadCurrentAccountSessionToken());
             if (participantUserId >= 0 && !isRegisteredAccountAllowed)
@@ -445,14 +459,28 @@ namespace Services.Services
         public void StartGameFromLobby(string lobbyCode, int hostUserId)
         {
             EnsureParticipantOperationAllowed(hostUserId);
-            bool canStart = _lobbyUseCase.CanTransitionLobbyToGame(lobbyCode, hostUserId);
+            EnsureRegisteredRoomChannel(lobbyCode, hostUserId);
+            bool canStart;
+            try
+            {
+                canStart = _lobbyUseCase.CanTransitionLobbyToGame(lobbyCode, hostUserId);
+            }
+            catch (InvalidOperationException ex)
+            {
+                LogMatchFailure("Match startup rejected", ex);
+                throw new FaultException("MatchUnavailable");
+            }
             if (canStart)
             {
-                int generatedGameId = Math.Abs(NormalizeRoomKey(lobbyCode).GetHashCode());
+                int generatedGameId = NormalizeRoomKey(lobbyCode).GetHashCode() & int.MaxValue;
                 BroadcastToRoom(
                     lobbyCode,
                     excludedUserId: null,
                     callback => callback.OnGameStarting(generatedGameId));
+            }
+            else
+            {
+                throw new FaultException("MatchStartRejected");
             }
         }
 

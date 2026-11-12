@@ -9,6 +9,9 @@ namespace Services.Contracts
     /// </summary>
     public interface ILobbyCallback
     {
+        [OperationContract(IsOneWay = true, Action = "urn:misiones-bazas:match:StateChanged")]
+        void OnMatchStateChanged(long matchStateVersion);
+
         /// <summary>Publishes a versioned authoritative room snapshot
         /// after rules, role or participants change.</summary>
         [OperationContract(IsOneWay = true)]
