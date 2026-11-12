@@ -46,23 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProhibitedChatExpression.cs" />
-    <Compile Include="NormalizedChatMessageText.cs" />
-    <Compile Include="ChatMessageTextNormalizer.cs" />
-    <Compile Include="ChatMessageModerator.cs" />
-    <Compile Include="ChatMessageModerationDecision.cs" />
-    <Compile Include="ChatInfractionRules.cs" />
-    <Compile Include="ChatInfractionCategory.cs" />
-    <Compile Include="ChatAccountInfractionState.cs" />
-    <Compile Include="DeckDealRules.cs" />
-    <Compile Include="IsExternalInit.cs" />
-    <Compile Include="GuestIdentityRules.cs" />
-    <Compile Include="LobbyCodeRules.cs" />
-    <Compile Include="LobbyRoomRules.cs" />
-    <Compile Include="MatchPlayerCountRules.cs" />
-    <Compile Include="MissionDeal.cs" />
-    <Compile Include="TrickTurnRules.cs" />
-    <Compile Include="UserAccountRules.cs" />
+    <Compile Include="ChatModeration\ProhibitedChatExpression.cs" />
+    <Compile Include="ChatModeration\NormalizedChatMessageText.cs" />
+    <Compile Include="ChatModeration\ChatMessageTextNormalizer.cs" />
+    <Compile Include="ChatModeration\ChatMessageModerator.cs" />
+    <Compile Include="ChatModeration\ChatMessageModerationDecision.cs" />
+    <Compile Include="ChatModeration\ChatInfractionRules.cs" />
+    <Compile Include="ChatModeration\ChatInfractionCategory.cs" />
+    <Compile Include="ChatModeration\ChatAccountInfractionState.cs" />
+    <Compile Include="Match\DeckDealRules.cs" />
+    <Compile Include="Compatibility\IsExternalInit.cs" />
+    <Compile Include="Lobby\GuestIdentityRules.cs" />
+    <Compile Include="Lobby\LobbyCodeRules.cs" />
+    <Compile Include="Lobby\LobbyRoomRules.cs" />
+    <Compile Include="Match\MatchPlayerCountRules.cs" />
+    <Compile Include="Match\MissionDeal.cs" />
+    <Compile Include="Match\TrickTurnRules.cs" />
+    <Compile Include="Account\UserAccountRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

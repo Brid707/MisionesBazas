@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Windows;
-
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Constants;
 using ViewModel.Services;
 
@@ -11,6 +12,11 @@ namespace View.Services
     /// </summary>
     public sealed class WpfDialogService : IDialogService
     {
+        private const string LogMissingResourceKeyMapping =
+            "No resource key mapping exists for MessageCode={MessageCode}.";
+        private const string LogMissingResourceText =
+            "Missing localized resource text for ResourceKey={ResourceKey} (MessageCode={MessageCode}).";
+
         private static readonly Dictionary<int, string> s_resourceKeys = new Dictionary<int, string>
         {
             { MessageCode.LobbyKickedParticipantReentryDenied, "Lobby_KickedParticipantReentryDenied" },
@@ -68,6 +74,18 @@ namespace View.Services
             { MessageCode.CommunicationError, nameof(View.Properties.Langs.Resources.Common_Error_Communication) },
             { MessageCode.UnexpectedError, nameof(View.Properties.Langs.Resources.Common_Error_Unexpected) }
         };
+
+        private readonly ILoggerService _logger;
+
+        public WpfDialogService()
+            : this(ClientLoggingRuntime.CreateLogger<WpfDialogService>())
+        {
+        }
+
+        public WpfDialogService(ILoggerService logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         /// <summary>
         /// Displays an informational alert box mapped from an integer message code.
@@ -127,11 +145,13 @@ namespace View.Services
                 }
                 else
                 {
+                    _logger.Warning(LogMissingResourceText, resourceKey, messageCode);
                     resolvedText = resourceKey;
                 }
             }
             else
             {
+                _logger.Warning(LogMissingResourceKeyMapping, messageCode);
                 resolvedText = View.Properties.Langs.Resources.Common_Error_Communication;
             }
 

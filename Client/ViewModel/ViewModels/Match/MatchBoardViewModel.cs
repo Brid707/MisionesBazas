@@ -8,19 +8,25 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Gameplay;
 using Model.Services;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 using ViewModel.Base;
 using ViewModel.Constants;
+using ViewModel.Services;
 
 namespace ViewModel.ViewModels
 {
     /// <summary>Reconciles the local hand and preserves submission identity when retrying an uncertain play.</summary>
     public sealed class MatchBoardViewModel : ViewModelBase, IDisposable
     {
+        private const string LogMatchSynchronizationFailed =
+            "Match synchronization failed for LobbyCode={LobbyCode} (FeedbackKey={FeedbackKey}, ExceptionType={ExceptionType}).";
+
         private readonly string _lobbyCode;
         private readonly int _participantUserId;
         private readonly IMatchClient _matchClient;
+        private readonly ILoggerService _logger;
         private readonly SynchronizationContext _uiContext;
         private readonly Timer _matchRefreshTimer;
         private readonly Dictionary<int, string> _participantNamesByUserId = new Dictionary<int, string>();
@@ -32,11 +38,17 @@ namespace ViewModel.ViewModels
         private bool _isDisposed;
         private int _isRequestInProgress;
 
-        public MatchBoardViewModel(string lobbyCode, int participantUserId, IMatchClient matchClient)
+        public MatchBoardViewModel(MatchBoardContext context, ILoggerService logger)
         {
-            _lobbyCode = lobbyCode;
-            _participantUserId = participantUserId;
-            _matchClient = matchClient;
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            _lobbyCode = context.LobbyCode;
+            _participantUserId = context.ParticipantUserId;
+            _matchClient = context.MatchClient;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _uiContext = SynchronizationContext.Current;
             OwnHandCards = new ObservableCollection<HandCardViewModel>();
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
@@ -302,7 +314,7 @@ namespace ViewModel.ViewModels
 
         private void SetConnectionFailure(string feedbackResourceKey, Exception ex)
         {
-            System.Diagnostics.Trace.TraceWarning("Match synchronization failed: {0}", ex.GetType().Name);
+            _logger.Warning(LogMatchSynchronizationFailed, _lobbyCode, feedbackResourceKey, ex.GetType().Name);
             if (!_isDisposed)
             {
                 _isMatchConnected = false;

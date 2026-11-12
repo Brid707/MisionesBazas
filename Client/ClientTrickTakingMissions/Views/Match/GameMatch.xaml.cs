@@ -16,7 +16,10 @@ namespace View.Views
             InitializeComponent();
 
             INavigationService navigationService = new WpfNavigationService();
-            var viewModel = new GameMatchViewModel(navigationService, LobbySession.Current);
+            var viewModel = new GameMatchViewModel(
+                navigationService,
+                LobbySession.Current,
+                ClientLoggingRuntime.CreateLogger<GameMatchViewModel>());
             DataContext = viewModel;
             Loaded += OnGameMatchLoaded;
             Unloaded += OnGameMatchUnloaded;

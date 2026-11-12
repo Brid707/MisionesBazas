@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 using Model.GameServices;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -17,15 +18,19 @@ namespace ViewModel.ViewModels
     {
         private const int ServerErrorCodeLobbyFull = 104;
         private const int ServerErrorCodeKickedParticipantReentryDenied = 107;
+        private const string LogJoinLobbyUnavailable = "Could not join LobbyCode={LobbyCode}: service unavailable.";
+        private const string LogJoinLobbyRejected = "Joining LobbyCode={LobbyCode} rejected with ErrorCode={ErrorCode}.";
 
         private readonly IDialogService _dialogService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILoggerService _logger;
         private string _gameCode;
 
-        public EnterGameCodeViewModel(IDialogService dialogService, ILobbySession lobbySession)
+        public EnterGameCodeViewModel(IDialogService dialogService, ILobbySession lobbySession, ILoggerService logger)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _gameCode = string.Empty;
 
             CloseCommand = new RelayCommand(ExecuteClose);
@@ -89,10 +94,12 @@ namespace ViewModel.ViewModels
 
             if (result == null)
             {
+                _logger.Error(LogJoinLobbyUnavailable, normalizedCode);
                 _dialogService.ShowError(MessageCode.ConnectionFailed);
             }
             else if (!result.IsSuccess || result.Lobby == null)
             {
+                _logger.Warning(LogJoinLobbyRejected, normalizedCode, result.ErrorCode);
                 int messageToDisplay = ResolveLobbyEntryRejection(result.ErrorCode);
 
                 _dialogService.ShowWarning(messageToDisplay);

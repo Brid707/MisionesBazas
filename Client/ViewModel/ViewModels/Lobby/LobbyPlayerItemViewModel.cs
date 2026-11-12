@@ -16,10 +16,7 @@ namespace ViewModel.ViewModels
         private bool _isReady;
         private int _remainingHandCardCount;
 
-        public LobbyPlayerItemViewModel(
-            int idUser,
-            string username,
-            bool isHost)
+        public LobbyPlayerItemViewModel(int idUser, string username, bool isHost)
         {
             IdUser = idUser;
             Username = username ?? string.Empty;

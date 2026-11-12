@@ -5,6 +5,7 @@ using System.Windows.Input;
 
 using Model.Security;
 using Model.Services;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -20,9 +21,13 @@ namespace ViewModel.ViewModels
         private const int MinimumPasswordLength = 8;
         private const string SpecialCharacterPattern = @"[^a-zA-Z0-9]";
         private const string NumberPattern = @"[0-9]";
+        private const string LogRegistrationRejected = "Account registration rejected with ErrorCode={ErrorCode}.";
+        private const string LogRegistrationConnectionError =
+            "Account registration failed with ConnectionErrorType={ErrorType}.";
 
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
         private readonly IAccountManagementClient _accountManagementClient;
 
         private string _email;
@@ -32,28 +37,22 @@ namespace ViewModel.ViewModels
         private bool _isLoading;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterViewModel"/> class with the required UI services and default client.
-        /// </summary>
-        /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
-        /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
-        public RegisterViewModel(INavigationService navigationService, IDialogService dialogService)
-            : this(navigationService, dialogService, new AccountManagementClient())
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="RegisterViewModel"/> class with injected UI services and WCF client.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
-        /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
         /// <param name="accountManagementClient">Client service managing communication with the account management service.</param>
         public RegisterViewModel(
-            INavigationService navigationService,
-            IDialogService dialogService,
+            ViewModelUiServices uiServices,
             IAccountManagementClient accountManagementClient)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            if (uiServices == null)
+            {
+                throw new ArgumentNullException(nameof(uiServices));
+            }
+
+            _navigationService = uiServices.NavigationService;
+            _dialogService = uiServices.DialogService;
+            _logger = uiServices.Logger;
             _accountManagementClient = accountManagementClient ?? throw new ArgumentNullException(nameof(accountManagementClient));
 
             _accountManagementClient.ConnectionErrorOccurred += OnConnectionErrorOccurred;
@@ -147,7 +146,8 @@ namespace ViewModel.ViewModels
                 try
                 {
                     string passwordHash = PasswordHasher.ComputeSha256Hash(password);
-                    AccountRegistrationResult result = await _accountManagementClient.RegisterUserAsync(username, email, passwordHash);
+                    AccountRegistrationResult result = await _accountManagementClient.RegisterUserAsync(username,
+                        email, passwordHash);
 
                     if (result != null)
                     {
@@ -171,6 +171,8 @@ namespace ViewModel.ViewModels
 
         private void HandleRegistrationFailure(int errorCode)
         {
+            _logger.Warning(LogRegistrationRejected, errorCode);
+
             switch (errorCode)
             {
                 case MessageCode.RegisterEmailAlreadyRegistered:
@@ -189,6 +191,8 @@ namespace ViewModel.ViewModels
 
         private void OnConnectionErrorOccurred(AuthenticationErrorType errorType)
         {
+            _logger.Error(LogRegistrationConnectionError, errorType);
+
             switch (errorType)
             {
                 case AuthenticationErrorType.ConnectionFailed:

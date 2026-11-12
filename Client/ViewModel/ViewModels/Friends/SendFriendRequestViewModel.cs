@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.IFriendsRequestService;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -16,34 +17,49 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class SendFriendRequestViewModel : ViewModelBase
     {
+        private const string LogLoadSentRequestsUnavailable =
+            "Could not load sent friend requests for UserId={UserId}: server returned null.";
+        private const string LogSendFriendRequestUnavailable =
+            "Could not send friend request for UserId={UserId}: service unavailable.";
+        private const string LogSendFriendRequestRejected =
+            "Send friend request failed for UserId={UserId} with ErrorCode={ErrorCode}.";
+        private const string LogCancelFriendRequestUnavailable =
+            "Could not cancel friend request to ReceiverUserId={ReceiverUserId}: service unavailable.";
+        private const string LogCancelFriendRequestRejected =
+            "Cancel friend request to ReceiverUserId={ReceiverUserId} failed with ErrorCode={ErrorCode}.";
+
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
         private readonly IFriendshipSession _friendshipSession;
         private string _username;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SendFriendRequestViewModel"/> class using default session state.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views.</param>
-        /// <param name="dialogService">Service for presenting modal validation feedback.</param>
-        public SendFriendRequestViewModel(INavigationService navigationService, IDialogService dialogService)
-            : this(navigationService, dialogService, FriendshipSession.Current)
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
+        public SendFriendRequestViewModel(ViewModelUiServices uiServices)
+            : this(uiServices, FriendshipSession.Current)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SendFriendRequestViewModel"/> class with explicit dependencies.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views.</param>
-        /// <param name="dialogService">Service for presenting modal validation feedback.</param>
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
         /// <param name="friendshipSession">Active social session providing friend request services.</param>
         public SendFriendRequestViewModel(
-            INavigationService navigationService,
-            IDialogService dialogService,
+            ViewModelUiServices uiServices,
             IFriendshipSession friendshipSession)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            if (uiServices == null)
+            {
+                throw new ArgumentNullException(nameof(uiServices));
+            }
+
+            _navigationService = uiServices.NavigationService;
+            _dialogService = uiServices.DialogService;
+            _logger = uiServices.Logger;
             _friendshipSession = friendshipSession ?? throw new ArgumentNullException(nameof(friendshipSession));
             _username = string.Empty;
 
@@ -112,6 +128,10 @@ namespace ViewModel.ViewModels
                         }
                     }
                 }
+                else
+                {
+                    _logger.Warning(LogLoadSentRequestsUnavailable, currentUserId);
+                }
             }
         }
 
@@ -140,10 +160,12 @@ namespace ViewModel.ViewModels
 
                     if (result == null)
                     {
+                        _logger.Error(LogSendFriendRequestUnavailable, currentUserId);
                         _dialogService.ShowError(MessageCode.ConnectionFailed);
                     }
                     else if (!result.IsSuccess)
                     {
+                        _logger.Warning(LogSendFriendRequestRejected, currentUserId, result.ErrorCode);
                         _dialogService.ShowWarning(MessageCode.UnexpectedError);
                     }
                     else
@@ -172,6 +194,7 @@ namespace ViewModel.ViewModels
 
                 if (result == null)
                 {
+                    _logger.Error(LogCancelFriendRequestUnavailable, requestItem.ReceiverUserId);
                     _dialogService.ShowError(MessageCode.ConnectionFailed);
                 }
                 else if (result.IsSuccess)
@@ -180,6 +203,7 @@ namespace ViewModel.ViewModels
                 }
                 else
                 {
+                    _logger.Warning(LogCancelFriendRequestRejected, requestItem.ReceiverUserId, result.ErrorCode);
                     _dialogService.ShowWarning(MessageCode.UnexpectedError);
                 }
             }

@@ -48,38 +48,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\Friendship\IFriendshipService.cs" />
-    <Compile Include="Contracts\Friendship\IFriendshipServiceCallback.cs" />
-    <Compile Include="Contracts\Friendship\IFriendsRequestService.cs" />
-    <Compile Include="DataContracts\LobbyChatMessageSubmissionOutcome.cs" />
-    <Compile Include="DataContracts\LobbyChatMessageSubmission.cs" />
-    <Compile Include="DataContracts\ChatInfractionNotice.cs" />
-    <Compile Include="DataContracts\ChatAccountBanType.cs" />
-    <Compile Include="DataContracts\ChatAccountBanNotice.cs" />
+    <Compile Include="Contracts\Friends\IFriendshipService.cs" />
+    <Compile Include="Contracts\Friends\IFriendshipServiceCallback.cs" />
+    <Compile Include="Contracts\Friends\IFriendsRequestService.cs" />
+    <Compile Include="DataContracts\ChatModeration\LobbyChatMessageSubmissionOutcome.cs" />
+    <Compile Include="DataContracts\ChatModeration\LobbyChatMessageSubmission.cs" />
+    <Compile Include="DataContracts\ChatModeration\ChatInfractionNotice.cs" />
+    <Compile Include="DataContracts\ChatModeration\ChatAccountBanType.cs" />
+    <Compile Include="DataContracts\ChatModeration\ChatAccountBanNotice.cs" />
     <Compile Include="Security\AuthenticatedAccountSessionRegistry.cs" />
     <Compile Include="Security\AuthenticatedAccountSession.cs" />
     <Compile Include="Security\AccountSessionHeader.cs" />
-    <Compile Include="Contracts\ILobbyCallback.cs" />
-    <Compile Include="Contracts\ILobbyService.cs" />
-    <Compile Include="Contracts\IAccountManagementService.cs" />
-    <Compile Include="Contracts\IUserLoginService.cs" />
-    <Compile Include="DataContracts\Friendship\Friend.cs" />
-    <Compile Include="DataContracts\Friendship\FriendRequest.cs" />
-    <Compile Include="DataContracts\Friendship\GameInvitation.cs" />
-    <Compile Include="DataContracts\Lobby.cs" />
-    <Compile Include="DataContracts\LobbyMessage.cs" />
-    <Compile Include="DataContracts\LobbyPlayer.cs" />
-    <Compile Include="DataContracts\LobbyResult.cs" />
-    <Compile Include="DataContracts\LobbySettings.cs" />
-    <Compile Include="DataContracts\OperationResult.cs" />
-    <Compile Include="DataContracts\User.cs" />
-    <Compile Include="DataContracts\UserRegister.cs" />
+    <Compile Include="Contracts\Lobby\ILobbyCallback.cs" />
+    <Compile Include="Contracts\Lobby\ILobbyService.cs" />
+    <Compile Include="Contracts\Account\IAccountManagementService.cs" />
+    <Compile Include="Contracts\Account\IUserLoginService.cs" />
+    <Compile Include="DataContracts\Friends\Friend.cs" />
+    <Compile Include="DataContracts\Friends\FriendRequest.cs" />
+    <Compile Include="DataContracts\Friends\GameInvitation.cs" />
+    <Compile Include="DataContracts\Lobby\Lobby.cs" />
+    <Compile Include="DataContracts\Lobby\LobbyMessage.cs" />
+    <Compile Include="DataContracts\Lobby\LobbyPlayer.cs" />
+    <Compile Include="DataContracts\Lobby\LobbyResult.cs" />
+    <Compile Include="DataContracts\Lobby\LobbySettings.cs" />
+    <Compile Include="DataContracts\Common\OperationResult.cs" />
+    <Compile Include="DataContracts\Account\User.cs" />
+    <Compile Include="DataContracts\Account\UserRegister.cs" />
     <Compile Include="Services\ChannelDisconnectObserver.cs" />
-    <Compile Include="Services\FriendshipService.cs" />
-    <Compile Include="Services\FriendsRequestService.cs" />
-    <Compile Include="Services\LobbyService.cs" />
-    <Compile Include="Services\AccountManagementService.cs" />
-    <Compile Include="Services\UserLoginService.cs" />
+    <Compile Include="Services\Friends\FriendshipService.cs" />
+    <Compile Include="Services\Friends\FriendsRequestService.cs" />
+    <Compile Include="Services\Lobby\LobbyService.cs" />
+    <Compile Include="Services\Account\AccountManagementService.cs" />
+    <Compile Include="Services\Account\UserLoginService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,40 +92,41 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\ProfileImageUpload.cs" />
+    <Compile Include="DataContracts\ProfileImages\ProfileImageUpload.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageSubscriptions.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageSubscriptions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\PlayerProfileImageReference.cs" />
+    <Compile Include="DataContracts\ProfileImages\PlayerProfileImageReference.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IProfileImageCallback.cs" />
+    <Compile Include="Contracts\ProfileImages\IProfileImageCallback.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\IProfileImageService.cs" />
+    <Compile Include="Contracts\ProfileImages\IProfileImageService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\ProfileImageContent.cs" />
+    <Compile Include="DataContracts\ProfileImages\ProfileImageContent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageService.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataContracts\ProfileImageFault.cs" />
+    <Compile Include="DataContracts\ProfileImages\ProfileImageFault.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
-      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
+      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
+      <Name>Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\LobbyService.Match.cs" />
+    <Compile Include="Services\Match\LobbyService.Match.cs" />
     <Compile Include="Security\GuestParticipantCredentials.cs" />
   </ItemGroup>
 </Project>

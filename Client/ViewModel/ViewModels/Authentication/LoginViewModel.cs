@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Model.GameServices;
 using Model.Security;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -19,8 +20,17 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class LoginViewModel : ViewModelBase, IUserLoginCallback, IDisposable
     {
+        private const string LogLoginSucceeded = "Login succeeded for UserId={UserId}.";
+        private const string LogLoginRejectedWithBan = "Login rejected because account is banned ({BanType}).";
+        private const string LogLoginRejected = "Login rejected with WarningCode={WarningCode}.";
+        private const string LogLoginConnectionFailed = "Login endpoint unreachable.";
+        private const string LogLoginTimedOut = "Login request timed out.";
+        private const string LogLoginCommunicationError = "Login communication error.";
+        private const string LogForgotPasswordDialogError = "Error displaying forgot password dialog.";
+
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
         private readonly IChatModerationPresenter _chatModerationPresenter;
         private readonly SynchronizationContext _loginSynchronizationContext;
         private readonly Stopwatch _accountBanElapsedTime = new Stopwatch();
@@ -37,14 +47,18 @@ namespace ViewModel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class with the required UI services.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
-        /// <param name="dialogService">Service for presenting localized messages to the user using integer codes.</param>
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
         /// <param name="chatModerationPresenter">Formats private account restrictions in the selected language.</param>
-        public LoginViewModel(INavigationService navigationService, IDialogService dialogService,
-            IChatModerationPresenter chatModerationPresenter)
+        public LoginViewModel(ViewModelUiServices uiServices, IChatModerationPresenter chatModerationPresenter)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            if (uiServices == null)
+            {
+                throw new ArgumentNullException(nameof(uiServices));
+            }
+
+            _navigationService = uiServices.NavigationService;
+            _dialogService = uiServices.DialogService;
+            _logger = uiServices.Logger;
             _chatModerationPresenter = chatModerationPresenter;
             _loginSynchronizationContext = SynchronizationContext.Current;
 
@@ -128,6 +142,7 @@ namespace ViewModel.ViewModels
                         Email = user.Email,
                         AccountSessionToken = user.AccountSessionToken
                     });
+                    _logger.Information(LogLoginSucceeded, user.IdUser);
                 }
 
                 _navigationService.NavigateTo(ViewId.GameMenu);
@@ -149,6 +164,7 @@ namespace ViewModel.ViewModels
         {
             if (accountBanNotice != null)
             {
+                _logger.Warning(LogLoginRejectedWithBan, accountBanNotice.ChatAccountBanType);
                 _accountBanNotice = accountBanNotice;
                 _accountBanElapsedTime.Restart();
                 UpdateAccountBanCountdown();
@@ -167,6 +183,7 @@ namespace ViewModel.ViewModels
                     loginWarningCode = MessageCode.ChatStorageUnavailable;
                 }
 
+                _logger.Warning(LogLoginRejected, loginWarningCode);
                 _dialogService.ShowWarning(loginWarningCode);
             }
         }
@@ -227,22 +244,19 @@ namespace ViewModel.ViewModels
                 catch (EndpointNotFoundException ex)
                 {
                     IsLoading = false;
-                    // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                    Console.WriteLine($"[LoginViewModel] Connection failed: {ex.Message}");
+                    _logger.Error(ex, LogLoginConnectionFailed);
                     _dialogService.ShowError(MessageCode.ConnectionFailed);
                 }
                 catch (TimeoutException ex)
                 {
                     IsLoading = false;
-                    // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                    Console.WriteLine($"[LoginViewModel] Request timed out: {ex.Message}");
+                    _logger.Error(ex, LogLoginTimedOut);
                     _dialogService.ShowError(MessageCode.RequestTimeout);
                 }
                 catch (CommunicationException ex)
                 {
                     IsLoading = false;
-                    // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                    Console.WriteLine($"[LoginViewModel] Communication error: {ex.Message}");
+                    _logger.Error(ex, LogLoginCommunicationError);
                     _dialogService.ShowError(MessageCode.CommunicationError);
                 }
             }
@@ -281,8 +295,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[LoginViewModel] Error displaying forgot password dialog: {ex.Message}");
+                _logger.Error(ex, LogForgotPasswordDialogError);
             }
         }
     }

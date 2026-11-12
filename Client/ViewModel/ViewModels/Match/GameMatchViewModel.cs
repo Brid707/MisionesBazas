@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Model.GameServices;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -22,9 +23,11 @@ namespace ViewModel.ViewModels
         private const int DefaultTargetMissions = 50;
         private const int DefaultStartingTrick = 1;
         private const int DefaultTricksPerMission = 9;
+        private const string LogOpenHowToPlayDialogError = "Error opening HowToPlay dialog from match view.";
 
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILoggerService _logger;
         private readonly int _currentUserId;
 
         private int _currentMissionNumber;
@@ -36,10 +39,14 @@ namespace ViewModel.ViewModels
         private LobbyPlayerItemViewModel _topPlayer;
         private LobbyPlayerItemViewModel _rightPlayer;
 
-        public GameMatchViewModel(INavigationService navigationService, ILobbySession lobbySession)
+        public GameMatchViewModel(
+            INavigationService navigationService,
+            ILobbySession lobbySession,
+            ILoggerService logger)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _currentUserId = UserSession.Current.EnsureActiveUserId();
 
             _currentMissionNumber = DefaultStartingMission;
@@ -172,7 +179,9 @@ namespace ViewModel.ViewModels
         public void ConfigureMatch(IMatchClient matchClient)
         {
             MatchBoard?.Dispose();
-            MatchBoard = new MatchBoardViewModel(_lobbySession.CurrentLobby.LobbyCode, _currentUserId, matchClient);
+            MatchBoardContext context = new MatchBoardContext(_lobbySession.CurrentLobby.LobbyCode, _currentUserId,
+                matchClient);
+            MatchBoard = new MatchBoardViewModel(context, _logger);
             MatchBoard.ConfigureParticipantNames(Players);
             OnPropertyChanged(nameof(MatchBoard));
             _ = MatchBoard.SynchronizeMatchAsync();
@@ -246,9 +255,12 @@ namespace ViewModel.ViewModels
 
             BottomPlayer = orderedItems.ElementAtOrDefault(0);
             LeftPlayer = orderedItems.ElementAtOrDefault(1);
-            TopPlayer = orderedItems.Count == 4 ? orderedItems.ElementAtOrDefault(2) : null;
+            TopPlayer = orderedItems.Count == 4
+                ? orderedItems.ElementAtOrDefault(2)
+                : null;
             RightPlayer = orderedItems.Count == 3
-                ? orderedItems.ElementAtOrDefault(2) : orderedItems.ElementAtOrDefault(3);
+                ? orderedItems.ElementAtOrDefault(2)
+                : orderedItems.ElementAtOrDefault(3);
         }
 
         private void ExecuteHowToPlay()
@@ -259,7 +271,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                Console.WriteLine($"[GameMatchViewModel] Error opening HowToPlay dialog: {ex.Message}");
+                _logger.Error(ex, LogOpenHowToPlayDialogError);
             }
         }
     }

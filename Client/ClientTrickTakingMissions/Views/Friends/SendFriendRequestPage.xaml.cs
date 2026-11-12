@@ -1,6 +1,6 @@
 using System.Windows.Controls;
+using Model.Session;
 using View.Services;
-using ViewModel.Services;
 using ViewModel.ViewModels;
 
 namespace View.Views
@@ -17,9 +17,9 @@ namespace View.Views
         {
             InitializeComponent();
 
-            INavigationService navigationService = new WpfNavigationService();
-            IDialogService dialogService = new WpfDialogService();
-            SendFriendRequestViewModel viewModel = new SendFriendRequestViewModel(navigationService, dialogService);
+            SendFriendRequestViewModel viewModel = new SendFriendRequestViewModel(
+                ClientLoggingRuntime.CreateUiServices<SendFriendRequestViewModel>(),
+                FriendshipSession.Current);
             DataContext = viewModel;
         }
     }

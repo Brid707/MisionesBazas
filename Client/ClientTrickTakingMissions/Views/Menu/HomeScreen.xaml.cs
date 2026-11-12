@@ -15,7 +15,9 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="HomeScreen"/> class with default UI services.
         /// </summary>
         public HomeScreen()
-            : this(new HomeScreenViewModel(new WpfNavigationService()))
+            : this(new HomeScreenViewModel(
+                new WpfNavigationService(),
+                ClientLoggingRuntime.CreateLogger<HomeScreenViewModel>()))
         {
         }
 

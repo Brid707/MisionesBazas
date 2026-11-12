@@ -5,6 +5,7 @@ using System.Windows.Input;
 
 using Model.GameServices;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -23,17 +24,23 @@ namespace ViewModel.ViewModels
         private const int MinimumMissionCount = 1;
         private const int MaximumMissionCount = 50;
         private const int DefaultMissionCount = 5;
+        private const string LogLobbyOperationUnavailable = "Lobby operation {Operation} failed: service unavailable.";
+        private const string LogLobbyOperationRejected = "Lobby operation {Operation} rejected with ErrorCode={ErrorCode}.";
+        private const string OperationCreateLobby = "CreateLobby";
+        private const string OperationUpdateLobbySettings = "UpdateLobbySettings";
 
         private readonly IDialogService _dialogService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILoggerService _logger;
         private int _selectedPlayerCount;
         private int _selectedMissionCount;
         private bool _isPrivate;
 
-        public GameSettingsViewModel(IDialogService dialogService, ILobbySession lobbySession)
+        public GameSettingsViewModel(IDialogService dialogService, ILobbySession lobbySession, ILoggerService logger)
         {
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             AvailablePlayerCounts = new List<int> { MinimumPlayerCount, MaximumPlayerCount };
             _selectedPlayerCount = MaximumPlayerCount;
@@ -149,6 +156,7 @@ namespace ViewModel.ViewModels
             int configurationErrorCode = MessageCode.ConnectionFailed;
             if (configurationUpdate != null)
             {
+                _logger.Warning(LogLobbyOperationRejected, OperationUpdateLobbySettings, configurationUpdate.ErrorCode);
                 configurationErrorCode = MessageCode.LobbyConfigurationInvalid;
                 if (configurationUpdate.ErrorCode == HostRequiredServerCode)
                 {
@@ -158,6 +166,10 @@ namespace ViewModel.ViewModels
                 {
                     configurationErrorCode = MessageCode.LobbyMatchInProgress;
                 }
+            }
+            else
+            {
+                _logger.Error(LogLobbyOperationUnavailable, OperationUpdateLobbySettings);
             }
 
             _dialogService.ShowWarning(configurationErrorCode);
@@ -172,10 +184,12 @@ namespace ViewModel.ViewModels
 
             if (result == null)
             {
+                _logger.Error(LogLobbyOperationUnavailable, OperationCreateLobby);
                 _dialogService.ShowError(MessageCode.ConnectionFailed);
             }
             else if (!result.IsSuccess || result.Lobby == null)
             {
+                _logger.Warning(LogLobbyOperationRejected, OperationCreateLobby, result.ErrorCode);
                 _dialogService.ShowWarning(MessageCode.UnexpectedError);
             }
             else

@@ -21,7 +21,8 @@ namespace View.Views
             IDialogService dialogService = new WpfDialogService();
             ManageFriendRequestViewModel viewModel = new ManageFriendRequestViewModel(
                 FriendshipSession.Current,
-                dialogService);
+                dialogService,
+                ClientLoggingRuntime.CreateLogger<ManageFriendRequestViewModel>());
             viewModel.RequestClose += OnRequestClose;
             DataContext = viewModel;
         }

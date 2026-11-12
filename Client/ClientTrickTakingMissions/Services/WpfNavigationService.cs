@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using View.Views;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -14,6 +15,10 @@ namespace View.Services
     /// </summary>
     public sealed class WpfNavigationService : INavigationService
     {
+        private const string LogUnrecognizedViewId = "Unrecognized ViewId={ViewId} requested for navigation.";
+        private const string LogUnrecognizedDialogId =
+            "Unrecognized DialogId={DialogId} requested for modal presentation.";
+
         private static readonly Dictionary<int, Func<Page>> s_pageFactories = new Dictionary<int, Func<Page>>
         {
             { ViewId.HomeScreen, () => new HomeScreen() },
@@ -39,6 +44,18 @@ namespace View.Services
             { ViewId.SelectLanguageDialog, () => new SelectLanguageWindow() }
         };
 
+        private readonly ILoggerService _logger;
+
+        public WpfNavigationService()
+            : this(ClientLoggingRuntime.CreateLogger<WpfNavigationService>())
+        {
+        }
+
+        public WpfNavigationService(ILoggerService logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         /// <summary>
         /// Navigates the main application frame to a page identified by its integer constant.
         /// </summary>
@@ -57,8 +74,7 @@ namespace View.Services
                 }
                 else
                 {
-                    // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                    Console.WriteLine($"[WpfNavigationService] Unrecognized view id: {viewId}");
+                    _logger.Warning(LogUnrecognizedViewId, viewId);
                 }
             });
         }
@@ -107,8 +123,7 @@ namespace View.Services
                 }
                 else
                 {
-                    // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                    Console.WriteLine($"[WpfNavigationService] Unrecognized dialog id: {dialogId}");
+                    _logger.Warning(LogUnrecognizedDialogId, dialogId);
                 }
             });
         }

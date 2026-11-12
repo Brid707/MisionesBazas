@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Models;
@@ -15,7 +16,11 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class ProfileViewModel : ViewModelBase
     {
+        private const string LogProfileImageOperationFailed =
+            "Profile image update failed with FailureCode={FailureCode} (Feedback={FeedbackCode}).";
+
         private readonly INavigationService _navigationService;
+        private readonly ILoggerService _logger;
         private readonly IProfileImagePicker _profileImagePicker;
         private readonly IProfileImageCache _profileImageCache;
         private bool _isProfileImageUploading;
@@ -31,13 +36,19 @@ namespace ViewModel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ProfileViewModel"/> class.
         /// </summary>
-        /// <param name="navigationService">Service for managing view navigation.</param>
+        /// <param name="navigationLogging">Grouped navigation and logging services.</param>
         /// <param name="profileImagePicker">Selects the local file through a presentation adapter.</param>
         /// <param name="profileImageCache">Shares image versions with other player views.</param>
-        public ProfileViewModel(INavigationService navigationService, IProfileImagePicker profileImagePicker,
+        public ProfileViewModel(ViewModelNavigationLogging navigationLogging, IProfileImagePicker profileImagePicker,
             IProfileImageCache profileImageCache)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            if (navigationLogging == null)
+            {
+                throw new ArgumentNullException(nameof(navigationLogging));
+            }
+
+            _navigationService = navigationLogging.NavigationService;
+            _logger = navigationLogging.Logger;
 
             _profileImagePicker = profileImagePicker ?? throw new ArgumentNullException(nameof(profileImagePicker));
             _profileImageCache = profileImageCache ?? throw new ArgumentNullException(nameof(profileImageCache));
@@ -166,7 +177,9 @@ namespace ViewModel.ViewModels
             }
             catch (ProfileImageOperationException ex)
             {
-                ProfileImageFeedbackCode = ParseProfileImageFailureCode(ex.FailureCode);
+                ProfileImageFeedback feedbackCode = ParseProfileImageFailureCode(ex.FailureCode);
+                _logger.Warning(LogProfileImageOperationFailed, ex.FailureCode, feedbackCode);
+                ProfileImageFeedbackCode = feedbackCode;
             }
             finally
             {

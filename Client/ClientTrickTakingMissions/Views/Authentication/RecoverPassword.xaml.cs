@@ -25,7 +25,7 @@ namespace View.Views
         /// </summary>
         /// <param name="email">The email address of the account being recovered.</param>
         public RecoverPassword(string email)
-            : this(new RecoverPasswordViewModel(new WpfNavigationService(), new WpfDialogService(), email))
+            : this(new RecoverPasswordViewModel(ClientLoggingRuntime.CreateUiServices<RecoverPasswordViewModel>(), email))
         {
         }
 

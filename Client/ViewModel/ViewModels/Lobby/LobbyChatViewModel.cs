@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Model.GameServices;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -18,9 +19,16 @@ namespace ViewModel.ViewModels
     public sealed class LobbyChatViewModel : ViewModelBase, IDisposable
     {
         private const int MaximumVisibleChatMessages = 100;
+        private const string LogChatDeliveryUnknown =
+            "Lobby chat submission returned null outcome for LobbyCode={LobbyCode}.";
+        private const string LogChatModerationUnavailable =
+            "Lobby chat moderation unavailable for LobbyCode={LobbyCode}.";
+        private const string LogAccountBanApplied = "Chat account ban applied ({BanType}) in LobbyCode={LobbyCode}.";
+
         private readonly ILobbySession _lobbySession;
         private readonly ILobbyClient _chatLobbyClient;
         private readonly INavigationService _navigationService;
+        private readonly ILoggerService _logger;
         private readonly IChatModerationPresenter _chatModerationPresenter;
         private readonly SynchronizationContext _chatUiSynchronizationContext;
         private readonly string _chatLobbyCode;
@@ -33,12 +41,18 @@ namespace ViewModel.ViewModels
         private bool _isChatDisposed;
         private IProfileImageCache _profileImageCache;
 
-        public LobbyChatViewModel(ILobbySession lobbySession, INavigationService navigationService,
+        public LobbyChatViewModel(ViewModelNavigationLogging navigationLogging, ILobbySession lobbySession,
             IChatModerationPresenter chatModerationPresenter)
         {
-            _lobbySession = lobbySession;
+            if (navigationLogging == null)
+            {
+                throw new ArgumentNullException(nameof(navigationLogging));
+            }
+
+            _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _chatLobbyClient = lobbySession.Client;
-            _navigationService = navigationService;
+            _navigationService = navigationLogging.NavigationService;
+            _logger = navigationLogging.Logger;
             _chatModerationPresenter = chatModerationPresenter;
             _chatUiSynchronizationContext = SynchronizationContext.Current;
             _chatLobbyCode = lobbySession.CurrentLobby?.LobbyCode ?? string.Empty;
@@ -148,6 +162,7 @@ namespace ViewModel.ViewModels
         {
             if (chatMessageSubmissionOutcome == null)
             {
+                _logger.Warning(LogChatDeliveryUnknown, _chatLobbyCode);
                 ChatSubmissionFeedback = new LobbyChatMessageSubmissionOutcome
                 {
                     ChatMessageRejectionReason = ChatMessageRejectionReason.ChatDeliveryUnknown
@@ -204,6 +219,7 @@ namespace ViewModel.ViewModels
 
         private void ShowChatUnavailableFeedback()
         {
+            _logger.Warning(LogChatModerationUnavailable, _chatLobbyCode);
             ChatSubmissionFeedback = new LobbyChatMessageSubmissionOutcome
             {
                 ChatMessageRejectionReason = ChatMessageRejectionReason.ChatModerationUnavailable
@@ -242,6 +258,7 @@ namespace ViewModel.ViewModels
         {
             if (!_hasAppliedAccountBan && !_isChatDisposed)
             {
+                _logger.Warning(LogAccountBanApplied, chatAccountBanNotice?.ChatAccountBanType, _chatLobbyCode);
                 _hasAppliedAccountBan = true;
                 _lobbySession.ClearLobby();
                 UserSession.Current.ClearSession();

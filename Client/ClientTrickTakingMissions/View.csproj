@@ -15,6 +15,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
@@ -69,93 +70,94 @@
     </ApplicationDefinition>
     <Compile Include="Services\ChatModerationPresenter.cs" />
     <Compile Include="Services\ChatModerationTextFormatter.cs" />
-    <Compile Include="Views\ChangePassword.xaml.cs">
+    <Compile Include="Views\Authentication\ChangePassword.xaml.cs">
       <DependentUpon>ChangePassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EnterGameCode.xaml.cs">
+    <Compile Include="Views\Menu\EnterGameCode.xaml.cs">
       <DependentUpon>EnterGameCode.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ForgotPassword.xaml.cs">
+    <Compile Include="Views\Authentication\ForgotPassword.xaml.cs">
       <DependentUpon>ForgotPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameMenu.xaml.cs">
+    <Compile Include="Views\Menu\GameMenu.xaml.cs">
       <DependentUpon>GameMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameSettings.xaml.cs">
+    <Compile Include="Views\Menu\GameSettings.xaml.cs">
       <DependentUpon>GameSettings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\HowToPlay.xaml.cs">
+    <Compile Include="Views\Menu\HowToPlay.xaml.cs">
       <DependentUpon>HowToPlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Lobby.xaml.cs">
+    <Compile Include="Views\Lobby\Lobby.xaml.cs">
       <DependentUpon>Lobby.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginPage.xaml.cs">
+    <Compile Include="Views\Authentication\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RecoverPassword.xaml.cs">
+    <Compile Include="Views\Authentication\RecoverPassword.xaml.cs">
       <DependentUpon>RecoverPassword.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RegisterPage.xaml.cs">
+    <Compile Include="Views\Authentication\RegisterPage.xaml.cs">
       <DependentUpon>RegisterPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Profile.xaml.cs">
+    <Compile Include="Views\Profile\Profile.xaml.cs">
       <DependentUpon>Profile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ScoreBoard.xaml.cs">
+    <Compile Include="Views\Menu\ScoreBoard.xaml.cs">
       <DependentUpon>ScoreBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectLanguageWindow.xaml.cs">
+    <Compile Include="Views\Menu\SelectLanguageWindow.xaml.cs">
       <DependentUpon>SelectLanguageWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SendFriendRequestPage.xaml.cs">
+    <Compile Include="Views\Friends\SendFriendRequestPage.xaml.cs">
       <DependentUpon>SendFriendRequestPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManageFriendRequestWindow.xaml.cs">
+    <Compile Include="Views\Friends\ManageFriendRequestWindow.xaml.cs">
       <DependentUpon>ManageFriendRequestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FriendsView.xaml.cs">
+    <Compile Include="Views\Friends\FriendsView.xaml.cs">
       <DependentUpon>FriendsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GameMatch.xaml.cs">
+    <Compile Include="Views\Match\GameMatch.xaml.cs">
       <DependentUpon>GameMatch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Styles\FontTypography.cs" />
+    <Compile Include="Services\ClientLoggingRuntime.cs" />
     <Compile Include="Services\WpfNavigationService.cs" />
     <Compile Include="Services\WpfDialogService.cs" />
     <Compile Include="Services\WpfLanguageService.cs" />
-    <Page Include="Views\ChangePassword.xaml">
+    <Page Include="Views\Authentication\ChangePassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EnterGameCode.xaml">
+    <Page Include="Views\Menu\EnterGameCode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ForgotPassword.xaml">
+    <Page Include="Views\Authentication\ForgotPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameMenu.xaml">
+    <Page Include="Views\Menu\GameMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\GameSettings.xaml">
+    <Page Include="Views\Menu\GameSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HomeScreen.xaml">
+    <Page Include="Views\Menu\HomeScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\HowToPlay.xaml">
+    <Page Include="Views\Menu\HowToPlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Lobby.xaml">
+    <Page Include="Views\Lobby\Lobby.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\LoginPage.xaml">
+    <Page Include="Views\Authentication\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainWindow.xaml">
@@ -166,43 +168,43 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\HomeScreen.xaml.cs">
+    <Compile Include="Views\Menu\HomeScreen.xaml.cs">
       <DependentUpon>HomeScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\RecoverPassword.xaml">
+    <Page Include="Views\Authentication\RecoverPassword.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RegisterPage.xaml">
+    <Page Include="Views\Authentication\RegisterPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ScoreBoard.xaml">
+    <Page Include="Views\Menu\ScoreBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SelectLanguageWindow.xaml">
+    <Page Include="Views\Menu\SelectLanguageWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Profile.xaml">
+    <Page Include="Views\Profile\Profile.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SendFriendRequestPage.xaml">
+    <Page Include="Views\Friends\SendFriendRequestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ManageFriendRequestWindow.xaml">
+    <Page Include="Views\Friends\ManageFriendRequestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FriendsView.xaml">
+    <Page Include="Views\Friends\FriendsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GameMatch.xaml">
+    <Page Include="Views\Match\GameMatch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -246,6 +248,17 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="log4net" Version="3.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging.Abstractions\TrickTakingMissions.Logging.Abstractions.csproj">
+      <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
+      <Name>TrickTakingMissions.Logging.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging\TrickTakingMissions.Logging.csproj">
+      <Project>{78BB068A-8E30-499E-887F-1F6BE4863672}</Project>
+      <Name>TrickTakingMissions.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViewModel\ViewModel.csproj">
       <Project>{67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95}</Project>
       <Name>ViewModel</Name>
@@ -309,7 +322,8 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Themes\ProfileImages.xaml">
-      <Generator>MSBuild:Compile</Generator><SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

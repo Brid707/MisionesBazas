@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -14,8 +15,11 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class GameMenuViewModel : ViewModelBase, IDisposable
     {
+        private const string LogDialogDisplayError = "Error displaying dialog ViewId={ViewId}.";
+
         private readonly INavigationService _navigationService;
         private readonly ILobbySession _lobbySession;
+        private readonly ILoggerService _logger;
         private string _username;
 
         /// <summary>
@@ -23,10 +27,13 @@ namespace ViewModel.ViewModels
         /// </summary>
         /// <param name="navigationService">Service for navigating between views and modal dialogs.</param>
         /// <param name="lobbySession">The active lobby state shared across the lobby flow.</param>
-        public GameMenuViewModel(INavigationService navigationService, ILobbySession lobbySession)
+        /// <param name="logger">Structured logger for menu navigation failures.</param>
+        public GameMenuViewModel(INavigationService navigationService, ILobbySession lobbySession,
+            ILoggerService logger)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             LoadCurrentUsername();
 
@@ -82,8 +89,8 @@ namespace ViewModel.ViewModels
         public void ConfigureProfileImages(IProfileImageCache profileImageCache)
         {
             CurrentPlayerProfileImage?.Dispose();
-            CurrentPlayerProfileImage = new ProfileImageViewModel(
-                UserSession.Current.EnsureActiveUserId(), profileImageCache);
+            CurrentPlayerProfileImage = new ProfileImageViewModel(UserSession.Current.EnsureActiveUserId(),
+                profileImageCache);
             OnPropertyChanged(nameof(CurrentPlayerProfileImage));
         }
 
@@ -112,65 +119,44 @@ namespace ViewModel.ViewModels
 
         private void ExecuteScoreBoard()
         {
-            try
-            {
-                _navigationService.ShowDialog(ViewId.ScoreBoardDialog);
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[GameMenuViewModel] Error showing ScoreBoard dialog: {ex.Message}");
-            }
+            ShowModalDialogSafely(ViewId.ScoreBoardDialog, null);
         }
 
         private void ExecuteCreateRoom()
         {
-            try
-            {
-                _lobbySession.ClearLobby();
-                _navigationService.ShowDialog(ViewId.GameSettingsDialog);
-
-                if (_lobbySession.HasActiveLobby)
-                {
-                    _navigationService.NavigateTo(ViewId.Lobby);
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[GameMenuViewModel] Error showing GameSettings dialog: {ex.Message}");
-            }
+            _lobbySession.ClearLobby();
+            ShowModalDialogSafely(ViewId.GameSettingsDialog, NavigateToActiveLobbyIfPresent);
         }
 
         private void ExecuteJoinLobby()
         {
-            try
-            {
-                _lobbySession.ClearLobby();
-                _navigationService.ShowDialog(ViewId.EnterGameCodeDialog);
-
-                if (_lobbySession.HasActiveLobby)
-                {
-                    _navigationService.NavigateTo(ViewId.Lobby);
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[GameMenuViewModel] Error showing EnterGameCode dialog: {ex.Message}");
-            }
+            _lobbySession.ClearLobby();
+            ShowModalDialogSafely(ViewId.EnterGameCodeDialog, NavigateToActiveLobbyIfPresent);
         }
 
         private void ExecuteHowToPlay()
         {
+            ShowModalDialogSafely(ViewId.HowToPlayDialog, null);
+        }
+
+        private void NavigateToActiveLobbyIfPresent()
+        {
+            if (_lobbySession.HasActiveLobby)
+            {
+                _navigationService.NavigateTo(ViewId.Lobby);
+            }
+        }
+
+        private void ShowModalDialogSafely(int dialogViewId, Action onDialogCompleted)
+        {
             try
             {
-                _navigationService.ShowDialog(ViewId.HowToPlayDialog);
+                _navigationService.ShowDialog(dialogViewId);
+                onDialogCompleted?.Invoke();
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[GameMenuViewModel] Error showing HowToPlay dialog: {ex.Message}");
+                _logger.Error(ex, LogDialogDisplayError, dialogViewId);
             }
         }
 

@@ -21,7 +21,10 @@ namespace View.Views
             InitializeComponent();
 
             IDialogService dialogService = new WpfDialogService();
-            _viewModel = new EnterGameCodeViewModel(dialogService, LobbySession.Current);
+            _viewModel = new EnterGameCodeViewModel(
+                dialogService,
+                LobbySession.Current,
+                ClientLoggingRuntime.CreateLogger<EnterGameCodeViewModel>());
             _viewModel.RequestClose += OnRequestClose;
             DataContext = _viewModel;
         }

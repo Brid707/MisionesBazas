@@ -16,7 +16,10 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="GameMenu"/> class with default UI services.
         /// </summary>
         public GameMenu()
-            : this(new GameMenuViewModel(new WpfNavigationService(), LobbySession.Current))
+            : this(new GameMenuViewModel(
+                new WpfNavigationService(),
+                LobbySession.Current,
+                ClientLoggingRuntime.CreateLogger<GameMenuViewModel>()))
         {
         }
 

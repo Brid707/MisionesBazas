@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -13,15 +14,20 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class HomeScreenViewModel : ViewModelBase
     {
+        private const string LogOpenLanguageSelectorError = "Error opening language selector dialog.";
+
         private readonly INavigationService _navigationService;
+        private readonly ILoggerService _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HomeScreenViewModel"/> class with the navigation service.
         /// </summary>
         /// <param name="navigationService">Service for navigating between views using integer view identifiers.</param>
-        public HomeScreenViewModel(INavigationService navigationService)
+        /// <param name="logger">Structured logger for recording home screen navigation errors.</param>
+        public HomeScreenViewModel(INavigationService navigationService, ILoggerService logger)
         {
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             SignUpCommand = new RelayCommand(ExecuteSignUp);
             LoginCommand = new RelayCommand(ExecuteLogin);
@@ -74,8 +80,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[HomeScreenViewModel] Error opening language selector: {ex.Message}");
+                _logger.Error(ex, LogOpenLanguageSelectorError);
             }
         }
     }

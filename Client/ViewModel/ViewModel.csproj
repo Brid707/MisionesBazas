@@ -48,8 +48,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\LobbyChatViewModel.cs" />
-    <Compile Include="ViewModels\LobbyChatMessageViewModel.cs" />
+    <Compile Include="ViewModels\Lobby\LobbyChatViewModel.cs" />
+    <Compile Include="ViewModels\Lobby\LobbyChatMessageViewModel.cs" />
     <Compile Include="Services\IChatModerationPresenter.cs" />
     <Compile Include="Base\AsyncRelayCommand.cs" />
     <Compile Include="Base\RelayCommand.cs" />
@@ -60,30 +60,37 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\ILanguageService.cs" />
     <Compile Include="Services\INavigationService.cs" />
-    <Compile Include="ViewModels\ChangePasswordViewModel.cs" />
-    <Compile Include="ViewModels\EnterGameCodeViewModel.cs" />
-    <Compile Include="ViewModels\ForgotPasswordViewModel.cs" />
-    <Compile Include="ViewModels\FriendItemViewModel.cs" />
-    <Compile Include="ViewModels\FriendRequestItemViewModel.cs" />
-    <Compile Include="ViewModels\FriendsViewModel.cs" />
-    <Compile Include="ViewModels\GameInvitationItemViewModel.cs" />
-    <Compile Include="ViewModels\GameMatchViewModel.cs" />
-    <Compile Include="ViewModels\GameMenuViewModel.cs" />
-    <Compile Include="ViewModels\GameSettingsViewModel.cs" />
-    <Compile Include="ViewModels\HomeScreenViewModel.cs" />
-    <Compile Include="ViewModels\HowToPlayViewModel.cs" />
-    <Compile Include="ViewModels\LobbyPlayerItemViewModel.cs" />
-    <Compile Include="ViewModels\LobbyViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\ManageFriendRequestViewModel.cs" />
-    <Compile Include="ViewModels\ProfileViewModel.cs" />
-    <Compile Include="ViewModels\RecoverPasswordViewModel.cs" />
-    <Compile Include="ViewModels\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\ScoreBoardViewModel.cs" />
-    <Compile Include="ViewModels\SelectLanguageViewModel.cs" />
-    <Compile Include="ViewModels\SendFriendRequestViewModel.cs" />
+    <Compile Include="Services\MatchBoardContext.cs" />
+    <Compile Include="Services\ViewModelNavigationLogging.cs" />
+    <Compile Include="Services\ViewModelUiServices.cs" />
+    <Compile Include="ViewModels\Authentication\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\Menu\EnterGameCodeViewModel.cs" />
+    <Compile Include="ViewModels\Authentication\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\Friends\FriendItemViewModel.cs" />
+    <Compile Include="ViewModels\Friends\FriendRequestItemViewModel.cs" />
+    <Compile Include="ViewModels\Friends\FriendsViewModel.cs" />
+    <Compile Include="ViewModels\Lobby\GameInvitationItemViewModel.cs" />
+    <Compile Include="ViewModels\Match\GameMatchViewModel.cs" />
+    <Compile Include="ViewModels\Menu\GameMenuViewModel.cs" />
+    <Compile Include="ViewModels\Menu\GameSettingsViewModel.cs" />
+    <Compile Include="ViewModels\Menu\HomeScreenViewModel.cs" />
+    <Compile Include="ViewModels\Menu\HowToPlayViewModel.cs" />
+    <Compile Include="ViewModels\Lobby\LobbyPlayerItemViewModel.cs" />
+    <Compile Include="ViewModels\Lobby\LobbyViewModel.cs" />
+    <Compile Include="ViewModels\Authentication\LoginViewModel.cs" />
+    <Compile Include="ViewModels\Friends\ManageFriendRequestViewModel.cs" />
+    <Compile Include="ViewModels\Profile\ProfileViewModel.cs" />
+    <Compile Include="ViewModels\Authentication\RecoverPasswordViewModel.cs" />
+    <Compile Include="ViewModels\Authentication\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\Menu\ScoreBoardViewModel.cs" />
+    <Compile Include="ViewModels\Menu\SelectLanguageViewModel.cs" />
+    <Compile Include="ViewModels\Friends\SendFriendRequestViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging.Abstractions\TrickTakingMissions.Logging.Abstractions.csproj">
+      <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
+      <Name>TrickTakingMissions.Logging.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
       <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
       <Name>TrickTakingMissions.Rules</Name>
@@ -97,7 +104,7 @@
     <Compile Include="Services\IProfileImagePicker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\ProfileImageViewModel.cs" />
+    <Compile Include="ViewModels\Profile\ProfileImageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ProfileImageFeedback.cs" />
@@ -107,9 +114,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="ViewModels\HandCardViewModel.cs" />
-    <Compile Include="ViewModels\MatchBoardViewModel.cs" />
+    <Compile Include="ViewModels\Match\HandCardViewModel.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.cs" />
   </ItemGroup>
-  <ItemGroup><Compile Include="ViewModels\PlayedCardViewModel.cs" /></ItemGroup>
-  <ItemGroup><Compile Include="Constants\MatchTablePosition.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\PlayedCardViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants\MatchTablePosition.cs" />
+  </ItemGroup>
+  <ItemGroup />
 </Project>

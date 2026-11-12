@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Model.IFriendShipService;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -19,9 +20,21 @@ namespace ViewModel.ViewModels
     public sealed class FriendsViewModel : ViewModelBase
     {
         private const int ServerErrorCodeLobbyFull = 104;
+        private const string LogLoadFriendsUnavailable =
+            "Could not load friends list for UserId={UserId}: server returned null.";
+        private const string LogOpenFriendRequestsDialogError = "Error opening friend requests dialog.";
+        private const string LogDeleteFriendUnavailable =
+            "Could not remove FriendUserId={FriendUserId}: service unavailable.";
+        private const string LogDeleteFriendRejected =
+            "Removing FriendUserId={FriendUserId} failed with ErrorCode={ErrorCode}.";
+        private const string LogJoinInvitedLobbyUnavailable =
+            "Could not join LobbyCode={LobbyCode}: service unavailable.";
+        private const string LogJoinInvitedLobbyRejected =
+            "Joining LobbyCode={LobbyCode} failed with ErrorCode={ErrorCode}.";
 
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
         private readonly IFriendshipSession _friendshipSession;
         private readonly ILobbySession _lobbySession;
         private readonly SynchronizationContext _uiSyncContext;
@@ -33,24 +46,29 @@ namespace ViewModel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="FriendsViewModel"/> class using default session singletons.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views and modal dialogs.</param>
-        public FriendsViewModel(INavigationService navigationService)
-            : this(navigationService, null, FriendshipSession.Current, LobbySession.Current)
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
+        public FriendsViewModel(ViewModelUiServices uiServices)
+            : this(uiServices, FriendshipSession.Current, LobbySession.Current)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FriendsViewModel"/> class with explicit dependencies.
         /// </summary>
-        /// <param name="navigationService">Service for navigating between views and modal dialogs.</param>
-        /// <param name="dialogService">Optional service for displaying user alerts.</param>
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
         /// <param name="friendshipSession">Active social session providing friendship channels.</param>
         /// <param name="lobbySession">Active lobby session used when dispatching match invitations.</param>
-        public FriendsViewModel(INavigationService navigationService, IDialogService dialogService,
+        public FriendsViewModel(ViewModelUiServices uiServices,
             IFriendshipSession friendshipSession, ILobbySession lobbySession)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            _dialogService = dialogService;
+            if (uiServices == null)
+            {
+                throw new ArgumentNullException(nameof(uiServices));
+            }
+
+            _navigationService = uiServices.NavigationService;
+            _dialogService = uiServices.DialogService;
+            _logger = uiServices.Logger;
             _friendshipSession = friendshipSession ?? throw new ArgumentNullException(nameof(friendshipSession));
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _uiSyncContext = SynchronizationContext.Current;
@@ -168,6 +186,10 @@ namespace ViewModel.ViewModels
                             _allFriends.Add(item);
                         }
                     }
+                }
+                else
+                {
+                    _logger.Warning(LogLoadFriendsUnavailable, currentUserId);
                 }
 
                 ApplyFriendsFilter();
@@ -353,8 +375,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Log this exception to a proper logging framework instead of writing to the console.
-                Console.WriteLine($"[FriendsViewModel] Error opening friend requests dialog: {ex.Message}");
+                _logger.Error(ex, LogOpenFriendRequestsDialogError);
             }
         }
 
@@ -380,6 +401,7 @@ namespace ViewModel.ViewModels
 
                 if (result == null)
                 {
+                    _logger.Error(LogDeleteFriendUnavailable, targetFriend.UserId);
                     _dialogService?.ShowError(MessageCode.ConnectionFailed);
                 }
                 else if (result.IsSuccess)
@@ -389,6 +411,7 @@ namespace ViewModel.ViewModels
                 }
                 else
                 {
+                    _logger.Warning(LogDeleteFriendRejected, targetFriend.UserId, result.ErrorCode);
                     _dialogService?.ShowWarning(MessageCode.UnexpectedError);
                 }
             }
@@ -446,10 +469,12 @@ namespace ViewModel.ViewModels
 
                 if (result == null)
                 {
+                    _logger.Error(LogJoinInvitedLobbyUnavailable, invitationItem.LobbyCode);
                     _dialogService?.ShowError(MessageCode.ConnectionFailed);
                 }
                 else if (!result.IsSuccess || result.Lobby == null)
                 {
+                    _logger.Warning(LogJoinInvitedLobbyRejected, invitationItem.LobbyCode, result.ErrorCode);
                     int messageCode = result.ErrorCode == ServerErrorCodeLobbyFull
                         ? MessageCode.EnterGameCodeLobbyAlreadyFull
                         : MessageCode.EnterGameCodeInvalidCode;

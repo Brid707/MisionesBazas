@@ -59,23 +59,23 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\LobbyStateChangedEventArgs.cs" />
-    <Compile Include="Services\ChatAccountBanAppliedEventArgs.cs" />
+    <Compile Include="Services\LobbyAndMatch\LobbyStateChangedEventArgs.cs" />
+    <Compile Include="Services\LobbyAndMatch\ChatAccountBanAppliedEventArgs.cs" />
     <Compile Include="Security\AccountSessionEndpointBehavior.cs" />
     <Compile Include="Connected Services\GameServices\Reference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\PasswordHasher.cs" />
-    <Compile Include="Services\GameChannelCloser.cs" />
-    <Compile Include="Services\IAccountManagementClient.cs" />
-    <Compile Include="Services\AccountManagementClient.cs" />
-    <Compile Include="Services\AuthenticationClient.cs" />
-    <Compile Include="Services\IFriendshipClient.cs" />
-    <Compile Include="Services\FriendshipClient.cs" />
-    <Compile Include="Services\IFriendsRequestClient.cs" />
-    <Compile Include="Services\FriendsRequestClient.cs" />
-    <Compile Include="Services\ILobbyClient.cs" />
-    <Compile Include="Services\LobbyClient.cs" />
-    <Compile Include="Services\WcfFaultHandler.cs" />
+    <Compile Include="Services\Wcf\GameChannelCloser.cs" />
+    <Compile Include="Services\Account\IAccountManagementClient.cs" />
+    <Compile Include="Services\Account\AccountManagementClient.cs" />
+    <Compile Include="Services\Account\AuthenticationClient.cs" />
+    <Compile Include="Services\Friendship\IFriendshipClient.cs" />
+    <Compile Include="Services\Friendship\FriendshipClient.cs" />
+    <Compile Include="Services\Friendship\IFriendsRequestClient.cs" />
+    <Compile Include="Services\Friendship\FriendsRequestClient.cs" />
+    <Compile Include="Services\LobbyAndMatch\ILobbyClient.cs" />
+    <Compile Include="Services\LobbyAndMatch\LobbyClient.cs" />
+    <Compile Include="Services\Wcf\WcfFaultHandler.cs" />
     <Compile Include="Session\IFriendshipSession.cs" />
     <Compile Include="Session\FriendshipSession.cs" />
     <Compile Include="Session\ILobbySession.cs" />
@@ -163,52 +163,52 @@
     <None Include="Connected Services\UserLoginService\UserLoginService.wsdl" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\DataContracts\ProfileImageUpload.cs">
+    <Compile Include="..\..\Server\Services\DataContracts\ProfileImages\ProfileImageUpload.cs">
       <Link>ProfileImages\ProfileImageUpload.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\DataContracts\PlayerProfileImageReference.cs">
+    <Compile Include="..\..\Server\Services\DataContracts\ProfileImages\PlayerProfileImageReference.cs">
       <Link>ProfileImages\PlayerProfileImageReference.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\Contracts\IProfileImageCallback.cs">
+    <Compile Include="..\..\Server\Services\Contracts\ProfileImages\IProfileImageCallback.cs">
       <Link>ProfileImages\IProfileImageCallback.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\Contracts\IProfileImageService.cs">
+    <Compile Include="..\..\Server\Services\Contracts\ProfileImages\IProfileImageService.cs">
       <Link>ProfileImages\IProfileImageService.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\DataContracts\ProfileImageContent.cs">
+    <Compile Include="..\..\Server\Services\DataContracts\ProfileImages\ProfileImageContent.cs">
       <Link>ProfileImages\ProfileImageContent.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Server\Services\DataContracts\ProfileImageFault.cs">
+    <Compile Include="..\..\Server\Services\DataContracts\ProfileImages\ProfileImageFault.cs">
       <Link>ProfileImages\ProfileImageFault.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageCache.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageCache.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageCacheEntry.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageCacheEntry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\IProfileImageClient.cs" />
+    <Compile Include="Services\ProfileImages\IProfileImageClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageOperationException.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageOperationException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\ProfileImageClient.cs" />
+    <Compile Include="Services\ProfileImages\ProfileImageClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\IProfileImageCache.cs" />
+    <Compile Include="Services\ProfileImages\IProfileImageCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\ProfileImages\ProfileImageLimits.cs">
@@ -236,10 +236,10 @@
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\IMatchClient.cs" />
-    <Compile Include="Services\LobbyClient.Match.cs" />
-    <Compile Include="Services\LobbyServiceClient.Match.cs" />
-    <Compile Include="Services\LobbyResult.Guest.cs" />
+    <Compile Include="Services\LobbyAndMatch\IMatchClient.cs" />
+    <Compile Include="Services\LobbyAndMatch\LobbyClient.Match.cs" />
+    <Compile Include="Services\Partials\LobbyServiceClient.Match.cs" />
+    <Compile Include="Services\Partials\LobbyResult.Guest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />

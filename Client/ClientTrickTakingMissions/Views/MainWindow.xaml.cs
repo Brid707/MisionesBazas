@@ -1,10 +1,11 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
+using View.Services;
 
 namespace View.Views
 {
@@ -14,6 +15,13 @@ namespace View.Views
     public partial class MainWindow : Window
     {
         private const int GracefulDisconnectTimeoutMs = 500;
+        private const string LogHomeNavigationFailure = "Failed to navigate to initial HomeScreen view.";
+        private const string LogLeaveLobbyCommunicationFailure =
+            "Communication error leaving LobbyCode={LobbyCode} during window close ({ExceptionType}).";
+        private const string LogLeaveLobbyTimeout =
+            "Timed out leaving LobbyCode={LobbyCode} during window close ({ExceptionType}).";
+
+        private readonly ILoggerService _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -21,6 +29,7 @@ namespace View.Views
         public MainWindow()
         {
             InitializeComponent();
+            _logger = ClientLoggingRuntime.CreateLogger<MainWindow>();
             Closing += OnMainWindowClosing;
 
             try
@@ -30,8 +39,7 @@ namespace View.Views
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Debug.WriteLine with project logger once logging infrastructure is available.
-                Debug.WriteLine($"[MainWindow] Failed to navigate to HomeScreen: {ex.Message}");
+                _logger.Error(ex, LogHomeNavigationFailure);
             }
         }
 
@@ -50,13 +58,13 @@ namespace View.Views
                         {
                             await LobbySession.Current.Client.LeaveLobbyAsync(lobbyCode, userId);
                         }
-                        catch (CommunicationException)
+                        catch (CommunicationException ex)
                         {
-                            // Network failure during shutdown is expected and suppressed.
+                            _logger.Warning(LogLeaveLobbyCommunicationFailure, lobbyCode, ex.GetType().Name);
                         }
-                        catch (TimeoutException)
+                        catch (TimeoutException ex)
                         {
-                            // Timeout during shutdown is expected and suppressed.
+                            _logger.Warning(LogLeaveLobbyTimeout, lobbyCode, ex.GetType().Name);
                         }
                     }).Wait(TimeSpan.FromMilliseconds(GracefulDisconnectTimeoutMs));
                 }

@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using Model.Services;
 using View.Services;
 using ViewModel.ViewModels;
 
@@ -16,7 +17,9 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="RegisterPage"/> class with default UI services.
         /// </summary>
         public RegisterPage()
-            : this(new RegisterViewModel(new WpfNavigationService(), new WpfDialogService()))
+            : this(new RegisterViewModel(
+                ClientLoggingRuntime.CreateUiServices<RegisterViewModel>(),
+                new AccountManagementClient(ClientLoggingRuntime.CreateLogger<AccountManagementClient>())))
         {
         }
 

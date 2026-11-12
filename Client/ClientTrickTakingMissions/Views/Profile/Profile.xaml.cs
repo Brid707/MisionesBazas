@@ -15,7 +15,9 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="Profile"/> class with default UI services.
         /// </summary>
         public Profile()
-            : this(new ProfileViewModel(new WpfNavigationService(), new WpfProfileImagePicker(),
+            : this(new ProfileViewModel(
+                ClientLoggingRuntime.CreateNavigationLogging<ProfileViewModel>(),
+                new WpfProfileImagePicker(),
                 ((App)System.Windows.Application.Current).ProfileImages))
         {
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Input;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -11,8 +12,11 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class RecoverPasswordViewModel : ViewModelBase
     {
+        private const string LogOpenChangePasswordDialogError = "Error opening ChangePassword dialog.";
+
         private readonly INavigationService _navigationService;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
 
         private string _email;
         private string _code;
@@ -31,13 +35,27 @@ namespace ViewModel.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="RecoverPasswordViewModel"/> class with the required UI services.
         /// </summary>
-        /// <param name="navigationService">Service for presenting dialogs.</param>
-        /// <param name="dialogService">Service for displaying localized messages.</param>
-        /// <param name="email">The email address of the account being recovered.</param>
-        public RecoverPasswordViewModel(INavigationService navigationService, IDialogService dialogService, string email = "")
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
+        public RecoverPasswordViewModel(ViewModelUiServices uiServices)
+            : this(uiServices, string.Empty)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
-            _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecoverPasswordViewModel"/> class with the required UI services and email.
+        /// </summary>
+        /// <param name="uiServices">Grouped navigation, dialog and logging services.</param>
+        /// <param name="email">The email address of the account being recovered.</param>
+        public RecoverPasswordViewModel(ViewModelUiServices uiServices, string email)
+        {
+            if (uiServices == null)
+            {
+                throw new ArgumentNullException(nameof(uiServices));
+            }
+
+            _navigationService = uiServices.NavigationService;
+            _dialogService = uiServices.DialogService;
+            _logger = uiServices.Logger;
             _email = email ?? string.Empty;
 
             BackCommand = new RelayCommand(ExecuteBack);
@@ -128,8 +146,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[RecoverPasswordViewModel] Error opening ChangePassword dialog: {ex.Message}");
+                _logger.Error(ex, LogOpenChangePasswordDialogError);
             }
         }
     }

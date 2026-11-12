@@ -17,7 +17,7 @@ namespace View.Views
         /// Initializes a new instance of the <see cref="LoginPage"/> class with default UI services.
         /// </summary>
         public LoginPage()
-            : this(new LoginViewModel(new WpfNavigationService(), new WpfDialogService(),
+            : this(new LoginViewModel(ClientLoggingRuntime.CreateUiServices<LoginViewModel>(),
                 new ChatModerationPresenter()))
         {
         }

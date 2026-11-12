@@ -20,7 +20,10 @@ namespace View.Views
             InitializeComponent();
 
             IDialogService dialogService = new WpfDialogService();
-            GameSettingsViewModel viewModel = new GameSettingsViewModel(dialogService, LobbySession.Current);
+            GameSettingsViewModel viewModel = new GameSettingsViewModel(
+                dialogService,
+                LobbySession.Current,
+                ClientLoggingRuntime.CreateLogger<GameSettingsViewModel>());
             viewModel.RequestClose += OnRequestClose;
             DataContext = viewModel;
         }

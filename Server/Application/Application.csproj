@@ -47,51 +47,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ChatModerationPreparation.cs" />
-    <Compile Include="Ports\IChatModerationCatalogBackup.cs" />
-    <Compile Include="UseCases\ChatModerationStartup.cs" />
-    <Compile Include="Ports\IBlockedAccountEmailRepository.cs" />
+    <Compile Include="Models\ChatModeration\ChatModerationPreparation.cs" />
+    <Compile Include="Ports\ChatModeration\IChatModerationCatalogBackup.cs" />
+    <Compile Include="UseCases\ChatModeration\ChatModerationStartup.cs" />
+    <Compile Include="Ports\Account\IBlockedAccountEmailRepository.cs" />
     <Compile Include="Ports\Lobby\ILobbyHostSelection.cs" />
-    <Compile Include="..\ServerTrickTakingMissions\Domain\IsExternalInit.cs">
+    <Compile Include="..\ServerTrickTakingMissions\Domain\Compatibility\IsExternalInit.cs">
       <Link>Compatibility\IsExternalInit.cs</Link>
     </Compile>
-    <Compile Include="Models\LobbyConfiguration.cs" />
-    <Compile Include="Models\ChatMessageRejectionReason.cs" />
-    <Compile Include="Ports\IChatModerationLogger.cs" />
+    <Compile Include="Models\Lobby\LobbyConfiguration.cs" />
+    <Compile Include="Models\ChatModeration\ChatMessageRejectionReason.cs" />
+    <Compile Include="Ports\ChatModeration\IChatModerationLogger.cs" />
     <Compile Include="Ports\Logger\ILoggerService.cs" />
-    <Compile Include="UseCases\AccountAccessPolicy.cs" />
-    <Compile Include="Ports\IAccountAccessPolicy.cs" />
-    <Compile Include="UseCases\LobbyChatMessageUseCase.cs" />
-    <Compile Include="Ports\IProhibitedChatExpressionCatalog.cs" />
-    <Compile Include="Ports\ILobbyChatMessageUseCase.cs" />
-    <Compile Include="Ports\IChatInfractionRepository.cs" />
-    <Compile Include="Ports\IAuthenticatedAccountSessionRegistry.cs" />
-    <Compile Include="Models\LobbyChatMessageProcessing.cs" />
-    <Compile Include="Models\ChatInfractionSubmission.cs" />
-    <Compile Include="Models\ChatInfractionRecord.cs" />
-    <Compile Include="Models\AuthenticatedChatMessageSubmission.cs" />
-    <Compile Include="Models\AuthenticatedUserData.cs" />
-    <Compile Include="Models\LobbyActionOutcome.cs" />
-    <Compile Include="Models\LobbyParticipantData.cs" />
-    <Compile Include="Models\LobbyRoomData.cs" />
-    <Compile Include="Models\UserAccount.cs" />
-    <Compile Include="Models\UserRegistrationOutcome.cs" />
-    <Compile Include="Ports\IEmailService.cs" />
-    <Compile Include="Models\Friendship\FriendRequestData.cs" />
-    <Compile Include="Models\Friendship\FriendSummaryData.cs" />
-    <Compile Include="Models\Friendship\FriendshipActionOutcome.cs" />
-    <Compile Include="Models\Friendship\FriendshipRecordData.cs" />
-    <Compile Include="Ports\Friendship\IFriendshipRepository.cs" />
-    <Compile Include="Ports\Friendship\IFriendshipUseCase.cs" />
+    <Compile Include="UseCases\Account\AccountAccessPolicy.cs" />
+    <Compile Include="Ports\Account\IAccountAccessPolicy.cs" />
+    <Compile Include="UseCases\ChatModeration\LobbyChatMessageUseCase.cs" />
+    <Compile Include="Ports\ChatModeration\IProhibitedChatExpressionCatalog.cs" />
+    <Compile Include="Ports\ChatModeration\ILobbyChatMessageUseCase.cs" />
+    <Compile Include="Ports\ChatModeration\IChatInfractionRepository.cs" />
+    <Compile Include="Ports\Account\IAuthenticatedAccountSessionRegistry.cs" />
+    <Compile Include="Models\ChatModeration\LobbyChatMessageProcessing.cs" />
+    <Compile Include="Models\ChatModeration\ChatInfractionSubmission.cs" />
+    <Compile Include="Models\ChatModeration\ChatInfractionRecord.cs" />
+    <Compile Include="Models\ChatModeration\AuthenticatedChatMessageSubmission.cs" />
+    <Compile Include="Models\Account\AuthenticatedUserData.cs" />
+    <Compile Include="Models\Lobby\LobbyActionOutcome.cs" />
+    <Compile Include="Models\Lobby\LobbyParticipantData.cs" />
+    <Compile Include="Models\Lobby\LobbyRoomData.cs" />
+    <Compile Include="Models\Account\UserAccount.cs" />
+    <Compile Include="Models\Account\UserRegistrationOutcome.cs" />
+    <Compile Include="Ports\Email\IEmailService.cs" />
+    <Compile Include="Models\Friends\FriendRequestData.cs" />
+    <Compile Include="Models\Friends\FriendSummaryData.cs" />
+    <Compile Include="Models\Friends\FriendshipActionOutcome.cs" />
+    <Compile Include="Models\Friends\FriendshipRecordData.cs" />
+    <Compile Include="Ports\Friends\IFriendshipRepository.cs" />
+    <Compile Include="Ports\Friends\IFriendshipUseCase.cs" />
     <Compile Include="Ports\Lobby\ILobbyUseCase.cs" />
-    <Compile Include="Ports\INotificationService.cs" />
-    <Compile Include="Ports\IUserLoginUseCase.cs" />
-    <Compile Include="Ports\IAccountManagementUseCase.cs" />
-    <Compile Include="Ports\IUserRepository.cs" />
-    <Compile Include="UseCases\FriendshipUseCase.cs" />
-    <Compile Include="UseCases\LobbyUseCase.cs" />
-    <Compile Include="UseCases\AccountManagementUseCase.cs" />
-    <Compile Include="UseCases\UserLoginUseCase.cs" />
+    <Compile Include="Ports\Account\IUserLoginUseCase.cs" />
+    <Compile Include="Ports\Account\IAccountManagementUseCase.cs" />
+    <Compile Include="Ports\Account\IUserRepository.cs" />
+    <Compile Include="UseCases\Friends\FriendshipUseCase.cs" />
+    <Compile Include="UseCases\Lobby\LobbyUseCase.cs" />
+    <Compile Include="UseCases\Account\AccountManagementUseCase.cs" />
+    <Compile Include="UseCases\Account\UserLoginUseCase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -107,26 +106,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-
+    <Compile Include="Models\ProfileImages\PlayerProfileImageData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\PlayerProfileImageData.cs" />
+    <Compile Include="Models\ProfileImages\ProfileImageException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ProfileImageException.cs" />
+    <Compile Include="Ports\ProfileImages\IProfileImageProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ports\IProfileImageProcessor.cs" />
+    <Compile Include="Ports\ProfileImages\IProfileImageStorage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ports\IProfileImageStorage.cs" />
+    <Compile Include="Ports\Account\IPlayerProfileRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ports\IPlayerProfileRepository.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="UseCases\ProfileImageUseCase.cs" />
+    <Compile Include="UseCases\ProfileImages\ProfileImageUseCase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\ProfileImages\ProfileImageLimits.cs">
@@ -147,14 +144,14 @@
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\MatchState.cs" />
-    <Compile Include="Models\ProcessedCardPlay.cs" />
-    <Compile Include="Ports\IMatchStateStore.cs" />
-    <Compile Include="Ports\IMissionDeckDealer.cs" />
-    <Compile Include="Ports\IMatchUseCase.cs" />
-    <Compile Include="UseCases\MatchUseCase.cs" />
-    <Compile Include="UseCases\MatchSnapshotProjection.cs" />
-    <Compile Include="UseCases\MatchPlayValidation.cs" />
+    <Compile Include="Models\Match\MatchState.cs" />
+    <Compile Include="Models\Match\ProcessedCardPlay.cs" />
+    <Compile Include="Ports\Match\IMatchStateStore.cs" />
+    <Compile Include="Ports\Match\IMissionDeckDealer.cs" />
+    <Compile Include="Ports\Match\IMatchUseCase.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.cs" />
+    <Compile Include="UseCases\Match\MatchPlayValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />

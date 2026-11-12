@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.IFriendsRequestService;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -17,16 +18,34 @@ namespace ViewModel.ViewModels
     /// </summary>
     public sealed class ManageFriendRequestViewModel : ViewModelBase
     {
+        private const string OperationAcceptRequest = "Accept";
+        private const string OperationRejectRequest = "Reject";
+        private const string LogLoadPendingRequestsUnavailable = "Could not load pending friend requests for UserId={UserId}: server returned null.";
+        private const string LogFriendRequestDecisionUnavailable = "Friend request operation {Operation} for SenderUserId={SenderUserId} failed: service unavailable.";
+        private const string LogFriendRequestDecisionRejected = "Friend request operation {Operation} for SenderUserId={SenderUserId} rejected with ErrorCode={ErrorCode}.";
+
         private readonly IFriendshipSession _friendshipSession;
         private readonly IDialogService _dialogService;
+        private readonly ILoggerService _logger;
         private readonly SynchronizationContext _uiSyncContext;
         private bool _hasPendingRequests;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ManageFriendRequestViewModel"/> class using default session state.
         /// </summary>
-        public ManageFriendRequestViewModel()
-            : this(FriendshipSession.Current, null)
+        /// <param name="logger">Structured logger for recording social operation failures.</param>
+        public ManageFriendRequestViewModel(ILoggerService logger)
+            : this(FriendshipSession.Current, null, logger)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ManageFriendRequestViewModel"/> class without an optional dialog service.
+        /// </summary>
+        /// <param name="friendshipSession">Active social session providing friend request services.</param>
+        /// <param name="logger">Structured logger for recording social operation failures.</param>
+        public ManageFriendRequestViewModel(IFriendshipSession friendshipSession, ILoggerService logger)
+            : this(friendshipSession, null, logger)
         {
         }
 
@@ -35,10 +54,15 @@ namespace ViewModel.ViewModels
         /// </summary>
         /// <param name="friendshipSession">Active social session providing friend request services.</param>
         /// <param name="dialogService">Optional dialog service for displaying error alerts.</param>
-        public ManageFriendRequestViewModel(IFriendshipSession friendshipSession, IDialogService dialogService = null)
+        /// <param name="logger">Structured logger for recording social operation failures.</param>
+        public ManageFriendRequestViewModel(
+            IFriendshipSession friendshipSession,
+            IDialogService dialogService,
+            ILoggerService logger)
         {
             _friendshipSession = friendshipSession ?? throw new ArgumentNullException(nameof(friendshipSession));
             _dialogService = dialogService;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _uiSyncContext = SynchronizationContext.Current;
 
             PendingRequests = new ObservableCollection<FriendRequestItemViewModel>();
@@ -135,6 +159,7 @@ namespace ViewModel.ViewModels
             }
             else
             {
+                _logger.Warning(LogLoadPendingRequestsUnavailable, currentUserId);
                 PendingRequests.Clear();
                 HasPendingRequests = false;
             }
@@ -206,19 +231,9 @@ namespace ViewModel.ViewModels
                     currentUserId,
                     requestItem.SenderUserId);
 
-                if (result == null)
+                if (TryApplyRequestDecisionResult(result, requestItem, OperationAcceptRequest))
                 {
-                    _dialogService?.ShowError(MessageCode.ConnectionFailed);
-                }
-                else if (result.IsSuccess)
-                {
-                    PendingRequests.Remove(requestItem);
-                    HasPendingRequests = PendingRequests.Count > 0;
                     _friendshipSession.NotifyFriendsListChanged();
-                }
-                else
-                {
-                    _dialogService?.ShowWarning(MessageCode.UnexpectedError);
                 }
             }
         }
@@ -230,24 +245,35 @@ namespace ViewModel.ViewModels
 
             if (requestItem != null && currentUserId > 0)
             {
-                OperationResult result = await _friendshipSession.RequestClient.RejectFriendRequestAsync(
-                    currentUserId,
+                OperationResult result = await _friendshipSession.RequestClient.RejectFriendRequestAsync(currentUserId,
                     requestItem.SenderUserId);
 
-                if (result == null)
-                {
-                    _dialogService?.ShowError(MessageCode.ConnectionFailed);
-                }
-                else if (result.IsSuccess)
-                {
-                    PendingRequests.Remove(requestItem);
-                    HasPendingRequests = PendingRequests.Count > 0;
-                }
-                else
-                {
-                    _dialogService?.ShowWarning(MessageCode.UnexpectedError);
-                }
+                TryApplyRequestDecisionResult(result, requestItem, OperationRejectRequest);
             }
+        }
+
+        private bool TryApplyRequestDecisionResult(
+            OperationResult result,
+            FriendRequestItemViewModel requestItem,
+            string operationName)
+        {
+            if (result == null)
+            {
+                _logger.Error(LogFriendRequestDecisionUnavailable, operationName, requestItem.SenderUserId);
+                _dialogService?.ShowError(MessageCode.ConnectionFailed);
+                return false;
+            }
+
+            if (result.IsSuccess)
+            {
+                PendingRequests.Remove(requestItem);
+                HasPendingRequests = PendingRequests.Count > 0;
+                return true;
+            }
+
+            _logger.Warning(LogFriendRequestDecisionRejected, operationName, requestItem.SenderUserId, result.ErrorCode);
+            _dialogService?.ShowWarning(MessageCode.UnexpectedError);
+            return false;
         }
 
         private static int GetAuthenticatedUserId()

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Model.GameServices;
 using Model.Services;
 using Model.Session;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Base;
 using ViewModel.Constants;
 using ViewModel.Services;
@@ -24,10 +25,16 @@ namespace ViewModel.ViewModels
         private const byte WaitingLobbyStatus = 1;
         private const int MinimumPlayersToStart = 3;
         private const string PlayerKickedReason = "Player was kicked by the host.";
-
         private const string DefaultMissionsTarget = "5";
+        private const string LogLobbyConnectionFailure =
+            "Lobby connection failure detected for LobbyCode={LobbyCode}.";
+        private const string LogCurrentPlayerKicked =
+            "Local participant UserId={UserId} was kicked from LobbyCode={LobbyCode}.";
+        private const string LogLobbyDisbanded = "LobbyCode={LobbyCode} was disbanded by server (Reason={Reason}).";
+        private const string LogOpenSettingsDialogError = "Error opening lobby settings dialog.";
 
         private readonly INavigationService _navigationService;
+        private readonly ILoggerService _logger;
         private readonly ILobbySession _lobbySession;
         private readonly ILobbyClient _lobbyClient;
         private readonly SynchronizationContext _uiSyncContext;
@@ -45,10 +52,16 @@ namespace ViewModel.ViewModels
         private string _currentLobbyHostUsername;
         private int _lastConfirmedHostUserId;
 
-        public LobbyViewModel(INavigationService navigationService, ILobbySession lobbySession,
+        public LobbyViewModel(ViewModelNavigationLogging navigationLogging, ILobbySession lobbySession,
             IChatModerationPresenter chatModerationPresenter)
         {
-            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            if (navigationLogging == null)
+            {
+                throw new ArgumentNullException(nameof(navigationLogging));
+            }
+
+            _navigationService = navigationLogging.NavigationService;
+            _logger = navigationLogging.Logger;
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _lobbyClient = lobbySession.Client;
             _uiSyncContext = SynchronizationContext.Current;
@@ -66,7 +79,7 @@ namespace ViewModel.ViewModels
             StartGameCommand = new AsyncRelayCommand(ExecuteStartGameAsync, CanStartGame);
             ToggleReadyCommand = new AsyncRelayCommand(ExecuteToggleReadyAsync);
 
-            Chat = new LobbyChatViewModel(lobbySession, navigationService, chatModerationPresenter);
+            Chat = new LobbyChatViewModel(navigationLogging, lobbySession, chatModerationPresenter);
             LoadInitialLobbyState();
             SubscribeToLobbyEvents();
         }
@@ -229,6 +242,7 @@ namespace ViewModel.ViewModels
 
         private void MarkLobbyConnectionFailure()
         {
+            _logger.Error(LogLobbyConnectionFailure, _lobbyCode);
             HasLobbyConnectionFailure = true;
             OnPropertyChanged(nameof(CanEditCurrentLobby));
             OnPropertyChanged(nameof(CanStartCurrentLobby));
@@ -292,6 +306,7 @@ namespace ViewModel.ViewModels
         {
             if (!_isDisposed)
             {
+                _logger.Warning(LogCurrentPlayerKicked, _currentUserId, _lobbyCode);
                 UnsubscribeFromLobbyEvents();
                 _lobbySession.ClearLobby();
                 CurrentPlayerKicked?.Invoke(this, EventArgs.Empty);
@@ -318,6 +333,7 @@ namespace ViewModel.ViewModels
         {
             DispatchToUiThread(() =>
             {
+                _logger.Information(LogLobbyDisbanded, _lobbyCode, reason);
                 UnsubscribeFromLobbyEvents();
                 _lobbySession.ClearLobby();
                 _navigationService.NavigateTo(ViewId.GameMenu);
@@ -452,8 +468,7 @@ namespace ViewModel.ViewModels
             }
             catch (InvalidOperationException ex)
             {
-                // TODO: Replace Console.WriteLine with project logger once logging infrastructure is available.
-                Console.WriteLine($"[LobbyViewModel] Error opening settings dialog: {ex.Message}");
+                _logger.Error(ex, LogOpenSettingsDialogError);
             }
         }
 

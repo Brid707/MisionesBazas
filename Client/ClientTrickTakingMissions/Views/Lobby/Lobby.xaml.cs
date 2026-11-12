@@ -1,7 +1,6 @@
 using System.Windows.Controls;
 using Model.Session;
 using View.Services;
-using ViewModel.Services;
 using ViewModel.ViewModels;
 
 namespace View.Views
@@ -18,8 +17,9 @@ namespace View.Views
         {
             InitializeComponent();
 
-            INavigationService navigationService = new WpfNavigationService();
-            LobbyViewModel viewModel = new LobbyViewModel(navigationService, LobbySession.Current,
+            LobbyViewModel viewModel = new LobbyViewModel(
+                ClientLoggingRuntime.CreateNavigationLogging<LobbyViewModel>(),
+                LobbySession.Current,
                 new ChatModerationPresenter());
             Loaded += (_, __) =>
                 viewModel.ConfigureProfileImages(((App)System.Windows.Application.Current).ProfileImages);
