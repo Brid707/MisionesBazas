@@ -5,10 +5,10 @@ namespace TrickTakingMissions.Rules.Enums
     /// </summary>
     public enum CardSuit
     {
-        ColorOne = 1,
-        ColorTwo = 2,
-        ColorThree = 3,
-        ColorFour = 4,
+        Diamond = 1,
+        Club = 2,
+        Heart = 3,
+        Spade = 4,
         Special = 5
     }
 }

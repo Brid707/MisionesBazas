@@ -13,8 +13,6 @@ namespace TrickTakingMissions.Rules.Models
 
         public int PlayerCount { get; init; }
 
-        public int CurrentTrickNumber { get; init; }
-
         public IReadOnlyList<Card> PlayerHand { get; init; }
 
         public IReadOnlyList<TrickCardPlay> CurrentTrickPlayedCards { get; init; }

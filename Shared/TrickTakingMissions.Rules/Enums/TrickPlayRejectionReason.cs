@@ -9,8 +9,7 @@ namespace TrickTakingMissions.Rules.Enums
         NotPlayerTurn = 1,
         CardNotInHand = 2,
         MustFollowLeadSuit = 3,
-        RestrictedByPolicy = 4,
-        TrickAlreadyCompleted = 5,
-        InvalidPlayContext = 6
+        TrickAlreadyCompleted = 4,
+        InvalidPlayContext = 5
     }
 }

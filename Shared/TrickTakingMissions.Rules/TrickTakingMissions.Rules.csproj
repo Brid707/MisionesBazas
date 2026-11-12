@@ -47,12 +47,14 @@
     <Compile Include="Enums\SpecialCardSymbol.cs" />
     <Compile Include="Enums\TrickPlayRejectionReason.cs" />
     <Compile Include="Models\Card.cs" />
-    <Compile Include="Models\CompletedTrickSummary.cs" />
-    <Compile Include="Models\MissionRoundDeal.cs" />
     <Compile Include="Models\TrickCardPlay.cs" />
     <Compile Include="Models\TrickPlayContext.cs" />
     <Compile Include="Models\TrickPlayValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\DeckRules.cs" />
+    <Compile Include="Rules\LeadCardResolver.cs" />
+    <Compile Include="Rules\TrickFollowSuitRules.cs" />
+    <Compile Include="Rules\TrickWinnerRules.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
