@@ -32,7 +32,7 @@ namespace Domain
                 throw new ArgumentOutOfRangeException(nameof(playerCount));
             }
 
-            return trickPlays is not null && trickPlays.Count == playerCount;
+            return trickPlays != null && trickPlays.Count == playerCount;
         }
 
         public static byte GetNextTrickLeaderSeat(IReadOnlyList<TrickCardPlay> trickPlays, int playerCount)

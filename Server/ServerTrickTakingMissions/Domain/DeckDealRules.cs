@@ -24,6 +24,7 @@ namespace Domain
             }
 
             var shuffledCards = new List<Card>(deck);
+
             for (int currentIndex = shuffledCards.Count - 1; currentIndex > 0; currentIndex--)
             {
                 int swapIndex = randomGenerator.Next(currentIndex + 1);
@@ -55,9 +56,11 @@ namespace Domain
             List<List<Card>> handsBySeat = CreateEmptyHands(playerCount);
             byte captainSeat = 0;
             bool hasCaptainCard = false;
+
             for (int cardIndex = 0; cardIndex < shuffledDeck.Count; cardIndex++)
             {
                 Card dealtCard = shuffledDeck[cardIndex];
+
                 if (dealtCard is null)
                 {
                     throw new ArgumentException(nameof(shuffledDeck));
@@ -65,6 +68,7 @@ namespace Domain
 
                 int receivingSeat = cardIndex % playerCount;
                 handsBySeat[receivingSeat].Add(dealtCard);
+
                 if (IsCaptainCard(dealtCard))
                 {
                     captainSeat = (byte)receivingSeat;
@@ -88,6 +92,7 @@ namespace Domain
         private static List<List<Card>> CreateEmptyHands(int playerCount)
         {
             var emptyHands = new List<List<Card>>(playerCount);
+
             for (int seat = 0; seat < playerCount; seat++)
             {
                 emptyHands.Add(new List<Card>());
