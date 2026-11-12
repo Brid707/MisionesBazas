@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Net.Security;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -7,6 +6,7 @@ using Model.Security;
 using ProfileImages;
 using Services.Contracts;
 using Services.DataContracts;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
@@ -16,13 +16,18 @@ namespace Model.Services
     [CallbackBehavior(UseSynchronizationContext = false, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public sealed class ProfileImageClient : IProfileImageClient, IProfileImageCallback
     {
+        private const string ConnectionFailedLogTemplate = "Profile image connection failed: {ExceptionType}.";
+        private const string ConnectionTimedOutLogTemplate = "Profile image connection timed out: {ExceptionType}.";
+
         private readonly string _endpointAddress;
+        private readonly ILoggerService _logger;
         private DuplexChannelFactory<IProfileImageService> _channelFactory;
         private IProfileImageService _profileImageChannel;
 
-        public ProfileImageClient(string endpointAddress)
+        public ProfileImageClient(string endpointAddress, ILoggerService logger)
         {
             _endpointAddress = endpointAddress;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public event Action<int> ProfileImageChanged;
@@ -80,13 +85,13 @@ namespace Model.Services
             }
             catch (CommunicationException ex)
             {
-                Trace.TraceWarning("Profile image connection failed: {0}", ex.GetType().Name);
+                _logger.Warning(ConnectionFailedLogTemplate, ex.GetType().Name);
                 Dispose();
                 throw new ProfileImageOperationException(ProfileImageFailureCodes.ImageConnectionUnavailable, ex);
             }
             catch (TimeoutException ex)
             {
-                Trace.TraceWarning("Profile image connection timed out: {0}", ex.GetType().Name);
+                _logger.Warning(ConnectionTimedOutLogTemplate, ex.GetType().Name);
                 Dispose();
                 throw new ProfileImageOperationException(ProfileImageFailureCodes.ImageConnectionUnavailable, ex);
             }
@@ -119,8 +124,8 @@ namespace Model.Services
 
         public void Dispose()
         {
-            GameChannelCloser.CloseChannel(_profileImageChannel as ICommunicationObject);
-            GameChannelCloser.CloseChannel(_channelFactory);
+            GameChannelCloser.CloseChannel(_profileImageChannel as ICommunicationObject, _logger);
+            GameChannelCloser.CloseChannel(_channelFactory, _logger);
             _profileImageChannel = null;
             _channelFactory = null;
         }

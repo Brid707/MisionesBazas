@@ -1,7 +1,7 @@
-using System.ServiceModel;
 using System;
-
+using System.ServiceModel;
 using Model.GameServices;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
@@ -31,13 +31,24 @@ namespace Model.Services
     /// </summary>
     public sealed class AuthenticationClient : IUserLoginCallback, IDisposable
     {
+        private const string DisposeCloseFaultTemplate =
+            "Communication fault ({ExceptionType}) while closing authentication channel during dispose; aborting.";
+        private const string DisposeTimeoutTemplate =
+            "Timed out ({ExceptionType}) while closing authentication channel during dispose; aborting.";
+        private const string SendLoginOperationName = "SendLoginRequest";
+
+        private readonly ILoggerService _logger;
+        private readonly WcfFaultHandler _faultHandler;
         private UserLoginClient _client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationClient"/> class.
         /// </summary>
-        public AuthenticationClient()
+        /// <param name="logger">The logger used to record WCF communication faults.</param>
+        public AuthenticationClient(ILoggerService logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _faultHandler = new WcfFaultHandler(_logger, RaiseConnectionError);
             InitializeClient();
         }
 
@@ -67,20 +78,17 @@ namespace Model.Services
                 _client.Login(emailOrUsername, passwordHash);
                 isRequestSent = true;
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, SendLoginOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, SendLoginOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, SendLoginOperationName);
             }
 
             return isRequestSent;
@@ -114,7 +122,8 @@ namespace Model.Services
 
         private void EnsureClientIsOpen()
         {
-            if (_client == null || _client.State == CommunicationState.Faulted || _client.State == CommunicationState.Closed)
+            if (_client == null || _client.State == CommunicationState.Faulted 
+                || _client.State == CommunicationState.Closed)
             {
                 InitializeClient();
             }
@@ -135,14 +144,14 @@ namespace Model.Services
                         _client.Abort();
                     }
                 }
-                catch (CommunicationException)
+                catch (CommunicationException ex)
                 {
-                    // TODO: Implement logging for the exception once logging infrastructure is available.
+                    _logger.Warning(DisposeCloseFaultTemplate, ex.GetType().Name);
                     _client.Abort();
                 }
-                catch (TimeoutException)
+                catch (TimeoutException ex)
                 {
-                    // TODO: Implement logging for the exception once logging infrastructure is available.
+                    _logger.Warning(DisposeTimeoutTemplate, ex.GetType().Name);
                     _client.Abort();
                 }
                 finally
@@ -150,6 +159,11 @@ namespace Model.Services
                     _client = null;
                 }
             }
+        }
+
+        private void RaiseConnectionError(AuthenticationErrorType errorType)
+        {
+            ConnectionErrorOccurred?.Invoke(errorType);
         }
     }
 }

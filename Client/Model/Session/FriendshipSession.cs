@@ -1,5 +1,6 @@
 using System;
 using Model.Services;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Session
 {
@@ -8,17 +9,21 @@ namespace Model.Session
     /// </summary>
     public sealed class FriendshipSession : IFriendshipSession
     {
+        private const string LoggingNotConfiguredMessage =
+            "FriendshipSession logging must be configured during App.OnStartup before creating social clients.";
+        private const string SocialSessionClearedTemplate = "Friendship session state cleared.";
+
         private static readonly object s_syncRoot = new object();
         private static FriendshipSession s_instance;
 
+        private ILoggerFactory _loggerFactory;
+        private ILoggerService _sessionLogger;
         private IFriendshipClient _client;
         private IFriendsRequestClient _requestClient;
 
         private FriendshipSession()
         {
         }
-
-        public event Action FriendsListChanged;
 
         public static FriendshipSession Current
         {
@@ -47,7 +52,8 @@ namespace Model.Session
                 {
                     if (_client == null)
                     {
-                        _client = new FriendshipClient();
+                        EnsureLoggingConfigured();
+                        _client = new FriendshipClient(_loggerFactory.CreateLogger<FriendshipClient>());
                     }
 
                     return _client;
@@ -63,11 +69,29 @@ namespace Model.Session
                 {
                     if (_requestClient == null)
                     {
-                        _requestClient = new FriendsRequestClient();
+                        EnsureLoggingConfigured();
+                        _requestClient = new FriendsRequestClient(
+                            _loggerFactory.CreateLogger<FriendsRequestClient>());
                     }
 
                     return _requestClient;
                 }
+            }
+        }
+
+        public event Action FriendsListChanged;
+
+        public void ConfigureLogging(ILoggerFactory loggerFactory)
+        {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            lock (s_syncRoot)
+            {
+                _loggerFactory = loggerFactory;
+                _sessionLogger = loggerFactory.CreateLogger<FriendshipSession>();
             }
         }
 
@@ -91,6 +115,16 @@ namespace Model.Session
                     _requestClient.Dispose();
                     _requestClient = null;
                 }
+
+                _sessionLogger?.Information(SocialSessionClearedTemplate);
+            }
+        }
+
+        private void EnsureLoggingConfigured()
+        {
+            if (_loggerFactory == null)
+            {
+                throw new InvalidOperationException(LoggingNotConfiguredMessage);
             }
         }
     }

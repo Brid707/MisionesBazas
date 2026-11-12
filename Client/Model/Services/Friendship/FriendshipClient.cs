@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Model.IFriendShipService;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
@@ -12,10 +13,22 @@ namespace Model.Services
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     public sealed class FriendshipClient : IFriendshipClient, IFriendshipServiceCallback
     {
+        private const string SubscribeOperationName = "SubscribeSocialEventsAsync";
+        private const string UnsubscribeOperationName = "UnsubscribeSocialEventsAsync";
+        private const string GetFriendsOperationName = "GetFriendsListByUserIdAsync";
+        private const string RemoveFriendOperationName = "RemoveFriendAsync";
+        private const string BlockPlayerOperationName = "BlockPlayerAsync";
+        private const string UnblockPlayerOperationName = "UnblockPlayerAsync";
+        private const string SendInvitationOperationName = "SendGameInvitationAsync";
+
+        private readonly ILoggerService _logger;
+        private readonly WcfFaultHandler _faultHandler;
         private FriendshipServiceClient _client;
 
-        public FriendshipClient()
+        public FriendshipClient(ILoggerService logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _faultHandler = new WcfFaultHandler(_logger, RaiseConnectionError);
             InitializeClient();
         }
 
@@ -36,20 +49,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.SubscribeSocialEventsAsync(userId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, SubscribeOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, SubscribeOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, SubscribeOperationName, _client);
             }
         }
 
@@ -60,20 +70,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.UnsubscribeSocialEventsAsync(userId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, UnsubscribeOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, UnsubscribeOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, UnsubscribeOperationName, _client);
             }
         }
 
@@ -91,20 +98,17 @@ namespace Model.Services
                     friendsList = new List<Friend>(serverFriends);
                 }
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, GetFriendsOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, GetFriendsOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, GetFriendsOperationName, _client);
             }
 
             return friendsList;
@@ -119,20 +123,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 result = await _client.RemoveFriendAsync(userId, friendUserId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, RemoveFriendOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, RemoveFriendOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, RemoveFriendOperationName, _client);
             }
 
             return result;
@@ -147,20 +148,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 result = await _client.BlockPlayerAsync(blockerUserId, targetUserId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, BlockPlayerOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, BlockPlayerOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, BlockPlayerOperationName, _client);
             }
 
             return result;
@@ -175,20 +173,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 result = await _client.UnblockPlayerAsync(blockerUserId, targetUserId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, UnblockPlayerOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, UnblockPlayerOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, UnblockPlayerOperationName, _client);
             }
 
             return result;
@@ -201,20 +196,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.SendGameInvitationAsync(gameInvitation);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, SendInvitationOperationName, _client);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, SendInvitationOperationName, _client);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(_client);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, SendInvitationOperationName, _client);
             }
         }
 
@@ -265,9 +257,14 @@ namespace Model.Services
         {
             if (isDisposing && _client != null)
             {
-                GameChannelCloser.CloseChannel(_client);
+                GameChannelCloser.CloseChannel(_client, _logger);
                 _client = null;
             }
+        }
+
+        private void RaiseConnectionError(AuthenticationErrorType errorType)
+        {
+            ConnectionErrorOccurred?.Invoke(errorType);
         }
     }
 }

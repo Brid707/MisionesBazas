@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Model.GameServices;
 using Model.Security;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
@@ -13,11 +14,31 @@ namespace Model.Services
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
     public sealed partial class LobbyClient : ILobbyClient, ILobbyServiceCallback
     {
+        private const string ChannelDisconnectedTemplate = "Lobby duplex channel disconnected unexpectedly.";
+        private const string CloseFaultTemplate =
+            "Communication fault ({ExceptionType}) while closing lobby channel; aborting.";
+        private const string CloseTimeoutTemplate =
+            "Timed out ({ExceptionType}) while closing lobby channel; aborting.";
+        private const string MatchStartRejectedTemplate = "Match start rejected with {ExceptionType}.";
+        private const string CreateLobbyOperationName = "CreateLobbyAsync";
+        private const string UpdateLobbySettingsOperationName = "UpdateLobbySettingsAsync";
+        private const string AuthorizeReentryOperationName = "AuthorizeKickedPlayerReentryAsync";
+        private const string JoinLobbyOperationName = "JoinLobbyByCodeAsync";
+        private const string LeaveLobbyOperationName = "LeaveLobbyAsync";
+        private const string KickPlayerOperationName = "KickPlayerAsync";
+        private const string SetPlayerReadyOperationName = "SetPlayerReadyStatusAsync";
+        private const string SendChatMessageOperationName = "SendLobbyChatMessageAsync";
+        private const string StartGameOperationName = "StartGameFromLobbyAsync";
+
+        private readonly ILoggerService _logger;
+        private readonly WcfFaultHandler _faultHandler;
         private LobbyServiceClient _client;
         private bool _isLobbyClientDisposed;
 
-        public LobbyClient()
+        public LobbyClient(ILoggerService logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _faultHandler = new WcfFaultHandler(_logger, RaiseConnectionError);
             InitializeClient();
         }
 
@@ -54,20 +75,17 @@ namespace Model.Services
                 result = await _client.CreateLobbyAsync(hostUserId, lobbySettings);
                 PreserveGuestCredential(result);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, CreateLobbyOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, CreateLobbyOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, CreateLobbyOperationName);
             }
 
             return result;
@@ -83,13 +101,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 configurationUpdate = await _client.UpdateLobbySettingsAsync(lobbyCode, requesterUserId, lobbySettings);
             }
-            catch (TimeoutException)
+            catch (EndpointNotFoundException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, UpdateLobbySettingsOperationName);
             }
-            catch (CommunicationException)
+            catch (TimeoutException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, UpdateLobbySettingsOperationName);
+            }
+            catch (CommunicationException ex)
+            {
+                _faultHandler.ReportFault(ex, UpdateLobbySettingsOperationName);
             }
 
             return configurationUpdate;
@@ -106,13 +128,17 @@ namespace Model.Services
                 reentryAuthorization = await _client.AuthorizeKickedPlayerReentryAsync(
                     lobbyCode, hostUserId, targetUserId);
             }
-            catch (TimeoutException)
+            catch (EndpointNotFoundException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, AuthorizeReentryOperationName);
             }
-            catch (CommunicationException)
+            catch (TimeoutException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, AuthorizeReentryOperationName);
+            }
+            catch (CommunicationException ex)
+            {
+                _faultHandler.ReportFault(ex, AuthorizeReentryOperationName);
             }
 
             return reentryAuthorization;
@@ -140,20 +166,17 @@ namespace Model.Services
                 result = await _client.JoinLobbyByCodeAsync(lobbyCode, userId);
                 PreserveGuestCredential(result);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, JoinLobbyOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, JoinLobbyOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, JoinLobbyOperationName);
             }
 
             return result;
@@ -171,20 +194,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.LeaveLobbyAsync(lobbyCode, userId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, LeaveLobbyOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, LeaveLobbyOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, LeaveLobbyOperationName);
             }
         }
 
@@ -196,20 +216,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.KickPlayerByUserIdAsync(lobbyCode, hostUserId, targetUserId);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, KickPlayerOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, KickPlayerOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, KickPlayerOperationName);
             }
         }
 
@@ -226,20 +243,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 await _client.SetPlayerReadyStatusAsync(lobbyCode, userId, isReady);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, SetPlayerReadyOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, SetPlayerReadyOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, SetPlayerReadyOperationName);
             }
         }
 
@@ -253,13 +267,17 @@ namespace Model.Services
                 EnsureClientIsOpen();
                 chatMessageSubmissionOutcome = await _client.SendLobbyChatMessageAsync(chatMessageSubmission);
             }
-            catch (TimeoutException)
+            catch (EndpointNotFoundException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, SendChatMessageOperationName);
             }
-            catch (CommunicationException)
+            catch (TimeoutException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, SendChatMessageOperationName);
+            }
+            catch (CommunicationException ex)
+            {
+                _faultHandler.ReportFault(ex, SendChatMessageOperationName);
             }
 
             return chatMessageSubmissionOutcome;
@@ -276,19 +294,19 @@ namespace Model.Services
             }
             catch (FaultException ex)
             {
-                System.Diagnostics.Trace.TraceWarning("Match start rejected: {0}", ex.GetType().Name);
+                _logger.Warning(MatchStartRejectedTemplate, ex.GetType().Name);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFault(ex, StartGameOperationName);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFault(ex, StartGameOperationName);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFault(ex, StartGameOperationName);
             }
             return isStartConfirmed;
         }
@@ -347,6 +365,7 @@ namespace Model.Services
         {
             if (!_isLobbyClientDisposed)
             {
+                _logger.Warning(ChannelDisconnectedTemplate);
                 ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
             }
         }
@@ -388,20 +407,25 @@ namespace Model.Services
                     _client.Abort();
                 }
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
+                _logger.Warning(CloseFaultTemplate, ex.GetType().Name);
                 _client.Abort();
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
+                _logger.Warning(CloseTimeoutTemplate, ex.GetType().Name);
                 _client.Abort();
             }
             finally
             {
                 _client = null;
             }
+        }
+
+        private void RaiseConnectionError(AuthenticationErrorType errorType)
+        {
+            ConnectionErrorOccurred?.Invoke(errorType);
         }
     }
 }

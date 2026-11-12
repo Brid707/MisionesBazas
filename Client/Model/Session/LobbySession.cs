@@ -1,6 +1,8 @@
 
+using System;
 using Model.GameServices;
 using Model.Services;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Session
 {
@@ -9,9 +11,17 @@ namespace Model.Session
     /// </summary>
     public sealed class LobbySession : ILobbySession
     {
+        private const string LoggingNotConfiguredMessage =
+            "LobbySession logging must be configured during App.OnStartup before creating a lobby client.";
+        private const string StaleLobbyStateIgnoredTemplate =
+            "Ignored stale lobby snapshot with StateVersion {IncomingVersion} (current {CurrentVersion}).";
+        private const string LobbySessionClearedTemplate = "Lobby session state cleared.";
+
         private static readonly object s_syncRoot = new object();
         private static LobbySession s_instance;
 
+        private ILoggerFactory _loggerFactory;
+        private ILoggerService _sessionLogger;
         private ILobbyClient _client;
         private Lobby _currentLobby;
 
@@ -50,11 +60,26 @@ namespace Model.Session
                 {
                     if (_client == null)
                     {
-                        _client = new LobbyClient();
+                        EnsureLoggingConfigured();
+                        _client = new LobbyClient(_loggerFactory.CreateLogger<LobbyClient>());
                     }
 
                     return _client;
                 }
+            }
+        }
+
+        public void ConfigureLogging(ILoggerFactory loggerFactory)
+        {
+            if (loggerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(loggerFactory));
+            }
+
+            lock (s_syncRoot)
+            {
+                _loggerFactory = loggerFactory;
+                _sessionLogger = loggerFactory.CreateLogger<LobbySession>();
             }
         }
 
@@ -67,6 +92,11 @@ namespace Model.Session
                 if (isCurrentOrNewerRoom)
                 {
                     _currentLobby = lobby;
+                }
+                else if (_currentLobby != null && lobby != null)
+                {
+                    _sessionLogger?.Debug(StaleLobbyStateIgnoredTemplate, lobby.StateVersion,
+                        _currentLobby.StateVersion);
                 }
             }
         }
@@ -81,6 +111,16 @@ namespace Model.Session
                     _client.Dispose();
                     _client = null;
                 }
+
+                _sessionLogger?.Information(LobbySessionClearedTemplate);
+            }
+        }
+
+        private void EnsureLoggingConfigured()
+        {
+            if (_loggerFactory == null)
+            {
+                throw new InvalidOperationException(LoggingNotConfiguredMessage);
             }
         }
     }

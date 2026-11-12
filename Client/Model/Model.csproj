@@ -75,6 +75,7 @@
     <Compile Include="Services\FriendsRequestClient.cs" />
     <Compile Include="Services\ILobbyClient.cs" />
     <Compile Include="Services\LobbyClient.cs" />
+    <Compile Include="Services\WcfFaultHandler.cs" />
     <Compile Include="Session\IFriendshipSession.cs" />
     <Compile Include="Session\FriendshipSession.cs" />
     <Compile Include="Session\ILobbySession.cs" />
@@ -218,6 +219,12 @@
     <Compile Include="..\..\Shared\ProfileImages\ProfileImageFailureCodes.cs">
       <Link>ProfileImages\ProfileImageFailureCodes.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging.Abstractions\TrickTakingMissions.Logging.Abstractions.csproj">
+      <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
+      <Name>TrickTakingMissions.Logging.Abstractions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

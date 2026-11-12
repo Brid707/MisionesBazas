@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="../../Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" Id="22d2c703-3c64-40e3-bafe-f719ddc7d30f" />
+  <Project Path="../../Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" Id="78bb068a-8e30-499e-887f-1f6be4863672" />
   <Project Path="../../Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" Id="439733c3-c43d-4c1a-be6d-c25edc280575" />
   <Project Path="../Model/Model.csproj" Id="32c771cd-15cc-4a90-b9b8-cb1004d90b79" />
   <Project Path="../ViewModel/ViewModel.csproj" Id="67a5dcd0-c14d-4e90-bea7-1ff8c68e1b95" />

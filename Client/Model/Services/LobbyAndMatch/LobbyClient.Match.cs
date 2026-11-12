@@ -10,6 +10,11 @@ namespace Model.Services
 {
     public sealed partial class LobbyClient
     {
+        private const string MatchCommunicationFaultTemplate =
+            "WCF communication fault during match operation for lobby {LobbyCode}.";
+        private const string MatchTimeoutTemplate =
+            "WCF match operation timed out for lobby {LobbyCode}; aborting channel.";
+
         private readonly SemaphoreSlim _matchRequestGate = new SemaphoreSlim(1, 1);
         private string _registeredMatchLobbyCode;
 
@@ -42,13 +47,15 @@ namespace Model.Services
                 matchOperationResult = await Task.Run(() => InvokeMatchOperation(
                     matchOperation, lobbyCode, participantUserId));
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
+                _logger.Error(ex, MatchCommunicationFaultTemplate, lobbyCode);
                 _registeredMatchLobbyCode = null;
                 throw;
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
+                _logger.Error(ex, MatchTimeoutTemplate, lobbyCode);
                 _registeredMatchLobbyCode = null;
                 _client?.Abort();
                 throw;

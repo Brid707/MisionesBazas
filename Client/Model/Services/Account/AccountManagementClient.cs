@@ -2,6 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
@@ -51,14 +52,22 @@ namespace Model.Services
     {
         private const string EndpointConfigurationName = "NetTcpBinding_IAccountManagementService";
         private const string DefaultEndpointAddress = "net.tcp://localhost:8090/AccountManagementService";
+        private const string FallbackEndpointLogTemplate =
+            "Configured account management endpoint failed to load ({ExceptionType}); falling back to default NetTcp endpoint.";
+        private const string RegisterUserOperationName = "RegisterUserAsync";
 
+        private readonly ILoggerService _logger;
+        private readonly WcfFaultHandler _faultHandler;
         private ChannelFactory<IAccountManagementServiceChannel> _channelFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountManagementClient"/> class.
         /// </summary>
-        public AccountManagementClient()
+        /// <param name="logger">The logger used to record WCF communication faults.</param>
+        public AccountManagementClient(ILoggerService logger)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _faultHandler = new WcfFaultHandler(_logger, RaiseConnectionError);
             InitializeChannelFactory();
         }
 
@@ -95,22 +104,19 @@ namespace Model.Services
                     };
                 }
 
-                GameChannelCloser.CloseChannel(channel);
+                GameChannelCloser.CloseChannel(channel, _logger);
             }
-            catch (EndpointNotFoundException)
+            catch (EndpointNotFoundException ex)
             {
-                GameChannelCloser.CloseChannel(channel);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.ConnectionFailed);
+                _faultHandler.ReportFaultAndClose(ex, RegisterUserOperationName, channel);
             }
-            catch (TimeoutException)
+            catch (TimeoutException ex)
             {
-                GameChannelCloser.CloseChannel(channel);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.Timeout);
+                _faultHandler.ReportFaultAndClose(ex, RegisterUserOperationName, channel);
             }
-            catch (CommunicationException)
+            catch (CommunicationException ex)
             {
-                GameChannelCloser.CloseChannel(channel);
-                ConnectionErrorOccurred?.Invoke(AuthenticationErrorType.CommunicationError);
+                _faultHandler.ReportFaultAndClose(ex, RegisterUserOperationName, channel);
             }
 
             return registrationResult;
@@ -129,8 +135,9 @@ namespace Model.Services
             {
                 _channelFactory = new ChannelFactory<IAccountManagementServiceChannel>(EndpointConfigurationName);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.Warning(FallbackEndpointLogTemplate, ex.GetType().Name);
                 NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
                 EndpointAddress endpointAddress = new EndpointAddress(DefaultEndpointAddress);
                 _channelFactory = new ChannelFactory<IAccountManagementServiceChannel>(binding, endpointAddress);
@@ -151,9 +158,14 @@ namespace Model.Services
         {
             if (disposing && _channelFactory != null)
             {
-                GameChannelCloser.CloseChannel(_channelFactory);
+                GameChannelCloser.CloseChannel(_channelFactory, _logger);
                 _channelFactory = null;
             }
+        }
+
+        private void RaiseConnectionError(AuthenticationErrorType errorType)
+        {
+            ConnectionErrorOccurred?.Invoke(errorType);
         }
     }
 }
