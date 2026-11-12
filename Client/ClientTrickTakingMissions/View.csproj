@@ -312,4 +312,58 @@
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Eight.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Five.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Four.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Nine.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_One.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Seven.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Six.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Three.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Two.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Eight.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Five.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Four.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Nine.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_One.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Seven.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Six.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Three.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Diamond_Two.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Eight.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Five.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Four.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Nine.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_One.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Seven.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Six.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Three.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Heart_Two.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Eight.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Five.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Four.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Nine.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_One.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Seven.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Six.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Three.png" />
+    <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Spade_Two.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_Captain.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_Disruption_Three.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_Disruption_Two.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_Distress.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_Interference.png" />
+    <Resource Include="Assets\Images\Tokens\Indicators\Token_No_Wins.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Arrow_Four.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Arrow_One.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Arrow_Three.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Arrow_Two.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Omega.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Order_Five.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Order_Four.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Order_One.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Order_Three.png" />
+    <Resource Include="Assets\Images\Tokens\ObjectiveMarkers\Token_Order_Two.png" />
+  </ItemGroup>
 </Project>
