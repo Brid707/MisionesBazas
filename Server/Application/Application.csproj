@@ -135,14 +135,6 @@
       <Link>ProfileImages\ProfileImageFailureCodes.cs</Link>
     </Compile>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\MatchState.cs" />
     <Compile Include="Models\Match\ProcessedCardPlay.cs" />
@@ -154,6 +146,15 @@
     <Compile Include="UseCases\Match\MatchPlayValidation.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />
+    <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -46,5 +46,8 @@ namespace Gameplay
 
         [DataMember(Order = 13)]
         public int LastTrickWinnerUserId { get; set; }
+
+        [DataMember(Order = 14)]
+        public PlayerCapturedCardsSnapshot[] CapturedCardsByPlayer { get; set; }
     }
 }

@@ -89,6 +89,8 @@ namespace Application.UseCases
                 ParticipantUserIds = (int[])participantUserIds.Clone(),
                 PlayerHandCardIdsBySeat = missionDeal.HandsBySeat
                     .Select(hand => hand.Select(card => card.IdCard).ToList()).ToArray(),
+                WonCardIdsBySeat = participantUserIds.Select(_ => new List<int>()).ToArray(),
+                WonTrickCountsBySeat = new int[participantUserIds.Length],
                 CurrentTurnPlayerSeat = missionDeal.CaptainSeat,
                 MissionCaptainSeat = missionDeal.CaptainSeat,
                 MaximumMissionTrickCount = missionDeal.TotalTricksInMission
@@ -96,8 +98,7 @@ namespace Application.UseCases
         }
 
         private static CardPlayDecision ProcessPlayUnderLock(MatchState matchState,
-            CardPlaySubmission cardPlaySubmission,
-            int participantUserId)
+            CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
             var playDecision = new CardPlayDecision
@@ -122,8 +123,7 @@ namespace Application.UseCases
         }
 
         private static CardPlayDecision ProcessIdentifiedPlay(MatchState matchState,
-            CardPlaySubmission cardPlaySubmission,
-            int participantSeat)
+            CardPlaySubmission cardPlaySubmission, int participantSeat)
         {
             CardPlayDecision playDecision;
             if (matchState.ProcessedCardPlayDecisionsBySubmissionId.TryGetValue(cardPlaySubmission.CardPlaySubmissionId,
@@ -210,17 +210,26 @@ namespace Application.UseCases
                 Seat = (byte)Array.IndexOf(matchState.ParticipantUserIds, play.PlayerUserId),
                 Card = DeckRules.GetCardById(play.CardId)
             }).ToArray();
-            matchState.CurrentTurnPlayerSeat = TrickTurnRules.GetNextTrickLeaderSeat(trickPlays,
-                matchState.ParticipantUserIds.Length);
-            matchState.LastTrickWinnerUserId = matchState.ParticipantUserIds[matchState.CurrentTurnPlayerSeat];
+            int winningSeat = TrickTurnRules.GetNextTrickLeaderSeat(trickPlays, matchState.ParticipantUserIds.Length);
+            matchState.CurrentTurnPlayerSeat = winningSeat;
+            matchState.LastTrickWinnerUserId = matchState.ParticipantUserIds[winningSeat];
+            RegisterWonTrick(matchState, winningSeat);
             matchState.LastCompletedTrickCardPlays = matchState.CurrentTrickCardPlays.ToArray();
             matchState.CapturedCardPlays.AddRange(matchState.CurrentTrickCardPlays);
             matchState.CurrentTrickCardPlays.Clear();
             matchState.IsDealCompleted = matchState.CurrentTrickNumber == matchState.MaximumMissionTrickCount;
+
             if (!matchState.IsDealCompleted)
             {
                 matchState.CurrentTrickNumber++;
             }
+        }
+
+        private static void RegisterWonTrick(MatchState matchState, int winningSeat)
+        {
+            matchState.WonTrickCountsBySeat[winningSeat]++;
+            matchState.WonCardIdsBySeat[winningSeat].AddRange(
+                matchState.CurrentTrickCardPlays.Select(play => play.CardId));
         }
     }
 }

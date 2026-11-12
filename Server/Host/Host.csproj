@@ -102,12 +102,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ProfileImageHosting.cs" />
+    <Compile Include="Gameplay\InMemoryMatchStateStore.cs" />
+    <Compile Include="Gameplay\SecureMissionDeckDealer.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.Moderation\Infrastructure.Moderation.csproj">
       <Project>{A53B0772-76DF-4F1D-A540-B8C73E0F1F17}</Project>
       <Name>Infrastructure.Moderation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
+      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project><Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
     <Content Include="ModerationCatalogBackups\ValidatedCatalog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -116,16 +123,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Gameplay\InMemoryMatchStateStore.cs" />
-    <Compile Include="Gameplay\SecureMissionDeckDealer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ServerTrickTakingMissions\Domain\Domain.csproj">
-      <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project><Name>Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
-      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project><Name>TrickTakingMissions.Rules</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

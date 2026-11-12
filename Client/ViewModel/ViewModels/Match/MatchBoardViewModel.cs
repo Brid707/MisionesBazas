@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
@@ -20,6 +21,7 @@ namespace ViewModel.ViewModels
     /// <summary>Reconciles the local hand and preserves submission identity when retrying an uncertain play.</summary>
     public sealed class MatchBoardViewModel : ViewModelBase, IDisposable
     {
+        private const int CompletedTrickDisplayMilliseconds = 2500;
         private const string LogMatchSynchronizationFailed =
             "Match synchronization failed for LobbyCode={LobbyCode} (FeedbackKey={FeedbackKey}, ExceptionType={ExceptionType}).";
 
@@ -29,6 +31,7 @@ namespace ViewModel.ViewModels
         private readonly ILoggerService _logger;
         private readonly SynchronizationContext _uiContext;
         private readonly Timer _matchRefreshTimer;
+        private readonly Timer _completedTrickDisplayTimer;
         private readonly Dictionary<int, string> _participantNamesByUserId = new Dictionary<int, string>();
         private readonly List<LobbyPlayerItemViewModel> _seatedPlayers = new List<LobbyPlayerItemViewModel>();
         private PlayerMatchSnapshot _confirmedMatchSnapshot;
@@ -36,7 +39,9 @@ namespace ViewModel.ViewModels
         private string _matchFeedbackResourceKey = "Match_Connecting";
         private bool _isMatchConnected;
         private bool _isDisposed;
+        private bool _isCompletedTrickDisplayActive;
         private int _isRequestInProgress;
+        private int _announcedCompletedTrickCount;
 
         public MatchBoardViewModel(MatchBoardContext context, ILoggerService logger)
         {
@@ -56,6 +61,8 @@ namespace ViewModel.ViewModels
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
             RetryPendingCardPlayCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingPlay);
             _matchClient.MatchStateChanged += OnMatchStateChanged;
+            _completedTrickDisplayTimer = new Timer(OnCompletedTrickDisplayElapsed, null,
+                Timeout.Infinite, Timeout.Infinite);
             _matchRefreshTimer = new Timer(OnRefreshTimer, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
         }
 
@@ -73,11 +80,21 @@ namespace ViewModel.ViewModels
         public string CurrentTurnPlayerName => GetParticipantName(CurrentTurnPlayerUserId);
         public string LastTrickWinnerName => GetParticipantName(LastTrickWinnerUserId);
 
+        public string TrickProgressDisplay => string.Format(CultureInfo.InvariantCulture, "{0}/{1}",
+            CurrentTrickNumber, MaximumMissionTrickCount);
+
+        public bool HasLastTrickWinner => LastTrickWinnerUserId != 0 && !string.IsNullOrEmpty(LastTrickWinnerName);
+
+        public bool ShouldShowLastCompletedTrick => (_isCompletedTrickDisplayActive || IsDealCompleted) &&
+            CurrentTrickCardPlays.Count == 0 && LastCompletedTrickCardPlays.Count > 0;
+
         public string MatchFeedbackResourceKey
         {
             get => _matchFeedbackResourceKey;
             private set => SetProperty(ref _matchFeedbackResourceKey, value);
         }
+
+        private bool IsDealCompleted => _confirmedMatchSnapshot?.IsDealCompleted ?? false;
 
         public void ConfigureParticipantNames(IEnumerable<LobbyPlayerItemViewModel> participants)
         {
@@ -127,6 +144,7 @@ namespace ViewModel.ViewModels
         {
             _isDisposed = true;
             _matchRefreshTimer.Dispose();
+            _completedTrickDisplayTimer.Dispose();
             _matchClient.MatchStateChanged -= OnMatchStateChanged;
         }
 
@@ -187,7 +205,8 @@ namespace ViewModel.ViewModels
             TrickCardPlay[] publicTrick = _confirmedMatchSnapshot.CurrentTrickCardPlays
                 .Select((play, playOrder) => new TrickCardPlay
                 {
-                    Card = DeckRules.GetCardById(play.CardId), PlayOrder = (byte)playOrder
+                    Card = DeckRules.GetCardById(play.CardId),
+                    PlayOrder = (byte)playOrder
                 }).ToArray();
             return TrickFollowSuitRules.GetPlayableCards(playerHand, publicTrick).ToArray();
         }
@@ -222,7 +241,7 @@ namespace ViewModel.ViewModels
                 _confirmedMatchSnapshot = playerSnapshot;
                 _isMatchConnected = true;
                 var playableCardIds = new HashSet<int>(GetPlayableCardIds());
-                UpdatePublicHandCounts(playerSnapshot);
+                UpdatePublicSeatStates(playerSnapshot);
                 OwnHandCards.Clear();
                 foreach (int cardId in playerSnapshot.OwnHandCardIds)
                 {
@@ -230,6 +249,7 @@ namespace ViewModel.ViewModels
                         playableCardIds.Contains(cardId)));
                 }
                 ReplacePublicPlays(playerSnapshot);
+                RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
@@ -240,7 +260,7 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private void UpdatePublicHandCounts(PlayerMatchSnapshot playerSnapshot)
+        private void UpdatePublicSeatStates(PlayerMatchSnapshot playerSnapshot)
         {
             foreach (LobbyPlayerItemViewModel participant in _seatedPlayers)
             {
@@ -249,6 +269,34 @@ namespace ViewModel.ViewModels
                 {
                     participant.UpdateRemainingHandCardCount(playerSnapshot.RemainingHandCardCounts[participantSeat]);
                 }
+                participant.UpdateMissionCaptain(participant.IdUser == playerSnapshot.MissionCaptainUserId);
+                UpdateParticipantCapturedCards(participant, playerSnapshot);
+            }
+        }
+
+        private static void UpdateParticipantCapturedCards(LobbyPlayerItemViewModel participant,
+            PlayerMatchSnapshot playerSnapshot)
+        {
+            PlayerCapturedCardsSnapshot capturedCards = GetCapturedCards(playerSnapshot)
+                .FirstOrDefault(captured => captured.PlayerUserId == participant.IdUser);
+            int wonTrickCount = capturedCards?.WonTrickCount ?? 0;
+            int[] wonCardIds = capturedCards?.WonCardIds ?? new int[0];
+            participant.UpdateCapturedCards(wonTrickCount, wonCardIds);
+        }
+
+        private static PlayerCapturedCardsSnapshot[] GetCapturedCards(PlayerMatchSnapshot playerSnapshot)
+        {
+            return playerSnapshot.CapturedCardsByPlayer ?? new PlayerCapturedCardsSnapshot[0];
+        }
+
+        private void RefreshCompletedTrickDisplay(PlayerMatchSnapshot playerSnapshot)
+        {
+            int completedTrickCount = GetCapturedCards(playerSnapshot).Sum(captured => captured.WonTrickCount);
+            if (completedTrickCount > _announcedCompletedTrickCount)
+            {
+                _announcedCompletedTrickCount = completedTrickCount;
+                _isCompletedTrickDisplayActive = true;
+                _completedTrickDisplayTimer.Change(CompletedTrickDisplayMilliseconds, Timeout.Infinite);
             }
         }
 
@@ -306,10 +354,13 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(MatchStateVersion));
             OnPropertyChanged(nameof(CurrentTrickNumber));
             OnPropertyChanged(nameof(MaximumMissionTrickCount));
+            OnPropertyChanged(nameof(TrickProgressDisplay));
             OnPropertyChanged(nameof(CurrentTurnPlayerUserId));
             OnPropertyChanged(nameof(LastTrickWinnerUserId));
             OnPropertyChanged(nameof(CurrentTurnPlayerName));
             OnPropertyChanged(nameof(LastTrickWinnerName));
+            OnPropertyChanged(nameof(HasLastTrickWinner));
+            OnPropertyChanged(nameof(ShouldShowLastCompletedTrick));
         }
 
         private void SetConnectionFailure(string feedbackResourceKey, Exception ex)
@@ -332,6 +383,20 @@ namespace ViewModel.ViewModels
             DispatchSynchronization();
         }
 
+        private void OnCompletedTrickDisplayElapsed(object timerState)
+        {
+            if (!_isDisposed && _uiContext != null)
+            {
+                _uiContext.Post(_ => EndCompletedTrickDisplay(), null);
+            }
+        }
+
+        private void EndCompletedTrickDisplay()
+        {
+            _isCompletedTrickDisplayActive = false;
+            OnPropertyChanged(nameof(ShouldShowLastCompletedTrick));
+        }
+
         private void DispatchSynchronization()
         {
             if (!_isDisposed && _uiContext != null)
@@ -344,6 +409,5 @@ namespace ViewModel.ViewModels
         {
             _ = SynchronizeMatchAsync();
         }
-
     }
 }

@@ -600,4 +600,6 @@
   <data name="Match_TurnPlayer" xml:space="preserve"><value>Turn:</value></data>
   <data name="Match_TrickWinner" xml:space="preserve"><value>Last trick winner:</value></data>
   <data name="Match_StartFailed" xml:space="preserve"><value>The match could not start. Please try again.</value></data>
+  <data name="Match_WonTricksCount" xml:space="preserve"><value>Tricks won:</value></data>
+  <data name="Match_Captain" xml:space="preserve"><value>Mission captain</value></data>
 </root>

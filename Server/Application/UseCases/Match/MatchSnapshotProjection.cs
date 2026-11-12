@@ -24,7 +24,8 @@ namespace Application.UseCases
                 IsDealCompleted = matchState.IsDealCompleted,
                 CurrentTrickCardPlays = matchState.CurrentTrickCardPlays.Select(ClonePlay).ToArray(),
                 LastCompletedTrickCardPlays = matchState.LastCompletedTrickCardPlays.Select(ClonePlay).ToArray(),
-                LastTrickWinnerUserId = matchState.LastTrickWinnerUserId
+                LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
+                CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState)
             };
         }
 
@@ -42,6 +43,17 @@ namespace Application.UseCases
                 RejectionReason = playDecision.RejectionReason,
                 CommittedMatchStateVersion = playDecision.CommittedMatchStateVersion
             };
+        }
+
+        private static PlayerCapturedCardsSnapshot[] CreateCapturedCardsSnapshots(MatchState matchState)
+        {
+            return matchState.ParticipantUserIds.Select((participantUserId, participantSeat) =>
+                new PlayerCapturedCardsSnapshot
+                {
+                    PlayerUserId = participantUserId,
+                    WonTrickCount = matchState.WonTrickCountsBySeat[participantSeat],
+                    WonCardIds = matchState.WonCardIdsBySeat[participantSeat].ToArray()
+                }).ToArray();
         }
     }
 }

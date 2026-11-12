@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Gameplay;
-
 namespace Application.Models
 {
     /// <summary>Owns server-only hands and decisions; never serialize or return this object.</summary>
@@ -12,6 +11,8 @@ namespace Application.Models
         public long MatchStateVersion { get; set; } = 1;
         public int[] ParticipantUserIds { get; set; }
         public List<int>[] PlayerHandCardIdsBySeat { get; set; }
+        public List<int>[] WonCardIdsBySeat { get; set; }
+        public int[] WonTrickCountsBySeat { get; set; }
         public int CurrentTurnPlayerSeat { get; set; }
         public int MissionCaptainSeat { get; set; }
         public int CurrentTrickNumber { get; set; } = 1;

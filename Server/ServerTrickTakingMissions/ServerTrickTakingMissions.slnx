@@ -11,4 +11,18 @@
   <Project Path="../../Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" Id="439733c3-c43d-4c1a-be6d-c25edc280575" />
   <Project Path="Domain/Domain.csproj" Id="b0c8e1ab-21b4-4a79-a2ce-6a48e177bb35" />
   <Project Path="Infrastructure.Logging/Infrastructure.Logging.csproj" Id="52b22fcd-4c12-4079-a1d4-c86ef4fbf006" />
+  <Folder Name="/Shared/Gameplay/">
+    <File Path="../../Shared/Gameplay/CardPlayDecision.cs" />
+    <File Path="../../Shared/Gameplay/CardPlaySubmission.cs" />
+    <File Path="../../Shared/Gameplay/IMatchService.cs" />
+    <File Path="../../Shared/Gameplay/MatchAccessFault.cs" />
+    <File Path="../../Shared/Gameplay/MatchCardPlay.cs" />
+    <File Path="../../Shared/Gameplay/MatchRejectionReason.cs" />
+    <File Path="../../Shared/Gameplay/PlayerCapturedCardsSnapshot.cs" />
+    <File Path="../../Shared/Gameplay/PlayerMatchSnapshot.cs" />
+  </Folder>
+  <Folder Name="/Shared/ProfileImages/">
+    <File Path="../../Shared/ProfileImages/ProfileImageFailureCodes.cs" />
+    <File Path="../../Shared/ProfileImages/ProfileImageLimits.cs" />
+  </Folder>
 </Solution>

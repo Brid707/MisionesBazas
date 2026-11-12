@@ -232,6 +232,7 @@
     <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
     <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
     <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
   </ItemGroup>
