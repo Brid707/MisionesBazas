@@ -16,6 +16,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Compile Include="ChatCatalogReadState.cs" />
+    <Compile Include="ChatCatalogXmlReader.cs" />
+    <Compile Include="ChatModerationCatalogBackup.cs" />
     <Compile Include="ChatModerationLogger.cs" />
     <Compile Include="ProhibitedChatExpressionCatalog.cs" />
     <ProjectReference Include="..\Application\Application.csproj">

@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='utf-8'?>
+<catalogBackup version="1">
+  <catalog culture="es-MX">
+    <expression category="Profanity" matchObfuscation="true">mierda</expression>
+    <expression category="Profanity" matchObfuscation="true">pendejo</expression>
+    <expression category="Profanity" matchObfuscation="true">pendeja</expression>
+    <expression category="Profanity" matchObfuscation="true">pendejos</expression>
+    <expression category="Profanity" matchObfuscation="true">pendejas</expression>
+    <expression category="Profanity" matchObfuscation="true">cabron</expression>
+    <expression category="Profanity" matchObfuscation="true">cabrona</expression>
+    <expression category="Profanity" matchObfuscation="true">cabrones</expression>
+    <expression category="Profanity" matchObfuscation="true">chingada</expression>
+    <expression category="Profanity" matchObfuscation="true">chingado</expression>
+    <expression category="Profanity" matchObfuscation="true">chingar</expression>
+    <expression category="Profanity" matchObfuscation="true">chinga tu madre</expression>
+    <expression category="Profanity" matchObfuscation="true">hijo de puta</expression>
+    <expression category="Profanity" matchObfuscation="true">hija de puta</expression>
+    <expression category="Profanity" matchObfuscation="true">puto</expression>
+    <expression category="Profanity" matchObfuscation="true">puta</expression>
+    <expression category="Profanity" matchObfuscation="true">idiota</expression>
+    <expression category="Profanity" matchObfuscation="true">idiotas</expression>
+    <expression category="Profanity" matchObfuscation="true">imbecil</expression>
+    <expression category="Profanity" matchObfuscation="true">imbeciles</expression>
+    <expression category="Profanity" matchObfuscation="true">estupido</expression>
+    <expression category="Profanity" matchObfuscation="true">estupida</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a matar</expression>
+    <expression category="Threat" matchObfuscation="true">voy a matarte</expression>
+    <expression category="Threat" matchObfuscation="true">voy a perseguirte</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a perseguir</expression>
+    <expression category="Threat" matchObfuscation="true">voy a buscar tu direccion</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a hackear</expression>
+    <expression category="Threat" matchObfuscation="true">voy a hackearte</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a hacer dano</expression>
+    <expression category="Threat" matchObfuscation="true">voy a encontrar tu direccion</expression>
+    <expression category="Threat" matchObfuscation="true">voy a averiguar tu direccion</expression>
+    <expression category="Threat" matchObfuscation="true">voy a hacerte dano</expression>
+    <expression category="Profanity" matchObfuscation="true">cabronas</expression>
+    <expression category="Profanity" matchObfuscation="true">chingados</expression>
+    <expression category="Profanity" matchObfuscation="true">chingadas</expression>
+    <expression category="Profanity" matchObfuscation="true">chingues</expression>
+    <expression category="Profanity" matchObfuscation="true">chinguen</expression>
+    <expression category="Profanity" matchObfuscation="true">chingate</expression>
+    <expression category="Profanity" matchObfuscation="true">chinguen a su madre</expression>
+    <expression category="Profanity" matchObfuscation="true">vete a la chingada</expression>
+    <expression category="Profanity" matchObfuscation="true">vete al carajo</expression>
+    <expression category="Profanity" matchObfuscation="true">carajo</expression>
+    <expression category="Profanity" matchObfuscation="true">pinche</expression>
+    <expression category="Profanity" matchObfuscation="true">pinches</expression>
+    <expression category="Profanity" matchObfuscation="true">culero</expression>
+    <expression category="Profanity" matchObfuscation="true">culera</expression>
+    <expression category="Profanity" matchObfuscation="true">culeros</expression>
+    <expression category="Profanity" matchObfuscation="true">culeras</expression>
+    <expression category="Profanity" matchObfuscation="true">mamón</expression>
+    <expression category="Profanity" matchObfuscation="true">mamona</expression>
+    <expression category="Profanity" matchObfuscation="true">mamones</expression>
+    <expression category="Profanity" matchObfuscation="true">mierdas</expression>
+    <expression category="Profanity" matchObfuscation="true">jodete</expression>
+    <expression category="Profanity" matchObfuscation="true">joder</expression>
+    <expression category="Profanity" matchObfuscation="true">jodido</expression>
+    <expression category="Profanity" matchObfuscation="true">jodida</expression>
+    <expression category="Profanity" matchObfuscation="true">hijos de puta</expression>
+    <expression category="Profanity" matchObfuscation="true">hijas de puta</expression>
+    <expression category="Profanity" matchObfuscation="true">malparido</expression>
+    <expression category="Profanity" matchObfuscation="true">malparida</expression>
+    <expression category="Profanity" matchObfuscation="true">gilipollas</expression>
+    <expression category="Profanity" matchObfuscation="true">estupidos</expression>
+    <expression category="Profanity" matchObfuscation="true">estupidas</expression>
+    <expression category="Profanity" matchObfuscation="true">bastardo</expression>
+    <expression category="Profanity" matchObfuscation="true">bastarda</expression>
+    <expression category="Threat" matchObfuscation="true">voy a asesinarte</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a asesinar</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a golpear</expression>
+    <expression category="Threat" matchObfuscation="true">voy a golpearte</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a lastimar</expression>
+    <expression category="Threat" matchObfuscation="true">voy a lastimarte</expression>
+    <expression category="Threat" matchObfuscation="true">voy a rastrearte</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a rastrear</expression>
+    <expression category="Threat" matchObfuscation="true">voy a publicar tu direccion</expression>
+    <expression category="Threat" matchObfuscation="true">publicare tu direccion</expression>
+    <expression category="Threat" matchObfuscation="true">voy a filtrar tus datos</expression>
+    <expression category="Threat" matchObfuscation="true">voy a robar tu cuenta</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a robar la cuenta</expression>
+    <expression category="Threat" matchObfuscation="true">voy a hackear tu cuenta</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a buscar a tu casa</expression>
+    <expression category="Threat" matchObfuscation="true">voy a ir a tu casa a matarte</expression>
+    <expression category="Threat" matchObfuscation="true">voy a amenazar a tu familia</expression>
+    <expression category="Threat" matchObfuscation="true">voy a hacerle daño a tu familia</expression>
+    <expression category="Threat" matchObfuscation="true">te voy a romper la cara</expression>
+    <expression category="Threat" matchObfuscation="true">voy a romperte la cara</expression>
+  </catalog>
+  <catalog culture="en-US">
+    <expression category="Profanity" matchObfuscation="true">fuck</expression>
+    <expression category="Profanity" matchObfuscation="true">fucking</expression>
+    <expression category="Profanity" matchObfuscation="true">fucker</expression>
+    <expression category="Profanity" matchObfuscation="true">motherfucker</expression>
+    <expression category="Profanity" matchObfuscation="true">shit</expression>
+    <expression category="Profanity" matchObfuscation="true">bullshit</expression>
+    <expression category="Profanity" matchObfuscation="true">asshole</expression>
+    <expression category="Profanity" matchObfuscation="true">bitch</expression>
+    <expression category="Profanity" matchObfuscation="true">bastard</expression>
+    <expression category="Profanity" matchObfuscation="true">idiot</expression>
+    <expression category="Profanity" matchObfuscation="true">stupid</expression>
+    <expression category="Threat" matchObfuscation="true">i will kill you</expression>
+    <expression category="Threat" matchObfuscation="true">i'll kill you</expression>
+    <expression category="Threat" matchObfuscation="true">i am going to kill you</expression>
+    <expression category="Threat" matchObfuscation="true">i'm going to kill you</expression>
+    <expression category="Threat" matchObfuscation="true">i will stalk you</expression>
+    <expression category="Threat" matchObfuscation="true">i'll stalk you</expression>
+    <expression category="Threat" matchObfuscation="true">i will find your address</expression>
+    <expression category="Threat" matchObfuscation="true">i'll find your address</expression>
+    <expression category="Threat" matchObfuscation="true">i will hack you</expression>
+    <expression category="Threat" matchObfuscation="true">i'll hack you</expression>
+    <expression category="Threat" matchObfuscation="true">i will hurt you</expression>
+    <expression category="Threat" matchObfuscation="true">i am going to hack you</expression>
+    <expression category="Threat" matchObfuscation="true">i'm going to hack you</expression>
+    <expression category="Threat" matchObfuscation="true">i am going to stalk you</expression>
+    <expression category="Threat" matchObfuscation="true">i'm going to stalk you</expression>
+    <expression category="Threat" matchObfuscation="true">i will track you down</expression>
+    <expression category="Threat" matchObfuscation="true">i'll track you down</expression>
+    <expression category="Profanity" matchObfuscation="true">fuckers</expression>
+    <expression category="Profanity" matchObfuscation="true">motherfuckers</expression>
+    <expression category="Profanity" matchObfuscation="true">motherfucking</expression>
+    <expression category="Profanity" matchObfuscation="true">shitty</expression>
+    <expression category="Profanity" matchObfuscation="true">shithole</expression>
+    <expression category="Profanity" matchObfuscation="true">shithead</expression>
+    <expression category="Profanity" matchObfuscation="true">shitheads</expression>
+    <expression category="Profanity" matchObfuscation="true">assholes</expression>
+    <expression category="Profanity" matchObfuscation="true">bitches</expression>
+    <expression category="Profanity" matchObfuscation="true">bastards</expression>
+    <expression category="Profanity" matchObfuscation="true">idiots</expression>
+    <expression category="Profanity" matchObfuscation="true">dumbass</expression>
+    <expression category="Profanity" matchObfuscation="true">dumbasses</expression>
+    <expression category="Profanity" matchObfuscation="true">jackass</expression>
+    <expression category="Profanity" matchObfuscation="true">jackasses</expression>
+    <expression category="Profanity" matchObfuscation="true">dipshit</expression>
+    <expression category="Profanity" matchObfuscation="true">dipshits</expression>
+    <expression category="Profanity" matchObfuscation="true">dickhead</expression>
+    <expression category="Profanity" matchObfuscation="true">dickheads</expression>
+    <expression category="Profanity" matchObfuscation="true">prick</expression>
+    <expression category="Profanity" matchObfuscation="true">pricks</expression>
+    <expression category="Profanity" matchObfuscation="true">wanker</expression>
+    <expression category="Profanity" matchObfuscation="true">wankers</expression>
+    <expression category="Profanity" matchObfuscation="true">twat</expression>
+    <expression category="Profanity" matchObfuscation="true">twats</expression>
+    <expression category="Profanity" matchObfuscation="true">son of a bitch</expression>
+    <expression category="Profanity" matchObfuscation="true">sons of bitches</expression>
+    <expression category="Profanity" matchObfuscation="true">piece of shit</expression>
+    <expression category="Profanity" matchObfuscation="true">piss off</expression>
+    <expression category="Profanity" matchObfuscation="true">screw you</expression>
+    <expression category="Threat" matchObfuscation="true">i will beat you up</expression>
+    <expression category="Threat" matchObfuscation="true">i'll beat you up</expression>
+    <expression category="Threat" matchObfuscation="true">i will assault you</expression>
+    <expression category="Threat" matchObfuscation="true">i will murder you</expression>
+    <expression category="Threat" matchObfuscation="true">i'll murder you</expression>
+    <expression category="Threat" matchObfuscation="true">i will shoot you</expression>
+    <expression category="Threat" matchObfuscation="true">i'll shoot you</expression>
+    <expression category="Threat" matchObfuscation="true">i will stab you</expression>
+    <expression category="Threat" matchObfuscation="true">i will attack you</expression>
+    <expression category="Threat" matchObfuscation="true">i will hurt your family</expression>
+    <expression category="Threat" matchObfuscation="true">i will publish your address</expression>
+    <expression category="Threat" matchObfuscation="true">i'll publish your address</expression>
+    <expression category="Threat" matchObfuscation="true">i will leak your address</expression>
+    <expression category="Threat" matchObfuscation="true">i will expose your private information</expression>
+    <expression category="Threat" matchObfuscation="true">i will steal your account</expression>
+    <expression category="Threat" matchObfuscation="true">i will hack your account</expression>
+    <expression category="Threat" matchObfuscation="true">i'll hack your account</expression>
+    <expression category="Threat" matchObfuscation="true">i will come to your house and kill you</expression>
+    <expression category="Threat" matchObfuscation="true">i will find where you live</expression>
+    <expression category="Threat" matchObfuscation="true">i will break your bones</expression>
+  </catalog>
+</catalogBackup>

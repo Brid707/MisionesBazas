@@ -28,6 +28,9 @@ namespace Services.DataContracts
         public bool IsPrivate { get; set; } = true;
 
         [DataMember]
+        public bool IsChatSendingAvailable { get; set; }
+
+        [DataMember]
         public long StateVersion { get; set; }
 
         [DataMember]

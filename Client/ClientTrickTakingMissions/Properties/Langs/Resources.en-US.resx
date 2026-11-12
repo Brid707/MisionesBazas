@@ -502,7 +502,7 @@
   <data name="Chat_ChatAuthenticationRequired" xml:space="preserve"><value>Sign in again to use chat.</value></data>
   <data name="Chat_ChatParticipantNotInLobby" xml:space="preserve"><value>You are no longer a participant in this lobby.</value></data>
   <data name="Chat_ChatStorageUnavailable" xml:space="preserve"><value>The submission could not be confirmed. Retry the same message.</value></data>
-  <data name="Chat_ChatModerationUnavailable" xml:space="preserve"><value>The message could not be checked. Please try again.</value></data>
+  <data name="Chat_ChatModerationUnavailable" xml:space="preserve"><value>Chat is unavailable right now. You can keep playing.</value></data>
   <data name="Chat_ChatDeliveryUnknown" xml:space="preserve"><value>Submission could not be confirmed. Retrying the same text will not duplicate infraction points.</value></data>
   <data name="Chat_ConflictingChatMessageIdentifier" xml:space="preserve"><value>The submission identifier already belongs to another message.</value></data>
   <data name="Chat_ChatAccountBanned" xml:space="preserve"><value>Your account is banned for chat infractions.</value></data>

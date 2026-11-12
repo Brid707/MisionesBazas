@@ -1,4 +1,3 @@
-
 using Application.Models;
 
 namespace Application.Ports
@@ -8,6 +7,8 @@ namespace Application.Ports
     /// </summary>
     public interface ILobbyChatMessageUseCase
     {
+        bool IsChatSendingAvailable { get; }
+
         LobbyChatMessageProcessing ProcessChatMessage(
             AuthenticatedChatMessageSubmission authenticatedChatMessageSubmission);
     }

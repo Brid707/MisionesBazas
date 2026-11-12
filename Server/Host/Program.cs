@@ -1,4 +1,12 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+
 using Application;
+using Application.Models;
 using Application.Ports;
 using Application.Ports.Logger;
 using Application.UseCases;
@@ -9,12 +17,6 @@ using Infrastructure.Moderation;
 using Persistence.Repository;
 using Services.Security;
 using Services.Services;
-using System;
-using System.Globalization;
-using System.IO;
-using System.ServiceModel;
-using System.ServiceModel.Description;
-using System.ServiceModel.Dispatcher;
 
 namespace Host
 {
@@ -60,11 +62,14 @@ namespace Host
                     new ChatInfractionRepository(new ChatModerationLogger());
                 IAccountAccessPolicy accountAccessPolicy = new AccountAccessPolicy(
                     new AuthenticatedAccountSessionRegistry(), chatInfractionRepository);
-                IProhibitedChatExpressionCatalog prohibitedChatExpressionCatalog =
-                    new ProhibitedChatExpressionCatalog(
+                IChatModerationCatalogBackup catalogBackup = new ChatModerationCatalogBackup(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                        "ModerationCatalogBackups", "ValidatedCatalog.xml"));
+                ChatModerationStartup moderationStartup = new ChatModerationStartup(catalogBackup, hostLogger);
+                ChatModerationPreparation moderationPreparation = moderationStartup.PrepareChatModeration(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ModerationCatalogs"));
                 ILobbyChatMessageUseCase lobbyChatMessageUseCase = new LobbyChatMessageUseCase(
-                    prohibitedChatExpressionCatalog, chatInfractionRepository);
+                    moderationPreparation, chatInfractionRepository, hostLogger);
                 loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy);
                 lobbyHost = CreateLobbyServiceHost(userRepository, lobbyChatMessageUseCase, accountAccessPolicy);
                 accountManagementHost = CreateAccountManagementServiceHost(userRepository);
