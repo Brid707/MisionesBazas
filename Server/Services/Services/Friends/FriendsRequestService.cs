@@ -5,10 +5,7 @@ using Services.DataContracts.Friendship;
 using Services.DataContracts;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
 using System.Threading.Tasks;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 

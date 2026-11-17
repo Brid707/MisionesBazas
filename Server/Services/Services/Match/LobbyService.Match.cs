@@ -12,7 +12,8 @@ namespace Services.Services
             PlayerMatchSnapshot participantSnapshot = _lobbyUseCase.Match.GetPlayerMatch(lobbyCode, participantUserId);
             if (participantSnapshot == null)
             {
-                throw new FaultException<MatchAccessFault>(new MatchAccessFault { FailureCode = "MatchUnavailable" });
+                throw new FaultException<MatchAccessFault>(new MatchAccessFault
+                { FailureCode = FaultMatchUnavailable });
             }
             return participantSnapshot;
         }
@@ -22,7 +23,8 @@ namespace Services.Services
             if (cardPlaySubmission == null || string.IsNullOrWhiteSpace(cardPlaySubmission.LobbyCode) ||
                 cardPlaySubmission.LobbyCode.Length > 16)
             {
-                throw new FaultException<MatchAccessFault>(new MatchAccessFault { FailureCode = "InvalidSubmission" });
+                throw new FaultException<MatchAccessFault>(new MatchAccessFault
+                { FailureCode = FaultInvalidSubmission });
             }
             EnsureMatchParticipantAllowed(cardPlaySubmission.LobbyCode, participantUserId);
             CardPlayDecision playDecision = _lobbyUseCase.Match.PlayCard(cardPlaySubmission, participantUserId);
@@ -33,6 +35,7 @@ namespace Services.Services
             }
             return playDecision;
         }
+
         private void EnsureMatchParticipantAllowed(string lobbyCode, int participantUserId)
         {
             try
@@ -40,18 +43,14 @@ namespace Services.Services
                 EnsureParticipantOperationAllowed(participantUserId);
                 EnsureRegisteredRoomChannel(lobbyCode, participantUserId);
             }
-            catch (FaultException ex)
+            catch (FaultException)
             {
-                LogMatchFailure("Match access rejected", ex);
+                _logger.Warning(MatchAccessRejectedTemplate, participantUserId, lobbyCode);
                 throw new FaultException<MatchAccessFault>(new MatchAccessFault
                 {
-                    FailureCode = "ParticipantNotAllowed"
+                    FailureCode = FaultParticipantNotAllowed
                 });
             }
-        }
-        private void LogMatchFailure(string failureDescription, Exception ex)
-        {
-            _logger.Error(ex, "{FailureDescription}", failureDescription);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.ServiceModel;
@@ -21,6 +20,21 @@ namespace Services.Services
         IncludeExceptionDetailInFaults = false)]
     public sealed class ProfileImageService : IProfileImageService
     {
+        private const string ProfileImageUpdatedTemplate =
+            "Profile image updated for account {AccountId}.";
+        private const string ProfileImageOperationRejectedTemplate =
+            "Profile image operation rejected with failure code {FailureCode}.";
+        private const string ProfileImageValidationUnderlyingFailureTemplate =
+            "Profile image validation preserved an underlying infrastructure failure.";
+        private const string ProfileImageStorageUnavailableTemplate =
+            "Profile image storage is unavailable.";
+        private const string ProfileImageStoragePermissionDeniedTemplate =
+            "Profile image storage permission was denied.";
+        private const string ProfileImageMetadataUnavailableTemplate =
+            "Profile image metadata is unavailable.";
+        private const string ProfileImageOperationFaultReason =
+            "The profile image operation could not be completed.";
+
         private readonly ProfileImageUseCase _profileImageUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
         private readonly ILoggerService _logger;
@@ -29,9 +43,9 @@ namespace Services.Services
         public ProfileImageService(ProfileImageUseCase profileImageUseCase,
             IAccountAccessPolicy accountAccessPolicy, ILoggerService logger)
         {
-            _profileImageUseCase = profileImageUseCase;
-            _accountAccessPolicy = accountAccessPolicy;
-            _logger = logger;
+            _profileImageUseCase = profileImageUseCase ?? throw new ArgumentNullException(nameof(profileImageUseCase));
+            _accountAccessPolicy = accountAccessPolicy ?? throw new ArgumentNullException(nameof(accountAccessPolicy));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _subscriptions = new ProfileImageSubscriptions(logger);
         }
 
@@ -46,7 +60,7 @@ namespace Services.Services
                 AccountSessionHeader.ReadCurrentAccountSessionToken());
             PlayerProfileImageData changedImage = _profileImageUseCase.ChangeOwnProfileImage(
                 accountUserId, upload?.SelectedProfileImageBytes);
-            _logger.Information("Profile image updated for account {AccountId}.", accountUserId);
+            _logger.Information(ProfileImageUpdatedTemplate, accountUserId);
             _subscriptions.Publish(accountUserId);
             return MapProfileImage(changedImage);
         }
@@ -86,31 +100,26 @@ namespace Services.Services
             }
             catch (ProfileImageException ex)
             {
-                _logger.Warning("Profile image operation rejected: {FailureCode}.", ex.FailureCode);
+                _logger.Warning(ProfileImageOperationRejectedTemplate, ex.FailureCode);
                 if (ex.InnerException != null)
                 {
-                    _logger.Error(ex, "Profile image validation preserved an underlying infrastructure failure.");
+                    _logger.Error(ex, ProfileImageValidationUnderlyingFailureTemplate);
                 }
                 throw CreateImageFault(ex.FailureCode);
             }
-            catch (SqlException ex)
-            {
-                _logger.Error(ex, "Profile image account authorization storage is unavailable.");
-                throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
-            }
             catch (IOException ex)
             {
-                _logger.Error(ex, "Profile image storage is unavailable.");
+                _logger.Error(ex, ProfileImageStorageUnavailableTemplate);
                 throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
             }
             catch (UnauthorizedAccessException ex)
             {
-                _logger.Error(ex, "Profile image storage permission was denied.");
+                _logger.Error(ex, ProfileImageStoragePermissionDeniedTemplate);
                 throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
             }
             catch (InvalidOperationException ex)
             {
-                _logger.Error(ex, "Profile image metadata is unavailable.");
+                _logger.Error(ex, ProfileImageMetadataUnavailableTemplate);
                 throw CreateImageFault(ProfileImageFailureCodes.ImageStorageUnavailable);
             }
             return result;
@@ -128,7 +137,7 @@ namespace Services.Services
         private static FaultException<ProfileImageFault> CreateImageFault(string failureCode)
         {
             return new FaultException<ProfileImageFault>(new ProfileImageFault { FailureCode = failureCode },
-                new FaultReason("The profile image operation could not be completed."));
+                new FaultReason(ProfileImageOperationFaultReason));
         }
     }
 }

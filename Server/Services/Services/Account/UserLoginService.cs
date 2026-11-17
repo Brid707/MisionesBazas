@@ -1,5 +1,4 @@
 using System;
-using System.Data.SqlClient;
 using System.ServiceModel;
 
 using Application.Models;
@@ -19,6 +18,15 @@ namespace Services.Services
     {
         private const string LoginSuccessMessage = "Login successful.";
         private const string InvalidCredentialsMessage = "Invalid email or password.";
+        private const string MessageStorageUnavailable = "ChatStorageUnavailable";
+        private const string MessageChatAccountBanned = "ChatAccountBanned";
+
+        private const string LoginPersistenceFailureTemplate =
+            "Storage error occurred during authentication for email {Email}.";
+        private const string LoginCallbackCommunicationFailureTemplate =
+            "Login callback communication faulted for email {Email}.";
+        private const string LoginCallbackTimeoutFailureTemplate =
+            "Login callback timed out for email {Email}.";
 
         private readonly IUserLoginUseCase _userLoginUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
@@ -33,7 +41,7 @@ namespace Services.Services
             }
 
             _userLoginUseCase = userLoginUseCase;
-            _accountAccessPolicy = accountAccessPolicy;
+            _accountAccessPolicy = accountAccessPolicy ?? throw new ArgumentNullException(nameof(accountAccessPolicy));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -43,20 +51,39 @@ namespace Services.Services
             {
                 AuthenticateAndNotifyAccount(email, password);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                NotifyLoginStorageFailure();
+                _logger.Error(ex, LoginPersistenceFailureTemplate, email);
+                NotifyLoginStorageFailure(email);
             }
-            catch (SqlException)
+            catch (TimeoutException ex)
             {
-                NotifyLoginStorageFailure();
+                _logger.Error(ex, LoginPersistenceFailureTemplate, email);
+                NotifyLoginStorageFailure(email);
             }
         }
 
-        private static void NotifyLoginStorageFailure()
+        private void NotifyLoginStorageFailure(string email)
         {
-            OperationContext.Current.GetCallbackChannel<IUserLoginCallback>()
-                .LoginResult(false, "ChatStorageUnavailable", null);
+            SafeNotifyLoginResult(email, false, MessageStorageUnavailable, null);
+        }
+
+        private void SafeNotifyLoginResult(string email, bool isLoginSuccessful, string responseMessage, User user)
+        {
+            try
+            {
+                OperationContext.Current?
+                    .GetCallbackChannel<IUserLoginCallback>()?
+                    .LoginResult(isLoginSuccessful, responseMessage, user);
+            }
+            catch (CommunicationException)
+            {
+                _logger.Warning(LoginCallbackCommunicationFailureTemplate, email);
+            }
+            catch (TimeoutException)
+            {
+                _logger.Warning(LoginCallbackTimeoutFailureTemplate, email);
+            }
         }
 
         private User CreateRestrictedLoginNotice(int accountUserId)
@@ -108,14 +135,12 @@ namespace Services.Services
                 responseMessage = InvalidCredentialsMessage;
                 if (user != null)
                 {
-                    responseMessage = "ChatAccountBanned";
+                    responseMessage = MessageChatAccountBanned;
                     userDto = CreateRestrictedLoginNotice(user.IdUser);
                 }
             }
 
-            OperationContext.Current
-                .GetCallbackChannel<IUserLoginCallback>()
-                .LoginResult(isLoginSuccessful, responseMessage, userDto);
+            SafeNotifyLoginResult(email, isLoginSuccessful, responseMessage, userDto);
         }
     }
 }

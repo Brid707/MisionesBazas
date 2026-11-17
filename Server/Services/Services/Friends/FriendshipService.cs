@@ -14,6 +14,18 @@ namespace Services.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public sealed class FriendshipService : IFriendshipService
     {
+        private const string CallbackChannelClosedTemplate =
+            "Callback channel closed for subscriber {UserId} during {Operation}.";
+        private const string CallbackTimeoutTemplate =
+            "Callback timed out for subscriber {UserId} during {Operation}.";
+        private const string CallbackCommunicationFaultedTemplate =
+            "Callback communication faulted for subscriber {UserId} during {Operation}.";
+
+        private const string OperationFriendRequest = "FriendRequest";
+        private const string OperationFriendStatus = "FriendStatus";
+        private const string OperationFriendRemoved = "FriendRemoved";
+        private const string OperationGameInvitation = "GameInvitation";
+
         private static readonly ConcurrentDictionary<int, IFriendshipServiceCallback> s_onlineSubscribers
             = new ConcurrentDictionary<int, IFriendshipServiceCallback>();
         private readonly IFriendshipUseCase _friendshipUseCase;
@@ -74,8 +86,7 @@ namespace Services.Services
 
         public OperationResult BlockPlayer(int blockerUserId, int targetUserId)
         {
-            FriendshipActionOutcome friendshipActionOutcome = _friendshipUseCase.BlockPlayer(
-                blockerUserId,
+            FriendshipActionOutcome friendshipActionOutcome = _friendshipUseCase.BlockPlayer(blockerUserId,
                 targetUserId);
 
             if (friendshipActionOutcome.IsSuccess)
@@ -88,8 +99,7 @@ namespace Services.Services
 
         public OperationResult UnblockPlayer(int blockerUserId, int targetUserId)
         {
-            FriendshipActionOutcome friendshipActionOutcome = _friendshipUseCase.UnblockPlayer(
-                blockerUserId,
+            FriendshipActionOutcome friendshipActionOutcome = _friendshipUseCase.UnblockPlayer(blockerUserId,
                 targetUserId);
 
             return MapToOperationResult(friendshipActionOutcome);
@@ -134,10 +144,7 @@ namespace Services.Services
             }
         }
 
-        internal static void NotifySingleFriendStatus(
-            int targetSubscriberUserId,
-            int friendUserId,
-            bool isOnline,
+        internal static void NotifySingleFriendStatus(int targetSubscriberUserId, int friendUserId, bool isOnline,
             ILoggerService logger = null)
         {
             if (s_onlineSubscribers.TryGetValue(targetSubscriberUserId, out IFriendshipServiceCallback callback))
@@ -166,9 +173,7 @@ namespace Services.Services
             }
         }
 
-        private void AttachChannelDisconnectHandlers(
-            int userId,
-            IFriendshipServiceCallback callback,
+        private void AttachChannelDisconnectHandlers(int userId, IFriendshipServiceCallback callback,
             IContextChannel channel)
         {
             if (channel != null)
@@ -189,10 +194,8 @@ namespace Services.Services
             }
         }
 
-        private static void TrySendFriendRequestCallback(
-            FriendRequest friendRequest,
-            IFriendshipServiceCallback receiverCallback,
-            ILoggerService logger)
+        private static void TrySendFriendRequestCallback(FriendRequest friendRequest,
+            IFriendshipServiceCallback receiverCallback, ILoggerService logger)
         {
             int subscriberUserId = friendRequest.ReceiverUserId;
 
@@ -205,15 +208,18 @@ namespace Services.Services
                 else
                 {
                     s_onlineSubscribers.TryRemove(subscriberUserId, out IFriendshipServiceCallback _);
+                    logger?.Warning(CallbackChannelClosedTemplate, subscriberUserId, OperationFriendRequest);
                 }
             }
             catch (TimeoutException)
             {
                 s_onlineSubscribers.TryRemove(subscriberUserId, out IFriendshipServiceCallback _);
+                logger?.Warning(CallbackTimeoutTemplate, subscriberUserId, OperationFriendRequest);
             }
             catch (CommunicationException)
             {
                 s_onlineSubscribers.TryRemove(subscriberUserId, out IFriendshipServiceCallback _);
+                logger?.Warning(CallbackCommunicationFaultedTemplate, subscriberUserId, OperationFriendRequest);
             }
         }
 
@@ -222,12 +228,8 @@ namespace Services.Services
             return userId > 0;
         }
 
-        private static void TrySendStatusChangedCallback(
-            int targetSubscriberUserId,
-            IFriendshipServiceCallback callback,
-            int friendUserId,
-            bool isOnline,
-            ILoggerService logger)
+        private static void TrySendStatusChangedCallback(int targetSubscriberUserId,
+            IFriendshipServiceCallback callback, int friendUserId, bool isOnline, ILoggerService logger)
         {
             try
             {
@@ -238,20 +240,23 @@ namespace Services.Services
                 else
                 {
                     s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                    logger?.Warning(CallbackChannelClosedTemplate, targetSubscriberUserId, OperationFriendStatus);
                 }
             }
             catch (TimeoutException)
             {
                 s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                logger?.Warning(CallbackTimeoutTemplate, targetSubscriberUserId, OperationFriendStatus);
             }
             catch (CommunicationException)
             {
                 s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                logger?.Warning(CallbackCommunicationFaultedTemplate, targetSubscriberUserId, OperationFriendStatus);
             }
         }
 
-        private void TrySendFriendRemovedCallback(int targetSubscriberUserId, 
-            IFriendshipServiceCallback callback, int removedByUserId)
+        private void TrySendFriendRemovedCallback(int targetSubscriberUserId, IFriendshipServiceCallback callback,
+            int removedByUserId)
         {
             try
             {
@@ -262,15 +267,18 @@ namespace Services.Services
                 else
                 {
                     s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                    _logger.Warning(CallbackChannelClosedTemplate, targetSubscriberUserId, OperationFriendRemoved);
                 }
             }
             catch (TimeoutException)
             {
                 s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                _logger.Warning(CallbackTimeoutTemplate, targetSubscriberUserId, OperationFriendRemoved);
             }
             catch (CommunicationException)
             {
                 s_onlineSubscribers.TryRemove(targetSubscriberUserId, out IFriendshipServiceCallback _);
+                _logger.Warning(CallbackCommunicationFaultedTemplate, targetSubscriberUserId, OperationFriendRemoved);
             }
         }
 
@@ -286,15 +294,20 @@ namespace Services.Services
                 else
                 {
                     s_onlineSubscribers.TryRemove(gameInvitation.ReceiverUserId, out IFriendshipServiceCallback _);
+                    _logger.Warning(CallbackChannelClosedTemplate, gameInvitation.ReceiverUserId,
+                        OperationGameInvitation);
                 }
             }
             catch (TimeoutException)
             {
                 s_onlineSubscribers.TryRemove(gameInvitation.ReceiverUserId, out IFriendshipServiceCallback _);
+                _logger.Warning(CallbackTimeoutTemplate, gameInvitation.ReceiverUserId, OperationGameInvitation);
             }
             catch (CommunicationException)
             {
                 s_onlineSubscribers.TryRemove(gameInvitation.ReceiverUserId, out IFriendshipServiceCallback _);
+                _logger.Warning(CallbackCommunicationFaultedTemplate, gameInvitation.ReceiverUserId,
+                    OperationGameInvitation);
             }
         }
 

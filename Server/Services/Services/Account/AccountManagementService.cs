@@ -18,7 +18,13 @@ namespace Services.Services
         private const int ErrorCodeInternalFault = 201;
 
         private const string MessageNullPayload = "User registration payload cannot be null.";
-        private const string MessageUnexpectedFault = "An unexpected server fault occurred while processing registration.";
+        private const string MessageUnexpectedFault = "An unexpected server fault occurred while processing" +
+            " registration.";
+
+        private const string RegisterUserNullPayloadTemplate =
+            "User registration request rejected: payload is null.";
+        private const string UnexpectedRegistrationFaultTemplate =
+            "Unexpected server fault during registration for username {Username} (Email: {Email}).";
 
         private readonly IAccountManagementUseCase _accountManagementUseCase;
         private readonly ILoggerService _logger;
@@ -30,7 +36,8 @@ namespace Services.Services
         /// <param name="logger">The logger used to record service operations and faults.</param>
         public AccountManagementService(IAccountManagementUseCase accountManagementUseCase, ILoggerService logger)
         {
-            _accountManagementUseCase = accountManagementUseCase ?? throw new ArgumentNullException(nameof(accountManagementUseCase));
+            _accountManagementUseCase = accountManagementUseCase ??
+                throw new ArgumentNullException(nameof(accountManagementUseCase));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -41,6 +48,7 @@ namespace Services.Services
 
             if (user == null)
             {
+                _logger.Warning(RegisterUserNullPayloadTemplate);
                 result = new OperationResult
                 {
                     IsSuccess = false,
@@ -64,18 +72,28 @@ namespace Services.Services
                         Message = outcome.Message
                     };
                 }
-                catch (Exception)
+                catch (InvalidOperationException ex)
                 {
-                    result = new OperationResult
-                    {
-                        IsSuccess = false,
-                        ErrorCode = ErrorCodeInternalFault,
-                        Message = MessageUnexpectedFault
-                    };
+                    result = HandleRegistrationFault(ex, user);
+                }
+                catch (TimeoutException ex)
+                {
+                    result = HandleRegistrationFault(ex, user);
                 }
             }
 
             return result;
+        }
+
+        private OperationResult HandleRegistrationFault(Exception ex, UserRegister user)
+        {
+            _logger.Error(ex, UnexpectedRegistrationFaultTemplate, user.Username, user.Email);
+            return new OperationResult
+            {
+                IsSuccess = false,
+                ErrorCode = ErrorCodeInternalFault,
+                Message = MessageUnexpectedFault
+            };
         }
     }
 }

@@ -13,6 +13,16 @@ namespace Services.Services
     internal sealed class ProfileImageSubscriptions
     {
         private const int MaximumSubscriptions = 128;
+
+        private const string ProfileImageNotificationDeferredTemplate =
+            "Profile image notification deferred to client reconciliation.";
+        private const string ProfileImageSubscriberDisconnectedTemplate =
+            "Profile image subscriber disconnected for account {AccountId}.";
+        private const string ProfileImageCallbackChannelFaultedTemplate =
+            "Profile image callback channel is no longer usable for account {AccountId}.";
+        private const string ProfileImageSubscriberTimedOutTemplate =
+            "Profile image subscriber timed out for account {AccountId}.";
+
         private readonly object _subscriptionLock = new object();
         private readonly Dictionary<string, Subscription> _subscriptions = new Dictionary<string, Subscription>();
         private readonly ILoggerService _logger;
@@ -21,7 +31,7 @@ namespace Services.Services
 
         internal ProfileImageSubscriptions(ILoggerService logger)
         {
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         internal void Subscribe(int[] profileOwnerUserIds)
@@ -65,7 +75,7 @@ namespace Services.Services
                 }
                 else
                 {
-                    _logger.Warning("Profile image notification deferred to client reconciliation.");
+                    _logger.Warning(ProfileImageNotificationDeferredTemplate);
                 }
             }
             if (shouldStartDelivery)
@@ -122,22 +132,20 @@ namespace Services.Services
             {
                 subscriber.Value.Callback.OnPlayerProfileImageChanged(profileOwnerUserId);
             }
-            catch (CommunicationException ex)
+            catch (CommunicationException)
             {
                 RemoveSubscription(subscriber.Key);
-                _logger.Error(ex, "Profile image subscriber disconnected for account {AccountId}.",
-                    profileOwnerUserId);
+                _logger.Warning(ProfileImageSubscriberDisconnectedTemplate, profileOwnerUserId);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 RemoveSubscription(subscriber.Key);
-                _logger.Error(ex, "Profile image callback channel is no longer usable.");
+                _logger.Warning(ProfileImageCallbackChannelFaultedTemplate, profileOwnerUserId);
             }
-            catch (TimeoutException ex)
+            catch (TimeoutException)
             {
                 RemoveSubscription(subscriber.Key);
-                _logger.Error(ex, "Profile image subscriber timed out for account {AccountId}.",
-                    profileOwnerUserId);
+                _logger.Warning(ProfileImageSubscriberTimedOutTemplate, profileOwnerUserId);
             }
         }
 

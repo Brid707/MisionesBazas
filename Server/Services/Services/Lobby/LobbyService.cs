@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
@@ -24,6 +23,39 @@ namespace Services.Services
     {
         private const string PlayerLeftReason = "Player left the lobby.";
         private const string PlayerKickedReason = "Player was kicked by the host.";
+        private const string ReasonConnectionLost = "ConnectionLost";
+        private const string ReasonParticipantRemoved = "ParticipantRemoved";
+
+        private const string FaultLobbyHostRequired = "LobbyHostRequired";
+        private const string FaultMatchUnavailable = "MatchUnavailable";
+        private const string FaultMatchStartRejected = "MatchStartRejected";
+        private const string FaultInvalidSubmission = "InvalidSubmission";
+        private const string FaultParticipantNotAllowed = "ParticipantNotAllowed";
+
+        private const string LobbyCallbackChannelClosedTemplate =
+            "Lobby callback channel closed for participant {UserId} in room {LobbyCode}.";
+        private const string LobbyCallbackTimeoutTemplate =
+            "Lobby callback timed out for participant {UserId} in room {LobbyCode}.";
+        private const string LobbyCallbackCommunicationFaultedTemplate =
+            "Lobby callback communication faulted for participant {UserId} in room {LobbyCode}.";
+
+        private const string ChatStorageFailureTemplate =
+            "Storage error occurred during chat message submission for room {LobbyCode}.";
+        private const string ChatModerationTimeoutTemplate =
+            "Moderation regex matching timed out for room {LobbyCode}.";
+        private const string ChatSubmissionInvalidTemplate =
+            "Invalid chat submission arguments for room {LobbyCode}.";
+
+        private const string BanCallbackCommunicationFaultedTemplate =
+            "Account ban notification callback faulted.";
+        private const string BanCallbackTimeoutTemplate =
+            "Account ban notification callback timed out.";
+
+        private const string MatchStartupPersistenceFailureTemplate =
+            "Match startup rejected due to storage failure in room {LobbyCode}.";
+        private const string MatchAccessRejectedTemplate =
+            "Match access rejected for participant {UserId} in room {LobbyCode}.";
+
         private const byte UnspecifiedSettingValue = 0;
 
         private static readonly ConcurrentDictionary<string,
@@ -54,8 +86,8 @@ namespace Services.Services
         {
             EnsureParticipantOperationAllowed(requesterUserId);
             EnsureRegisteredRoomChannel(lobbyCode, requesterUserId);
-            LobbyActionOutcome configurationUpdate = _lobbyUseCase.UpdateLobbySettings(
-                lobbyCode, requesterUserId, MapLobbyConfiguration(settings));
+            LobbyActionOutcome configurationUpdate = _lobbyUseCase.UpdateLobbySettings(lobbyCode, requesterUserId,
+                MapLobbyConfiguration(settings));
             if (configurationUpdate.IsSuccess)
             {
                 PublishLobbyState(configurationUpdate);
@@ -83,7 +115,7 @@ namespace Services.Services
             IContextChannel callbackChannel = requesterCallback as IContextChannel;
             if (!hasRegisteredChannel || callbackChannel?.SessionId != OperationContext.Current?.SessionId)
             {
-                throw new FaultException("LobbyHostRequired");
+                throw new FaultException(FaultLobbyHostRequired);
             }
         }
 
@@ -147,7 +179,7 @@ namespace Services.Services
                 string lobbyCode = FindCallbackRoomCode(participants);
                 LobbyActionOutcome participantDeparture = _lobbyUseCase.DisconnectLobbyParticipant(
                     lobbyCode, participantUserId);
-                NotifyPlayerDeparture(participantDeparture, participantUserId, "ConnectionLost");
+                NotifyPlayerDeparture(participantDeparture, participantUserId, ReasonConnectionLost);
             }
         }
 
@@ -263,24 +295,23 @@ namespace Services.Services
             {
                 chatMessageSubmissionOutcome = ProcessAuthenticatedChatMessage(chatMessageSubmission);
             }
-            catch (SqlException)
+            catch (InvalidOperationException ex)
             {
-                chatMessageSubmissionOutcome.ChatMessageRejectionReason =
-                    ChatMessageRejectionReason.ChatStorageUnavailable;
-            }
-            catch (InvalidOperationException)
-            {
+                _logger.Error(ex, ChatStorageFailureTemplate, chatMessageSubmission?.LobbyCode);
                 chatMessageSubmissionOutcome.ChatMessageRejectionReason =
                     ChatMessageRejectionReason.ChatStorageUnavailable;
             }
             catch (RegexMatchTimeoutException)
             {
+                _logger.Warning(ChatModerationTimeoutTemplate, chatMessageSubmission?.LobbyCode);
                 chatMessageSubmissionOutcome.ChatMessageRejectionReason =
                     ChatMessageRejectionReason.ChatModerationUnavailable;
             }
             catch (ArgumentException)
             {
-                chatMessageSubmissionOutcome.ChatMessageRejectionReason = ChatMessageRejectionReason.InvalidChatMessage;
+                _logger.Warning(ChatSubmissionInvalidTemplate, chatMessageSubmission?.LobbyCode);
+                chatMessageSubmissionOutcome.ChatMessageRejectionReason =
+                    ChatMessageRejectionReason.InvalidChatMessage;
             }
 
             return chatMessageSubmissionOutcome;
@@ -327,13 +358,12 @@ namespace Services.Services
                     LobbyCode = chatMessageSubmission.LobbyCode,
                     OriginalChatMessageText = chatMessageSubmission.OriginalChatMessageText
                 });
-            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome =
-                MapChatSubmissionOutcome(
+            LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = MapChatSubmissionOutcome(
                 chatMessageSubmission, chatMessageProcessing);
             if (chatMessageSubmissionOutcome.ChatAccountBanNotice != null)
             {
-                RemoveBannedAccountFromLobbies(
-                    authenticatedAccountUserId, chatMessageSubmissionOutcome.ChatAccountBanNotice);
+                RemoveBannedAccountFromLobbies(authenticatedAccountUserId,
+                    chatMessageSubmissionOutcome.ChatAccountBanNotice);
             }
             else if (chatMessageProcessing.CanPublishChatMessage)
             {
@@ -423,13 +453,12 @@ namespace Services.Services
                         lobbyCallbacks.Key, accountUserId);
                     UnregisterCallback(lobbyCallbacks.Key, accountUserId);
                     NotifyAccountBanSafely(accountCallback, chatAccountBanNotice);
-                    NotifyPlayerDeparture(accountDepartureOutcome, accountUserId, "ParticipantRemoved");
+                    NotifyPlayerDeparture(accountDepartureOutcome, accountUserId, ReasonParticipantRemoved);
                 }
             }
         }
 
-        private void NotifyAccountBanSafely(ILobbyCallback accountCallback,
-            ChatAccountBanNotice chatAccountBanNotice)
+        private void NotifyAccountBanSafely(ILobbyCallback accountCallback, ChatAccountBanNotice chatAccountBanNotice)
         {
             try
             {
@@ -438,10 +467,12 @@ namespace Services.Services
             catch (CommunicationException)
             {
                 // The account restriction is already committed and must not depend on callback delivery.
+                _logger.Warning(BanCallbackCommunicationFaultedTemplate);
             }
             catch (TimeoutException)
             {
                 // The remaining participants must still receive the account departure notification.
+                _logger.Warning(BanCallbackTimeoutTemplate);
             }
         }
 
@@ -470,8 +501,8 @@ namespace Services.Services
             }
             catch (InvalidOperationException ex)
             {
-                LogMatchFailure("Match startup rejected", ex);
-                throw new FaultException("MatchUnavailable");
+                _logger.Error(ex, MatchStartupPersistenceFailureTemplate, lobbyCode);
+                throw new FaultException(FaultMatchUnavailable);
             }
             if (canStart)
             {
@@ -483,7 +514,7 @@ namespace Services.Services
             }
             else
             {
-                throw new FaultException("MatchStartRejected");
+                throw new FaultException(FaultMatchStartRejected);
             }
         }
 
@@ -521,8 +552,7 @@ namespace Services.Services
             if (callback != null)
             {
                 string roomKey = NormalizeRoomKey(lobbyCode);
-                ConcurrentDictionary<int, ILobbyCallback> participants = s_roomCallbacks.GetOrAdd(
-                    roomKey,
+                ConcurrentDictionary<int, ILobbyCallback> participants = s_roomCallbacks.GetOrAdd(roomKey,
                     _ => new ConcurrentDictionary<int, ILobbyCallback>());
                 participants[userId] = callback;
                 ObserveParticipantChannel(callback);
@@ -562,6 +592,7 @@ namespace Services.Services
             KeyValuePair<int, ILobbyCallback> entry,
             Action<ILobbyCallback> notificationAction)
         {
+            string roomCode = FindCallbackRoomCode(participants);
             try
             {
                 ICommunicationObject communicationChannel = entry.Value as ICommunicationObject;
@@ -574,18 +605,19 @@ namespace Services.Services
                 }
                 else
                 {
-                    HandleParticipantChannelLoss(FindCallbackRoomCode(participants), entry.Key, entry.Value);
+                    _logger.Warning(LobbyCallbackChannelClosedTemplate, entry.Key, roomCode);
+                    HandleParticipantChannelLoss(roomCode, entry.Key, entry.Value);
                 }
             }
             catch (TimeoutException)
             {
-                // TODO: Log callback timeout failure once official logging infrastructure is available.
-                HandleParticipantChannelLoss(FindCallbackRoomCode(participants), entry.Key, entry.Value);
+                _logger.Warning(LobbyCallbackTimeoutTemplate, entry.Key, roomCode);
+                HandleParticipantChannelLoss(roomCode, entry.Key, entry.Value);
             }
             catch (CommunicationException)
             {
-                // TODO: Log callback communication failure once official logging infrastructure is available.
-                HandleParticipantChannelLoss(FindCallbackRoomCode(participants), entry.Key, entry.Value);
+                _logger.Warning(LobbyCallbackCommunicationFaultedTemplate, entry.Key, roomCode);
+                HandleParticipantChannelLoss(roomCode, entry.Key, entry.Value);
             }
         }
 
