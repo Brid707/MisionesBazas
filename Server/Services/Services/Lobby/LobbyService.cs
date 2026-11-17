@@ -12,6 +12,7 @@ using Domain;
 using Services.Contracts;
 using Services.DataContracts;
 using Services.Security;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {
@@ -33,9 +34,10 @@ namespace Services.Services
         private readonly ILobbyUseCase _lobbyUseCase;
         private readonly ILobbyChatMessageUseCase _lobbyChatMessageUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
+        private readonly ILoggerService _logger;
 
         public LobbyService(ILobbyUseCase lobbyUseCase, ILobbyChatMessageUseCase lobbyChatMessageUseCase,
-            IAccountAccessPolicy accountAccessPolicy)
+            IAccountAccessPolicy accountAccessPolicy, ILoggerService logger)
         {
             if (lobbyUseCase == null)
             {
@@ -45,6 +47,7 @@ namespace Services.Services
             _lobbyUseCase = lobbyUseCase;
             _lobbyChatMessageUseCase = lobbyChatMessageUseCase;
             _accountAccessPolicy = accountAccessPolicy;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, LobbySettings settings)
@@ -425,7 +428,7 @@ namespace Services.Services
             }
         }
 
-        private static void NotifyAccountBanSafely(ILobbyCallback accountCallback,
+        private void NotifyAccountBanSafely(ILobbyCallback accountCallback,
             ChatAccountBanNotice chatAccountBanNotice)
         {
             try

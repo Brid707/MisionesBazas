@@ -7,16 +7,15 @@ using System.ServiceModel.Dispatcher;
 using Application;
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
 using Application.UseCases;
 using Host.DependencyInjection;
 using Host.Gameplay;
-using Host.LoggingConfiguration;
-using Infrastructure.Logging;
 using Infrastructure.Moderation;
 using Persistence.Repository;
 using Services.Security;
 using Services.Services;
+using TrickTakingMissions.Logging;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Host
 {
@@ -26,7 +25,12 @@ namespace Host
     internal static class Program
     {
         private const int Port = 8090;
+        private const string LogsDirectoryName = "Logs";
         private const string ServerLogFileName = "ServerTrickTakingMissions.log";
+        private const string ServerStartedTemplate =
+            "TrickTakingMissions server started and is listening on TCP port {Port}.";
+        private const string ServerStoppedTemplate =
+            "TrickTakingMissions server stopped cleanly on TCP port {Port}.";
         private const string TimeoutFatalTemplate =
             "Server host operation timed out on TCP port {Port}.";
         private const string CommunicationFatalTemplate =
@@ -50,33 +54,49 @@ namespace Host
             ServiceHost friendshipHost = null;
             ServiceHost friendsRequestHost = null;
 
-            Log4NetConfigurator.Configure(ServerLogFileName);
-            ILoggerService hostLogger = new LoggerService(typeof(Program));
+            string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogsDirectoryName);
+            Log4NetConfigurator.Configure(logsDirectory, ServerLogFileName);
+            ILoggerFactory loggerFactory = new LoggerFactory();
+            ILoggerService hostLogger = loggerFactory.CreateLogger(typeof(Program));
 
             try
             {
-                IUserRepository userRepository = new UserRepository();
-                IFriendshipRepository friendshipRepository = new FriendshipRepository();
-                IFriendshipUseCase friendshipUseCase = new FriendshipUseCase(friendshipRepository, userRepository);
+                IUserRepository userRepository = new UserRepository(loggerFactory.CreateLogger<UserRepository>());
+                IFriendshipRepository friendshipRepository = new FriendshipRepository(
+                    loggerFactory.CreateLogger<FriendshipRepository>());
+                IFriendshipUseCase friendshipUseCase = new FriendshipUseCase(
+                    friendshipRepository,
+                    userRepository,
+                    loggerFactory.CreateLogger<FriendshipUseCase>());
 
-                var chatInfractionRepository =
-                    new ChatInfractionRepository(new ChatModerationLogger());
+                var chatInfractionRepository = new ChatInfractionRepository(
+                    loggerFactory.CreateLogger<ChatInfractionRepository>());
                 var accountAccessPolicy = new AccountAccessPolicy(
-                    new AuthenticatedAccountSessionRegistry(), chatInfractionRepository);
+                    new AuthenticatedAccountSessionRegistry(),
+                    chatInfractionRepository,
+                    loggerFactory.CreateLogger<AccountAccessPolicy>());
                 var catalogBackup = new ChatModerationCatalogBackup(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                         "ModerationCatalogBackups", "ValidatedCatalog.xml"));
-                ChatModerationStartup moderationStartup = new ChatModerationStartup(catalogBackup, hostLogger);
+                ChatModerationStartup moderationStartup = new ChatModerationStartup(
+                    catalogBackup,
+                    loggerFactory.CreateLogger<ChatModerationStartup>());
                 ChatModerationPreparation moderationPreparation = moderationStartup.PrepareChatModeration(
                     Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ModerationCatalogs"));
                 var lobbyChatMessageUseCase = new LobbyChatMessageUseCase(
-                    moderationPreparation, chatInfractionRepository, hostLogger);
-                profileImageHost = ProfileImageHosting.Create(accountAccessPolicy, hostLogger);
-                loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy);
-                lobbyHost = CreateLobbyServiceHost(userRepository, lobbyChatMessageUseCase, accountAccessPolicy);
-                accountManagementHost = CreateAccountManagementServiceHost(userRepository);
-                friendshipHost = CreateFriendshipServiceHost(friendshipUseCase);
-                friendsRequestHost = CreateFriendsRequestServiceHost(friendshipUseCase);
+                    moderationPreparation,
+                    chatInfractionRepository,
+                    loggerFactory.CreateLogger<LobbyChatMessageUseCase>());
+                profileImageHost = ProfileImageHosting.Create(accountAccessPolicy, loggerFactory);
+                loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy, loggerFactory);
+                lobbyHost = CreateLobbyServiceHost(
+                    userRepository,
+                    lobbyChatMessageUseCase,
+                    accountAccessPolicy,
+                    loggerFactory);
+                accountManagementHost = CreateAccountManagementServiceHost(userRepository, loggerFactory);
+                friendshipHost = CreateFriendshipServiceHost(friendshipUseCase, loggerFactory);
+                friendsRequestHost = CreateFriendsRequestServiceHost(friendshipUseCase, loggerFactory);
 
                 profileImageHost.Open();
                 loginHost.Open();
@@ -84,6 +104,8 @@ namespace Host
                 accountManagementHost.Open();
                 friendshipHost.Open();
                 friendsRequestHost.Open();
+
+                hostLogger.Information(ServerStartedTemplate, Port);
 
                 Console.WriteLine("TrickTakingMissions Server is running.");
                 Console.WriteLine("TCP Endpoint: net.tcp://localhost:8090/UserLoginService");
@@ -100,6 +122,8 @@ namespace Host
                 accountManagementHost.Close();
                 lobbyHost.Close();
                 loginHost.Close();
+
+                hostLogger.Information(ServerStoppedTemplate, Port);
             }
             catch (TimeoutException ex)
             {
@@ -137,11 +161,14 @@ namespace Host
         }
 
         private static ServiceHost CreateUserLoginServiceHost(IUserRepository userRepository,
-            IAccountAccessPolicy accountAccessPolicy)
+            IAccountAccessPolicy accountAccessPolicy, ILoggerFactory loggerFactory)
         {
-            IUserLoginUseCase userLoginUseCase = new UserLoginUseCase(userRepository);
+            IUserLoginUseCase userLoginUseCase = new UserLoginUseCase(
+                userRepository,
+                loggerFactory.CreateLogger<UserLoginUseCase>());
+            ILoggerService userLoginServiceLogger = loggerFactory.CreateLogger<UserLoginService>();
             var instanceProvider = new FuncInstanceProvider<UserLoginService>(
-                () => new UserLoginService(userLoginUseCase, accountAccessPolicy));
+                () => new UserLoginService(userLoginUseCase, accountAccessPolicy, userLoginServiceLogger));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(UserLoginService));
@@ -150,15 +177,21 @@ namespace Host
         }
 
         private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository,
-            ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy)
+            ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy,
+            ILoggerFactory loggerFactory)
         {
-            var lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection(),
-                new MatchUseCase(new InMemoryMatchStateStore(), new SecureMissionDeckDealer()));
+            var matchUseCase = new MatchUseCase(
+                new InMemoryMatchStateStore(),
+                new SecureMissionDeckDealer(),
+                loggerFactory.CreateLogger<MatchUseCase>());
+            var lobbyUseCase = new LobbyUseCase(
+                userRepository,
+                new LobbyHostSelection(),
+                matchUseCase,
+                loggerFactory.CreateLogger<LobbyUseCase>());
+            ILoggerService lobbyServiceLogger = loggerFactory.CreateLogger<LobbyService>();
             var instanceProvider = new FuncInstanceProvider<LobbyService>(
-                () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy)
-                {
-                    MatchLogger = new LoggerService(typeof(LobbyService))
-                });
+                () => new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy, lobbyServiceLogger));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));
@@ -166,12 +199,18 @@ namespace Host
             return serviceHost;
         }
 
-        private static ServiceHost CreateAccountManagementServiceHost(IUserRepository userRepository)
+        private static ServiceHost CreateAccountManagementServiceHost(IUserRepository userRepository,
+            ILoggerFactory loggerFactory)
         {
-            var accountManagementUseCase = new AccountManagementUseCase(userRepository,
-                new BlockedAccountEmailRepository(new ChatModerationLogger()));
+            var blockedAccountEmailRepository = new BlockedAccountEmailRepository(
+                loggerFactory.CreateLogger<BlockedAccountEmailRepository>());
+            var accountManagementUseCase = new AccountManagementUseCase(
+                userRepository,
+                blockedAccountEmailRepository,
+                loggerFactory.CreateLogger<AccountManagementUseCase>());
+            ILoggerService accountManagementServiceLogger = loggerFactory.CreateLogger<AccountManagementService>();
             var instanceProvider = new FuncInstanceProvider<AccountManagementService>(
-                () => new AccountManagementService(accountManagementUseCase));
+                () => new AccountManagementService(accountManagementUseCase, accountManagementServiceLogger));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(AccountManagementService));
@@ -179,10 +218,12 @@ namespace Host
             return serviceHost;
         }
 
-        private static ServiceHost CreateFriendshipServiceHost(IFriendshipUseCase friendshipUseCase)
+        private static ServiceHost CreateFriendshipServiceHost(IFriendshipUseCase friendshipUseCase,
+            ILoggerFactory loggerFactory)
         {
+            ILoggerService friendshipServiceLogger = loggerFactory.CreateLogger<FriendshipService>();
             var instanceProvider = new FuncInstanceProvider<FriendshipService>(
-                () => new FriendshipService(friendshipUseCase));
+                () => new FriendshipService(friendshipUseCase, friendshipServiceLogger));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(FriendshipService));
@@ -190,10 +231,12 @@ namespace Host
             return serviceHost;
         }
 
-        private static ServiceHost CreateFriendsRequestServiceHost(IFriendshipUseCase friendshipUseCase)
+        private static ServiceHost CreateFriendsRequestServiceHost(IFriendshipUseCase friendshipUseCase,
+            ILoggerFactory loggerFactory)
         {
+            ILoggerService friendsRequestServiceLogger = loggerFactory.CreateLogger<FriendsRequestService>();
             var instanceProvider = new FuncInstanceProvider<FriendsRequestService>(
-                () => new FriendsRequestService(friendshipUseCase));
+                () => new FriendsRequestService(friendshipUseCase, friendsRequestServiceLogger));
             IServiceBehavior injectionBehavior = new DependencyInjectionServiceBehavior(instanceProvider);
 
             ServiceHost serviceHost = new ServiceHost(typeof(FriendsRequestService));

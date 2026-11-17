@@ -5,12 +5,12 @@ using System.Linq;
 using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
 using Application.UseCases;
 using ProfileImages;
 using Services.Contracts;
 using Services.DataContracts;
 using Services.Security;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {

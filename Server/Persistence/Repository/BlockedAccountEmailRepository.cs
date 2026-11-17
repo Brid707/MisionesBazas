@@ -5,12 +5,18 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Application.Ports;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Persistence.Repository
 {
     /// <summary>Retains hashed normalized email restrictions independently of the account lifecycle.</summary>
     public sealed class BlockedAccountEmailRepository : IBlockedAccountEmailRepository
     {
+        private const string PersistenceFailureTemplate = "Chat persistence failed for {AccountOperationName}.";
+        private const string VerifyBlockedEmailFailureMessage = "Unable to verify permanent email restrictions.";
+        private const string PermanentRestrictionRequiresEmailMessage =
+            "Permanent restriction requires an existing account email.";
+
         private const string SelectBlockedEmailSql =
             "SELECT COUNT(1) FROM dbo.PermanentlyBlockedAccountEmail WHERE NormalizedAccountEmailDigest=@emailDigest";
         private const string InsertBlockedEmailSql =
@@ -18,12 +24,11 @@ namespace Persistence.Repository
             "WHERE NormalizedAccountEmailDigest=@emailDigest) " +
             "INSERT INTO dbo.PermanentlyBlockedAccountEmail(NormalizedAccountEmailDigest) VALUES(@emailDigest)";
 
-        private readonly IChatModerationLogger _chatModerationLogger;
+        private readonly ILoggerService _logger;
 
-        public BlockedAccountEmailRepository(IChatModerationLogger chatModerationLogger)
+        public BlockedAccountEmailRepository(ILoggerService logger)
         {
-            _chatModerationLogger = chatModerationLogger ??
-                throw new ArgumentNullException(nameof(chatModerationLogger));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public bool IsAccountEmailPermanentlyBlocked(string accountEmail)
@@ -40,8 +45,8 @@ namespace Persistence.Repository
             }
             catch (SqlException ex)
             {
-                _chatModerationLogger.RecordPersistenceFailure(nameof(IsAccountEmailPermanentlyBlocked), ex);
-                throw new InvalidOperationException("Unable to verify permanent email restrictions.", ex);
+                _logger.Error(ex, PersistenceFailureTemplate, nameof(IsAccountEmailPermanentlyBlocked));
+                throw new InvalidOperationException(VerifyBlockedEmailFailureMessage, ex);
             }
 
             return isAccountEmailBlocked;
@@ -60,7 +65,7 @@ namespace Persistence.Repository
 
             if (string.IsNullOrWhiteSpace(accountEmail))
             {
-                throw new InvalidOperationException("Permanent restriction requires an existing account email.");
+                throw new InvalidOperationException(PermanentRestrictionRequiresEmailMessage);
             }
 
             using (SqlCommand blockedEmailInsert = new SqlCommand(InsertBlockedEmailSql,

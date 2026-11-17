@@ -7,6 +7,7 @@ using Application.Ports;
 using Domain;
 using Services.Contracts;
 using Services.DataContracts;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {
@@ -21,8 +22,10 @@ namespace Services.Services
 
         private readonly IUserLoginUseCase _userLoginUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
+        private readonly ILoggerService _logger;
 
-        public UserLoginService(IUserLoginUseCase userLoginUseCase, IAccountAccessPolicy accountAccessPolicy)
+        public UserLoginService(IUserLoginUseCase userLoginUseCase, IAccountAccessPolicy accountAccessPolicy,
+            ILoggerService logger)
         {
             if (userLoginUseCase == null)
             {
@@ -31,6 +34,7 @@ namespace Services.Services
 
             _userLoginUseCase = userLoginUseCase;
             _accountAccessPolicy = accountAccessPolicy;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void Login(string email, string password)

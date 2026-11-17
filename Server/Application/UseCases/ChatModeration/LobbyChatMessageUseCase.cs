@@ -5,25 +5,43 @@ using System.Text.RegularExpressions;
 
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
 using Domain;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Application
 {
     /// <summary>Moderates both languages and persists the sanction decision before permitting publication.</summary>
     public sealed class LobbyChatMessageUseCase : ILobbyChatMessageUseCase
     {
+        private const string ChatModerationMatchingTimeoutTemplate =
+            "Chat moderation exceeded regex matching budget for user {UserId} in lobby {LobbyCode}. Failure " +
+            "type {FailureType}.";
+        private const string ChatModerationMessageTimeoutTemplate =
+            "Chat moderation exceeded message budget for user {UserId} in lobby {LobbyCode}. Failure " +
+            "type {FailureType}.";
+        private const string ChatInfractionDetectedTemplate =
+            "Chat infraction of category {InfractionCategory} detected for user {UserId} in lobby {LobbyCode}.";
+        private const string ChatMessageRejectedBannedAccountTemplate =
+            "Chat message rejected: user {UserId} has an active chat ban in lobby {LobbyCode}.";
+        private const string ChatInfractionPersistenceFailureTemplate =
+            "Aborted chat infraction recording for user {UserId} in lobby {LobbyCode} due to database failure.";
+
         private readonly ChatMessageModerator _chatMessageModerator;
         private readonly IChatInfractionRepository _chatInfractionRepository;
-
         private readonly ILoggerService _moderationLogger;
 
         public LobbyChatMessageUseCase(ChatModerationPreparation moderationPreparation,
             IChatInfractionRepository chatInfractionRepository, ILoggerService moderationLogger)
         {
+            if (moderationPreparation == null)
+            {
+                throw new ArgumentNullException(nameof(moderationPreparation));
+            }
+
             _chatMessageModerator = moderationPreparation.MessageModerator;
-            _chatInfractionRepository = chatInfractionRepository;
-            _moderationLogger = moderationLogger;
+            _chatInfractionRepository = chatInfractionRepository ??
+                throw new ArgumentNullException(nameof(chatInfractionRepository));
+            _moderationLogger = moderationLogger ?? throw new ArgumentNullException(nameof(moderationLogger));
         }
 
         public bool IsChatSendingAvailable => _chatMessageModerator != null;
@@ -46,17 +64,22 @@ namespace Application
                 }
                 catch (RegexMatchTimeoutException ex)
                 {
-                    _moderationLogger.Warning(
-                        "Chat moderation exceeded its matching budget. Failure type {FailureType}.",
-                        ex.GetType().Name);
+                    _moderationLogger.Warning(ChatModerationMatchingTimeoutTemplate,
+                        chatMessageSubmission.AccountUserId, chatMessageSubmission.LobbyCode, ex.GetType().Name);
                     chatMessageProcessing.ChatMessageRejectionReason =
                         ChatMessageRejectionReason.ChatModerationUnavailable;
                 }
                 catch (TimeoutException ex)
                 {
-                    _moderationLogger.Warning(
-                        "Chat moderation exceeded its message budget. Failure type {FailureType}.",
-                        ex.GetType().Name);
+                    _moderationLogger.Warning(ChatModerationMessageTimeoutTemplate,
+                        chatMessageSubmission.AccountUserId, chatMessageSubmission.LobbyCode, ex.GetType().Name);
+                    chatMessageProcessing.ChatMessageRejectionReason =
+                        ChatMessageRejectionReason.ChatModerationUnavailable;
+                }
+                catch (InvalidOperationException)
+                {
+                    _moderationLogger.Warning(ChatInfractionPersistenceFailureTemplate,
+                        chatMessageSubmission.AccountUserId, chatMessageSubmission.LobbyCode);
                     chatMessageProcessing.ChatMessageRejectionReason =
                         ChatMessageRejectionReason.ChatModerationUnavailable;
                 }
@@ -86,6 +109,14 @@ namespace Application
                     ChatMessageContentDigest = ComputeChatMessageContentDigest(chatMessageSubmission),
                     DetectedInfractionCategory = moderationDecision.DetectedInfractionCategory
                 });
+            if (moderationDecision.DetectedInfractionCategory != ChatInfractionCategory.None)
+            {
+                _moderationLogger.Warning(ChatInfractionDetectedTemplate,
+                    moderationDecision.DetectedInfractionCategory,
+                    chatMessageSubmission.AccountUserId,
+                    chatMessageSubmission.LobbyCode);
+            }
+
             ChatMessageRejectionReason chatMessageRejectionReason = ChatMessageRejectionReason.None;
             if (recordedChatInfraction.HasConflictingChatMessageIdentifier)
             {
@@ -93,6 +124,9 @@ namespace Application
             }
             else if (recordedChatInfraction.IsAccountBanned)
             {
+                _moderationLogger.Warning(ChatMessageRejectedBannedAccountTemplate,
+                    chatMessageSubmission.AccountUserId,
+                    chatMessageSubmission.LobbyCode);
                 chatMessageRejectionReason = ChatMessageRejectionReason.ChatAccountBanned;
             }
 

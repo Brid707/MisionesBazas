@@ -5,12 +5,14 @@ using Application.Models;
 using Application.Ports;
 using Domain;
 using Persistence.Entities;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Persistence.Repository
 {
     /// <summary>Commits per-account moderation decisions with SQL transaction locks and replay protection.</summary>
     public sealed class ChatInfractionRepository : IChatInfractionRepository
     {
+        private const string PersistenceFailureTemplate = "Chat persistence failed for {AccountOperationName}.";
         private const string SelectAccountStateSql =
             "SELECT AccumulatedChatInfractionPoints, ThreateningChatMessageCount, PreviousTemporaryChatBanCount, " +
             "IsChatAccountPermanentlyBanned, ChatAccountBanEndsAtUtc FROM dbo.ChatModerationAccount " +
@@ -26,11 +28,11 @@ namespace Persistence.Repository
             "@LockMode='Exclusive', @LockOwner='Transaction', @LockTimeout=5000; " +
             "IF @lockResult < 0 THROW 51000, 'Unable to acquire account moderation lock.', 1;";
 
-        private readonly IChatModerationLogger _chatModerationLogger;
+        private readonly ILoggerService _logger;
 
-        public ChatInfractionRepository(IChatModerationLogger chatModerationLogger)
+        public ChatInfractionRepository(ILoggerService logger)
         {
-            _chatModerationLogger = chatModerationLogger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public ChatAccountInfractionState GetAccountInfractionState(int accountUserId)
@@ -45,7 +47,7 @@ namespace Persistence.Repository
             }
             catch (SqlException ex)
             {
-                _chatModerationLogger.RecordPersistenceFailure(nameof(GetAccountInfractionState), ex);
+                _logger.Error(ex, PersistenceFailureTemplate, nameof(GetAccountInfractionState));
                 throw;
             }
 
@@ -67,12 +69,12 @@ namespace Persistence.Repository
             }
             catch (SqlException ex)
             {
-                _chatModerationLogger.RecordPersistenceFailure(nameof(RecordChatMessageInfraction), ex);
+                _logger.Error(ex, PersistenceFailureTemplate, nameof(RecordChatMessageInfraction));
                 throw;
             }
             catch (InvalidOperationException ex)
             {
-                _chatModerationLogger.RecordPersistenceFailure(nameof(RecordChatMessageInfraction), ex);
+                _logger.Error(ex, PersistenceFailureTemplate, nameof(RecordChatMessageInfraction));
                 throw;
             }
 

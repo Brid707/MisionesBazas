@@ -196,6 +196,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging.Abstractions\TrickTakingMissions.Logging.Abstractions.csproj">
+      <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
+      <Name>TrickTakingMissions.Logging.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Application\Application.csproj">
       <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project>
       <Name>Application</Name>

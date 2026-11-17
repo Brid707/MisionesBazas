@@ -5,6 +5,8 @@ using Application.Models;
 using Application.Ports;
 using Domain;
 using Gameplay;
+using TrickTakingMissions.Logging.Abstractions;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 
@@ -14,13 +16,25 @@ namespace Application.UseCases
     public sealed class MatchUseCase : IMatchUseCase
     {
         private const int MaximumProcessedSubmissions = 4096;
+        private const string MatchIdentityConflictMessage = "MatchIdentityConflict";
+
+        private const string MatchStartedTemplate =
+            "Match {MatchId} started for lobby {LobbyCode} with {ParticipantCount} participants.";
+        private const string MatchIdentityConflictTemplate =
+            "Match identity conflict detected for lobby {LobbyCode} (Instance: {LobbyInstanceId}).";
+        private const string MatchSubmissionCapacityReachedTemplate =
+            "Match {MatchId} reached maximum submission capacity limit of {Limit}.";
+
         private readonly IMatchStateStore _matchStateStore;
         private readonly IMissionDeckDealer _missionDeckDealer;
+        private readonly ILoggerService _logger;
 
-        public MatchUseCase(IMatchStateStore matchStateStore, IMissionDeckDealer missionDeckDealer)
+        public MatchUseCase(IMatchStateStore matchStateStore, IMissionDeckDealer missionDeckDealer,
+            ILoggerService logger = null)
         {
             _matchStateStore = matchStateStore ?? throw new ArgumentNullException(nameof(matchStateStore));
             _missionDeckDealer = missionDeckDealer ?? throw new ArgumentNullException(nameof(missionDeckDealer));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public Guid StartMatch(string lobbyCode, int[] participantUserIds, Guid lobbyInstanceId = default(Guid))
@@ -36,8 +50,11 @@ namespace Application.UseCases
             if (matchState.LobbyInstanceId != lobbyInstanceId ||
                 !matchState.ParticipantUserIds.SequenceEqual(participantUserIds))
             {
-                throw new InvalidOperationException("MatchIdentityConflict");
+                _logger.Warning(MatchIdentityConflictTemplate, lobbyCode, lobbyInstanceId);
+                throw new InvalidOperationException(MatchIdentityConflictMessage);
             }
+
+            _logger.Information(MatchStartedTemplate, matchState.MatchId, lobbyCode, participantUserIds.Length);
             return matchState.MatchId;
         }
 
@@ -97,7 +114,7 @@ namespace Application.UseCases
             };
         }
 
-        private static CardPlayDecision ProcessPlayUnderLock(MatchState matchState,
+        private CardPlayDecision ProcessPlayUnderLock(MatchState matchState,
             CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
@@ -122,7 +139,7 @@ namespace Application.UseCases
             return playDecision;
         }
 
-        private static CardPlayDecision ProcessIdentifiedPlay(MatchState matchState,
+        private CardPlayDecision ProcessIdentifiedPlay(MatchState matchState,
             CardPlaySubmission cardPlaySubmission, int participantSeat)
         {
             CardPlayDecision playDecision;
@@ -153,12 +170,13 @@ namespace Application.UseCases
                 };
         }
 
-        private static CardPlayDecision ProcessNewPlay(MatchState matchState, CardPlaySubmission cardPlaySubmission,
+        private CardPlayDecision ProcessNewPlay(MatchState matchState, CardPlaySubmission cardPlaySubmission,
             int participantSeat)
         {
             var playDecision = new CardPlayDecision { CardPlaySubmissionId = cardPlaySubmission.CardPlaySubmissionId };
             if (matchState.ProcessedCardPlayDecisionsBySubmissionId.Count >= MaximumProcessedSubmissions)
             {
+                _logger.Warning(MatchSubmissionCapacityReachedTemplate, matchState.MatchId, MaximumProcessedSubmissions);
                 playDecision.RejectionReason = MatchRejectionReason.SubmissionCapacityReached;
             }
             else

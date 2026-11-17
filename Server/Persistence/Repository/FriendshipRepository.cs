@@ -1,4 +1,4 @@
-﻿using Application.Models.Friendship;
+using Application.Models.Friendship;
 using Application.Ports;
 using Persistence.Entities;
 using System;
@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Persistence.Repository
 {
@@ -18,6 +19,114 @@ namespace Persistence.Repository
         private const byte PendingFriendshipStatus = 1;
         private const byte AcceptedFriendshipStatus = 2;
         private const byte OnlineUserStatus = 1;
+        private const string BlockPlayerDbUpdateFailureTemplate =
+    "Database update failed while blocking player {BlockedId} by blocker {BlockerId}.";
+        private const string BlockPlayerEntityFailureTemplate =
+            "Entity Framework connection failed while blocking player {BlockedId} by blocker {BlockerId}.";
+        private const string BlockPlayerSqlFailureTemplate =
+            "SQL execution failed while blocking player {BlockedId} by blocker {BlockerId}.";
+
+        private const string CreateFriendRequestDbUpdateFailureTemplate =
+            "Database update failed while creating friend request from user {SenderUserId} to user {ReceiverUserId}.";
+        private const string CreateFriendRequestEntityFailureTemplate =
+            "Entity Framework connection failed while creating friend request from user {SenderUserId} to " +
+            "user {ReceiverUserId}.";
+        private const string CreateFriendRequestSqlFailureTemplate =
+            "SQL execution failed while inserting friend request from user {SenderUserId} to user {ReceiverUserId}.";
+
+        private const string DeleteFriendshipDbUpdateFailureTemplate =
+            "Database update failed while deleting friendship between user {FirstUserId} and user {SecondUserId}.";
+        private const string DeleteFriendshipEntityFailureTemplate =
+            "Entity Framework connection failed while deleting friendship between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+        private const string DeleteFriendshipSqlFailureTemplate =
+            "SQL execution failed while executing friendship deletion between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+
+        private const string GetFriendshipEntityFailureTemplate =
+            "Entity Framework connection failed while querying friendship record between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+        private const string GetFriendshipSqlFailureTemplate =
+            "SQL execution failed while querying friendship record between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+
+        private const string GetFriendsListEntityFailureTemplate =
+            "Entity Framework connection failed while querying friends list for user {UserId}.";
+        private const string GetFriendsListSqlFailureTemplate =
+            "SQL execution failed while querying friends list in database for user {UserId}.";
+
+        private const string GetPendingRequestsEntityFailureTemplate =
+            "Entity Framework connection failed while querying pending friend requests for user {UserId}.";
+        private const string GetPendingRequestsSqlFailureTemplate =
+            "SQL execution failed while querying pending friend requests for user {UserId}.";
+
+        private const string GetSentRequestsEntityFailureTemplate =
+            "Entity Framework connection failed while querying sent friend requests for user {UserId}.";
+        private const string GetSentRequestsSqlFailureTemplate =
+            "SQL execution failed while querying sent friend requests for user {UserId}.";
+
+        private const string IsPlayerBlockedEntityFailureTemplate =
+            "Entity Framework connection failed while querying player block status between user {PlayerAId} and " +
+            "user {PlayerBId}.";
+        private const string IsPlayerBlockedSqlFailureTemplate =
+            "SQL execution failed while querying player block status between user {PlayerAId} and user {PlayerBId}.";
+
+        private const string RemoveFriendshipDbUpdateFailureTemplate =
+            "Database update failed while removing friendship between user {FirstUserId} and user {SecondUserId}.";
+        private const string RemoveFriendshipEntityFailureTemplate =
+            "Entity Framework connection failed while removing friendship between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+        private const string RemoveFriendshipSqlFailureTemplate =
+            "SQL execution failed while removing friendship in database between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+
+        private const string UnblockPlayerDbUpdateFailureTemplate =
+            "Database update failed while removing player block for {BlockedId} by blocker {BlockerId}.";
+        private const string UnblockPlayerEntityFailureTemplate =
+            "Entity Framework connection failed while removing player block for {BlockedId} by blocker {BlockerId}.";
+        private const string UnblockPlayerSqlFailureTemplate =
+            "SQL execution failed while executing unblock operation for {BlockedId} by blocker {BlockerId}.";
+
+        private const string UpdateFriendshipStatusDbUpdateFailureTemplate =
+            "Database update failed while updating friendship status to {Status} between user {FirstUserId} and " +
+            "user {SecondUserId}.";
+        private const string UpdateFriendshipStatusEntityFailureTemplate =
+            "Entity Framework connection failed while updating friendship status to {Status} between " +
+            "user {FirstUserId} and user {SecondUserId}.";
+        private const string UpdateFriendshipStatusSqlFailureTemplate =
+            "SQL execution failed while executing friendship status update to {Status} between " +
+            "user {FirstUserId} and user {SecondUserId}.";
+
+        private const string DatabaseConnectionFailureMessage = "Failed to connect to the database.";
+        private const string SavePlayerBlockFailureMessage = "Failed to save player block in the database.";
+        private const string ExecuteBlockOperationFailureMessage = "Failed to execute block operation in the database.";
+        private const string CreateFriendRequestFailureMessage = "Failed to create friend request in the database.";
+        private const string InsertFriendRequestFailureMessage = "Failed to insert friend request in the database.";
+        private const string DeleteFriendshipFailureMessage = "Failed to delete friendship from the database.";
+        private const string ExecuteFriendshipDeletionFailureMessage =
+            "Failed to execute friendship deletion in the database.";
+        private const string QueryFriendshipRecordFailureMessage =
+            "Failed to query friendship record in the database.";
+        private const string QueryFriendsListFailureMessage = "Failed to query friends list in the database.";
+        private const string QueryPendingRequestsFailureMessage = "Failed to query pending friend requests.";
+        private const string QuerySentRequestsFailureMessage = "Failed to query sent friend requests.";
+        private const string QueryPlayerBlockStatusFailureMessage = "Failed to query player block status.";
+        private const string RemoveFriendshipFailureMessage = "Failed to remove friendship from the database.";
+        private const string ExecuteFriendshipRemovalFailureMessage =
+            "Failed to execute friendship removal in the database.";
+        private const string RemovePlayerBlockFailureMessage = "Failed to remove player block from the database.";
+        private const string ExecuteUnblockOperationFailureMessage =
+            "Failed to execute unblock operation in the database.";
+        private const string UpdateFriendshipStatusFailureMessage =
+            "Failed to update friendship status in the database.";
+        private const string ExecuteStatusUpdateFailureMessage = "Failed to execute status update in the database.";
+
+        private readonly ILoggerService _logger;
+
+        public FriendshipRepository(ILoggerService logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public void BlockPlayer(int blockerId, int blockedId)
         {
@@ -42,18 +151,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to save player block in the database.", ex);
+                _logger.Error(ex, BlockPlayerDbUpdateFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(SavePlayerBlockFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, BlockPlayerEntityFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute block operation in the database.", ex);
+                _logger.Error(ex, BlockPlayerSqlFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(ExecuteBlockOperationFailureMessage, ex);
             }
         }
 
@@ -83,18 +192,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to create friend request in the database.", ex);
+                _logger.Error(ex, CreateFriendRequestDbUpdateFailureTemplate, senderUserId, receiverUserId);
+                throw new InvalidOperationException(CreateFriendRequestFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, CreateFriendRequestEntityFailureTemplate, senderUserId, receiverUserId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to insert friend request in the database.", ex);
+                _logger.Error(ex, CreateFriendRequestSqlFailureTemplate, senderUserId, receiverUserId);
+                throw new InvalidOperationException(InsertFriendRequestFailureMessage, ex);
             }
         }
 
@@ -116,18 +225,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to delete friendship from the database.", ex);
+                _logger.Error(ex, DeleteFriendshipDbUpdateFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(DeleteFriendshipFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, DeleteFriendshipEntityFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute friendship deletion in the database.", ex);
+                _logger.Error(ex, DeleteFriendshipSqlFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(ExecuteFriendshipDeletionFailureMessage, ex);
             }
         }
 
@@ -149,13 +258,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetFriendshipEntityFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to query friendship record in the database.", ex);
+                _logger.Error(ex, GetFriendshipSqlFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(QueryFriendshipRecordFailureMessage, ex);
             }
 
             return recordData;
@@ -184,13 +293,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetFriendsListEntityFailureTemplate, userId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to query friends list in the database.", ex);
+                _logger.Error(ex, GetFriendsListSqlFailureTemplate, userId);
+                throw new InvalidOperationException(QueryFriendsListFailureMessage, ex);
             }
 
             return friends;
@@ -219,13 +328,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetPendingRequestsEntityFailureTemplate, userId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to query pending friend requests.", ex);
+                _logger.Error(ex, GetPendingRequestsSqlFailureTemplate, userId);
+                throw new InvalidOperationException(QueryPendingRequestsFailureMessage, ex);
             }
 
             return pendingRequests;
@@ -255,13 +364,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetSentRequestsEntityFailureTemplate, userId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to query sent friend requests.", ex);
+                _logger.Error(ex, GetSentRequestsSqlFailureTemplate, userId);
+                throw new InvalidOperationException(QuerySentRequestsFailureMessage, ex);
             }
 
             return sentRequests;
@@ -287,13 +396,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, IsPlayerBlockedEntityFailureTemplate, playerAId, playerBId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to query player block status.", ex);
+                _logger.Error(ex, IsPlayerBlockedSqlFailureTemplate, playerAId, playerBId);
+                throw new InvalidOperationException(QueryPlayerBlockStatusFailureMessage, ex);
             }
 
             return isBlocked;
@@ -311,18 +420,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to remove friendship from the database.", ex);
+                _logger.Error(ex, RemoveFriendshipDbUpdateFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(RemoveFriendshipFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, RemoveFriendshipEntityFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute friendship removal in the database.", ex);
+                _logger.Error(ex, RemoveFriendshipSqlFailureTemplate, firstUserId, secondUserId);
+                throw new InvalidOperationException(ExecuteFriendshipRemovalFailureMessage, ex);
             }
         }
 
@@ -342,18 +451,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to remove player block from the database.", ex);
+                _logger.Error(ex, UnblockPlayerDbUpdateFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(RemovePlayerBlockFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, UnblockPlayerEntityFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute unblock operation in the database.", ex);
+                _logger.Error(ex, UnblockPlayerSqlFailureTemplate, blockedId, blockerId);
+                throw new InvalidOperationException(ExecuteUnblockOperationFailureMessage, ex);
             }
         }
 
@@ -377,18 +486,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to update friendship status in the database.", ex);
+                _logger.Error(ex, UpdateFriendshipStatusDbUpdateFailureTemplate, status, firstUserId, secondUserId);
+                throw new InvalidOperationException(UpdateFriendshipStatusFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, UpdateFriendshipStatusEntityFailureTemplate, status, firstUserId, secondUserId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute status update in the database.", ex);
+                _logger.Error(ex, UpdateFriendshipStatusSqlFailureTemplate, status, firstUserId, secondUserId);
+                throw new InvalidOperationException(ExecuteStatusUpdateFailureMessage, ex);
             }
         }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading;
 using Application.Models;
-using Application.Ports.Logger;
 using ProfileImages;
 using Services.Contracts;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {

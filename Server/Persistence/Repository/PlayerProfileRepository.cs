@@ -7,6 +7,7 @@ using System.Linq;
 using Application.Models;
 using Application.Ports;
 using Persistence.Entities;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Persistence.Repository
 {
@@ -16,6 +17,28 @@ namespace Persistence.Repository
     public sealed class PlayerProfileRepository : IPlayerProfileRepository
     {
         private const string ProfileImageFilePrefix = "Avatar_Profile_";
+        private const string ProfileImageFileExtension = ".png";
+        private const string GuidFormatN = "N";
+
+        private const string ReadProfileMetadataEntityFailureTemplate =
+            "Entity Framework connection failed while reading profile image metadata for {UserCount} user(s).";
+        private const string ProfileOwnerNotFoundWarningTemplate =
+            "Cannot replace profile image because authenticated user {UserId} does not exist.";
+        private const string SaveProfileMetadataEntityFailureTemplate =
+            "Entity Framework connection failed while saving profile image metadata for user {UserId}.";
+        private const string SaveProfileMetadataDbUpdateFailureTemplate =
+            "Database update failed while saving profile image metadata for user {UserId}.";
+
+        private const string ReadProfileMetadataFailureMessage = "Profile image metadata could not be read.";
+        private const string ProfileOwnerNotFoundMessage = "The profile owner does not exist.";
+        private const string SaveProfileMetadataFailureMessage = "Profile image metadata could not be saved.";
+
+        private readonly ILoggerService _logger;
+
+        public PlayerProfileRepository(ILoggerService logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
 
         public PlayerProfileImageData[] GetProfileImages(int[] profileOwnerUserIds)
         {
@@ -41,7 +64,8 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                throw new InvalidOperationException("Profile image metadata could not be read.", ex);
+                _logger.Error(ex, ReadProfileMetadataEntityFailureTemplate, profileOwnerUserIds != null ? profileOwnerUserIds.Length : 0);
+                throw new InvalidOperationException(ReadProfileMetadataFailureMessage, ex);
             }
             return profileImages;
         }
@@ -59,7 +83,8 @@ namespace Persistence.Repository
                         User account = context.User.Find(authenticatedAccountUserId);
                         if (account == null)
                         {
-                            throw new InvalidOperationException("The profile owner does not exist.");
+                            _logger.Warning(ProfileOwnerNotFoundWarningTemplate, authenticatedAccountUserId);
+                            throw new InvalidOperationException(ProfileOwnerNotFoundMessage);
                         }
                         profile = new PlayerProfile
                         {
@@ -70,18 +95,20 @@ namespace Persistence.Repository
                         context.PlayerProfile.Add(profile);
                     }
                     previousImageId = ParseProfileImageId(profile.AvatarPath);
-                    profile.AvatarPath = ProfileImageFilePrefix + profileImageId.ToString("N") + ".png";
+                    profile.AvatarPath = ProfileImageFilePrefix + profileImageId.ToString(GuidFormatN) + ProfileImageFileExtension;
                     profile.UpdatedAt = DateTime.UtcNow;
                     context.SaveChanges();
                 }
             }
             catch (EntityException ex)
             {
-                throw new InvalidOperationException("Profile image metadata could not be saved.", ex);
+                _logger.Error(ex, SaveProfileMetadataEntityFailureTemplate, authenticatedAccountUserId);
+                throw new InvalidOperationException(SaveProfileMetadataFailureMessage, ex);
             }
             catch (DbUpdateException ex)
             {
-                throw new InvalidOperationException("Profile image metadata could not be saved.", ex);
+                _logger.Error(ex, SaveProfileMetadataDbUpdateFailureTemplate, authenticatedAccountUserId);
+                throw new InvalidOperationException(SaveProfileMetadataFailureMessage, ex);
             }
             return previousImageId;
         }
@@ -90,12 +117,12 @@ namespace Persistence.Repository
         {
             Guid profileImageId = Guid.Empty;
             bool hasExpectedShape = storedImageName != null && storedImageName.StartsWith(ProfileImageFilePrefix,
-                StringComparison.Ordinal) && storedImageName.EndsWith(".png", StringComparison.Ordinal);
+                StringComparison.Ordinal) && storedImageName.EndsWith(ProfileImageFileExtension, StringComparison.Ordinal);
             if (hasExpectedShape)
             {
                 string imageIdentifier = storedImageName.Substring(ProfileImageFilePrefix.Length,
-                    storedImageName.Length - ProfileImageFilePrefix.Length - 4);
-                Guid.TryParseExact(imageIdentifier, "N", out profileImageId);
+                    storedImageName.Length - ProfileImageFilePrefix.Length - ProfileImageFileExtension.Length);
+                Guid.TryParseExact(imageIdentifier, GuidFormatN, out profileImageId);
             }
             return profileImageId;
         }

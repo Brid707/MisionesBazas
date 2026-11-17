@@ -6,6 +6,7 @@ using System.Linq;
 using Application.Models;
 using Application.Ports;
 using Persistence.Entities;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Persistence.Repository
 {
@@ -14,6 +15,44 @@ namespace Persistence.Repository
     /// </summary>
     public sealed class UserRepository : IUserRepository
     {
+        private readonly ILoggerService _logger;
+        private const string GetUserByEmailEntityFailureTemplate =
+    "Entity Framework connection failed while querying user by email {Email}.";
+        private const string GetUserByEmailSqlFailureTemplate =
+            "SQL execution failed while querying user by email {Email}.";
+
+        private const string GetUserByIdEntityFailureTemplate =
+            "Entity Framework connection failed while querying user by id {UserId}.";
+        private const string GetUserByIdSqlFailureTemplate =
+            "SQL execution failed while querying user by id {UserId}.";
+
+        private const string GetUserByUsernameEntityFailureTemplate =
+            "Entity Framework connection failed while querying user by username {Username}.";
+        private const string GetUserByUsernameSqlFailureTemplate =
+            "SQL execution failed while querying user by username {Username}.";
+
+        private const string UpdateLastLoginEntityFailureTemplate =
+            "Entity Framework connection failed while updating last login timestamp for user {UserId}.";
+
+        private const string CreateUserDbUpdateFailureTemplate =
+            "Database update failed while inserting user account for username {Username}.";
+        private const string CreateUserEntityFailureTemplate =
+            "Entity Framework connection failed while inserting user account for username {Username}.";
+        private const string CreateUserSqlFailureTemplate =
+            "SQL execution failed while inserting user account for username {Username}.";
+
+        private const string DatabaseConnectionFailureMessage = "Failed to connect to the database.";
+        private const string DatabaseQueryFailureMessage = "Failed to execute query in the database.";
+        private const string UpdateUserSessionFailureMessage = "Failed to update user session in the database.";
+        private const string InsertUserRecordsFailureMessage = "Failed to insert user account records into " +
+            "the database.";
+        private const string ExecuteInsertQueryFailureMessage = "Failed to execute insert query in the database.";
+
+        public UserRepository(ILoggerService logger)
+        {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         public UserAccount GetUserByEmail(string email)
         {
             UserAccount foundUserAccount = null;
@@ -35,13 +74,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetUserByEmailEntityFailureTemplate, email);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute query in the database.", ex);
+                _logger.Error(ex, GetUserByEmailSqlFailureTemplate, email);
+                throw new InvalidOperationException(DatabaseQueryFailureMessage, ex);
             }
 
             return foundUserAccount;
@@ -64,13 +103,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetUserByIdEntityFailureTemplate, userId);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute query in the database.", ex);
+                _logger.Error(ex, GetUserByIdSqlFailureTemplate, userId);
+                throw new InvalidOperationException(DatabaseQueryFailureMessage, ex);
             }
 
             return foundUserAccount;
@@ -97,13 +136,13 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, GetUserByUsernameEntityFailureTemplate, username);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute query in the database.", ex);
+                _logger.Error(ex, GetUserByUsernameSqlFailureTemplate, username);
+                throw new InvalidOperationException(DatabaseQueryFailureMessage, ex);
             }
 
             return foundUserAccount;
@@ -125,8 +164,8 @@ namespace Persistence.Repository
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to update user session in the database.", ex);
+                _logger.Error(ex, UpdateLastLoginEntityFailureTemplate, userId);
+                throw new InvalidOperationException(UpdateUserSessionFailureMessage, ex);
             }
         }
 
@@ -155,7 +194,8 @@ namespace Persistence.Repository
                     context.User.Add(userEntity);
                     context.SaveChanges();
 
-                    if (!string.IsNullOrWhiteSpace(displayName) && !string.Equals(displayName, user.Username, StringComparison.Ordinal))
+                    if (!string.IsNullOrWhiteSpace(displayName) && !string.Equals(displayName, user.Username,
+                        StringComparison.Ordinal))
                     {
                         PlayerProfile profile = context.PlayerProfile.Find(userEntity.IdUser);
                         if (profile != null)
@@ -170,18 +210,18 @@ namespace Persistence.Repository
             }
             catch (DbUpdateException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to insert user account records into the database.", ex);
+                _logger.Error(ex, CreateUserDbUpdateFailureTemplate, user.Username);
+                throw new InvalidOperationException(InsertUserRecordsFailureMessage, ex);
             }
             catch (EntityException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to connect to the database.", ex);
+                _logger.Error(ex, CreateUserEntityFailureTemplate, user.Username);
+                throw new InvalidOperationException(DatabaseConnectionFailureMessage, ex);
             }
             catch (SqlException ex)
             {
-                // TODO: Implement logging for the exception once logging infrastructure is available.
-                throw new InvalidOperationException("Failed to execute insert query in the database.", ex);
+                _logger.Error(ex, CreateUserSqlFailureTemplate, user.Username);
+                throw new InvalidOperationException(ExecuteInsertQueryFailureMessage, ex);
             }
 
             return createdUserId;

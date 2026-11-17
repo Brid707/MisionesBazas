@@ -57,8 +57,6 @@
     </Compile>
     <Compile Include="Models\Lobby\LobbyConfiguration.cs" />
     <Compile Include="Models\ChatModeration\ChatMessageRejectionReason.cs" />
-    <Compile Include="Ports\ChatModeration\IChatModerationLogger.cs" />
-    <Compile Include="Ports\Logger\ILoggerService.cs" />
     <Compile Include="UseCases\Account\AccountAccessPolicy.cs" />
     <Compile Include="Ports\Account\IAccountAccessPolicy.cs" />
     <Compile Include="UseCases\ChatModeration\LobbyChatMessageUseCase.cs" />
@@ -94,6 +92,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Logging.Abstractions\TrickTakingMissions.Logging.Abstractions.csproj">
+      <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
+      <Name>TrickTakingMissions.Logging.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
       <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
       <Name>TrickTakingMissions.Rules</Name>

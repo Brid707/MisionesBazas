@@ -4,7 +4,7 @@ using System.Xml;
 
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Application.UseCases
 {
@@ -13,30 +13,42 @@ namespace Application.UseCases
     {
         private const string CatalogFailureTemplate =
             "Chat catalog preparation failed. Source {CatalogSource}; type {FailureType}; reason {FailureReason}.";
+        private const string ChatModerationAvailableEditableCatalogTemplate =
+            "Chat moderation is available with the validated editable bilingual catalog.";
+        private const string ChatModerationBackupActivatedTemplate =
+            "Chat moderation activated the last validated bilingual catalog backup.";
+        private const string ChatModerationDisabledNoFilterAvailableTemplate =
+            "Chat sending is disabled because no valid bilingual filter is available. Other game services can " +
+            "continue starting.";
+
+        private const string CatalogSourceEditableCatalog = "EditableCatalog";
+        private const string CatalogSourceValidatedBackup = "ValidatedBackup";
+        private const string CatalogSourceBackupPublication = "BackupPublication";
+
         private readonly IChatModerationCatalogBackup _moderationCatalogBackup;
         private readonly ILoggerService _moderationLogger;
 
         public ChatModerationStartup(IChatModerationCatalogBackup moderationCatalogBackup,
             ILoggerService moderationLogger)
         {
-            _moderationCatalogBackup = moderationCatalogBackup;
-            _moderationLogger = moderationLogger;
+            _moderationCatalogBackup = moderationCatalogBackup ??
+                throw new ArgumentNullException(nameof(moderationCatalogBackup));
+            _moderationLogger = moderationLogger ?? throw new ArgumentNullException(nameof(moderationLogger));
         }
 
         public ChatModerationPreparation PrepareChatModeration(string catalogDirectory)
         {
             ChatModerationPreparation moderationPreparation = TryPrepareCatalog(
-                () => _moderationCatalogBackup.LoadEditableCatalog(catalogDirectory), "EditableCatalog");
+                () => _moderationCatalogBackup.LoadEditableCatalog(catalogDirectory), CatalogSourceEditableCatalog);
             if (moderationPreparation.IsChatSendingAvailable)
             {
                 TrySaveValidatedBackup(moderationPreparation);
-                _moderationLogger.Information(
-                    "Chat moderation is available with the validated editable bilingual catalog.");
+                _moderationLogger.Information(ChatModerationAvailableEditableCatalogTemplate);
             }
             else
             {
                 moderationPreparation = TryPrepareCatalog(
-                    _moderationCatalogBackup.LoadValidatedBackup, "ValidatedBackup");
+                    _moderationCatalogBackup.LoadValidatedBackup, CatalogSourceValidatedBackup);
                 LogRecoveryAvailability(moderationPreparation.IsChatSendingAvailable);
             }
 
@@ -91,30 +103,28 @@ namespace Application.UseCases
             }
             catch (IOException ex)
             {
-                LogCatalogFailure("BackupPublication", ex.GetType().Name, ex.Message);
+                LogCatalogFailure(CatalogSourceBackupPublication, ex.GetType().Name, ex.Message);
             }
             catch (UnauthorizedAccessException ex)
             {
-                LogCatalogFailure("BackupPublication", ex.GetType().Name, ex.Message);
+                LogCatalogFailure(CatalogSourceBackupPublication, ex.GetType().Name, ex.Message);
             }
         }
 
         private void LogCatalogFailure(string catalogSource, string failureType, string failureReason)
         {
-            _moderationLogger.Warning(CatalogFailureTemplate,
-                new object[] { catalogSource, failureType, failureReason });
+            _moderationLogger.Warning(CatalogFailureTemplate, catalogSource, failureType, failureReason);
         }
 
         private void LogRecoveryAvailability(bool isChatSendingAvailable)
         {
             if (isChatSendingAvailable)
             {
-                _moderationLogger.Warning("Chat moderation activated the last validated bilingual catalog backup.");
+                _moderationLogger.Warning(ChatModerationBackupActivatedTemplate);
             }
             else
             {
-                _moderationLogger.Error("Chat sending is disabled because no valid bilingual filter is available. " +
-                    "Other game services can continue starting.");
+                _moderationLogger.Error(ChatModerationDisabledNoFilterAvailableTemplate);
             }
         }
     }

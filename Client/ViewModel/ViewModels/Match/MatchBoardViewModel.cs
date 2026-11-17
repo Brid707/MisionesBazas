@@ -23,7 +23,8 @@ namespace ViewModel.ViewModels
     {
         private const int CompletedTrickDisplayMilliseconds = 2500;
         private const string LogMatchSynchronizationFailed =
-            "Match synchronization failed for LobbyCode={LobbyCode} (FeedbackKey={FeedbackKey}, ExceptionType={ExceptionType}).";
+            "Match synchronization failed for LobbyCode={LobbyCode} (FeedbackKey={FeedbackKey}," +
+            " ExceptionType={ExceptionType}).";
 
         private readonly string _lobbyCode;
         private readonly int _participantUserId;

@@ -4,6 +4,8 @@ using System.Threading;
 using Application.Models;
 using Application.Ports;
 using ProfileImages;
+using TrickTakingMissions.Logging.Abstractions;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Application.UseCases
 {
@@ -12,18 +14,28 @@ namespace Application.UseCases
     /// </summary>
     public sealed class ProfileImageUseCase
     {
+        private const string ProfileImageUpdatedSuccessfullyTemplate =
+            "Profile image updated successfully for user {UserId} with image ID {ProfileImageId}.";
+        private const string ProfileImageServiceBusyTemplate =
+            "Profile image upload rejected for user {UserId}: image processing service is busy.";
+        private const string ProfileImageReplacementPersistenceFailureTemplate =
+            "Profile image replacement aborted for user {UserId} due to database failure; cleaned up orphaned image {ProfileImageId}.";
+
         private readonly IProfileImageProcessor _profileImageProcessor;
         private readonly IProfileImageStorage _profileImageStorage;
         private readonly IPlayerProfileRepository _playerProfileRepository;
+        private readonly ILoggerService _logger;
         private readonly object[] _accountUpdateLocks = Enumerable.Range(0, 64).Select(_ => new object()).ToArray();
         private readonly SemaphoreSlim _uploadSlots = new SemaphoreSlim(2, 2);
 
         public ProfileImageUseCase(IProfileImageProcessor profileImageProcessor,
-            IProfileImageStorage profileImageStorage, IPlayerProfileRepository playerProfileRepository)
+            IProfileImageStorage profileImageStorage, IPlayerProfileRepository playerProfileRepository,
+            ILoggerService logger = null)
         {
             _profileImageProcessor = profileImageProcessor;
             _profileImageStorage = profileImageStorage;
             _playerProfileRepository = playerProfileRepository;
+            _logger = logger ?? NullLoggerService.Instance;
         }
 
         public PlayerProfileImageData ChangeOwnProfileImage(int authenticatedAccountUserId, byte[] imageBytes)
@@ -34,6 +46,7 @@ namespace Application.UseCases
             }
             if (!_uploadSlots.Wait(0))
             {
+                _logger.Warning(ProfileImageServiceBusyTemplate, authenticatedAccountUserId);
                 throw new ProfileImageException(ProfileImageFailureCodes.ImageServiceBusy);
             }
             PlayerProfileImageData updatedProfileImage;
@@ -43,6 +56,8 @@ namespace Application.UseCases
                 lock (_accountUpdateLocks[authenticatedAccountUserId % _accountUpdateLocks.Length])
                 {
                     updatedProfileImage = PersistProfileImage(authenticatedAccountUserId, normalizedProfileImageBytes);
+                    _logger.Information(ProfileImageUpdatedSuccessfullyTemplate, authenticatedAccountUserId,
+                        updatedProfileImage.ProfileImageId);
                 }
             }
             finally
@@ -63,6 +78,7 @@ namespace Application.UseCases
             }
             catch (InvalidOperationException)
             {
+                _logger.Warning(ProfileImageReplacementPersistenceFailureTemplate, accountUserId, profileImageId);
                 _profileImageStorage.DeleteProfileImage(profileImageId);
                 throw;
             }

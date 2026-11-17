@@ -10,6 +10,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {
@@ -17,8 +18,9 @@ namespace Services.Services
     public sealed class FriendsRequestService : IFriendsRequestService
     {
         private readonly IFriendshipUseCase _friendshipUseCase;
+        private readonly ILoggerService _logger;
 
-        public FriendsRequestService(IFriendshipUseCase friendshipUseCase)
+        public FriendsRequestService(IFriendshipUseCase friendshipUseCase, ILoggerService logger)
         {
             if (friendshipUseCase == null)
             {
@@ -26,6 +28,7 @@ namespace Services.Services
             }
 
             _friendshipUseCase = friendshipUseCase;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<OperationResult> SendFriendRequestAsync(int senderUserId, string targetUsername)
@@ -49,7 +52,7 @@ namespace Services.Services
             if (friendshipActionOutcome.IsSuccess)
             {
                 bool isReceiverOnline = FriendshipService.IsUserOnline(receiverUserId);
-                FriendshipService.NotifySingleFriendStatus(senderUserId, receiverUserId, isReceiverOnline);
+                FriendshipService.NotifySingleFriendStatus(senderUserId, receiverUserId, isReceiverOnline, _logger);
             }
 
             return MapToOperationResult(friendshipActionOutcome);
@@ -110,7 +113,7 @@ namespace Services.Services
                     StringComparison.OrdinalIgnoreCase))
                 {
                     FriendRequest friendRequest = MapToFriendRequest(requestData);
-                    FriendshipService.NotifyFriendRequestReceived(friendRequest);
+                    FriendshipService.NotifyFriendRequestReceived(friendRequest, _logger);
                 }
             }
         }

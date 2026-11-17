@@ -6,6 +6,8 @@ using System.Linq;
 using Application.Models;
 using Application.Ports;
 using Domain;
+using TrickTakingMissions.Logging.Abstractions;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Application
 {
@@ -42,12 +44,36 @@ namespace Application
         private const string ErrorMessageLobbyMatchInProgress = "The match in this lobby has already started.";
         private const string ErrorMessageLobbyFull = "The lobby room is full.";
 
+        private const string MatchNotConfiguredMessage = "MatchNotConfigured";
+        private const string MessageHostRequired = "LobbyHostRequired";
+        private const string MessageConfigurationInvalid = "LobbyConfigurationInvalid";
+        private const string MessageReentryTargetInvalid = "LobbyReentryTargetInvalid";
+        private const string MessageReentryAuthorized = "LobbyKickedPlayerReentryAuthorized";
+        private const string MessageKickedParticipantReentryDenied = "LobbyKickedParticipantReentryDenied";
+        private const string MessageMatchInProgress = "LobbyMatchInProgress";
+
+        private const string LobbyCreatedSuccessfullyTemplate =
+            "Lobby {LobbyCode} created by host user {HostUserId}.";
+        private const string LobbyTransitionedToGameTemplate =
+            "Lobby {LobbyCode} transitioned to match with {PlayerCount} players.";
+        private const string LobbyDisbandedTemplate =
+            "Lobby {LobbyCode} closed and disbanded.";
+        private const string CreateLobbyHostNotFoundTemplate =
+            "Host user {HostUserId} not found when creating lobby.";
+        private const string CreateLobbyPersistenceFailureTemplate =
+            "Aborted lobby creation for host user {HostUserId} due to database failure.";
+        private const string JoinLobbyPersistenceFailureTemplate =
+            "Aborted join to lobby {LobbyCode} for user {UserId} due to database failure.";
+        private const string ParticipantKickedFromLobbyTemplate =
+            "Player {TargetUserId} was kicked from lobby {LobbyCode} by host {HostUserId}.";
+
         private readonly IUserRepository _userRepository;
         private readonly ILobbyHostSelection _lobbyHostSelection;
+        private readonly ILoggerService _logger;
         private readonly ConcurrentDictionary<string, LobbyRoomData> _activeLobbies;
 
         public LobbyUseCase(IUserRepository userRepository, ILobbyHostSelection lobbyHostSelection,
-            IMatchUseCase matchUseCase = null)
+            IMatchUseCase matchUseCase = null, ILoggerService logger = null)
         {
             if (userRepository == null)
             {
@@ -57,6 +83,7 @@ namespace Application
             Match = matchUseCase;
             _userRepository = userRepository;
             _lobbyHostSelection = lobbyHostSelection;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _activeLobbies = new ConcurrentDictionary<string, LobbyRoomData>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -69,10 +96,12 @@ namespace Application
 
             if (hasDatabaseError)
             {
+                _logger.Warning(CreateLobbyPersistenceFailureTemplate, hostUserId);
                 outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, ErrorMessageDatabaseHostVerification);
             }
             else if (hostAccount == null)
             {
+                _logger.Warning(CreateLobbyHostNotFoundTemplate, hostUserId);
                 outcome = CreateErrorOutcome(ErrorCodeUserNotFound, ErrorMessageHostNotFound);
             }
             else
@@ -115,6 +144,7 @@ namespace Application
                 if (outcome.IsRoomDisbanded || (outcome.Lobby != null && outcome.Lobby.Players.Count == 0))
                 {
                     _activeLobbies.TryRemove(normalizedCode, out LobbyRoomData _);
+                    _logger.Information(LobbyDisbandedTemplate, normalizedCode);
                 }
             }
 
@@ -204,12 +234,13 @@ namespace Application
                     {
                         if (Match == null)
                         {
-                            throw new InvalidOperationException("MatchNotConfigured");
+                            throw new InvalidOperationException(MatchNotConfiguredMessage);
                         }
                         Match.StartMatch(lobby.LobbyCode, lobby.Players.Select(player => player.IdUser).ToArray(),
                             lobby.LobbyInstanceId);
                         lobby.Status = LobbyRoomRules.StatusInGame;
                         lobby.StateVersion++;
+                        _logger.Information(LobbyTransitionedToGameTemplate, lobby.LobbyCode, lobby.Players.Count);
                         canStart = true;
                     }
                 }
@@ -281,16 +312,16 @@ namespace Application
             LobbyActionOutcome configurationValidation = new LobbyActionOutcome { IsSuccess = true };
             if (lobby.HostUserId != requesterUserId)
             {
-                configurationValidation = CreateErrorOutcome(ErrorCodeHostRequired, "LobbyHostRequired");
+                configurationValidation = CreateErrorOutcome(ErrorCodeHostRequired, MessageHostRequired);
             }
             else if (!LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
             {
-                configurationValidation = CreateErrorOutcome(ErrorCodeLobbyInProgress, "LobbyMatchInProgress");
+                configurationValidation = CreateErrorOutcome(ErrorCodeLobbyInProgress, MessageMatchInProgress);
             }
             else if (lobbyConfiguration == null || !LobbyRoomRules.IsConfigurationValid(
                 lobbyConfiguration.TargetMissionCount, lobbyConfiguration.PlayerLimit, lobby.Players.Count))
             {
-                configurationValidation = CreateErrorOutcome(ErrorCodeValidationFailed, "LobbyConfigurationInvalid");
+                configurationValidation = CreateErrorOutcome(ErrorCodeValidationFailed, MessageConfigurationInvalid);
             }
 
             return configurationValidation;
@@ -355,6 +386,7 @@ namespace Application
             };
 
             _activeLobbies[generatedCode] = newLobby;
+            _logger.Information(LobbyCreatedSuccessfullyTemplate, generatedCode, hostAccount.IdUser);
 
             return new LobbyActionOutcome
             {
@@ -389,15 +421,15 @@ namespace Application
             LobbyActionOutcome reentryAuthorization;
             if (lobby.HostUserId != hostUserId)
             {
-                reentryAuthorization = CreateErrorOutcome(ErrorCodeHostRequired, "LobbyHostRequired");
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeHostRequired, MessageHostRequired);
             }
             else if (!LobbyRoomRules.IsRoomWaitingForPlayers(lobby.Status))
             {
-                reentryAuthorization = CreateErrorOutcome(ErrorCodeLobbyInProgress, "LobbyMatchInProgress");
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeLobbyInProgress, MessageMatchInProgress);
             }
             else if (targetUserId == hostUserId || targetUserId == 0)
             {
-                reentryAuthorization = CreateErrorOutcome(ErrorCodeValidationFailed, "LobbyReentryTargetInvalid");
+                reentryAuthorization = CreateErrorOutcome(ErrorCodeValidationFailed, MessageReentryTargetInvalid);
             }
             else
             {
@@ -405,7 +437,7 @@ namespace Application
                 {
                     IsSuccess = true,
                     ErrorCode = ErrorCodeSuccess,
-                    Message = "LobbyKickedPlayerReentryAuthorized"
+                    Message = MessageReentryAuthorized
                 };
             }
 
@@ -419,6 +451,7 @@ namespace Application
 
             if (hasDatabaseError)
             {
+                _logger.Warning(JoinLobbyPersistenceFailureTemplate, lobby.LobbyCode, userId);
                 outcome = CreateErrorOutcome(ErrorCodePersistenceFailure, ErrorMessageDatabasePlayerVerification);
             }
             else if (userAccount == null)
@@ -443,7 +476,7 @@ namespace Application
             if (lobby.KickedParticipantUserIds.Contains(userAccount.IdUser))
             {
                 lobbyEntryDecision = CreateErrorOutcome(ErrorCodeKickedParticipantReentryDenied,
-                    "LobbyKickedParticipantReentryDenied");
+                    MessageKickedParticipantReentryDenied);
             }
             else
             {
@@ -544,7 +577,7 @@ namespace Application
             return outcome;
         }
 
-        private static LobbyActionOutcome TryKickParticipantUnderLock(
+        private LobbyActionOutcome TryKickParticipantUnderLock(
             LobbyRoomData lobby,
             int hostUserId,
             int targetUserId)
@@ -561,6 +594,7 @@ namespace Application
                     lobby.KickedParticipantUserIds.Add(targetUserId);
                     lobby.Players.Remove(target);
                     lobby.StateVersion++;
+                    _logger.Warning(ParticipantKickedFromLobbyTemplate, targetUserId, lobby.LobbyCode, hostUserId);
                     outcome = new LobbyActionOutcome
                     {
                         IsSuccess = true,
@@ -576,9 +610,7 @@ namespace Application
         }
 
         private static LobbyActionOutcome TryUpdateReadinessUnderLock(
-            LobbyRoomData lobby,
-            int userId,
-            bool isReady)
+            LobbyRoomData lobby, int userId, bool isReady)
         {
             LobbyActionOutcome outcome = CreateErrorOutcome(
                 ErrorCodeUserNotFound,
@@ -623,7 +655,6 @@ namespace Application
                 }
                 catch (InvalidOperationException)
                 {
-                    // TODO: Log database failure once official logging infrastructure is available.
                     hasDatabaseError = true;
                 }
             }

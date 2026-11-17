@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ServiceModel;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {
@@ -16,8 +17,9 @@ namespace Services.Services
         private static readonly ConcurrentDictionary<int, IFriendshipServiceCallback> s_onlineSubscribers
             = new ConcurrentDictionary<int, IFriendshipServiceCallback>();
         private readonly IFriendshipUseCase _friendshipUseCase;
+        private readonly ILoggerService _logger;
 
-        public FriendshipService(IFriendshipUseCase friendshipUseCase)
+        public FriendshipService(IFriendshipUseCase friendshipUseCase, ILoggerService logger)
         {
             if (friendshipUseCase == null)
             {
@@ -25,6 +27,7 @@ namespace Services.Services
             }
 
             _friendshipUseCase = friendshipUseCase;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void SubscribeSocialEvents(int userId)
@@ -121,25 +124,29 @@ namespace Services.Services
             return s_onlineSubscribers.ContainsKey(userId);
         }
 
-        internal static void NotifyFriendRequestReceived(FriendRequest friendRequest)
+        internal static void NotifyFriendRequestReceived(FriendRequest friendRequest, ILoggerService logger = null)
         {
             if (friendRequest != null && s_onlineSubscribers.TryGetValue(
                 friendRequest.ReceiverUserId,
                 out IFriendshipServiceCallback receiverCallback))
             {
-                TrySendFriendRequestCallback(friendRequest, receiverCallback);
+                TrySendFriendRequestCallback(friendRequest, receiverCallback, logger);
             }
         }
 
-        internal static void NotifySingleFriendStatus(int targetSubscriberUserId, int friendUserId, bool isOnline)
+        internal static void NotifySingleFriendStatus(
+            int targetSubscriberUserId,
+            int friendUserId,
+            bool isOnline,
+            ILoggerService logger = null)
         {
             if (s_onlineSubscribers.TryGetValue(targetSubscriberUserId, out IFriendshipServiceCallback callback))
             {
-                TrySendStatusChangedCallback(targetSubscriberUserId, callback, friendUserId, isOnline);
+                TrySendStatusChangedCallback(targetSubscriberUserId, callback, friendUserId, isOnline, logger);
             }
         }
 
-        internal static void NotifyFriendRemoved(int targetSubscriberUserId, int removedByUserId)
+        internal void NotifyFriendRemoved(int targetSubscriberUserId, int removedByUserId)
         {
             if (s_onlineSubscribers.TryGetValue(targetSubscriberUserId, out IFriendshipServiceCallback callback))
             {
@@ -178,13 +185,14 @@ namespace Services.Services
 
             foreach (FriendSummaryData friend in friends)
             {
-                NotifySingleFriendStatus(friend.IdUser, userId, isOnline);
+                NotifySingleFriendStatus(friend.IdUser, userId, isOnline, _logger);
             }
         }
 
         private static void TrySendFriendRequestCallback(
             FriendRequest friendRequest,
-            IFriendshipServiceCallback receiverCallback)
+            IFriendshipServiceCallback receiverCallback,
+            ILoggerService logger)
         {
             int subscriberUserId = friendRequest.ReceiverUserId;
 
@@ -218,7 +226,8 @@ namespace Services.Services
             int targetSubscriberUserId,
             IFriendshipServiceCallback callback,
             int friendUserId,
-            bool isOnline)
+            bool isOnline,
+            ILoggerService logger)
         {
             try
             {
@@ -241,7 +250,7 @@ namespace Services.Services
             }
         }
 
-        private static void TrySendFriendRemovedCallback(int targetSubscriberUserId, 
+        private void TrySendFriendRemovedCallback(int targetSubscriberUserId, 
             IFriendshipServiceCallback callback, int removedByUserId)
         {
             try
@@ -265,7 +274,7 @@ namespace Services.Services
             }
         }
 
-        private static void TrySendGameInvitationCallback(GameInvitation gameInvitation, 
+        private void TrySendGameInvitationCallback(GameInvitation gameInvitation, 
             IFriendshipServiceCallback receiverCallback)
         {
             try

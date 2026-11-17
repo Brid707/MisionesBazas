@@ -4,6 +4,7 @@ using Application.Models;
 using Application.Ports;
 using Services.Contracts;
 using Services.DataContracts;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Services.Services
 {
@@ -20,14 +21,17 @@ namespace Services.Services
         private const string MessageUnexpectedFault = "An unexpected server fault occurred while processing registration.";
 
         private readonly IAccountManagementUseCase _accountManagementUseCase;
+        private readonly ILoggerService _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountManagementService"/> class with the account use case.
         /// </summary>
         /// <param name="accountManagementUseCase">The use case orchestrating account operations.</param>
-        public AccountManagementService(IAccountManagementUseCase accountManagementUseCase)
+        /// <param name="logger">The logger used to record service operations and faults.</param>
+        public AccountManagementService(IAccountManagementUseCase accountManagementUseCase, ILoggerService logger)
         {
             _accountManagementUseCase = accountManagementUseCase ?? throw new ArgumentNullException(nameof(accountManagementUseCase));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <inheritdoc />

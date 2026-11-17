@@ -6,19 +6,19 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
 using Application.UseCases;
 using Infrastructure.ProfileImages;
 using Persistence.Repository;
 using ProfileImages;
 using Services.Contracts;
 using Services.Services;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Host
 {
     internal static class ProfileImageHosting
     {
-        internal static ServiceHost Create(IAccountAccessPolicy accountAccessPolicy, ILoggerService logger)
+        internal static ServiceHost Create(IAccountAccessPolicy accountAccessPolicy, ILoggerFactory loggerFactory)
         {
             string storageDirectory = ConfigurationManager.AppSettings["ProfileImagesDirectory"];
             if (string.IsNullOrWhiteSpace(storageDirectory))
@@ -27,9 +27,15 @@ namespace Host
                     Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                     "MisionesBazas", "Server", "ProfileImages");
             }
-            var useCase = new ProfileImageUseCase(new ProfileImageProcessor(),
-                new FileProfileImageStorage(storageDirectory, logger), new PlayerProfileRepository());
-            var service = new ProfileImageService(useCase, accountAccessPolicy, logger);
+            var useCase = new ProfileImageUseCase(
+                new ProfileImageProcessor(),
+                new FileProfileImageStorage(storageDirectory, loggerFactory.CreateLogger<FileProfileImageStorage>()),
+                new PlayerProfileRepository(loggerFactory.CreateLogger<PlayerProfileRepository>()),
+                loggerFactory.CreateLogger<ProfileImageUseCase>());
+            var service = new ProfileImageService(
+                useCase,
+                accountAccessPolicy,
+                loggerFactory.CreateLogger<ProfileImageService>());
             string endpointAddress = ConfigurationManager.AppSettings["ProfileImageEndpointAddress"] ??
                 "net.tcp://localhost:8090/ProfileImageService";
             var host = new ServiceHost(service, new Uri(endpointAddress));

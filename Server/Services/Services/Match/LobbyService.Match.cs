@@ -1,14 +1,11 @@
 using System;
 using System.ServiceModel;
-using Application.Ports.Logger;
 using Gameplay;
 
 namespace Services.Services
 {
     public sealed partial class LobbyService
     {
-        public ILoggerService MatchLogger { private get; set; }
-
         public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
         {
             EnsureMatchParticipantAllowed(lobbyCode, participantUserId);
@@ -54,7 +51,7 @@ namespace Services.Services
         }
         private void LogMatchFailure(string failureDescription, Exception ex)
         {
-            MatchLogger?.Error(ex, "{FailureDescription}", failureDescription);
+            _logger.Error(ex, "{FailureDescription}", failureDescription);
         }
     }
 }

@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using Application.Models;
 using Application.Ports;
-using Application.Ports.Logger;
 using ProfileImages;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Infrastructure.ProfileImages
 {

@@ -3,6 +3,7 @@ using System;
 using Application.Models;
 using Application.Ports;
 using Domain;
+using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Application.UseCases
 {
@@ -25,9 +26,24 @@ namespace Application.UseCases
         private const string MessageEmailAlreadyRegistered = "The provided email is already registered.";
         private const string MessageUsernameAlreadyRegistered = "The provided username is already registered.";
         private const string MessagePersistenceFailure = "A database error occurred while registering the user.";
+        private const string MessageEmailPermanentlyBlocked = "AccountEmailPermanentlyBlocked";
+
+        private const string RegistrationValidationFailedTemplate =
+            "Account registration rejected due to invalid input fields for username {Username}.";
+        private const string RegistrationRejectedPermanentlyBlockedEmailTemplate =
+            "Account registration rejected because email {Email} is permanently restricted.";
+        private const string RegistrationRejectedEmailAlreadyRegisteredTemplate =
+            "Account registration rejected because email {Email} is already registered.";
+        private const string RegistrationRejectedUsernameAlreadyRegisteredTemplate =
+            "Account registration rejected because username {Username} is already registered.";
+        private const string RegistrationAbortedPersistenceFailureTemplate =
+            "Account registration aborted for username {Username} (Email: {Email}) due to database failure.";
+        private const string UserRegisteredSuccessfullyTemplate =
+            "User account {Username} registered successfully with identifier {UserId}.";
 
         private readonly IUserRepository _userRepository;
         private readonly IBlockedAccountEmailRepository _blockedAccountEmailRepository;
+        private readonly ILoggerService _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountManagementUseCase"/> class with the user repository.
@@ -35,11 +51,14 @@ namespace Application.UseCases
         /// <param name="userRepository">The secondary port for user data persistence.</param>
         /// <param name="blockedAccountEmailRepository">The persistent restriction check
         /// for registration emails.</param>
+        /// <param name="logger">The logger used to record account registration events and failures.</param>
         public AccountManagementUseCase(IUserRepository userRepository,
-            IBlockedAccountEmailRepository blockedAccountEmailRepository)
+            IBlockedAccountEmailRepository blockedAccountEmailRepository,
+            ILoggerService logger)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
             _blockedAccountEmailRepository = blockedAccountEmailRepository;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <inheritdoc />
@@ -53,8 +72,9 @@ namespace Application.UseCases
 
             if (!IsInputValid(normalizedUsername, normalizedEmail, normalizedPasswordHash))
             {
+                _logger.Warning(RegistrationValidationFailedTemplate, normalizedUsername);
                 registrationOutcome = CreateRegistrationOutcome(
-                false, ErrorCodeValidationFailed, MessageValidationFailed);
+                    false, ErrorCodeValidationFailed, MessageValidationFailed);
             }
             else
             {
@@ -79,8 +99,9 @@ namespace Application.UseCases
             {
                 if (_blockedAccountEmailRepository.IsAccountEmailPermanentlyBlocked(email))
                 {
+                    _logger.Warning(RegistrationRejectedPermanentlyBlockedEmailTemplate, email);
                     registrationOutcome = CreateRegistrationOutcome(
-                    false, ErrorCodePermanentlyBlockedEmail, "AccountEmailPermanentlyBlocked");
+                        false, ErrorCodePermanentlyBlockedEmail, MessageEmailPermanentlyBlocked);
                 }
                 else
                 {
@@ -89,8 +110,9 @@ namespace Application.UseCases
             }
             catch (InvalidOperationException)
             {
+                _logger.Warning(RegistrationAbortedPersistenceFailureTemplate, username, email);
                 registrationOutcome = CreateRegistrationOutcome(
-                false, ErrorCodePersistenceFailure, MessagePersistenceFailure);
+                    false, ErrorCodePersistenceFailure, MessagePersistenceFailure);
             }
 
             return registrationOutcome;
@@ -101,11 +123,13 @@ namespace Application.UseCases
             UserRegistrationOutcome registrationOutcome;
             if (_userRepository.GetUserByEmail(email) != null)
             {
+                _logger.Warning(RegistrationRejectedEmailAlreadyRegisteredTemplate, email);
                 registrationOutcome = CreateRegistrationOutcome(
                     false, ErrorCodeEmailAlreadyRegistered, MessageEmailAlreadyRegistered);
             }
             else if (_userRepository.GetUserByUsername(username) != null)
             {
+                _logger.Warning(RegistrationRejectedUsernameAlreadyRegisteredTemplate, username);
                 registrationOutcome = CreateRegistrationOutcome(false, ErrorCodeUsernameAlreadyRegistered,
                     MessageUsernameAlreadyRegistered);
             }
@@ -129,6 +153,7 @@ namespace Application.UseCases
             };
 
             int createdUserId = _userRepository.CreateUser(newUser, username);
+            _logger.Information(UserRegisteredSuccessfullyTemplate, username, createdUserId);
             UserRegistrationOutcome registrationOutcome = CreateRegistrationOutcome(
                 true, ErrorCodeSuccess, MessageSuccess);
             registrationOutcome.CreatedUserId = createdUserId;
