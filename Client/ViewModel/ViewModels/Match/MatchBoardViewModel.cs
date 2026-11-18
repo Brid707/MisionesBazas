@@ -60,7 +60,7 @@ namespace ViewModel.ViewModels
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
-            _retryCountdownTimer = new Timer(OnRetryCountdownTick, null, TimeSpan.Zero,
+            _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
             RetryPendingMatchRequestCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingMatchRequest);
@@ -150,7 +150,7 @@ namespace ViewModel.ViewModels
         {
             _isDisposed = true;
             _matchRefreshTimer.Dispose();
-            _retryCountdownTimer.Dispose();
+            _missionTransitionCountdownTimer.Dispose();
             _completedTrickDisplayTimer.Dispose();
             _matchClient.MatchStateChanged -= OnMatchStateChanged;
         }
@@ -250,7 +250,7 @@ namespace ViewModel.ViewModels
             {
                 ResetAttemptPresentationIfChanged(playerSnapshot);
                 _confirmedMatchSnapshot = playerSnapshot;
-                ApplyMissionRetrySnapshot(playerSnapshot.MissionRetry);
+                ApplyMissionTransitionSnapshot(playerSnapshot.MissionTransition);
                 _isMatchConnected = true;
                 var playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
@@ -260,7 +260,7 @@ namespace ViewModel.ViewModels
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 NotifyMissionEvaluationProperties();
-                NotifyMissionRetryProperties();
+                NotifyMissionTransitionProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)

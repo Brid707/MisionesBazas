@@ -1,39 +1,35 @@
 using System;
 using System.Collections.Generic;
-using Application.Models;
 using Gameplay;
 
 namespace Application.UseCases
 {
     internal static partial class MatchSnapshotProjection
     {
-        private static readonly IReadOnlyDictionary<MissionRetryScheduleStatus, MissionRetryStatus> s_retryStatuses =
-            new Dictionary<MissionRetryScheduleStatus, MissionRetryStatus>
+        private static readonly IReadOnlyDictionary<MissionTransitionStatus, MissionRetryStatus> s_legacyRetryStatuses =
+            new Dictionary<MissionTransitionStatus, MissionRetryStatus>
             {
-                { MissionRetryScheduleStatus.Inactive, MissionRetryStatus.Inactive },
-                { MissionRetryScheduleStatus.WaitingForParticipants, MissionRetryStatus.WaitingForParticipants },
-                { MissionRetryScheduleStatus.CountingDown, MissionRetryStatus.CountingDown },
-                { MissionRetryScheduleStatus.Preparing, MissionRetryStatus.Preparing },
-                { MissionRetryScheduleStatus.PreparationFailed, MissionRetryStatus.PreparationFailed },
-                { MissionRetryScheduleStatus.AttemptLimitReached, MissionRetryStatus.AttemptLimitReached }
+                { MissionTransitionStatus.Inactive, MissionRetryStatus.Inactive },
+                { MissionTransitionStatus.WaitingForParticipants, MissionRetryStatus.WaitingForParticipants },
+                { MissionTransitionStatus.CountingDown, MissionRetryStatus.CountingDown },
+                { MissionTransitionStatus.Preparing, MissionRetryStatus.Preparing },
+                { MissionTransitionStatus.PreparationFailed, MissionRetryStatus.PreparationFailed },
+                { MissionTransitionStatus.AttemptLimitReached, MissionRetryStatus.AttemptLimitReached }
             };
 
-        private static MissionRetrySnapshot CreateMissionRetry(MatchState matchState, long serverTimestampMilliseconds)
+        private static MissionRetrySnapshot CreateMissionRetry(MissionTransitionSnapshot transition)
         {
-            long remainingMilliseconds = Math.Max(0,
-                matchState.MissionRetryDeadlineMilliseconds - serverTimestampMilliseconds);
+            bool isRetry = transition.Kind == MissionTransitionKind.RetryCurrentMission;
             return new MissionRetrySnapshot
             {
-                MissionAttemptId = matchState.MissionAttempt.MissionAttemptId,
-                AttemptNumber = matchState.MissionAttempt.AttemptNumber,
-                IsRetryAvailable = false,
+                MissionAttemptId = transition.MissionAttemptId,
+                AttemptNumber = transition.AttemptNumber,
                 ReadyParticipantUserIds = Array.Empty<int>(),
-                AvailableMissionRetrySubmissionId = null,
-                Status = s_retryStatuses[matchState.MissionRetryStatus],
-                MissionRetryScheduleId = matchState.MissionRetryScheduleId,
-                RemainingDelayMilliseconds = (int)Math.Min(remainingMilliseconds,
-                    MissionRetryPolicy.CountdownMilliseconds),
-                MissingParticipantUserIds = (int[])matchState.MissingRetryParticipantUserIds.Clone()
+                Status = isRetry ? s_legacyRetryStatuses[transition.Status] : MissionRetryStatus.Inactive,
+                MissionRetryScheduleId = isRetry ? transition.MissionTransitionScheduleId : Guid.Empty,
+                RemainingDelayMilliseconds = isRetry ? transition.RemainingDelayMilliseconds : 0,
+                MissingParticipantUserIds = isRetry ? (int[])transition.MissingParticipantUserIds.Clone() :
+                    Array.Empty<int>()
             };
         }
     }

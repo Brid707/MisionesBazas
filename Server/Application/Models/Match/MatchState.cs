@@ -21,6 +21,7 @@ namespace Application.Models
             new Dictionary<int, MatchActionRequestBudget>();
 
         public Guid LobbyInstanceId { get; set; }
+        public int TargetMissionCount { get; init; }
         public Guid MatchId { get; } = Guid.NewGuid();
         public long MatchStateVersion { get; set; } = 1;
         public int[] ParticipantUserIds { get; set; }

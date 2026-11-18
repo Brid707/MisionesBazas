@@ -9,12 +9,12 @@ using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Host.Gameplay
 {
-    /// <summary>Runs one scan timer and at most two retry workers; no callback runs under a match lock.</summary>
-    internal sealed class MissionRetryScheduler : IDisposable
+    /// <summary>Runs one scan timer and at most two transition workers; no callback runs under a match lock.</summary>
+    internal sealed class MissionTransitionScheduler : IDisposable
     {
         private const int ShutdownWaitMilliseconds = 5000;
         private const string ScheduledWorkerFaultTemplate =
-            "Mission retry worker failed. ExceptionType={ExceptionType}.";
+            "Mission transition worker failed. ExceptionType={ExceptionType}.";
         private readonly IMatchUseCase _matchUseCase;
         private readonly IMatchStateChangePublisher _publisher;
         private readonly ILoggerService _logger;
@@ -24,7 +24,7 @@ namespace Host.Gameplay
         private int _isScanning;
         private int _isDisposed;
 
-        public MissionRetryScheduler(IMatchUseCase matchUseCase, IMatchStateChangePublisher publisher,
+        public MissionTransitionScheduler(IMatchUseCase matchUseCase, IMatchStateChangePublisher publisher,
             ILoggerService logger)
         {
             _matchUseCase = matchUseCase ?? throw new ArgumentNullException(nameof(matchUseCase));
@@ -34,7 +34,7 @@ namespace Host.Gameplay
 
         public void OnHostOpened(object sender, EventArgs eventArgs)
         {
-            _timer = new Timer(OnTimerTick, null, 0, MissionRetryPolicy.SchedulerIntervalMilliseconds);
+            _timer = new Timer(OnTimerTick, null, 0, MissionTransitionPolicy.SchedulerIntervalMilliseconds);
         }
 
         public void OnHostStopped(object sender, EventArgs eventArgs)
@@ -46,19 +46,20 @@ namespace Host.Gameplay
         {
             if (!_shutdown.IsCancellationRequested && Interlocked.CompareExchange(ref _isScanning, 1, 0) == 0)
             {
-                Task scan = Task.Run(ScanDueRetries);
+                Task scan = Task.Run(ScanDueTransitions);
                 scan.ContinueWith(OnScanCompleted, TaskScheduler.Default);
             }
         }
 
-        private void ScanDueRetries()
+        private void ScanDueTransitions()
         {
             try
             {
-                int availableWorkers = MissionRetryPolicy.MaximumConcurrentPreparations - _workers.Count;
-                foreach (MissionRetryWork retryWork in _matchUseCase.TakeDueMissionRetries(availableWorkers))
+                int availableWorkers = MissionTransitionPolicy.MaximumConcurrentPreparations - _workers.Count;
+                foreach (MissionTransitionWork transitionWork in
+                    _matchUseCase.TakeDueMissionTransitions(availableWorkers))
                 {
-                    StartWorker(retryWork);
+                    StartWorker(transitionWork);
                 }
             }
             finally
@@ -75,46 +76,47 @@ namespace Host.Gameplay
             }
         }
 
-        private void StartWorker(MissionRetryWork retryWork)
+        private void StartWorker(MissionTransitionWork transitionWork)
         {
             if (_shutdown.IsCancellationRequested)
             {
-                _matchUseCase.ReleaseMissionRetryReservation(retryWork, false);
+                _matchUseCase.ReleaseMissionTransitionReservation(transitionWork, false);
             }
-            var worker = new Task(() => ExecuteWorker(retryWork));
-            if (_workers.TryAdd(retryWork.MissionRetryScheduleId, worker))
+            var worker = new Task(() => ExecuteWorker(transitionWork));
+            if (_workers.TryAdd(transitionWork.MissionTransitionScheduleId, worker))
             {
-                worker.ContinueWith(completed => OnWorkerCompleted(completed, retryWork), TaskScheduler.Default);
+                worker.ContinueWith(completed => OnWorkerCompleted(completed, transitionWork), TaskScheduler.Default);
                 worker.Start(TaskScheduler.Default);
             }
         }
 
-        private void ExecuteWorker(MissionRetryWork retryWork)
+        private void ExecuteWorker(MissionTransitionWork transitionWork)
         {
-            MissionRetryExecutionResult result = _matchUseCase.ExecuteScheduledMissionRetry(retryWork, _shutdown.Token);
+            MissionTransitionExecutionResult result =
+                _matchUseCase.ExecuteScheduledMissionTransition(transitionWork, _shutdown.Token);
             if (result.HasStateChanged && !_shutdown.IsCancellationRequested)
             {
                 _publisher.PublishMatchStateChange(result.LobbyCode, result.CommittedMatchStateVersion);
             }
         }
 
-        private void OnWorkerCompleted(Task worker, MissionRetryWork retryWork)
+        private void OnWorkerCompleted(Task worker, MissionTransitionWork transitionWork)
         {
             try
             {
                 if (worker.IsFaulted)
                 {
                     _logger.Error(ScheduledWorkerFaultTemplate, worker.Exception.GetBaseException().GetType().Name);
-                    _matchUseCase.ReleaseMissionRetryReservation(retryWork, true);
+                    _matchUseCase.ReleaseMissionTransitionReservation(transitionWork, true);
                 }
                 else if (worker.IsCanceled || _shutdown.IsCancellationRequested)
                 {
-                    _matchUseCase.ReleaseMissionRetryReservation(retryWork, false);
+                    _matchUseCase.ReleaseMissionTransitionReservation(transitionWork, false);
                 }
             }
             finally
             {
-                _workers.TryRemove(retryWork.MissionRetryScheduleId, out Task _);
+                _workers.TryRemove(transitionWork.MissionTransitionScheduleId, out Task _);
             }
         }
 

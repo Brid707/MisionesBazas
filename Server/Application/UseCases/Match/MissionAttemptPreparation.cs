@@ -10,7 +10,9 @@ using TrickTakingMissions.Rules.Rules;
 
 namespace Application.UseCases
 {
-    /// <summary>Prepares initial and repeated attempts through the same private dealing path.</summary>
+    /// <summary>
+    /// Prepares initial, repeated and sequential mission attempts through the same private dealing path.
+    /// </summary>
     internal static class MissionAttemptPreparation
     {
         internal const int InitialMissionAttemptId = 1;
@@ -19,7 +21,7 @@ namespace Application.UseCases
             IMissionDeckDealer missionDeckDealer)
         {
             MissionDefinition missionDefinition = MissionCatalog.GetMission(preparationContext.MissionNumber);
-            if (missionDefinition.SpecialRule != SpecialMissionRuleType.None)
+            if (!CanPrepareMission(preparationContext.MissionNumber))
             {
                 throw new InvalidOperationException(nameof(missionDefinition.SpecialRule));
             }
@@ -28,6 +30,11 @@ namespace Application.UseCases
             ValidatePreparedDeal(preparationContext, missionDeal);
             ValidatePreparedObjectives(missionDefinition, objectives);
             return CreatePreparedAttempt(preparationContext, missionDeal, objectives);
+        }
+
+        internal static bool CanPrepareMission(int missionNumber)
+        {
+            return MissionCatalog.GetMission(missionNumber).SpecialRule == SpecialMissionRuleType.None;
         }
 
         private static void ValidatePreparedDeal(MissionAttemptPreparationContext preparationContext,

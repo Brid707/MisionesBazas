@@ -122,7 +122,7 @@ namespace Services.Services
         private static bool HasLeaseExpired(LobbyCallbackPresenceLease lease, long timestamp)
         {
             return timestamp - lease.LastSeenTimestamp >=
-                Stopwatch.Frequency * MissionRetryPolicy.PresenceLeaseSeconds;
+                Stopwatch.Frequency * MissionTransitionPolicy.PresenceLeaseSeconds;
         }
 
         public bool ConfirmPresence(MatchPresenceQuery query)
@@ -154,7 +154,7 @@ namespace Services.Services
                 try
                 {
                     channel.OperationTimeout = TimeSpan.FromMilliseconds(
-                        MissionRetryPolicy.PresenceProbeTimeoutMilliseconds);
+                        MissionTransitionPolicy.PresenceProbeTimeoutMilliseconds);
                     hasResponse = entry.Value.IsMatchParticipantConnected(query.MatchId, query.MissionAttemptId);
                 }
                 catch (TimeoutException ex)

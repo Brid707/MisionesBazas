@@ -129,7 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gameplay\MonotonicMatchClock.cs" />
-    <Compile Include="Gameplay\MissionRetryScheduler.cs" />
+    <Compile Include="Gameplay\MissionTransitionScheduler.cs" />
     <Compile Include="LobbyHostingContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

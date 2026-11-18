@@ -182,7 +182,7 @@
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}">
                         <Run Text="{x:Static language:Resources.GameMatch_Mission}" />
-                        <Run Text=" " /><Run Text="{Binding MissionProgressDisplay, Mode=OneWay}" />
+                        <Run Text=" " /><Run Text="{Binding MatchBoard.MissionProgressDisplay, Mode=OneWay}" />
                     </TextBlock>
                     <TextBlock HorizontalAlignment="Center"
                                Foreground="{StaticResource BrushTextDark}"
@@ -292,15 +292,15 @@
                             <TextBlock Text="{Binding LastTrickWinnerName}" Foreground="{StaticResource BrushTextLight}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center"
-                                    Visibility="{Binding IsMissionRetryVisible,
+                                    Visibility="{Binding IsMissionTransitionVisible,
                                         Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
-                                       Text="{Binding MissionRetryStatusResourceKey,
+                                       Text="{Binding MissionTransitionStatusResourceKey,
                                            Converter={StaticResource MatchTextConverter}}" />
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                        Visibility="{Binding HasMissionRetryCountdown,
+                                        Visibility="{Binding HasMissionTransitionCountdown,
                                             Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <TextBlock Text="{Binding MissionRetryRemainingSeconds}" Margin="0,0,4,0"
+                                <TextBlock Text="{Binding MissionTransitionRemainingSeconds}" Margin="0,0,4,0"
                                            Foreground="{StaticResource BrushTextLight}" />
                                 <TextBlock Foreground="{StaticResource BrushTextLight}"
                                            Text="{Binding Source=MissionRetry_Label_Seconds,

@@ -56,5 +56,8 @@ namespace Gameplay
         public MissionEvaluationSnapshot MissionEvaluation { get; set; }
         [DataMember(Order = 17)]
         public MissionRetrySnapshot MissionRetry { get; set; }
+
+        [DataMember(Order = 18)]
+        public MissionTransitionSnapshot MissionTransition { get; set; }
     }
 }

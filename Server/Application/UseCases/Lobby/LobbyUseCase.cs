@@ -236,8 +236,13 @@ namespace Application
                         {
                             throw new InvalidOperationException(MatchNotConfiguredMessage);
                         }
-                        Match.StartMatch(lobby.LobbyCode, lobby.Players.Select(player => player.IdUser).ToArray(),
-                            lobby.LobbyInstanceId);
+                        Match.StartMatch(new MatchStartContext
+                        {
+                            LobbyCode = lobby.LobbyCode,
+                            LobbyInstanceId = lobby.LobbyInstanceId,
+                            ParticipantUserIds = lobby.Players.Select(player => player.IdUser).ToArray(),
+                            TargetMissionCount = lobby.TargetMissionCount
+                        });
                         lobby.Status = LobbyRoomRules.StatusInGame;
                         lobby.StateVersion++;
                         _logger.Information(LobbyTransitionedToGameTemplate, lobby.LobbyCode, lobby.Players.Count);

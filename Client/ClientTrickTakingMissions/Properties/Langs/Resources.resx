@@ -663,4 +663,15 @@
   <data name="MissionRetry_Status_AwaitingServer" xml:space="preserve"><value>Esperando a que el servidor confirme el nuevo intento…</value></data>
   <data name="MissionRetry_Status_ConnectionUnavailable" xml:space="preserve"><value>Conexión perdida. Esperando recuperar la partida.</value></data>
   <data name="MissionRetry_Label_Seconds" xml:space="preserve"><value>segundos</value></data>
+  <data name="MissionTransition_Status_Inactive" xml:space="preserve"><value></value></data>
+  <data name="MissionTransition_Status_WaitingForParticipants" xml:space="preserve"><value>Preparación pausada. Esperando a que todos los jugadores regresen.</value></data>
+  <data name="MissionTransition_Status_CountingDown" xml:space="preserve"><value>El nuevo intento comenzará en:</value></data>
+  <data name="MissionTransition_Status_AdvanceCountingDown" xml:space="preserve"><value>La siguiente misión comenzará en:</value></data>
+  <data name="MissionTransition_Status_Preparing" xml:space="preserve"><value>Preparando las cartas y los objetivos.</value></data>
+  <data name="MissionTransition_Status_PreparationFailed" xml:space="preserve"><value>No se pudo preparar el intento. Se volverá a intentar en:</value></data>
+  <data name="MissionTransition_Status_AttemptLimitReached" xml:space="preserve"><value>No se puede preparar otro intento en esta partida.</value></data>
+  <data name="MissionTransition_Status_CampaignCompleted" xml:space="preserve"><value>¡Campaña completada! Ganaron todas las misiones configuradas.</value></data>
+  <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>La siguiente misión todavía no está disponible. Se conserva su victoria.</value></data>
+  <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Esperando la confirmación del servidor.</value></data>
+  <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Sin conexión. El servidor comprobará el estado cuando regreses.</value></data>
 </root>

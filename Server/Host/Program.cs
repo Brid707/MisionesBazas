@@ -205,9 +205,9 @@ namespace Host
 
             ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));
             serviceHost.Description.Behaviors.Add(injectionBehavior);
-            var scheduler = new MissionRetryScheduler(matchUseCase,
+            var scheduler = new MissionTransitionScheduler(matchUseCase,
                 new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy, lobbyServiceLogger),
-                loggerFactory.CreateLogger<MissionRetryScheduler>());
+                loggerFactory.CreateLogger<MissionTransitionScheduler>());
             serviceHost.Opened += scheduler.OnHostOpened;
             serviceHost.Closing += scheduler.OnHostStopped;
             serviceHost.Faulted += scheduler.OnHostStopped;

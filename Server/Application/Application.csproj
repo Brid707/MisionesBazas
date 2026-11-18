@@ -171,7 +171,7 @@
   <ItemGroup>
     <Compile Include="Models\Match\MissionAttemptPreparationContext.cs" />
     <Compile Include="Models\Match\PreparedMissionAttempt.cs" />
-    <Compile Include="Models\Match\MatchState.MissionRetry.cs" />
+    <Compile Include="Models\Match\MatchState.MissionTransition.cs" />
     <Compile Include="Models\Match\MissionRetryRequest.cs" />
     <Compile Include="Models\Match\MissionRetryConfirmation.cs" />
     <Compile Include="Models\Match\MissionRetryRejectionReason.cs" />
@@ -185,18 +185,18 @@
     <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryRejectionReason.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MissionRetryPolicy.cs" />
-    <Compile Include="Models\Match\MissionRetryScheduleStatus.cs" />
+    <Compile Include="Models\Match\MissionTransitionPolicy.cs" />
+    <Compile Include="Models\Match\MissionTransitionScheduleStatus.cs" />
     <Compile Include="Ports\Match\IMatchClock.cs" />
     <Compile Include="Ports\Match\IMatchParticipantPresence.cs" />
     <Compile Include="Ports\Match\IMatchStateChangePublisher.cs" />
     <Compile Include="Models\Match\MatchExecutionDependencies.cs" />
     <Compile Include="Models\Match\MatchPresenceQuery.cs" />
     <Compile Include="Models\Match\MatchParticipantPresence.cs" />
-    <Compile Include="Models\Match\MissionRetryWork.cs" />
-    <Compile Include="Models\Match\MissionRetryExecutionResult.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionRetryScheduling.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionRetryExecution.cs" />
+    <Compile Include="Models\Match\MissionTransitionWork.cs" />
+    <Compile Include="Models\Match\MissionTransitionExecutionResult.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionScheduling.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionExecution.cs" />
     <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryStatus.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -219,5 +219,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\MatchActionRequestLimits.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
+    <Compile Include="Models\Match\MatchStartContext.cs" />
+    <Compile Include="Models\Match\MissionTransitionAction.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionDestination.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionTransition.cs" />
   </ItemGroup>
 </Project>

@@ -272,4 +272,9 @@
     <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftRejectionReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveToken.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
+  </ItemGroup>
 </Project>

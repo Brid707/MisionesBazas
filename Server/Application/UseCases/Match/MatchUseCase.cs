@@ -48,25 +48,46 @@ namespace Application.UseCases
                 throw new ArgumentNullException(nameof(executionDependencies.ParticipantPresence));
         }
 
-        public Guid StartMatch(string lobbyCode, int[] participantUserIds, Guid lobbyInstanceId = default(Guid))
+        public Guid StartMatch(MatchStartContext startContext)
         {
-            if (participantUserIds == null || participantUserIds.Length < 3 || participantUserIds.Length > 4 ||
+            ValidateMatchStart(startContext);
+            int[] participantUserIds = startContext.ParticipantUserIds;
+            MatchState matchState = _matchStateStore.GetOrCreateMatch(startContext.LobbyCode,
+                () => CreateMatchState(startContext));
+            if (matchState.LobbyInstanceId != startContext.LobbyInstanceId ||
+                matchState.TargetMissionCount != startContext.TargetMissionCount ||
+                !matchState.ParticipantUserIds.SequenceEqual(participantUserIds))
+            {
+                _logger.Warning(MatchIdentityConflictTemplate, startContext.LobbyCode, startContext.LobbyInstanceId);
+                throw new InvalidOperationException(MatchIdentityConflictMessage);
+            }
+
+            _logger.Information(MatchStartedTemplate, matchState.MatchId, startContext.LobbyCode,
+                participantUserIds.Length);
+            return matchState.MatchId;
+        }
+
+        private static void ValidateMatchStart(MatchStartContext startContext)
+        {
+            if (startContext == null || string.IsNullOrWhiteSpace(startContext.LobbyCode) ||
+                startContext.TargetMissionCount < MissionProgressionRules.MinimumMissionNumber ||
+                startContext.TargetMissionCount > MissionProgressionRules.MaximumMissionNumber)
+            {
+                throw new ArgumentException(nameof(startContext));
+            }
+            ValidateMatchParticipants(startContext.ParticipantUserIds);
+        }
+
+        private static void ValidateMatchParticipants(int[] participantUserIds)
+        {
+            if (participantUserIds == null ||
+                participantUserIds.Length < LobbyRoomRules.MinimumPlayerLimit ||
+                participantUserIds.Length > LobbyRoomRules.MaximumPlayerLimit ||
                 participantUserIds.Any(participantId => participantId == 0) ||
                 participantUserIds.Distinct().Count() != participantUserIds.Length)
             {
                 throw new ArgumentException(nameof(participantUserIds));
             }
-            MatchState matchState = _matchStateStore.GetOrCreateMatch(lobbyCode,
-                () => CreateMatchState(participantUserIds, lobbyInstanceId));
-            if (matchState.LobbyInstanceId != lobbyInstanceId ||
-                !matchState.ParticipantUserIds.SequenceEqual(participantUserIds))
-            {
-                _logger.Warning(MatchIdentityConflictTemplate, lobbyCode, lobbyInstanceId);
-                throw new InvalidOperationException(MatchIdentityConflictMessage);
-            }
-
-            _logger.Information(MatchStartedTemplate, matchState.MatchId, lobbyCode, participantUserIds.Length);
-            return matchState.MatchId;
         }
 
         public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
@@ -109,12 +130,13 @@ namespace Application.UseCases
             return playDecision;
         }
 
-        private MatchState CreateMatchState(int[] participantUserIds, Guid lobbyInstanceId)
+        private MatchState CreateMatchState(MatchStartContext startContext)
         {
             var matchState = new MatchState
             {
-                LobbyInstanceId = lobbyInstanceId,
-                ParticipantUserIds = (int[])participantUserIds.Clone()
+                LobbyInstanceId = startContext.LobbyInstanceId,
+                TargetMissionCount = startContext.TargetMissionCount,
+                ParticipantUserIds = (int[])startContext.ParticipantUserIds.Clone()
             };
             PreparedMissionAttempt preparedAttempt = MissionAttemptPreparation.Prepare(
                 new MissionAttemptPreparationContext
@@ -195,7 +217,8 @@ namespace Application.UseCases
             var playDecision = new CardPlayDecision { CardPlaySubmissionId = cardPlaySubmission.CardPlaySubmissionId };
             if (matchState.ProcessedCardPlayDecisionsBySubmissionId.Count >= MaximumProcessedSubmissions)
             {
-                _logger.Warning(MatchSubmissionCapacityReachedTemplate, matchState.MatchId, MaximumProcessedSubmissions);
+                _logger.Warning(MatchSubmissionCapacityReachedTemplate, matchState.MatchId,
+                    MaximumProcessedSubmissions);
                 playDecision.RejectionReason = MatchRejectionReason.SubmissionCapacityReached;
             }
             else

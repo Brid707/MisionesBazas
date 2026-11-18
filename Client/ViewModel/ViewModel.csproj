@@ -116,7 +116,7 @@
     <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionEvaluation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionRetry.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionTransition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -11,6 +11,7 @@ namespace Application.UseCases
         internal static PlayerMatchSnapshot CreateSnapshot(MatchState matchState, int participantSeat,
             long serverTimestampMilliseconds)
         {
+            MissionTransitionSnapshot transition = CreateMissionTransition(matchState, serverTimestampMilliseconds);
             return new PlayerMatchSnapshot
             {
                 MatchId = matchState.MatchId,
@@ -27,7 +28,8 @@ namespace Application.UseCases
                 LastCompletedTrickCardPlays = matchState.LastCompletedTrickCardPlays.Select(ClonePlay).ToArray(),
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
-                MissionRetry = CreateMissionRetry(matchState, serverTimestampMilliseconds),
+                MissionTransition = transition,
+                MissionRetry = CreateMissionRetry(transition),
                 MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat)
             };

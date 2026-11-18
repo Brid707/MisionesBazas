@@ -663,4 +663,15 @@
   <data name="MissionRetry_Status_AwaitingServer" xml:space="preserve"><value>Waiting for the server to confirm the new attempt…</value></data>
   <data name="MissionRetry_Status_ConnectionUnavailable" xml:space="preserve"><value>Connection lost. Waiting to recover the match.</value></data>
   <data name="MissionRetry_Label_Seconds" xml:space="preserve"><value>seconds</value></data>
+  <data name="MissionTransition_Status_Inactive" xml:space="preserve"><value></value></data>
+  <data name="MissionTransition_Status_WaitingForParticipants" xml:space="preserve"><value>Preparation paused. Waiting for all players to return.</value></data>
+  <data name="MissionTransition_Status_CountingDown" xml:space="preserve"><value>The new attempt will start in:</value></data>
+  <data name="MissionTransition_Status_AdvanceCountingDown" xml:space="preserve"><value>The next mission will start in:</value></data>
+  <data name="MissionTransition_Status_Preparing" xml:space="preserve"><value>Preparing cards and objectives.</value></data>
+  <data name="MissionTransition_Status_PreparationFailed" xml:space="preserve"><value>The attempt could not be prepared. Retrying in:</value></data>
+  <data name="MissionTransition_Status_AttemptLimitReached" xml:space="preserve"><value>Another attempt cannot be prepared in this match.</value></data>
+  <data name="MissionTransition_Status_CampaignCompleted" xml:space="preserve"><value>Campaign completed! You won all configured missions.</value></data>
+  <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>The next mission is not available yet. Your victory is preserved.</value></data>
+  <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Waiting for server confirmation.</value></data>
+  <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Disconnected. The server will check the state when you return.</value></data>
 </root>

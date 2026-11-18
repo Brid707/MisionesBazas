@@ -1,7 +1,7 @@
 namespace Application.Models
 {
     /// <summary>Names countdown and resource budgets with their units and scope.</summary>
-    public static class MissionRetryPolicy
+    public static class MissionTransitionPolicy
     {
         public const int CountdownMilliseconds = 8000;
         public const int PreparationBackoffMilliseconds = 8000;
