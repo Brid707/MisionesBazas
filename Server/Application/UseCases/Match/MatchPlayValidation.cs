@@ -15,7 +15,12 @@ namespace Application.UseCases
             int participantSeat)
         {
             MatchRejectionReason playRejectionReason = MatchRejectionReason.None;
-            if (matchState.IsDealCompleted)
+            if (matchState.MissionAttempt?.Phase !=
+                TrickTakingMissions.Rules.Enums.MissionAttemptPhase.PlayingTricks)
+            {
+                playRejectionReason = MatchRejectionReason.MissionPreparationRequired;
+            }
+            else if (matchState.IsDealCompleted)
             {
                 playRejectionReason = MatchRejectionReason.DealCompleted;
             }

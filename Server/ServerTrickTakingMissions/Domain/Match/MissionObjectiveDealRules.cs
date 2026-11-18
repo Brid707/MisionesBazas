@@ -11,6 +11,7 @@ namespace Domain
     /// </summary>
     public static class MissionObjectiveDealRules
     {
+        private const int FirstNormalObjectiveCardId = 1;
         public const int NormalObjectiveDeckSize = 36;
         public const int HeartNineCardId = 27;
 
@@ -20,41 +21,45 @@ namespace Domain
         /// <param name="definition">The mission definition specifying the objective count and tokens.</param>
         /// <param name="randomGenerator">The random number generator instance used for shuffling.</param>
         /// <returns>An immutable collection of drawn <see cref="MissionObjective"/> instances.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="definition"/> or <paramref name="randomGenerator"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when the objective card count is invalid.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when a required argument is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when the definition or objective deck is invalid.</exception>
         public static IReadOnlyList<MissionObjective> DrawObjectives(
             MissionDefinition definition,
             Random randomGenerator)
         {
-            if (definition is null)
-            {
-                throw new ArgumentNullException(nameof(definition));
-            }
-
             if (randomGenerator is null)
             {
                 throw new ArgumentNullException(nameof(randomGenerator));
             }
 
-            if (definition.ObjectiveCardCount == 0)
-            {
-                return Array.Empty<MissionObjective>();
-            }
-
-            if (definition.ObjectiveCardCount < 0 || definition.ObjectiveCardCount > NormalObjectiveDeckSize)
-            {
-                throw new ArgumentOutOfRangeException(nameof(definition));
-            }
-
-            int[] normalCardIds = Enumerable.Range(1, NormalObjectiveDeckSize).ToArray();
+            int[] normalCardIds = Enumerable.Range(FirstNormalObjectiveCardId, NormalObjectiveDeckSize).ToArray();
             ShuffleCardIds(normalCardIds, randomGenerator);
 
+            return CreateObjectives(definition, normalCardIds);
+        }
+
+        public static IReadOnlyList<MissionObjective> CreateObjectives(
+            MissionDefinition definition, IReadOnlyList<int> shuffledNormalCardIds)
+        {
+            if (definition == null)
+            {
+                throw new ArgumentNullException(nameof(definition));
+            }
+            if (shuffledNormalCardIds == null)
+            {
+                throw new ArgumentNullException(nameof(shuffledNormalCardIds));
+            }
+            if (definition.Tokens == null)
+            {
+                throw new ArgumentException(nameof(definition));
+            }
+            ValidateObjectiveDeck(definition, shuffledNormalCardIds);
             bool shouldStartRevealed = !IsBlindObjectiveMission(definition.SpecialRule);
             var drawnObjectives = new List<MissionObjective>(definition.ObjectiveCardCount);
 
             for (int index = 0; index < definition.ObjectiveCardCount; index++)
             {
-                int cardId = normalCardIds[index];
+                int cardId = shuffledNormalCardIds[index];
                 ObjectiveTokenType token = index < definition.Tokens.Count
                     ? definition.Tokens[index]
                     : ObjectiveTokenType.None;
@@ -114,6 +119,19 @@ namespace Domain
             }
 
             return (byte)((heartNineOwnerSeat + 1) % playerCount);
+        }
+
+        private static void ValidateObjectiveDeck(
+            MissionDefinition definition, IReadOnlyList<int> shuffledNormalCardIds)
+        {
+            if (definition.ObjectiveCardCount < 0 || definition.ObjectiveCardCount > NormalObjectiveDeckSize ||
+                shuffledNormalCardIds.Count != NormalObjectiveDeckSize ||
+                shuffledNormalCardIds.Distinct().Count() != NormalObjectiveDeckSize ||
+                shuffledNormalCardIds.Any(cardId =>
+                    cardId < FirstNormalObjectiveCardId || cardId > NormalObjectiveDeckSize))
+            {
+                throw new ArgumentException(nameof(shuffledNormalCardIds));
+            }
         }
 
         private static bool IsBlindObjectiveMission(SpecialMissionRuleType specialRule)

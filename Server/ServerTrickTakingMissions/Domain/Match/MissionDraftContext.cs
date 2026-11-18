@@ -16,6 +16,8 @@ namespace Domain
 
         public byte AttemptingSeat { get; init; }
 
+        public byte CurrentObjectiveDraftSeat { get; init; }
+
         public byte CaptainSeat { get; init; }
 
         public MissionRoleConfiguration RoleConfig { get; init; }

@@ -32,6 +32,13 @@ namespace Model.Services
                 cardPlaySubmission.LobbyCode, participantUserId);
         }
 
+        public Task<MissionObjectiveDraftDecision> ProcessObjectiveDraftActionAsync(
+            MissionObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.ProcessObjectiveDraftAction(submission,
+                participantUserId), submission.LobbyCode, participantUserId);
+        }
+
         public void OnMatchStateChanged(long matchStateVersion)
         {
             MatchStateChanged?.Invoke(matchStateVersion);

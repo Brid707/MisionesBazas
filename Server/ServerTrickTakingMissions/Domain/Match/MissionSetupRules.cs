@@ -12,56 +12,41 @@ namespace Domain
     public static class MissionSetupRules
     {
         /// <summary>
-        /// Calculates the zero-based seat index entitled to draft the next objective card in clockwise order.
-        /// </summary>
-        /// <param name="captainSeat">The seat index of the mission captain.</param>
-        /// <param name="draftedCount">The total number of objectives already drafted in the attempt.</param>
-        /// <param name="playerCount">The total number of seated participants.</param>
-        /// <returns>The seat index expected to draft next.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="playerCount"/> is less than or equal to zero.</exception>
-        public static byte GetCurrentDraftingSeat(byte captainSeat, int draftedCount, int playerCount)
-        {
-            if (playerCount <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(playerCount));
-            }
-
-            return (byte)((captainSeat + draftedCount) % playerCount);
-        }
-
-        /// <summary>
         /// Validates whether a participant is authorized to draft a specified objective card.
         /// </summary>
         /// <param name="context">The contextual state encapsulation for the draft request.</param>
         /// <returns>True if the draft action satisfies all rotation and role rules; otherwise, false.</returns>
         public static bool CanDraftObjective(MissionDraftContext context)
         {
-            if (context is null || context.Definition is null || context.CurrentObjectives is null)
+            bool canDraft = false;
+            if (IsDraftContextValid(context) && context.ObjectiveIndex >= 0 &&
+                context.ObjectiveIndex < context.CurrentObjectives.Count)
             {
-                return false;
+                canDraft = CanAssignDraftObjective(context);
             }
+            return canDraft;
+        }
 
-            if (context.ObjectiveIndex < 0 || context.ObjectiveIndex >= context.CurrentObjectives.Count)
-            {
-                return false;
-            }
+        private static bool IsDraftContextValid(MissionDraftContext context)
+        {
+            return context != null && context.Definition != null && context.CurrentObjectives != null &&
+                MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) &&
+                context.CurrentObjectiveDraftSeat < context.PlayerCount && context.AttemptingSeat < context.PlayerCount;
+        }
 
-            if (context.CurrentObjectives[context.ObjectiveIndex].AssignedSeat.HasValue)
-            {
-                return false;
-            }
-
+        private static bool CanAssignDraftObjective(MissionDraftContext context)
+        {
+            bool canAssign = !context.CurrentObjectives[context.ObjectiveIndex].AssignedSeat.HasValue;
             if (IsSoleAssigneeRule(context.Definition.SpecialRule))
             {
-                return context.RoleConfig != null &&
-                       context.RoleConfig.SoleObjectiveAssigneeSeat.HasValue &&
-                       context.AttemptingSeat == context.RoleConfig.SoleObjectiveAssigneeSeat.Value;
+                canAssign = canAssign && context.RoleConfig != null &&
+                    context.RoleConfig.SoleObjectiveAssigneeSeat == context.AttemptingSeat;
             }
-
-            int draftedCount = context.CurrentObjectives.Count(objective => objective.AssignedSeat.HasValue);
-            byte expectedSeat = GetCurrentDraftingSeat(context.CaptainSeat, draftedCount, context.PlayerCount);
-
-            return context.AttemptingSeat == expectedSeat;
+            else
+            {
+                canAssign = canAssign && context.AttemptingSeat == context.CurrentObjectiveDraftSeat;
+            }
+            return canAssign;
         }
 
         /// <summary>
@@ -185,6 +170,37 @@ namespace Domain
                 default:
                     return true;
             }
+        }
+
+        public static bool CanPassObjectiveDraft(MissionDraftContext context)
+        {
+            return context != null && context.Definition != null && context.CurrentObjectives != null &&
+                MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) &&
+                !IsSoleAssigneeRule(context.Definition.SpecialRule) &&
+                context.AttemptingSeat == context.CurrentObjectiveDraftSeat &&
+                context.AttemptingSeat < context.PlayerCount &&
+                context.CurrentObjectives.Any(objective => !objective.AssignedSeat.HasValue);
+        }
+
+        public static MissionAttemptState AdvanceObjectiveDraft(
+            MissionAttemptState attemptState, bool hasSelectedObjective)
+        {
+            if (attemptState == null)
+            {
+                throw new ArgumentNullException(nameof(attemptState));
+            }
+            byte nextSeat = ParticipantSeatRules.GetNextClockwiseSeat(
+                attemptState.CurrentObjectiveDraftSeat, attemptState.PlayerCount);
+            int nextPassCount = hasSelectedObjective ? 0 : attemptState.ConsecutiveObjectiveDraftPassCount + 1;
+            if (nextPassCount >= attemptState.PlayerCount)
+            {
+                nextPassCount = 0;
+            }
+            return attemptState with
+            {
+                CurrentObjectiveDraftSeat = nextSeat,
+                ConsecutiveObjectiveDraftPassCount = nextPassCount
+            };
         }
 
         private static bool IsSoleAssigneeRule(SpecialMissionRuleType specialRule)

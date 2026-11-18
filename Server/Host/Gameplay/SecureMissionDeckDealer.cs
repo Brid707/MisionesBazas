@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Application.Ports;
 using Domain;
+using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 
@@ -23,20 +24,36 @@ namespace Host.Gameplay
                 {
                     firstSpecialCardReceivingSeat = GetUnbiasedIndex(randomGenerator, participantCount);
                 }
-                for (int cardIndex = shuffledCards.Count - 1; cardIndex > 0; cardIndex--)
-                {
-                    int swapIndex = GetUnbiasedIndex(randomGenerator, cardIndex + 1);
-                    Card displacedCard = shuffledCards[cardIndex];
-                    shuffledCards[cardIndex] = shuffledCards[swapIndex];
-                    shuffledCards[swapIndex] = displacedCard;
-                }
+                ShuffleCards(shuffledCards, randomGenerator);
             }
             return DeckDealRules.DealCards(shuffledCards.AsReadOnly(), participantCount, firstSpecialCardReceivingSeat);
         }
 
+        public IReadOnlyList<MissionObjective> CreateMissionObjectives(MissionDefinition definition)
+        {
+            var shuffledCards = new List<Card>(DeckRules.CreateStandardDeck());
+            using (RandomNumberGenerator randomGenerator = RandomNumberGenerator.Create())
+            {
+                ShuffleCards(shuffledCards, randomGenerator);
+            }
+            return MissionObjectiveDealRules.CreateObjectives(definition,
+                shuffledCards.FindAll(card => card.Suit != CardSuit.Special).ConvertAll(card => card.IdCard));
+        }
+
+        private static void ShuffleCards(List<Card> shuffledCards, RandomNumberGenerator randomGenerator)
+        {
+            for (int cardIndex = shuffledCards.Count - 1; cardIndex > 0; cardIndex--)
+            {
+                int swapIndex = GetUnbiasedIndex(randomGenerator, cardIndex + 1);
+                Card displacedCard = shuffledCards[cardIndex];
+                shuffledCards[cardIndex] = shuffledCards[swapIndex];
+                shuffledCards[swapIndex] = displacedCard;
+            }
+        }
+
         private static int GetUnbiasedIndex(RandomNumberGenerator randomGenerator, int exclusiveMaximum)
         {
-            var randomBytes = new byte[4];
+            var randomBytes = new byte[sizeof(uint)];
             uint randomValue;
             uint acceptedLimit = uint.MaxValue - (uint.MaxValue % (uint)exclusiveMaximum);
             do

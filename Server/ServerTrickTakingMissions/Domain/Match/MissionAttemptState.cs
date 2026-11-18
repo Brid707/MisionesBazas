@@ -23,6 +23,10 @@ namespace Domain
 
         public int PlayerCount { get; init; }
 
+        public byte CurrentObjectiveDraftSeat { get; init; }
+
+        public int ConsecutiveObjectiveDraftPassCount { get; init; }
+
         public bool HasUsedDistressSignal { get; init; }
 
         public MissionRoleConfiguration RoleConfig { get; init; }

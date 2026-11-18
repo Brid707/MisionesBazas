@@ -19,7 +19,7 @@ using ViewModel.Services;
 namespace ViewModel.ViewModels
 {
     /// <summary>Reconciles the local hand and preserves submission identity when retrying an uncertain play.</summary>
-    public sealed class MatchBoardViewModel : ViewModelBase, IDisposable
+    public sealed partial class MatchBoardViewModel : ViewModelBase, IDisposable
     {
         private const int CompletedTrickDisplayMilliseconds = 2500;
         private const string LogMatchSynchronizationFailed =
@@ -59,6 +59,7 @@ namespace ViewModel.ViewModels
             OwnHandCards = new ObservableCollection<HandCardViewModel>();
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
+            InitializeObjectiveDraftCommands();
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
             RetryPendingCardPlayCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingPlay);
             _matchClient.MatchStateChanged += OnMatchStateChanged;
@@ -118,7 +119,10 @@ namespace ViewModel.ViewModels
                 }
                 catch (FaultException<MatchAccessFault> ex)
                 {
-                    SetConnectionFailure("Match_AccessUnavailable", ex);
+                    string feedbackKey = ex.Detail?.FailureCode ==
+                        nameof(MissionObjectiveDraftRejectionReason.RequestLimitReached)
+                        ? "MissionDraft_Error_RequestLimitReached" : "Match_AccessUnavailable";
+                    SetConnectionFailure(feedbackKey, ex);
                 }
                 catch (FaultException ex)
                 {
@@ -157,7 +161,7 @@ namespace ViewModel.ViewModels
 
         private async Task SynchronizeCoreAsync()
         {
-            string rejectionResourceKey = null;
+            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync();
             if (_pendingCardPlaySubmission != null)
             {
                 MatchFeedbackResourceKey = "Match_Confirming";
@@ -183,9 +187,9 @@ namespace ViewModel.ViewModels
 
         private bool CanPlaySelectedCard(object selectedCard)
         {
-            bool canPlay = !_isDisposed && _isMatchConnected && _isRequestInProgress == 0 &&
-                _pendingCardPlaySubmission == null && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && CurrentTurnPlayerUserId == _participantUserId;
+            bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
+                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
+                CurrentTurnPlayerUserId == _participantUserId;
             return canPlay && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
         }
 
@@ -193,7 +197,8 @@ namespace ViewModel.ViewModels
         {
             bool canRaiseForCurrentTurn = !_isDisposed && _isMatchConnected &&
                 _pendingCardPlaySubmission == null && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && CurrentTurnPlayerUserId == _participantUserId;
+                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
+                _pendingObjectiveDraftSubmission == null && CurrentTurnPlayerUserId == _participantUserId;
             foreach (HandCardViewModel handCard in OwnHandCards)
             {
                 handCard.UpdateTurnAvailability(canRaiseForCurrentTurn);
@@ -230,7 +235,8 @@ namespace ViewModel.ViewModels
 
         private bool CanRetryPendingPlay()
         {
-            return !_isDisposed && _pendingCardPlaySubmission != null && _isRequestInProgress == 0;
+            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null) &&
+                _isRequestInProgress == 0;
         }
 
         private void ApplyConfirmedSnapshot(PlayerMatchSnapshot playerSnapshot)
@@ -243,12 +249,8 @@ namespace ViewModel.ViewModels
                 _isMatchConnected = true;
                 var playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
-                OwnHandCards.Clear();
-                foreach (int cardId in playerSnapshot.OwnHandCardIds)
-                {
-                    OwnHandCards.Add(new HandCardViewModel(cardId, PlayCardCommand,
-                        playableCardIds.Contains(cardId)));
-                }
+                ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
+                ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
@@ -258,6 +260,21 @@ namespace ViewModel.ViewModels
             {
                 _isMatchConnected = false;
                 MatchFeedbackResourceKey = "Match_AccessUnavailable";
+            }
+        }
+
+        private void ReplaceOwnHandIfChanged(PlayerMatchSnapshot playerSnapshot, HashSet<int> playableCardIds)
+        {
+            bool hasSameHand = OwnHandCards.Select(card => card.CardId).SequenceEqual(playerSnapshot.OwnHandCardIds) &&
+                OwnHandCards.All(card => card.IsPlayableByRules == playableCardIds.Contains(card.CardId));
+            if (!hasSameHand)
+            {
+                OwnHandCards.Clear();
+                foreach (int cardId in playerSnapshot.OwnHandCardIds)
+                {
+                    OwnHandCards.Add(new HandCardViewModel(cardId, PlayCardCommand,
+                        playableCardIds.Contains(cardId)));
+                }
             }
         }
 
@@ -304,7 +321,11 @@ namespace ViewModel.ViewModels
         private string GetCurrentMatchFeedback()
         {
             string feedbackResourceKey = "Match_WaitingTurn";
-            if (_confirmedMatchSnapshot.IsDealCompleted)
+            if (IsObjectiveDraftVisible)
+            {
+                feedbackResourceKey = "MissionDraft_Label_SelectOrPass";
+            }
+            else if (_confirmedMatchSnapshot.IsDealCompleted)
             {
                 feedbackResourceKey = "Match_DealCompleted";
             }

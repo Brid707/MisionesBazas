@@ -602,4 +602,22 @@
   <data name="Match_StartFailed" xml:space="preserve"><value>No se pudo iniciar la partida. Inténtalo nuevamente.</value></data>
   <data name="Match_WonTricksCount" xml:space="preserve"><value>Bazas ganadas:</value></data>
   <data name="Match_Captain" xml:space="preserve"><value>Capitán de la misión</value></data>
+  <data name="MissionDraft_Title_Preparation" xml:space="preserve"><value>Selecciona los objetivos</value></data>
+  <data name="MissionDraft_Button_Select" xml:space="preserve"><value>Seleccionar objetivo</value></data>
+  <data name="MissionDraft_Button_Pass" xml:space="preserve"><value>Pasar</value></data>
+  <data name="MissionDraft_Label_SelectOrPass" xml:space="preserve"><value>Preparación: espera tu turno para seleccionar un objetivo o pasar.</value></data>
+  <data name="MissionDraft_Label_SelectionFreeCycle" xml:space="preserve"><value>Todos pasaron. La selección continúa por turnos.</value></data>
+  <data name="Match_MissionPreparationRequired" xml:space="preserve"><value>Primero deben asignarse los objetivos.</value></data>
+  <data name="MissionDraft_Error_None" xml:space="preserve"><value>No se confirmó la acción.</value></data>
+  <data name="MissionDraft_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="MissionDraft_Error_ParticipantNotAllowed" xml:space="preserve"><value>No puedes acceder a esta partida.</value></data>
+  <data name="MissionDraft_Error_InvalidSubmission" xml:space="preserve"><value>La selección recibida no es válida.</value></data>
+  <data name="MissionDraft_Error_SubmissionIdentityReused" xml:space="preserve"><value>La solicitud no coincide con la original.</value></data>
+  <data name="MissionDraft_Error_StaleMatchState" xml:space="preserve"><value>La selección cambió. Revisa los objetivos y vuelve a elegir.</value></data>
+  <data name="MissionDraft_Error_NotDraftTurn" xml:space="preserve"><value>Todavía no es tu turno de seleccionar.</value></data>
+  <data name="MissionDraft_Error_ObjectiveUnavailable" xml:space="preserve"><value>Ese objetivo ya no está disponible.</value></data>
+  <data name="MissionDraft_Error_PreparationCompleted" xml:space="preserve"><value>La preparación ya terminó.</value></data>
+  <data name="MissionDraft_Error_RequestLimitReached" xml:space="preserve"><value>Demasiadas solicitudes de selección. Espera antes de volver a intentar.</value></data>
+  <data name="MissionDraft_Error_UnsupportedDraftMode" xml:space="preserve"><value>Esta modalidad requiere otra preparación.</value></data>
+  <data name="MissionDraft_Error_SubmissionExpired" xml:space="preserve"><value>La solicitud es antigua. Revisa la selección actual y vuelve a elegir.</value></data>
 </root>

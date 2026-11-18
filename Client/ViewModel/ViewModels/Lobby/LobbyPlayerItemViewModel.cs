@@ -29,6 +29,9 @@ namespace ViewModel.ViewModels
 
         public IEnumerable<int> HiddenCardSlots => Enumerable.Range(0, _remainingHandCardCount);
 
+        public ObservableCollection<MissionObjectiveViewModel> MissionObjectives { get; } =
+            new ObservableCollection<MissionObjectiveViewModel>();
+
         public ObservableCollection<int> WonCardIds { get; }
 
         public ProfileImageViewModel ProfileImage { get; private set; }

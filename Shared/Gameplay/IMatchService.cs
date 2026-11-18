@@ -6,6 +6,11 @@ namespace Gameplay
     [ServiceContract]
     public interface IMatchService
     {
+        [OperationContract(Action = "urn:misiones-bazas:match:ProcessObjectiveDraftAction", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            MissionObjectiveDraftSubmission submission, int participantUserId);
+
         [OperationContract(Action = "urn:misiones-bazas:match:GetPlayerMatch", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
         PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);

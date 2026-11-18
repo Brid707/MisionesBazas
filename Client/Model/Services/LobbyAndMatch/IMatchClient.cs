@@ -8,6 +8,8 @@ namespace Model.Services
     public interface IMatchClient
     {
         event Action<long> MatchStateChanged;
+        Task<MissionObjectiveDraftDecision> ProcessObjectiveDraftActionAsync(
+            MissionObjectiveDraftSubmission submission, int participantUserId);
         Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId);
         Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId);
     }

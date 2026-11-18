@@ -7,11 +7,36 @@
       xmlns:constants="clr-namespace:ViewModel.Constants;assembly=ViewModel"
       Title="GameMatch">
     <Page.Resources>
+        <converters:MissionObjectiveCardIdToImagePathConverter x:Key="ObjectiveCardImageConverter" />
+        <converters:MissionObjectiveTokenToImagePathConverter x:Key="ObjectiveTokenImageConverter" />
+        <DataTemplate x:Key="MissionObjectiveArtworkTemplate">
+            <Grid Width="64" Height="96" Margin="4">
+                <Image Width="58" Height="82" Stretch="Uniform"
+                       Source="{Binding CardId, Converter={StaticResource ObjectiveCardImageConverter}}" />
+                <Image Width="26" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top"
+                       Source="{Binding Token, Converter={StaticResource ObjectiveTokenImageConverter}}" />
+            </Grid>
+        </DataTemplate>
         <converters:CardIdToImagePathConverter x:Key="CardImageConverter" />
         <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="PlayerIdentityTemplate">
-            <StackPanel HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding MissionObjectives}"
+                                  VerticalAlignment="Center" Margin="0,0,8,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Viewbox>
+                                    <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource MissionObjectiveArtworkTemplate}" />
+                                </Viewbox>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                <StackPanel HorizontalAlignment="Center">
                 <Grid Width="48" Height="48" HorizontalAlignment="Center">
                     <ContentControl Content="{Binding ProfileImage}"
                                     ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
@@ -29,6 +54,7 @@
                     <TextBlock Margin="0,0,4,0" Foreground="{StaticResource BrushTextLight}"
                                Text="{Binding Source=Match_WonTricksCount, Converter={StaticResource MatchTextConverter}}" />
                     <TextBlock Text="{Binding WonTrickCount}" Foreground="{StaticResource BrushTextLight}" />
+                </StackPanel>
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -167,6 +193,40 @@
                     </StackPanel>
                     <Grid Grid.Column="1" Width="330" Height="340" VerticalAlignment="Bottom" Margin="0,0,0,4"
                           DataContext="{Binding MatchBoard}">
+                        <Border Panel.ZIndex="1" Background="{StaticResource BrushBurgundySurface}" Padding="12"
+                                Visibility="{Binding IsObjectiveDraftVisible,
+                                    Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel>
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           Text="{Binding Source=MissionDraft_Title_Preparation,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           Text="{Binding CurrentObjectiveDraftPlayerName}" />
+                                <ItemsControl ItemsSource="{Binding UnassignedMissionObjectives}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel HorizontalAlignment="Center" /></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Background="{StaticResource BrushTransparent}" Padding="0"
+                                                    Command="{Binding DataContext.SelectMissionObjectiveCommand,
+                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding MissionObjectiveId}"
+                                                    ToolTip="{Binding Source=MissionDraft_Button_Select,
+                                                        Converter={StaticResource MatchTextConverter}}">
+                                                <ContentControl Content="{Binding}"
+                                                    ContentTemplate="{StaticResource MissionObjectiveArtworkTemplate}" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Command="{Binding PassObjectiveDraftCommand}" Margin="0,8,0,0"
+                                        Background="{StaticResource BrushSubmitButtonBackground}">
+                                    <TextBlock Text="{Binding Source=MissionDraft_Button_Pass,
+                                        Converter={StaticResource MatchTextConverter}}" />
+                                </Button>
+                            </StackPanel>
+                        </Border>
                         <ItemsControl x:Name="CurrentTrickTable" ItemsSource="{Binding CurrentTrickCardPlays}"
                                       ItemsPanel="{StaticResource TrickTablePanel}"
                                       ItemTemplate="{StaticResource PlayedCardTemplate}"
@@ -186,7 +246,9 @@
                         <TextBlock Text="{Binding MatchFeedbackResourceKey, Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
                                    TextAlignment="Center" AutomationProperties.LiveSetting="Polite" />
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    Visibility="{Binding IsMissionPreparationComplete,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Margin="0,0,6,0" Foreground="{StaticResource BrushTextLight}"
                                        Text="{Binding Source=Match_TurnPlayer, Converter={StaticResource MatchTextConverter}}" />
                             <TextBlock Text="{Binding CurrentTurnPlayerName}" Foreground="{StaticResource BrushTextLight}" />

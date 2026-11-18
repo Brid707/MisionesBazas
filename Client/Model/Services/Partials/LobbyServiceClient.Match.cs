@@ -9,6 +9,12 @@ namespace Model.GameServices
             return Channel.GetPlayerMatch(lobbyCode, participantUserId);
         }
 
+        public MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            MissionObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return Channel.ProcessObjectiveDraftAction(submission, participantUserId);
+        }
+
         public CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return Channel.PlayCard(cardPlaySubmission, participantUserId);

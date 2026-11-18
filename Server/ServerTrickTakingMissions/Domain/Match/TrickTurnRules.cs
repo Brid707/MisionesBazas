@@ -12,17 +12,7 @@ namespace Domain
     {
         public static byte GetNextTurnSeat(byte currentSeat, int playerCount)
         {
-            if (!MatchPlayerCountRules.IsPlayerCountSupported(playerCount))
-            {
-                throw new ArgumentOutOfRangeException(nameof(playerCount));
-            }
-
-            if (currentSeat >= playerCount)
-            {
-                throw new ArgumentOutOfRangeException(nameof(currentSeat));
-            }
-
-            return (byte)((currentSeat + 1) % playerCount);
+            return ParticipantSeatRules.GetNextClockwiseSeat(currentSeat, playerCount);
         }
 
         public static bool IsTrickComplete(IReadOnlyList<TrickCardPlay> trickPlays, int playerCount)

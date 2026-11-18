@@ -13,7 +13,7 @@ using TrickTakingMissions.Rules.Rules;
 namespace Application.UseCases
 {
     /// <summary>Serializes match mutations and retains stable decisions for their in-memory lifetime.</summary>
-    public sealed class MatchUseCase : IMatchUseCase
+    public sealed partial class MatchUseCase : IMatchUseCase
     {
         private const int MaximumProcessedSubmissions = 4096;
         private const string MatchIdentityConflictMessage = "MatchIdentityConflict";
@@ -100,7 +100,7 @@ namespace Application.UseCases
         private MatchState CreateMatchState(int[] participantUserIds, Guid lobbyInstanceId)
         {
             MissionDeal missionDeal = _missionDeckDealer.CreateMissionDeal(participantUserIds.Length);
-            return new MatchState
+            var matchState = new MatchState
             {
                 LobbyInstanceId = lobbyInstanceId,
                 ParticipantUserIds = (int[])participantUserIds.Clone(),
@@ -112,6 +112,8 @@ namespace Application.UseCases
                 MissionCaptainSeat = missionDeal.CaptainSeat,
                 MaximumMissionTrickCount = missionDeal.TotalTricksInMission
             };
+            InitializeObjectiveDraft(matchState);
+            return matchState;
         }
 
         private CardPlayDecision ProcessPlayUnderLock(MatchState matchState,

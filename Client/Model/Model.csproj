@@ -245,4 +245,13 @@
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\PlayerMissionPreparationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftAction.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftRejectionReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveToken.cs" />
+  </ItemGroup>
 </Project>

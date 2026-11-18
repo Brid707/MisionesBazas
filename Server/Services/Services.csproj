@@ -137,4 +137,8 @@
     <Compile Include="Security\GuestParticipantCredentials.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.ObjectiveDraft.cs" />
+  </ItemGroup>
 </Project>

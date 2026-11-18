@@ -159,4 +159,24 @@
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\PlayerMissionPreparationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftAction.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftRejectionReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveToken.cs" />
+    <Compile Include="Models\Match\ObjectiveDraftSubmission.cs" />
+    <Compile Include="Models\Match\ObjectiveDraftDecision.cs" />
+    <Compile Include="Models\Match\ProcessedObjectiveDraft.cs" />
+    <Compile Include="Models\Match\ObjectiveDraftRequestBudget.cs" />
+    <Compile Include="Models\Match\ObjectiveDraftAction.cs" />
+    <Compile Include="Models\Match\ObjectiveDraftRejectionReason.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.ObjectiveDraft.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.ObjectiveDraft.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\ObjectiveDraftRequestLimits.cs" />
+  </ItemGroup>
 </Project>

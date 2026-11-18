@@ -124,4 +124,8 @@
     <Compile Include="Constants\MatchTablePosition.cs" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\MissionObjectiveViewModel.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.ObjectiveDraft.cs" />
+  </ItemGroup>
 </Project>

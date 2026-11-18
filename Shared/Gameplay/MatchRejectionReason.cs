@@ -16,6 +16,7 @@ namespace Gameplay
         [EnumMember] CardNotInHand = 7,
         [EnumMember] MustFollowLeadSuit = 8,
         [EnumMember] DealCompleted = 9,
-        [EnumMember] SubmissionCapacityReached = 10
+        [EnumMember] SubmissionCapacityReached = 10,
+        [EnumMember] MissionPreparationRequired = 11
     }
 }
