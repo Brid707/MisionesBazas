@@ -49,7 +49,9 @@ namespace Domain
             int[] normalCardIds = Enumerable.Range(1, NormalObjectiveDeckSize).ToArray();
             ShuffleCardIds(normalCardIds, randomGenerator);
 
+            bool shouldStartRevealed = !IsBlindObjectiveMission(definition.SpecialRule);
             var drawnObjectives = new List<MissionObjective>(definition.ObjectiveCardCount);
+
             for (int index = 0; index < definition.ObjectiveCardCount; index++)
             {
                 int cardId = normalCardIds[index];
@@ -62,6 +64,7 @@ namespace Domain
                     CardId = cardId,
                     Token = token,
                     AssignedSeat = null,
+                    IsRevealed = shouldStartRevealed,
                     Status = ObjectiveStatus.Pending,
                     CompletedAtTrickNumber = null
                 });
@@ -111,6 +114,12 @@ namespace Domain
             }
 
             return (byte)((heartNineOwnerSeat + 1) % playerCount);
+        }
+
+        private static bool IsBlindObjectiveMission(SpecialMissionRuleType specialRule)
+        {
+            return specialRule == SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer ||
+                   specialRule == SpecialMissionRuleType.M27_CaptainAssignsAllObjectivesToOnePlayer;
         }
 
         private static void ShuffleCardIds(int[] cardIds, Random randomGenerator)

@@ -43,11 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compatibility\IsExternalInit.cs" />
+    <Compile Include="Enums\BlindObjectiveCapableResponse.cs" />
     <Compile Include="Enums\CardSuit.cs" />
     <Compile Include="Enums\CommunicationRuleType.cs" />
+    <Compile Include="Enums\DisconnectionResolutionOption.cs" />
+    <Compile Include="Enums\MissionAttemptPhase.cs" />
     <Compile Include="Enums\MissionAttemptStatus.cs" />
     <Compile Include="Enums\ObjectiveStatus.cs" />
     <Compile Include="Enums\ObjectiveTokenType.cs" />
+    <Compile Include="Enums\PassDirection.cs" />
     <Compile Include="Enums\RadioCommunicationRejectionReason.cs" />
     <Compile Include="Enums\RadioTokenPosition.cs" />
     <Compile Include="Enums\SpecialCardSymbol.cs" />
@@ -56,6 +60,7 @@
     <Compile Include="Models\Card.cs" />
     <Compile Include="Models\MissionDefinition.cs" />
     <Compile Include="Models\MissionObjective.cs" />
+    <Compile Include="Models\PlayerRadioCommunicationState.cs" />
     <Compile Include="Models\RadioCommunicationContext.cs" />
     <Compile Include="Models\RadioCommunicationValidationResult.cs" />
     <Compile Include="Models\TrickCardPlay.cs" />

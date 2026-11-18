@@ -7,7 +7,7 @@ using TrickTakingMissions.Rules.Models;
 namespace Domain
 {
     /// <summary>
-    /// Governs the pre-match draft phase, clockwise seat rotation, and captain role assignments.
+    /// Governs the pre-match draft phase, clockwise seat rotation, blind objective capability polling, and captain role assignments.
     /// </summary>
     public static class MissionSetupRules
     {
@@ -91,18 +91,19 @@ namespace Domain
             var updatedList = new List<MissionObjective>(currentObjectives);
             updatedList[objectiveIndex] = updatedList[objectiveIndex] with
             {
-                AssignedSeat = assignedSeat
+                AssignedSeat = assignedSeat,
+                IsRevealed = true
             };
 
             return updatedList.AsReadOnly();
         }
 
         /// <summary>
-        /// Assigns all pending objectives in an attempt directly to a designated player seat.
+        /// Assigns all pending objectives in an attempt directly to a designated player seat and reveals them.
         /// </summary>
         /// <param name="currentObjectives">The current list of mission objectives.</param>
         /// <param name="assignedSeat">The single player seat index receiving all objectives.</param>
-        /// <returns>An updated immutable list where all objectives belong to the assigned seat.</returns>
+        /// <returns>An updated immutable list where all objectives belong to the assigned seat and are revealed.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentObjectives"/> is null.</exception>
         public static IReadOnlyList<MissionObjective> AutoAssignAllObjectives(
             IReadOnlyList<MissionObjective> currentObjectives,
@@ -116,10 +117,34 @@ namespace Domain
             var updatedList = new List<MissionObjective>(currentObjectives.Count);
             foreach (MissionObjective objective in currentObjectives)
             {
-                updatedList.Add(objective with { AssignedSeat = assignedSeat });
+                updatedList.Add(objective with
+                {
+                    AssignedSeat = assignedSeat,
+                    IsRevealed = true
+                });
             }
 
             return updatedList.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Verifies whether all seated players have answered Yes or No before the captain assigns blind objectives.
+        /// </summary>
+        /// <param name="responsesBySeat">The map of player responses indexed by seat.</param>
+        /// <param name="playerCount">The total number of seated participants.</param>
+        /// <returns>True if every seated player has submitted a non-pending response; otherwise, false.</returns>
+        public static bool AreAllBlindResponsesRecorded(
+            IReadOnlyDictionary<byte, BlindObjectiveCapableResponse> responsesBySeat,
+            int playerCount)
+        {
+            if (responsesBySeat is null || playerCount <= 0)
+            {
+                return false;
+            }
+
+            return Enumerable.Range(0, playerCount)
+                .All(seat => responsesBySeat.TryGetValue((byte)seat, out BlindObjectiveCapableResponse response) &&
+                             response != BlindObjectiveCapableResponse.Pending);
         }
 
         /// <summary>

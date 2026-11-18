@@ -59,7 +59,11 @@
     <Compile Include="Lobby\LobbyCodeRules.cs" />
     <Compile Include="Lobby\LobbyRoomRules.cs" />
     <Compile Include="Match\DeckDealRules.cs" />
+    <Compile Include="Match\DisconnectionPolicyRules.cs" />
+    <Compile Include="Match\DistressSignalContext.cs" />
+    <Compile Include="Match\DistressSignalRules.cs" />
     <Compile Include="Match\MatchPlayerCountRules.cs" />
+    <Compile Include="Match\MissionAttemptState.cs" />
     <Compile Include="Match\MissionDeal.cs" />
     <Compile Include="Match\MissionDraftContext.cs" />
     <Compile Include="Match\MissionEvaluationContext.cs" />

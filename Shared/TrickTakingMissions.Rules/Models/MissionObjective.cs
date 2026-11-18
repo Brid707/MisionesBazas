@@ -3,7 +3,7 @@ using TrickTakingMissions.Rules.Enums;
 namespace TrickTakingMissions.Rules.Models
 {
     /// <summary>
-    /// Represents an active objective card in a mission attempt, including its assigned seat and completion status.
+    /// Represents an active objective card in a mission attempt, including its visibility, assigned seat, and completion status.
     /// </summary>
     public sealed record MissionObjective
     {
@@ -12,6 +12,8 @@ namespace TrickTakingMissions.Rules.Models
         public ObjectiveTokenType Token { get; init; }
 
         public int? AssignedSeat { get; init; }
+
+        public bool IsRevealed { get; init; } = true;
 
         public ObjectiveStatus Status { get; init; }
 
