@@ -52,6 +52,8 @@
     <Compile Include="Contracts\Friends\IFriendshipServiceCallback.cs" />
     <Compile Include="Contracts\Friends\IFriendsRequestService.cs" />
     <Compile Include="DataContracts\ChatModeration\LobbyChatMessageSubmissionOutcome.cs" />
+    <Compile Include="DataContracts\ChatModeration\LobbyChatMessageRejectionReason.cs" />
+    <Compile Include="Mapping\LobbyChatMessageRejectionMapper.cs" />
     <Compile Include="DataContracts\ChatModeration\LobbyChatMessageSubmission.cs" />
     <Compile Include="DataContracts\ChatModeration\ChatInfractionNotice.cs" />
     <Compile Include="DataContracts\ChatModeration\ChatAccountBanType.cs" />

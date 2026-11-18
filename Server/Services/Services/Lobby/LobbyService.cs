@@ -10,6 +10,7 @@ using Application.Ports;
 using Domain;
 using Services.Contracts;
 using Services.DataContracts;
+using Services.Mapping;
 using Services.Security;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
@@ -289,7 +290,7 @@ namespace Services.Services
         {
             LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
             {
-                ChatMessageRejectionReason = ChatMessageRejectionReason.InvalidChatMessage
+                ChatMessageRejectionReason = LobbyChatMessageRejectionReason.InvalidChatMessage
             };
             try
             {
@@ -299,19 +300,19 @@ namespace Services.Services
             {
                 _logger.Error(ex, ChatStorageFailureTemplate, chatMessageSubmission?.LobbyCode);
                 chatMessageSubmissionOutcome.ChatMessageRejectionReason =
-                    ChatMessageRejectionReason.ChatStorageUnavailable;
+                    LobbyChatMessageRejectionReason.ChatStorageUnavailable;
             }
             catch (RegexMatchTimeoutException)
             {
                 _logger.Warning(ChatModerationTimeoutTemplate, chatMessageSubmission?.LobbyCode);
                 chatMessageSubmissionOutcome.ChatMessageRejectionReason =
-                    ChatMessageRejectionReason.ChatModerationUnavailable;
+                    LobbyChatMessageRejectionReason.ChatModerationUnavailable;
             }
             catch (ArgumentException)
             {
                 _logger.Warning(ChatSubmissionInvalidTemplate, chatMessageSubmission?.LobbyCode);
                 chatMessageSubmissionOutcome.ChatMessageRejectionReason =
-                    ChatMessageRejectionReason.InvalidChatMessage;
+                    LobbyChatMessageRejectionReason.InvalidChatMessage;
             }
 
             return chatMessageSubmissionOutcome;
@@ -322,7 +323,7 @@ namespace Services.Services
         {
             LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
             {
-                ChatMessageRejectionReason = ChatMessageRejectionReason.ChatAuthenticationRequired
+                ChatMessageRejectionReason = LobbyChatMessageRejectionReason.ChatAuthenticationRequired
             };
             int authenticatedAccountUserId = _accountAccessPolicy.ResolveAllowedAccountUserId(
                 AccountSessionHeader.ReadCurrentAccountSessionToken());
@@ -339,7 +340,7 @@ namespace Services.Services
                 else
                 {
                     chatMessageSubmissionOutcome.ChatMessageRejectionReason =
-                        ChatMessageRejectionReason.ChatParticipantNotInLobby;
+                        LobbyChatMessageRejectionReason.ChatParticipantNotInLobby;
                 }
             }
 
@@ -365,7 +366,7 @@ namespace Services.Services
                 RemoveBannedAccountFromLobbies(authenticatedAccountUserId,
                     chatMessageSubmissionOutcome.ChatAccountBanNotice);
             }
-            else if (chatMessageProcessing.CanPublishChatMessage)
+            else if (chatMessageProcessing.CanPublishChatMessage && chatMessageSubmissionOutcome.IsChatMessageAccepted)
             {
                 LobbyMessage publishedChatMessage = new LobbyMessage
                 {
@@ -388,7 +389,8 @@ namespace Services.Services
             LobbyChatMessageSubmissionOutcome chatMessageSubmissionOutcome = new LobbyChatMessageSubmissionOutcome
             {
                 ChatMessageSubmissionId = chatMessageSubmission.ChatMessageSubmissionId,
-                ChatMessageRejectionReason = chatMessageProcessing.ChatMessageRejectionReason,
+                ChatMessageRejectionReason = LobbyChatMessageRejectionMapper.MapRejectionReason(
+                    chatMessageProcessing.ChatMessageRejectionReason),
                 IsChatMessageAccepted = chatMessageProcessing.ChatMessageRejectionReason ==
                     ChatMessageRejectionReason.None
             };

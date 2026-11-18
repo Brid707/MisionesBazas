@@ -1,8 +1,6 @@
 using System.Runtime.Serialization;
 using System;
 
-using Application.Models;
-
 namespace Services.DataContracts
 {
     /// <summary>Describes committed processing of a particular submission, not delivery to every recipient.</summary>
@@ -19,7 +17,7 @@ namespace Services.DataContracts
         public bool IsRepeatedChatMessageSubmission { get; set; }
 
         [DataMember(Order = 4)]
-        public ChatMessageRejectionReason ChatMessageRejectionReason { get; set; }
+        public LobbyChatMessageRejectionReason ChatMessageRejectionReason { get; set; }
 
         [DataMember(Order = 5)]
         public ChatInfractionNotice ChatInfractionNotice { get; set; }
