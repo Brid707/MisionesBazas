@@ -7,12 +7,14 @@ namespace Services.Services
     public sealed partial class LobbyService
     {
         private const string MissionEvaluationUnavailableCode = "MissionEvaluationUnavailable";
-        private const string MissionEvaluationUnavailableTemplate =
-            "Mission evaluation unavailable. ExceptionType={ExceptionType}.";
+        private const string MatchOperationUnavailableTemplate =
+            "Match operation unavailable. FailureCode={FailureCode}, ExceptionType={ExceptionType}.";
 
         public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
         {
             EnsureMatchParticipantAllowed(lobbyCode, participantUserId);
+            LobbyMatchPresence.Touch(lobbyCode.Trim().ToUpperInvariant(), participantUserId,
+                OperationContext.Current?.SessionId);
             PlayerMatchSnapshot participantSnapshot = _lobbyUseCase.Match.GetPlayerMatch(lobbyCode, participantUserId);
             if (participantSnapshot == null)
             {
@@ -38,11 +40,11 @@ namespace Services.Services
             }
             catch (ArgumentException ex)
             {
-                throw CreateMissionEvaluationFault(ex);
+                throw CreateMatchOperationFault(ex, MissionEvaluationUnavailableCode);
             }
             catch (InvalidOperationException ex)
             {
-                throw CreateMissionEvaluationFault(ex);
+                throw CreateMatchOperationFault(ex, MissionEvaluationUnavailableCode);
             }
             if (playDecision.IsAccepted)
             {
@@ -52,12 +54,12 @@ namespace Services.Services
             return playDecision;
         }
 
-        private FaultException<MatchAccessFault> CreateMissionEvaluationFault(Exception ex)
+        private FaultException<MatchAccessFault> CreateMatchOperationFault(Exception ex, string failureCode)
         {
-            _logger.Error(MissionEvaluationUnavailableTemplate, ex.GetType().Name);
+            _logger.Error(MatchOperationUnavailableTemplate, failureCode, ex.GetType().Name);
             return new FaultException<MatchAccessFault>(new MatchAccessFault
             {
-                FailureCode = MissionEvaluationUnavailableCode
+                FailureCode = failureCode
             });
         }
 

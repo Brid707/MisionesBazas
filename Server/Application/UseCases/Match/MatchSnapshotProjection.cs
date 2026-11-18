@@ -8,7 +8,8 @@ namespace Application.UseCases
     /// <summary>Builds fresh recipient-specific arrays; server-owned hands never cross this boundary.</summary>
     internal static partial class MatchSnapshotProjection
     {
-        internal static PlayerMatchSnapshot CreateSnapshot(MatchState matchState, int participantSeat)
+        internal static PlayerMatchSnapshot CreateSnapshot(MatchState matchState, int participantSeat,
+            long serverTimestampMilliseconds)
         {
             return new PlayerMatchSnapshot
             {
@@ -26,6 +27,7 @@ namespace Application.UseCases
                 LastCompletedTrickCardPlays = matchState.LastCompletedTrickCardPlays.Select(ClonePlay).ToArray(),
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
+                MissionRetry = CreateMissionRetry(matchState, serverTimestampMilliseconds),
                 MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat)
             };

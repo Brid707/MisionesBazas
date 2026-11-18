@@ -9,6 +9,10 @@ namespace Services.Contracts
     /// </summary>
     public interface ILobbyCallback
     {
+        /// <summary>Confirms live client participation automatically; no player confirmation is requested.</summary>
+        [OperationContract(Action = "urn:misiones-bazas:match:Presence", ReplyAction = "*")]
+        bool IsMatchParticipantConnected(System.Guid matchId, int missionAttemptId);
+
         [OperationContract(IsOneWay = true, Action = "urn:misiones-bazas:match:StateChanged")]
         void OnMatchStateChanged(long matchStateVersion);
 

@@ -54,5 +54,7 @@ namespace Gameplay
         public PlayerCapturedCardsSnapshot[] CapturedCardsByPlayer { get; set; }
         [DataMember(Order = 16)]
         public MissionEvaluationSnapshot MissionEvaluation { get; set; }
+        [DataMember(Order = 17)]
+        public MissionRetrySnapshot MissionRetry { get; set; }
     }
 }

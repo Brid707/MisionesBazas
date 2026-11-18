@@ -32,7 +32,7 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private static string GetMatchFaultFeedback(MatchAccessFault matchAccessFault)
+        private string GetMatchFaultFeedback(MatchAccessFault matchAccessFault)
         {
             string feedbackResourceKey = "Match_AccessUnavailable";
             if (matchAccessFault?.FailureCode == nameof(MissionObjectiveDraftRejectionReason.RequestLimitReached))
@@ -42,6 +42,10 @@ namespace ViewModel.ViewModels
             else if (matchAccessFault?.FailureCode == "MissionEvaluationUnavailable")
             {
                 feedbackResourceKey = "MissionEvaluation_Error_Unavailable";
+            }
+            if (matchAccessFault?.FailureCode == "MissionRetryPreparationUnavailable")
+            {
+                feedbackResourceKey = "MissionRetry_Error_PreparationUnavailable";
             }
             return feedbackResourceKey;
         }

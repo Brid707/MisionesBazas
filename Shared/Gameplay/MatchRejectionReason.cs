@@ -18,6 +18,7 @@ namespace Gameplay
         [EnumMember] DealCompleted = 9,
         [EnumMember] SubmissionCapacityReached = 10,
         [EnumMember] MissionPreparationRequired = 11,
-        [EnumMember] MissionAttemptFinished = 12
+        [EnumMember] MissionAttemptFinished = 12,
+        [EnumMember] WrongMissionAttempt = 13
     }
 }

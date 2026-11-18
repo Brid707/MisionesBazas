@@ -232,6 +232,18 @@
     <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryRejectionReason.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryStatus.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\Partials\ILobbyServiceCallback.MatchPresence.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />

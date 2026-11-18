@@ -12,7 +12,7 @@ using TrickTakingMissions.Rules.Rules;
 
 namespace Application.UseCases
 {
-    /// <summary>Serializes match mutations and retains stable decisions for their in-memory lifetime.</summary>
+    /// <summary>Serializes match mutations and retains decisions within their attempt scope.</summary>
     public sealed partial class MatchUseCase : IMatchUseCase
     {
         private const int MaximumProcessedSubmissions = 4096;
@@ -28,13 +28,24 @@ namespace Application.UseCases
         private readonly IMatchStateStore _matchStateStore;
         private readonly IMissionDeckDealer _missionDeckDealer;
         private readonly ILoggerService _logger;
+        private readonly IMatchClock _matchClock;
+        private readonly IMatchParticipantPresence _participantPresence;
 
         public MatchUseCase(IMatchStateStore matchStateStore, IMissionDeckDealer missionDeckDealer,
-            ILoggerService logger = null)
+            MatchExecutionDependencies executionDependencies)
         {
             _matchStateStore = matchStateStore ?? throw new ArgumentNullException(nameof(matchStateStore));
             _missionDeckDealer = missionDeckDealer ?? throw new ArgumentNullException(nameof(missionDeckDealer));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            if (executionDependencies == null)
+            {
+                throw new ArgumentNullException(nameof(executionDependencies));
+            }
+            _logger = executionDependencies.Logger ??
+                throw new ArgumentNullException(nameof(executionDependencies.Logger));
+            _matchClock = executionDependencies.MatchClock ??
+                throw new ArgumentNullException(nameof(executionDependencies.MatchClock));
+            _participantPresence = executionDependencies.ParticipantPresence ??
+                throw new ArgumentNullException(nameof(executionDependencies.ParticipantPresence));
         }
 
         public Guid StartMatch(string lobbyCode, int[] participantUserIds, Guid lobbyInstanceId = default(Guid))
@@ -69,7 +80,8 @@ namespace Application.UseCases
                     int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
                     if (participantSeat >= 0)
                     {
-                        playerSnapshot = MatchSnapshotProjection.CreateSnapshot(matchState, participantSeat);
+                        playerSnapshot = MatchSnapshotProjection.CreateSnapshot(matchState, participantSeat,
+                            _matchClock.GetTimestampMilliseconds());
                     }
                 }
             }
@@ -99,20 +111,20 @@ namespace Application.UseCases
 
         private MatchState CreateMatchState(int[] participantUserIds, Guid lobbyInstanceId)
         {
-            MissionDeal missionDeal = _missionDeckDealer.CreateMissionDeal(participantUserIds.Length);
             var matchState = new MatchState
             {
                 LobbyInstanceId = lobbyInstanceId,
-                ParticipantUserIds = (int[])participantUserIds.Clone(),
-                PlayerHandCardIdsBySeat = missionDeal.HandsBySeat
-                    .Select(hand => hand.Select(card => card.IdCard).ToList()).ToArray(),
-                WonCardIdsBySeat = participantUserIds.Select(_ => new List<int>()).ToArray(),
-                WonTrickCountsBySeat = new int[participantUserIds.Length],
-                CurrentTurnPlayerSeat = missionDeal.CaptainSeat,
-                MissionCaptainSeat = missionDeal.CaptainSeat,
-                MaximumMissionTrickCount = missionDeal.TotalTricksInMission
+                ParticipantUserIds = (int[])participantUserIds.Clone()
             };
-            InitializeObjectiveDraft(matchState);
+            PreparedMissionAttempt preparedAttempt = MissionAttemptPreparation.Prepare(
+                new MissionAttemptPreparationContext
+                {
+                    MissionNumber = MissionCatalog.MinimumMissionNumber,
+                    MissionAttemptId = MissionAttemptPreparation.InitialMissionAttemptId,
+                    AttemptNumber = Domain.MissionProgressionRules.InitialAttemptNumber,
+                    ParticipantUserIds = matchState.ParticipantUserIds
+                }, _missionDeckDealer);
+            matchState.InitializePreparedMissionAttempt(preparedAttempt);
             return matchState;
         }
 
@@ -133,6 +145,10 @@ namespace Application.UseCases
                 cardPlaySubmission.CardPlaySubmissionId == Guid.Empty)
             {
                 playDecision.RejectionReason = MatchRejectionReason.InvalidSubmission;
+            }
+            else if (cardPlaySubmission.MissionAttemptId != matchState.MissionAttempt.MissionAttemptId)
+            {
+                playDecision.RejectionReason = MatchRejectionReason.WrongMissionAttempt;
             }
             else
             {
@@ -163,7 +179,8 @@ namespace Application.UseCases
         {
             bool isSameSubmission = processedPlay.ParticipantUserId == participantUserId &&
                 processedPlay.CardId == cardPlaySubmission.CardId &&
-                processedPlay.ExpectedMatchStateVersion == cardPlaySubmission.ExpectedMatchStateVersion;
+                processedPlay.ExpectedMatchStateVersion == cardPlaySubmission.ExpectedMatchStateVersion &&
+                processedPlay.MissionAttemptId == cardPlaySubmission.MissionAttemptId;
             return isSameSubmission ? MatchSnapshotProjection.CloneDecision(processedPlay.Decision) :
                 new CardPlayDecision
                 {
@@ -196,6 +213,7 @@ namespace Application.UseCases
                     {
                         ParticipantUserId = matchState.ParticipantUserIds[participantSeat],
                         CardId = cardPlaySubmission.CardId,
+                        MissionAttemptId = cardPlaySubmission.MissionAttemptId,
                         ExpectedMatchStateVersion = cardPlaySubmission.ExpectedMatchStateVersion,
                         Decision = MatchSnapshotProjection.CloneDecision(playDecision)
                     });

@@ -8,21 +8,21 @@ namespace Services.Services
 {
     public sealed partial class LobbyService
     {
-        private const int MaximumObjectiveDraftLobbyCodeLength = 16;
-        private const int MaximumObjectiveDraftMessagesPerSecond = 8;
-        private readonly object _objectiveDraftRequestGate = new object();
-        private ObjectiveDraftRequestBudget _objectiveDraftSessionBudget;
+        private const int MaximumMatchActionLobbyCodeLength = 16;
+        private const int MaximumMatchActionMessagesPerSecond = 8;
+        private readonly object _matchActionRequestGate = new object();
+        private MatchActionRequestBudget _matchActionSessionBudget;
 
         public MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
             MissionObjectiveDraftSubmission submission, int participantUserId)
         {
             if (submission == null || string.IsNullOrWhiteSpace(submission.LobbyCode) ||
-                submission.LobbyCode.Length > MaximumObjectiveDraftLobbyCodeLength)
+                submission.LobbyCode.Length > MaximumMatchActionLobbyCodeLength)
             {
                 throw new FaultException<MatchAccessFault>(new MatchAccessFault
                 { FailureCode = FaultInvalidSubmission });
             }
-            EnsureObjectiveDraftSessionBudget();
+            EnsureMatchActionSessionBudget();
             EnsureMatchParticipantAllowed(submission.LobbyCode, participantUserId);
             ObjectiveDraftDecision decision = _lobbyUseCase.Match.ProcessObjectiveDraftAction(
                 MissionObjectiveDraftMapper.MapSubmission(submission), participantUserId);
@@ -34,12 +34,12 @@ namespace Services.Services
             return MissionObjectiveDraftMapper.MapDecision(decision);
         }
 
-        private void EnsureObjectiveDraftSessionBudget()
+        private void EnsureMatchActionSessionBudget()
         {
-            lock (_objectiveDraftRequestGate)
+            lock (_matchActionRequestGate)
             {
-                ObjectiveDraftRequestBudget requestBudget = ObjectiveDraftRequestLimits.ConsumeWindow(
-                    _objectiveDraftSessionBudget, MaximumObjectiveDraftMessagesPerSecond);
+                MatchActionRequestBudget requestBudget = MatchActionRequestLimits.ConsumeWindow(
+                    _matchActionSessionBudget, MaximumMatchActionMessagesPerSecond);
                 if (requestBudget == null)
                 {
                     throw new FaultException<MatchAccessFault>(new MatchAccessFault
@@ -47,7 +47,7 @@ namespace Services.Services
                         FailureCode = nameof(MissionObjectiveDraftRejectionReason.RequestLimitReached)
                     });
                 }
-                _objectiveDraftSessionBudget = requestBudget;
+                _matchActionSessionBudget = requestBudget;
             }
         }
     }

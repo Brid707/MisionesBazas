@@ -11,7 +11,6 @@ namespace Application.UseCases
 {
     public sealed partial class MatchUseCase
     {
-        private const int InitialMissionAttemptId = 1;
         private const int MaximumObjectiveDraftRequestsPerSecond = 4;
         private const int MaximumRetainedObjectiveDraftDecisionsPerParticipant = 128;
 
@@ -43,29 +42,6 @@ namespace Application.UseCases
                 }
             }
             return objectiveDraftDecision;
-        }
-
-        private void InitializeObjectiveDraft(MatchState matchState)
-        {
-            MissionDefinition missionDefinition = MissionCatalog.GetMission(MissionCatalog.MinimumMissionNumber);
-            IReadOnlyList<MissionObjective> missionObjectives =
-                _missionDeckDealer.CreateMissionObjectives(missionDefinition);
-            matchState.InitializeMissionAttempt(new MissionAttemptState
-            {
-                MissionAttemptId = InitialMissionAttemptId,
-                MissionNumber = missionDefinition.MissionNumber,
-                AttemptNumber = MissionProgressionRules.InitialAttemptNumber,
-                CaptainSeat = (byte)matchState.MissionCaptainSeat,
-                CurrentObjectiveDraftSeat = (byte)matchState.MissionCaptainSeat,
-                PlayerCount = matchState.ParticipantUserIds.Length,
-                Phase = MissionAttemptPhase.ObjectiveDrafting,
-                Status = MissionAttemptStatus.InProgress,
-                Objectives = missionObjectives
-            });
-            foreach (MissionObjective objective in missionObjectives)
-            {
-                matchState.ObjectiveCardIdsByObjectiveId.Add(Guid.NewGuid(), objective.CardId);
-            }
         }
 
         private static ObjectiveDraftDecision ProcessObjectiveDraftUnderLock(
@@ -176,20 +152,11 @@ namespace Application.UseCases
         private static ObjectiveDraftRejectionReason ConsumeObjectiveDraftBudget(
             MatchState matchState, int participantUserId)
         {
-            matchState.ObjectiveDraftBudgetsByParticipant.TryGetValue(participantUserId,
-                out ObjectiveDraftRequestBudget previousRequestBudget);
-            ObjectiveDraftRequestBudget requestBudget = ObjectiveDraftRequestLimits.ConsumeWindow(
-                previousRequestBudget, MaximumObjectiveDraftRequestsPerSecond);
-            ObjectiveDraftRejectionReason rejectionReason = ObjectiveDraftRejectionReason.None;
-            if (requestBudget == null)
-            {
-                rejectionReason = ObjectiveDraftRejectionReason.RequestLimitReached;
-            }
-            else
-            {
-                matchState.ObjectiveDraftBudgetsByParticipant[participantUserId] = requestBudget;
-            }
-            return rejectionReason;
+            MatchActionRequestBudget requestBudget = MatchActionRequestLimits.ConsumeParticipantWindow(
+                matchState.ObjectiveDraftBudgetsByParticipant, participantUserId,
+                MaximumObjectiveDraftRequestsPerSecond);
+            return requestBudget == null ? ObjectiveDraftRejectionReason.RequestLimitReached :
+                ObjectiveDraftRejectionReason.None;
         }
 
         private static void RetainObjectiveDraftDecision(

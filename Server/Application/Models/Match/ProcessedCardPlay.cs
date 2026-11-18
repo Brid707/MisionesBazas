@@ -6,6 +6,8 @@ namespace Application.Models
     public sealed class ProcessedCardPlay
     {
         public int ParticipantUserId { get; set; }
+        public int MissionAttemptId { get; set; }
+
         public int CardId { get; set; }
         public long ExpectedMatchStateVersion { get; set; }
         public CardPlayDecision Decision { get; set; }

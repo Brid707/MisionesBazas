@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Application.Models;
 using Application.Ports;
 
@@ -28,6 +29,16 @@ namespace Host.Gameplay
                 }
             }
             return matchState;
+        }
+
+        public IReadOnlyList<KeyValuePair<string, MatchState>> GetMatches()
+        {
+            KeyValuePair<string, MatchState>[] matches;
+            lock (_matchesByLobbyCode)
+            {
+                matches = _matchesByLobbyCode.ToArray();
+            }
+            return matches;
         }
 
         public MatchState FindMatch(string lobbyCode)

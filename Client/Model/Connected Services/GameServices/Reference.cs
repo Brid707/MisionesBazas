@@ -1130,7 +1130,7 @@ namespace Model.GameServices
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ILobbyServiceCallback
+    public partial interface ILobbyServiceCallback
     {
         [System.ServiceModel.OperationContract(IsOneWay = true, Action = "urn:misiones-bazas:match:StateChanged")]
         void OnMatchStateChanged(long matchStateVersion);

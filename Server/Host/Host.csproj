@@ -9,6 +9,7 @@
     <RootNamespace>Host</RootNamespace>
     <AssemblyName>Host</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <LangVersion>9.0</LangVersion>
     <FileAlignment>512</FileAlignment>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -125,6 +126,11 @@
     <Content Include="ModerationCatalogs\*.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Gameplay\MonotonicMatchClock.cs" />
+    <Compile Include="Gameplay\MissionRetryScheduler.cs" />
+    <Compile Include="LobbyHostingContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

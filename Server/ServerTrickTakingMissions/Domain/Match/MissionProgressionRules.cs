@@ -38,16 +38,19 @@ namespace Domain
             byte votingSeat,
             int playerCount)
         {
-            if (votingSeat >= playerCount)
+            if (!MatchPlayerCountRules.IsPlayerCountSupported(playerCount) ||
+                votingSeat >= playerCount)
             {
-                return currentVotes ?? Array.Empty<byte>();
+                throw new ArgumentOutOfRangeException(nameof(votingSeat));
             }
-
+            if (currentVotes != null && currentVotes.Any(seat => seat >= playerCount))
+            {
+                throw new ArgumentException(nameof(currentVotes));
+            }
             var updatedVotes = new HashSet<byte>(currentVotes ?? Array.Empty<byte>())
             {
                 votingSeat
             };
-
             return updatedVotes.ToList().AsReadOnly();
         }
 
@@ -59,13 +62,14 @@ namespace Domain
         /// <returns>True if every seated player has voted ready; otherwise, false.</returns>
         public static bool IsVoteUnanimous(IReadOnlyCollection<byte> currentVotes, int playerCount)
         {
-            if (currentVotes is null || playerCount <= 0)
+            bool isUnanimous = false;
+            if (currentVotes != null &&
+                MatchPlayerCountRules.IsPlayerCountSupported(playerCount))
             {
-                return false;
+                isUnanimous = currentVotes.Distinct().Count() == playerCount &&
+                    currentVotes.All(seat => seat < playerCount);
             }
-
-            return currentVotes.Count == playerCount &&
-                   currentVotes.All(seat => seat < playerCount);
+            return isUnanimous;
         }
 
         /// <summary>
@@ -90,7 +94,11 @@ namespace Domain
         /// <returns>The incremented attempt number.</returns>
         public static int RestartAttempt(int currentAttemptNumber)
         {
-            return Math.Max(InitialAttemptNumber, currentAttemptNumber + 1);
+            if (currentAttemptNumber < InitialAttemptNumber || currentAttemptNumber == int.MaxValue)
+            {
+                throw new ArgumentOutOfRangeException(nameof(currentAttemptNumber));
+            }
+            return currentAttemptNumber + 1;
         }
     }
 }

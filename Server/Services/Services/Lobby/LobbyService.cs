@@ -20,7 +20,7 @@ namespace Services.Services
     /// WCF service implementation for managing multiplayer lobby rooms and dispatching real-time callbacks.
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public sealed partial class LobbyService : ILobbyService
+    public sealed partial class LobbyService : ILobbyService, IMatchStateChangePublisher
     {
         private const string PlayerLeftReason = "Player left the lobby.";
         private const string PlayerKickedReason = "Player was kicked by the host.";
@@ -173,8 +173,16 @@ namespace Services.Services
         private void RemoveCurrentDisconnectedChannel(ConcurrentDictionary<int, ILobbyCallback> participants,
             int participantUserId, ILobbyCallback callback)
         {
-            bool hasRemovedCurrentChannel = ((ICollection<KeyValuePair<int, ILobbyCallback>>)participants)
-                .Remove(new KeyValuePair<int, ILobbyCallback>(participantUserId, callback));
+            bool hasRemovedCurrentChannel;
+            lock (LobbyMatchPresence.RegistryGate)
+            {
+                hasRemovedCurrentChannel = ((ICollection<KeyValuePair<int, ILobbyCallback>>)participants)
+                    .Remove(new KeyValuePair<int, ILobbyCallback>(participantUserId, callback));
+                if (hasRemovedCurrentChannel)
+                {
+                    LobbyMatchPresence.MarkConnectionsChanged(FindCallbackRoomCode(participants));
+                }
+            }
             if (hasRemovedCurrentChannel)
             {
                 string lobbyCode = FindCallbackRoomCode(participants);
@@ -534,8 +542,12 @@ namespace Services.Services
             string lobbyCode = participantDeparture.Lobby.LobbyCode;
             if (participantDeparture.IsRoomDisbanded)
             {
-                s_roomCallbacks.TryRemove(NormalizeRoomKey(lobbyCode),
-                    out ConcurrentDictionary<int, ILobbyCallback> _);
+                lock (LobbyMatchPresence.RegistryGate)
+                {
+                    s_roomCallbacks.TryRemove(NormalizeRoomKey(lobbyCode),
+                        out ConcurrentDictionary<int, ILobbyCallback> _);
+                    LobbyMatchPresence.ForgetRoom(NormalizeRoomKey(lobbyCode));
+                }
             }
             else
             {
@@ -556,7 +568,17 @@ namespace Services.Services
                 string roomKey = NormalizeRoomKey(lobbyCode);
                 ConcurrentDictionary<int, ILobbyCallback> participants = s_roomCallbacks.GetOrAdd(roomKey,
                     _ => new ConcurrentDictionary<int, ILobbyCallback>());
-                participants[userId] = callback;
+                lock (LobbyMatchPresence.RegistryGate)
+                {
+                    bool hasNewChannel = !participants.TryGetValue(userId, out ILobbyCallback previousCallback) ||
+                        !ReferenceEquals(previousCallback, callback);
+                    participants[userId] = callback;
+                    if (hasNewChannel)
+                    {
+                        LobbyMatchPresence.MarkConnectionsChanged(roomKey);
+                    }
+                    LobbyMatchPresence.Touch(roomKey, userId, context.SessionId);
+                }
                 ObserveParticipantChannel(callback);
             }
         }
@@ -566,8 +588,30 @@ namespace Services.Services
             string roomKey = NormalizeRoomKey(lobbyCode);
             if (s_roomCallbacks.TryGetValue(roomKey, out ConcurrentDictionary<int, ILobbyCallback> participants))
             {
-                participants.TryRemove(userId, out ILobbyCallback _);
+                lock (LobbyMatchPresence.RegistryGate)
+                {
+                    if (participants.TryRemove(userId, out ILobbyCallback _))
+                    {
+                        LobbyMatchPresence.MarkConnectionsChanged(roomKey);
+                    }
+                }
             }
+        }
+
+        internal static KeyValuePair<int, ILobbyCallback>[] GetMatchCallbacks(string lobbyCode)
+        {
+            KeyValuePair<int, ILobbyCallback>[] callbacks = Array.Empty<KeyValuePair<int, ILobbyCallback>>();
+            if (s_roomCallbacks.TryGetValue(NormalizeRoomKey(lobbyCode),
+                out ConcurrentDictionary<int, ILobbyCallback> participants))
+            {
+                callbacks = participants.ToArray();
+            }
+            return callbacks;
+        }
+
+        public void PublishMatchStateChange(string lobbyCode, long matchStateVersion)
+        {
+            BroadcastToRoom(lobbyCode, null, callback => callback.OnMatchStateChanged(matchStateVersion));
         }
 
         private void BroadcastToRoom(

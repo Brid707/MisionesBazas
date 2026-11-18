@@ -4,7 +4,7 @@ using Gameplay;
 namespace Application.Models
 {
     /// <summary>Owns server-only hands and decisions; never serialize or return this object.</summary>
-    public sealed class MatchState
+    public sealed partial class MatchState
     {
         public Domain.MissionAttemptState MissionAttempt { get; private set; }
         public Domain.MissionEvaluationResult LastMissionEvaluation { get; private set; }
@@ -14,11 +14,11 @@ namespace Application.Models
         public Guid CurrentObjectiveDraftSubmissionId { get; private set; }
         public Dictionary<int, Queue<Guid>> ObjectiveDraftHistoryByParticipant { get; } =
             new Dictionary<int, Queue<Guid>>();
-        public Dictionary<Guid, int> ObjectiveCardIdsByObjectiveId { get; } = new Dictionary<Guid, int>();
+        public Dictionary<Guid, int> ObjectiveCardIdsByObjectiveId { get; private set; } = new Dictionary<Guid, int>();
         public Dictionary<Guid, ProcessedObjectiveDraft> ProcessedObjectiveDrafts { get; } =
             new Dictionary<Guid, ProcessedObjectiveDraft>();
-        public Dictionary<int, ObjectiveDraftRequestBudget> ObjectiveDraftBudgetsByParticipant { get; } =
-            new Dictionary<int, ObjectiveDraftRequestBudget>();
+        public Dictionary<int, MatchActionRequestBudget> ObjectiveDraftBudgetsByParticipant { get; } =
+            new Dictionary<int, MatchActionRequestBudget>();
 
         public Guid LobbyInstanceId { get; set; }
         public Guid MatchId { get; } = Guid.NewGuid();
@@ -38,15 +38,6 @@ namespace Application.Models
         public List<MatchCardPlay> CapturedCardPlays { get; } = new List<MatchCardPlay>();
         public Dictionary<Guid, ProcessedCardPlay> ProcessedCardPlayDecisionsBySubmissionId { get; } =
             new Dictionary<Guid, ProcessedCardPlay>();
-
-        public void InitializeMissionAttempt(Domain.MissionAttemptState missionAttempt)
-        {
-            if (MissionAttempt != null)
-            {
-                throw new InvalidOperationException(nameof(MissionAttempt));
-            }
-            SetMissionAttempt(missionAttempt);
-        }
 
         public void CommitObjectiveDraft(Domain.MissionAttemptState missionAttempt)
         {

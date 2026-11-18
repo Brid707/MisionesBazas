@@ -191,6 +191,13 @@
                         <Run Text="{x:Static language:Resources.GameMatch_Trick}" />
                         <Run Text=" " /><Run Text="{Binding MatchBoard.TrickProgressDisplay, Mode=OneWay}" />
                     </TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,70,0">
+                        <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,6,0"
+                                   Text="{Binding Source=MissionRetry_Label_Attempt,
+                                       Converter={StaticResource MatchTextConverter}}" />
+                        <TextBlock Text="{Binding MatchBoard.CurrentMissionAttemptNumber}"
+                                   Foreground="{StaticResource BrushTextLight}" />
+                    </StackPanel>
                     <Button Width="46" Height="42" HorizontalAlignment="Right" Content="?"
                             Background="{StaticResource BrushTransparent}"
                             Foreground="{StaticResource BrushTextDark}"
@@ -284,7 +291,23 @@
                                        Text="{Binding Source=Match_TrickWinner, Converter={StaticResource MatchTextConverter}}" />
                             <TextBlock Text="{Binding LastTrickWinnerName}" Foreground="{StaticResource BrushTextLight}" />
                         </StackPanel>
-                        <Button Command="{Binding RetryPendingCardPlayCommand}" HorizontalAlignment="Center">
+                        <StackPanel HorizontalAlignment="Center"
+                                    Visibility="{Binding IsMissionRetryVisible,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                       Text="{Binding MissionRetryStatusResourceKey,
+                                           Converter={StaticResource MatchTextConverter}}" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                        Visibility="{Binding HasMissionRetryCountdown,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Text="{Binding MissionRetryRemainingSeconds}" Margin="0,0,4,0"
+                                           Foreground="{StaticResource BrushTextLight}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                           Text="{Binding Source=MissionRetry_Label_Seconds,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Command="{Binding RetryPendingMatchRequestCommand}" HorizontalAlignment="Center">
                             <TextBlock Text="{Binding Source=Match_Retry, Converter={StaticResource MatchTextConverter}}" />
                         </Button>
                     </StackPanel>

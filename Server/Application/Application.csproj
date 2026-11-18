@@ -168,6 +168,37 @@
     <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\MissionAttemptPreparationContext.cs" />
+    <Compile Include="Models\Match\PreparedMissionAttempt.cs" />
+    <Compile Include="Models\Match\MatchState.MissionRetry.cs" />
+    <Compile Include="Models\Match\MissionRetryRequest.cs" />
+    <Compile Include="Models\Match\MissionRetryConfirmation.cs" />
+    <Compile Include="Models\Match\MissionRetryRejectionReason.cs" />
+    <Compile Include="Models\Match\ProcessedMissionRetry.cs" />
+    <Compile Include="UseCases\Match\MissionAttemptPreparation.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionRetry.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionRetry.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryRejectionReason.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\MissionRetryPolicy.cs" />
+    <Compile Include="Models\Match\MissionRetryScheduleStatus.cs" />
+    <Compile Include="Ports\Match\IMatchClock.cs" />
+    <Compile Include="Ports\Match\IMatchParticipantPresence.cs" />
+    <Compile Include="Ports\Match\IMatchStateChangePublisher.cs" />
+    <Compile Include="Models\Match\MatchExecutionDependencies.cs" />
+    <Compile Include="Models\Match\MatchPresenceQuery.cs" />
+    <Compile Include="Models\Match\MatchParticipantPresence.cs" />
+    <Compile Include="Models\Match\MissionRetryWork.cs" />
+    <Compile Include="Models\Match\MissionRetryExecutionResult.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionRetryScheduling.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionRetryExecution.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryStatus.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />
@@ -180,13 +211,13 @@
     <Compile Include="Models\Match\ObjectiveDraftSubmission.cs" />
     <Compile Include="Models\Match\ObjectiveDraftDecision.cs" />
     <Compile Include="Models\Match\ProcessedObjectiveDraft.cs" />
-    <Compile Include="Models\Match\ObjectiveDraftRequestBudget.cs" />
+    <Compile Include="Models\Match\MatchActionRequestBudget.cs" />
     <Compile Include="Models\Match\ObjectiveDraftAction.cs" />
     <Compile Include="Models\Match\ObjectiveDraftRejectionReason.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.ObjectiveDraft.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.ObjectiveDraft.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\ObjectiveDraftRequestLimits.cs" />
+    <Compile Include="Models\Match\MatchActionRequestLimits.cs" />
   </ItemGroup>
 </Project>

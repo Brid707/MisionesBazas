@@ -8,6 +8,9 @@ namespace Gameplay
     [DataContract]
     public sealed class CardPlaySubmission
     {
+        [DataMember(Order = 6)]
+        public int MissionAttemptId { get; set; }
+
         [DataMember(Order = 1)]
         public string LobbyCode { get; set; }
 

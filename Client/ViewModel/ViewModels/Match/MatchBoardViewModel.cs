@@ -60,8 +60,10 @@ namespace ViewModel.ViewModels
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
+            _retryCountdownTimer = new Timer(OnRetryCountdownTick, null, TimeSpan.Zero,
+                TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
-            RetryPendingCardPlayCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingPlay);
+            RetryPendingMatchRequestCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingMatchRequest);
             _matchClient.MatchStateChanged += OnMatchStateChanged;
             _completedTrickDisplayTimer = new Timer(OnCompletedTrickDisplayElapsed, null,
                 Timeout.Infinite, Timeout.Infinite);
@@ -72,7 +74,7 @@ namespace ViewModel.ViewModels
         public ObservableCollection<PlayedCardViewModel> CurrentTrickCardPlays { get; }
         public ObservableCollection<PlayedCardViewModel> LastCompletedTrickCardPlays { get; }
         public ICommand PlayCardCommand { get; }
-        public ICommand RetryPendingCardPlayCommand { get; }
+        public ICommand RetryPendingMatchRequestCommand { get; }
         public long MatchStateVersion => _confirmedMatchSnapshot?.MatchStateVersion ?? 0;
         public int CurrentTrickNumber => _confirmedMatchSnapshot?.CurrentTrickNumber ?? 1;
         public int MaximumMissionTrickCount => _confirmedMatchSnapshot?.MaximumMissionTrickCount ?? 0;
@@ -148,6 +150,7 @@ namespace ViewModel.ViewModels
         {
             _isDisposed = true;
             _matchRefreshTimer.Dispose();
+            _retryCountdownTimer.Dispose();
             _completedTrickDisplayTimer.Dispose();
             _matchClient.MatchStateChanged -= OnMatchStateChanged;
         }
@@ -224,6 +227,7 @@ namespace ViewModel.ViewModels
                 {
                     LobbyCode = _lobbyCode,
                     MatchId = _confirmedMatchSnapshot.MatchId,
+                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
                     CardId = (int)selectedCard,
                     CardPlaySubmissionId = Guid.NewGuid(),
                     ExpectedMatchStateVersion = MatchStateVersion
@@ -232,7 +236,7 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private bool CanRetryPendingPlay()
+        private bool CanRetryPendingMatchRequest()
         {
             return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null) &&
                 _isRequestInProgress == 0;
@@ -244,7 +248,9 @@ namespace ViewModel.ViewModels
                 _confirmedMatchSnapshot.MatchId == playerSnapshot.MatchId;
             if (isSameMatch && playerSnapshot.MatchStateVersion >= MatchStateVersion)
             {
+                ResetAttemptPresentationIfChanged(playerSnapshot);
                 _confirmedMatchSnapshot = playerSnapshot;
+                ApplyMissionRetrySnapshot(playerSnapshot.MissionRetry);
                 _isMatchConnected = true;
                 var playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
@@ -254,6 +260,7 @@ namespace ViewModel.ViewModels
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 NotifyMissionEvaluationProperties();
+                NotifyMissionRetryProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)

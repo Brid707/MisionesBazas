@@ -136,6 +136,14 @@
     <Compile Include="Services\Match\LobbyService.Match.cs" />
     <Compile Include="Security\GuestParticipantCredentials.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mapping\MissionRetryMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.MissionRetry.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\Match\LobbyMatchPresence.cs" />
+    <Compile Include="Services\Match\LobbyCallbackPresenceLease.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />

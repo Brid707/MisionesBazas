@@ -89,11 +89,13 @@ namespace Host
                     loggerFactory.CreateLogger<LobbyChatMessageUseCase>());
                 profileImageHost = ProfileImageHosting.Create(accountAccessPolicy, loggerFactory);
                 loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy, loggerFactory);
-                lobbyHost = CreateLobbyServiceHost(
-                    userRepository,
-                    lobbyChatMessageUseCase,
-                    accountAccessPolicy,
-                    loggerFactory);
+                lobbyHost = CreateLobbyServiceHost(new LobbyHostingContext
+                {
+                    UserRepository = userRepository,
+                    ChatMessageUseCase = lobbyChatMessageUseCase,
+                    AccountAccessPolicy = accountAccessPolicy,
+                    LoggerFactory = loggerFactory
+                });
                 accountManagementHost = CreateAccountManagementServiceHost(userRepository, loggerFactory);
                 friendshipHost = CreateFriendshipServiceHost(friendshipUseCase, loggerFactory);
                 friendsRequestHost = CreateFriendsRequestServiceHost(friendshipUseCase, loggerFactory);
@@ -176,14 +178,21 @@ namespace Host
             return serviceHost;
         }
 
-        private static ServiceHost CreateLobbyServiceHost(IUserRepository userRepository,
-            ILobbyChatMessageUseCase lobbyChatMessageUseCase, IAccountAccessPolicy accountAccessPolicy,
-            ILoggerFactory loggerFactory)
+        private static ServiceHost CreateLobbyServiceHost(LobbyHostingContext context)
         {
+            IUserRepository userRepository = context.UserRepository;
+            ILobbyChatMessageUseCase lobbyChatMessageUseCase = context.ChatMessageUseCase;
+            IAccountAccessPolicy accountAccessPolicy = context.AccountAccessPolicy;
+            ILoggerFactory loggerFactory = context.LoggerFactory;
             var matchUseCase = new MatchUseCase(
                 new InMemoryMatchStateStore(),
                 new SecureMissionDeckDealer(),
-                loggerFactory.CreateLogger<MatchUseCase>());
+                new MatchExecutionDependencies
+                {
+                    Logger = loggerFactory.CreateLogger<MatchUseCase>(),
+                    MatchClock = new MonotonicMatchClock(),
+                    ParticipantPresence = new LobbyMatchPresence(loggerFactory.CreateLogger<LobbyMatchPresence>())
+                });
             var lobbyUseCase = new LobbyUseCase(
                 userRepository,
                 new LobbyHostSelection(),
@@ -196,6 +205,12 @@ namespace Host
 
             ServiceHost serviceHost = new ServiceHost(typeof(LobbyService));
             serviceHost.Description.Behaviors.Add(injectionBehavior);
+            var scheduler = new MissionRetryScheduler(matchUseCase,
+                new LobbyService(lobbyUseCase, lobbyChatMessageUseCase, accountAccessPolicy, lobbyServiceLogger),
+                loggerFactory.CreateLogger<MissionRetryScheduler>());
+            serviceHost.Opened += scheduler.OnHostOpened;
+            serviceHost.Closing += scheduler.OnHostStopped;
+            serviceHost.Faulted += scheduler.OnHostStopped;
             return serviceHost;
         }
 

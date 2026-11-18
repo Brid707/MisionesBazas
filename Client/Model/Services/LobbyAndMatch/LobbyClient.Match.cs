@@ -17,13 +17,33 @@ namespace Model.Services
 
         private readonly SemaphoreSlim _matchRequestGate = new SemaphoreSlim(1, 1);
         private string _registeredMatchLobbyCode;
+        private readonly object _matchPresenceGate = new object();
+        private Guid _observedMatchId;
+        private int _observedMissionAttemptId;
 
         public event Action<long> MatchStateChanged;
 
-        public Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId)
+        public async Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId)
         {
-            return ExecuteMatchOperationAsync(channel => channel.GetPlayerMatch(lobbyCode, participantUserId),
-                lobbyCode, participantUserId);
+            PlayerMatchSnapshot snapshot = await ExecuteMatchOperationAsync(
+                channel => channel.GetPlayerMatch(lobbyCode, participantUserId), lobbyCode, participantUserId);
+            lock (_matchPresenceGate)
+            {
+                _observedMatchId = snapshot.MatchId;
+                _observedMissionAttemptId = snapshot.MissionPreparation.MissionAttemptId;
+            }
+            return snapshot;
+        }
+
+        public bool IsMatchParticipantConnected(Guid matchId, int missionAttemptId)
+        {
+            bool isConnected;
+            lock (_matchPresenceGate)
+            {
+                isConnected = !_isLobbyClientDisposed && _client?.State == CommunicationState.Opened &&
+                    _observedMatchId == matchId && _observedMissionAttemptId == missionAttemptId;
+            }
+            return isConnected;
         }
 
         public Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId)
@@ -37,6 +57,13 @@ namespace Model.Services
         {
             return ExecuteMatchOperationAsync(channel => channel.ProcessObjectiveDraftAction(submission,
                 participantUserId), submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionRetryDecision> ConfirmMissionRetryAsync(MissionRetrySubmission submission,
+            int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.ConfirmMissionRetry(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
         }
 
         public void OnMatchStateChanged(long matchStateVersion)

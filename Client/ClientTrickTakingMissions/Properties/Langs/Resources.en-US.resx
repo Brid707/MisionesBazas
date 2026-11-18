@@ -593,7 +593,7 @@
   <data name="Match_CardNotInHand" xml:space="preserve"><value>That card is not in your current hand.</value></data>
   <data name="Match_MustFollowLeadSuit" xml:space="preserve"><value>Follow the lead suit if you hold a card of that suit.</value></data>
   <data name="Match_SubmissionCapacityReached" xml:space="preserve"><value>No more requests can be processed in this match.</value></data>
-  <data name="Match_Retry" xml:space="preserve"><value>Check pending play</value></data>
+  <data name="Match_Retry" xml:space="preserve"><value>Check pending request</value></data>
   <data name="Match_CurrentTrick" xml:space="preserve"><value>Current trick</value></data>
   <data name="Match_LastTrick" xml:space="preserve"><value>Last completed trick</value></data>
   <data name="Match_OwnHand" xml:space="preserve"><value>Your hand</value></data>
@@ -638,4 +638,29 @@
   <data name="MissionEvaluation_Error_SpecialMissionConstraint" xml:space="preserve"><value>Mission failed: a mission restriction was not satisfied.</value></data>
   <data name="MissionEvaluation_Error_Unavailable" xml:space="preserve"><value>We could not confirm the trick. Please try again; your request is still pending.</value></data>
   <data name="Match_MissionAttemptFinished" xml:space="preserve"><value>This mission attempt has finished. No more cards can be played.</value></data>
+  <data name="MissionRetry_Button_Ready" xml:space="preserve"><value>Ready to retry</value></data>
+  <data name="MissionRetry_Button_WaitingParticipants" xml:space="preserve"><value>Waiting for everyone</value></data>
+  <data name="MissionRetry_Label_ReadyParticipants" xml:space="preserve"><value>Ready players:</value></data>
+  <data name="MissionRetry_Label_Attempt" xml:space="preserve"><value>Attempt:</value></data>
+  <data name="MissionRetry_Error_MatchUnavailable" xml:space="preserve"><value>The match is unavailable.</value></data>
+  <data name="MissionRetry_Error_ParticipantNotAllowed" xml:space="preserve"><value>You cannot confirm this attempt.</value></data>
+  <data name="MissionRetry_Error_InvalidSubmission" xml:space="preserve"><value>The confirmation is invalid. Refresh the table.</value></data>
+  <data name="MissionRetry_Error_SubmissionIdentityReused" xml:space="preserve"><value>The confirmation does not match its original request.</value></data>
+  <data name="MissionRetry_Error_WrongMissionAttempt" xml:space="preserve"><value>The attempt changed. Your table was refreshed.</value></data>
+  <data name="MissionRetry_Error_RetryUnavailable" xml:space="preserve"><value>A retry is not available for this attempt.</value></data>
+  <data name="MissionRetry_Error_StaleMatchState" xml:space="preserve"><value>Refresh the result before confirming.</value></data>
+  <data name="MissionRetry_Error_SubmissionExpired" xml:space="preserve"><value>This confirmation has expired. Refresh the table.</value></data>
+  <data name="MissionRetry_Error_RequestLimitReached" xml:space="preserve"><value>Please wait a moment before confirming again.</value></data>
+  <data name="MissionRetry_Error_AttemptLimitReached" xml:space="preserve"><value>No more attempts can be created in this match.</value></data>
+  <data name="MissionRetry_Error_PreparationUnavailable" xml:space="preserve"><value>The new attempt could not be prepared. Your confirmation is still pending. Try again.</value></data>
+  <data name="Match_WrongMissionAttempt" xml:space="preserve"><value>The play belongs to an earlier attempt. Your hand was refreshed.</value></data>
+  <data name="MissionRetry_Status_Inactive" xml:space="preserve"><value></value></data>
+  <data name="MissionRetry_Status_WaitingForParticipants" xml:space="preserve"><value>Retry paused. Waiting for every player to reconnect.</value></data>
+  <data name="MissionRetry_Status_CountingDown" xml:space="preserve"><value>A new attempt will start in:</value></data>
+  <data name="MissionRetry_Status_Preparing" xml:space="preserve"><value>Checking connections and preparing the new attempt…</value></data>
+  <data name="MissionRetry_Status_PreparationFailed" xml:space="preserve"><value>The new attempt could not be prepared. Retrying in:</value></data>
+  <data name="MissionRetry_Status_AttemptLimitReached" xml:space="preserve"><value>No more attempts can be created in this match.</value></data>
+  <data name="MissionRetry_Status_AwaitingServer" xml:space="preserve"><value>Waiting for the server to confirm the new attempt…</value></data>
+  <data name="MissionRetry_Status_ConnectionUnavailable" xml:space="preserve"><value>Connection lost. Waiting to recover the match.</value></data>
+  <data name="MissionRetry_Label_Seconds" xml:space="preserve"><value>seconds</value></data>
 </root>

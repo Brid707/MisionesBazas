@@ -15,6 +15,11 @@ namespace Model.GameServices
             return Channel.ProcessObjectiveDraftAction(submission, participantUserId);
         }
 
+        public MissionRetryDecision ConfirmMissionRetry(MissionRetrySubmission submission, int participantUserId)
+        {
+            return Channel.ConfirmMissionRetry(submission, participantUserId);
+        }
+
         public CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return Channel.PlayCard(cardPlaySubmission, participantUserId);

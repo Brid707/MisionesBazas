@@ -593,7 +593,7 @@
   <data name="Match_CardNotInHand" xml:space="preserve"><value>Esa carta no está en tu mano actual.</value></data>
   <data name="Match_MustFollowLeadSuit" xml:space="preserve"><value>Debes seguir el palo de salida si tienes una carta de ese palo.</value></data>
   <data name="Match_SubmissionCapacityReached" xml:space="preserve"><value>No se pueden procesar más solicitudes en esta partida.</value></data>
-  <data name="Match_Retry" xml:space="preserve"><value>Confirmar jugada pendiente</value></data>
+  <data name="Match_Retry" xml:space="preserve"><value>Confirmar solicitud pendiente</value></data>
   <data name="Match_CurrentTrick" xml:space="preserve"><value>Baza actual</value></data>
   <data name="Match_LastTrick" xml:space="preserve"><value>Última baza completada</value></data>
   <data name="Match_OwnHand" xml:space="preserve"><value>Tu mano</value></data>
@@ -638,4 +638,29 @@
   <data name="MissionEvaluation_Error_SpecialMissionConstraint" xml:space="preserve"><value>Misión fallida: no se cumplió una restricción de la misión.</value></data>
   <data name="MissionEvaluation_Error_Unavailable" xml:space="preserve"><value>No pudimos confirmar la baza. Inténtalo de nuevo; tu solicitud sigue pendiente.</value></data>
   <data name="Match_MissionAttemptFinished" xml:space="preserve"><value>Este intento de misión terminó. Ya no se pueden jugar cartas.</value></data>
+  <data name="MissionRetry_Button_Ready" xml:space="preserve"><value>Listo para reintentar</value></data>
+  <data name="MissionRetry_Button_WaitingParticipants" xml:space="preserve"><value>Esperando a todos</value></data>
+  <data name="MissionRetry_Label_ReadyParticipants" xml:space="preserve"><value>Jugadores listos:</value></data>
+  <data name="MissionRetry_Label_Attempt" xml:space="preserve"><value>Intento:</value></data>
+  <data name="MissionRetry_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="MissionRetry_Error_ParticipantNotAllowed" xml:space="preserve"><value>No puedes confirmar este intento.</value></data>
+  <data name="MissionRetry_Error_InvalidSubmission" xml:space="preserve"><value>La confirmación no es válida. Actualiza la mesa.</value></data>
+  <data name="MissionRetry_Error_SubmissionIdentityReused" xml:space="preserve"><value>La confirmación no coincide con su solicitud original.</value></data>
+  <data name="MissionRetry_Error_WrongMissionAttempt" xml:space="preserve"><value>El intento cambió. Se actualizó tu mesa.</value></data>
+  <data name="MissionRetry_Error_RetryUnavailable" xml:space="preserve"><value>No está disponible el reintento para esta misión.</value></data>
+  <data name="MissionRetry_Error_StaleMatchState" xml:space="preserve"><value>Actualiza el resultado antes de confirmar.</value></data>
+  <data name="MissionRetry_Error_SubmissionExpired" xml:space="preserve"><value>Esta confirmación venció. Actualiza la mesa.</value></data>
+  <data name="MissionRetry_Error_RequestLimitReached" xml:space="preserve"><value>Espera un momento antes de volver a confirmar.</value></data>
+  <data name="MissionRetry_Error_AttemptLimitReached" xml:space="preserve"><value>No se pueden crear más intentos en esta partida.</value></data>
+  <data name="MissionRetry_Error_PreparationUnavailable" xml:space="preserve"><value>No se pudo preparar el nuevo intento. Tu confirmación sigue pendiente. Inténtalo de nuevo.</value></data>
+  <data name="Match_WrongMissionAttempt" xml:space="preserve"><value>La jugada pertenece a otro intento. Se actualizó tu mano.</value></data>
+  <data name="MissionRetry_Status_Inactive" xml:space="preserve"><value></value></data>
+  <data name="MissionRetry_Status_WaitingForParticipants" xml:space="preserve"><value>Reintento pausado. Esperando a que todos los jugadores regresen.</value></data>
+  <data name="MissionRetry_Status_CountingDown" xml:space="preserve"><value>El nuevo intento comenzará en:</value></data>
+  <data name="MissionRetry_Status_Preparing" xml:space="preserve"><value>Verificando conexiones y preparando el nuevo intento…</value></data>
+  <data name="MissionRetry_Status_PreparationFailed" xml:space="preserve"><value>No se pudo preparar el nuevo intento. Se volverá a intentar en:</value></data>
+  <data name="MissionRetry_Status_AttemptLimitReached" xml:space="preserve"><value>No se pueden crear más intentos en esta partida.</value></data>
+  <data name="MissionRetry_Status_AwaitingServer" xml:space="preserve"><value>Esperando a que el servidor confirme el nuevo intento…</value></data>
+  <data name="MissionRetry_Status_ConnectionUnavailable" xml:space="preserve"><value>Conexión perdida. Esperando recuperar la partida.</value></data>
+  <data name="MissionRetry_Label_Seconds" xml:space="preserve"><value>segundos</value></data>
 </root>

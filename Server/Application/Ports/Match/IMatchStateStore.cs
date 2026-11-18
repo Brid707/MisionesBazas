@@ -8,5 +8,7 @@ namespace Application.Ports
     {
         MatchState GetOrCreateMatch(string lobbyCode, Func<MatchState> createMatch);
         MatchState FindMatch(string lobbyCode);
+        System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, MatchState>>
+            GetMatches();
     }
 }
