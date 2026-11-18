@@ -21,5 +21,10 @@ namespace Gameplay
 
         [DataMember(Order = 5)]
         public bool IsRevealed { get; set; }
+        [DataMember(Order = 6)]
+        public MissionObjectiveStatus Status { get; set; }
+
+        [DataMember(Order = 7)]
+        public int? CompletedAtTrickNumber { get; set; }
     }
 }

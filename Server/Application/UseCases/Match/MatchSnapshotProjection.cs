@@ -26,6 +26,7 @@ namespace Application.UseCases
                 LastCompletedTrickCardPlays = matchState.LastCompletedTrickCardPlays.Select(ClonePlay).ToArray(),
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
+                MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat)
             };
         }

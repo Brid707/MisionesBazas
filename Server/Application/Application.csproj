@@ -158,6 +158,16 @@
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\CompletedTrickResolution.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.MissionEvaluation.cs" />
+    <Compile Include="UseCases\Match\MissionEvaluationMapper.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionEvaluation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionObjectiveStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionAttemptEvaluationStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />

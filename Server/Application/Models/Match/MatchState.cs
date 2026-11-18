@@ -7,6 +7,10 @@ namespace Application.Models
     public sealed class MatchState
     {
         public Domain.MissionAttemptState MissionAttempt { get; private set; }
+        public Domain.MissionEvaluationResult LastMissionEvaluation { get; private set; }
+
+        public int LastEvaluatedTrickNumber { get; private set; }
+
         public Guid CurrentObjectiveDraftSubmissionId { get; private set; }
         public Dictionary<int, Queue<Guid>> ObjectiveDraftHistoryByParticipant { get; } =
             new Dictionary<int, Queue<Guid>>();
@@ -48,6 +52,27 @@ namespace Application.Models
         {
             SetMissionAttempt(missionAttempt);
             MatchStateVersion++;
+        }
+
+        internal void CommitCompletedTrick(CompletedTrickResolution completedTrick)
+        {
+            CurrentTurnPlayerSeat = completedTrick.WinningParticipantSeat;
+            LastTrickWinnerUserId = ParticipantUserIds[completedTrick.WinningParticipantSeat];
+            WonTrickCountsBySeat[completedTrick.WinningParticipantSeat]++;
+            WonCardIdsBySeat[completedTrick.WinningParticipantSeat].AddRange(
+                System.Linq.Enumerable.Select(completedTrick.CompletedTrickCardPlays, play => play.CardId));
+            LastCompletedTrickCardPlays = completedTrick.CompletedTrickCardPlays;
+            CapturedCardPlays.AddRange(completedTrick.CompletedTrickCardPlays);
+            CurrentTrickCardPlays.Clear();
+            MissionAttempt = completedTrick.UpdatedMissionAttempt;
+            LastMissionEvaluation = completedTrick.MissionEvaluation;
+            LastEvaluatedTrickNumber = completedTrick.CompletedTrickNumber;
+            IsDealCompleted = completedTrick.CompletedTrickNumber == MaximumMissionTrickCount;
+            if (!IsDealCompleted && MissionAttempt.Status ==
+                TrickTakingMissions.Rules.Enums.MissionAttemptStatus.InProgress)
+            {
+                CurrentTrickNumber++;
+            }
         }
 
         private void SetMissionAttempt(Domain.MissionAttemptState missionAttempt)

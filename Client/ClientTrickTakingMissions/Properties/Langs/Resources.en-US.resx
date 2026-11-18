@@ -620,4 +620,22 @@
   <data name="MissionDraft_Error_RequestLimitReached" xml:space="preserve"><value>Too many selection requests. Wait before trying again.</value></data>
   <data name="MissionDraft_Error_UnsupportedDraftMode" xml:space="preserve"><value>This mode requires a different preparation.</value></data>
   <data name="MissionDraft_Error_SubmissionExpired" xml:space="preserve"><value>The request is too old. Review the current selection and choose again.</value></data>
+  <data name="MissionEvaluation_Objective_Pending" xml:space="preserve"><value>Pending</value></data>
+  <data name="MissionEvaluation_Objective_Completed" xml:space="preserve"><value>Completed</value></data>
+  <data name="MissionEvaluation_Objective_Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="MissionEvaluation_Label_InProgress" xml:space="preserve"><value>Mission in progress.</value></data>
+  <data name="MissionEvaluation_Label_Succeeded" xml:space="preserve"><value>Mission completed! All objectives and their tokens were satisfied.</value></data>
+  <data name="MissionEvaluation_Error_ObjectiveCapturedByWrongSeat" xml:space="preserve"><value>Mission failed: another player captured an assigned objective.</value></data>
+  <data name="MissionEvaluation_Error_MultipleOrderedTokensInSameTrick" xml:space="preserve"><value>Mission failed: a numbered objective was captured simultaneously with another objective.</value></data>
+  <data name="MissionEvaluation_Error_MultipleArrowTokensInSameTrick" xml:space="preserve"><value>Mission failed: arrow objectives were captured simultaneously.</value></data>
+  <data name="MissionEvaluation_Error_OmegaSimultaneousCompletion" xml:space="preserve"><value>Mission failed: Omega was captured simultaneously with another objective.</value></data>
+  <data name="MissionEvaluation_Error_PrecedingOrderTokenNotCompleted" xml:space="preserve"><value>Mission failed: the numbered objective completion order was not respected.</value></data>
+  <data name="MissionEvaluation_Error_PrecedingArrowTokenNotCompleted" xml:space="preserve"><value>Mission failed: an arrow objective was completed before a preceding arrow objective.</value></data>
+  <data name="MissionEvaluation_Error_OmegaObjectiveNotCompletedLast" xml:space="preserve"><value>Mission failed: Omega was not the last objective completed.</value></data>
+  <data name="MissionEvaluation_Error_ObjectivesIncompleteAtMissionEnd" xml:space="preserve"><value>Mission failed: objectives remained pending after the last trick.</value></data>
+  <data name="MissionEvaluation_Error_Mission48OmegaNotInLastTrick" xml:space="preserve"><value>Mission failed: Omega was not completed in the last trick.</value></data>
+  <data name="MissionEvaluation_Error_Mission48PendingNonOmegaBeforeLastTrick" xml:space="preserve"><value>Mission failed: other objectives remained pending before the last trick.</value></data>
+  <data name="MissionEvaluation_Error_SpecialMissionConstraint" xml:space="preserve"><value>Mission failed: a mission restriction was not satisfied.</value></data>
+  <data name="MissionEvaluation_Error_Unavailable" xml:space="preserve"><value>We could not confirm the trick. Please try again; your request is still pending.</value></data>
+  <data name="Match_MissionAttemptFinished" xml:space="preserve"><value>This mission attempt has finished. No more cards can be played.</value></data>
 </root>

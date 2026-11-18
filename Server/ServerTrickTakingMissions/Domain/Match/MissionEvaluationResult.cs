@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 
@@ -15,12 +16,39 @@ namespace Domain
 
         public string Message { get; init; }
 
+        public MissionEvaluationFailureCode FailureCode { get; init; }
+
+        private static readonly IReadOnlyDictionary<string, MissionEvaluationFailureCode> s_failureCodes =
+            new Dictionary<string, MissionEvaluationFailureCode>
+            {
+                { MissionFailureReasons.ObjectiveCapturedByWrongSeat,
+                    MissionEvaluationFailureCode.ObjectiveCapturedByWrongSeat },
+                { MissionFailureReasons.MultipleOrderedTokensInSameTrick,
+                    MissionEvaluationFailureCode.MultipleOrderedTokensInSameTrick },
+                { MissionFailureReasons.MultipleArrowTokensInSameTrick,
+                    MissionEvaluationFailureCode.MultipleArrowTokensInSameTrick },
+                { MissionFailureReasons.OmegaSimultaneousCompletion,
+                    MissionEvaluationFailureCode.OmegaSimultaneousCompletion },
+                { MissionFailureReasons.PrecedingOrderTokenNotCompleted,
+                    MissionEvaluationFailureCode.PrecedingOrderTokenNotCompleted },
+                { MissionFailureReasons.PrecedingArrowTokenNotCompleted,
+                    MissionEvaluationFailureCode.PrecedingArrowTokenNotCompleted },
+                { MissionFailureReasons.OmegaObjectiveNotCompletedLast,
+                    MissionEvaluationFailureCode.OmegaObjectiveNotCompletedLast },
+                { MissionFailureReasons.ObjectivesIncompleteAtMissionEnd,
+                    MissionEvaluationFailureCode.ObjectivesIncompleteAtMissionEnd },
+                { MissionFailureReasons.Mission48OmegaNotInLastTrick,
+                    MissionEvaluationFailureCode.Mission48OmegaNotInLastTrick },
+                { MissionFailureReasons.Mission48PendingNonOmegaBeforeLastTrick,
+                    MissionEvaluationFailureCode.Mission48PendingNonOmegaBeforeLastTrick }
+            };
+
         public static MissionEvaluationResult Success(IReadOnlyList<MissionObjective> objectives, string message = null)
         {
             return new MissionEvaluationResult
             {
                 OverallStatus = MissionAttemptStatus.Succeeded,
-                UpdatedObjectives = objectives,
+                UpdatedObjectives = objectives.ToArray(),
                 Message = message
             };
         }
@@ -30,7 +58,7 @@ namespace Domain
             return new MissionEvaluationResult
             {
                 OverallStatus = MissionAttemptStatus.InProgress,
-                UpdatedObjectives = objectives,
+                UpdatedObjectives = objectives.ToArray(),
                 Message = message
             };
         }
@@ -40,9 +68,19 @@ namespace Domain
             return new MissionEvaluationResult
             {
                 OverallStatus = MissionAttemptStatus.Failed,
-                UpdatedObjectives = objectives,
+                UpdatedObjectives = objectives.ToArray(),
+                FailureCode = GetFailureCode(reason),
                 Message = reason
             };
+        }
+        private static MissionEvaluationFailureCode GetFailureCode(string failureReason)
+        {
+            MissionEvaluationFailureCode failureCode = MissionEvaluationFailureCode.SpecialMissionConstraint;
+            if (failureReason != null && s_failureCodes.TryGetValue(failureReason, out var knownFailureCode))
+            {
+                failureCode = knownFailureCode;
+            }
+            return failureCode;
         }
     }
 }

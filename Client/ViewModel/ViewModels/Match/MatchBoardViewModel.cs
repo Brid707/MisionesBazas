@@ -87,7 +87,8 @@ namespace ViewModel.ViewModels
 
         public bool HasLastTrickWinner => LastTrickWinnerUserId != 0 && !string.IsNullOrEmpty(LastTrickWinnerName);
 
-        public bool ShouldShowLastCompletedTrick => (_isCompletedTrickDisplayActive || IsDealCompleted) &&
+        public bool ShouldShowLastCompletedTrick =>
+            (_isCompletedTrickDisplayActive || IsDealCompleted || IsMissionAttemptFinished) &&
             CurrentTrickCardPlays.Count == 0 && LastCompletedTrickCardPlays.Count > 0;
 
         public string MatchFeedbackResourceKey
@@ -119,9 +120,7 @@ namespace ViewModel.ViewModels
                 }
                 catch (FaultException<MatchAccessFault> ex)
                 {
-                    string feedbackKey = ex.Detail?.FailureCode ==
-                        nameof(MissionObjectiveDraftRejectionReason.RequestLimitReached)
-                        ? "MissionDraft_Error_RequestLimitReached" : "Match_AccessUnavailable";
+                    string feedbackKey = GetMatchFaultFeedback(ex.Detail);
                     SetConnectionFailure(feedbackKey, ex);
                 }
                 catch (FaultException ex)
@@ -188,7 +187,7 @@ namespace ViewModel.ViewModels
         private bool CanPlaySelectedCard(object selectedCard)
         {
             bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
+                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
                 CurrentTurnPlayerUserId == _participantUserId;
             return canPlay && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
         }
@@ -197,7 +196,7 @@ namespace ViewModel.ViewModels
         {
             bool canRaiseForCurrentTurn = !_isDisposed && _isMatchConnected &&
                 _pendingCardPlaySubmission == null && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
+                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
                 _pendingObjectiveDraftSubmission == null && CurrentTurnPlayerUserId == _participantUserId;
             foreach (HandCardViewModel handCard in OwnHandCards)
             {
@@ -254,6 +253,7 @@ namespace ViewModel.ViewModels
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
+                NotifyMissionEvaluationProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)
@@ -319,6 +319,11 @@ namespace ViewModel.ViewModels
         }
 
         private string GetCurrentMatchFeedback()
+        {
+            return IsMissionAttemptFinished ? MissionEvaluationFeedbackResourceKey : GetActiveMatchFeedback();
+        }
+
+        private string GetActiveMatchFeedback()
         {
             string feedbackResourceKey = "Match_WaitingTurn";
             if (IsObjectiveDraftVisible)

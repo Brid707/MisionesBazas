@@ -7,18 +7,43 @@
       xmlns:constants="clr-namespace:ViewModel.Constants;assembly=ViewModel"
       Title="GameMatch">
     <Page.Resources>
+        <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
         <converters:MissionObjectiveCardIdToImagePathConverter x:Key="ObjectiveCardImageConverter" />
         <converters:MissionObjectiveTokenToImagePathConverter x:Key="ObjectiveTokenImageConverter" />
         <DataTemplate x:Key="MissionObjectiveArtworkTemplate">
-            <Grid Width="64" Height="96" Margin="4">
+            <Grid Width="64" Height="100" Margin="4">
+                <Grid.ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{Binding ObjectiveStatusResourceKey,
+                            Converter={StaticResource MatchTextConverter}}" />
+                        <TextBlock Text="{Binding CompletedAtTrickNumber}" />
+                    </StackPanel>
+                </Grid.ToolTip>
+                <Border BorderThickness="2" CornerRadius="3">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="BorderBrush" Value="{StaticResource BrushTransparent}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource BrushSuccess}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsFailed}" Value="True">
+                                    <Setter Property="BorderBrush" Value="{StaticResource BrushDanger}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                </Border>
                 <Image Width="58" Height="82" Stretch="Uniform"
                        Source="{Binding CardId, Converter={StaticResource ObjectiveCardImageConverter}}" />
                 <Image Width="26" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top"
                        Source="{Binding Token, Converter={StaticResource ObjectiveTokenImageConverter}}" />
+                <TextBlock VerticalAlignment="Bottom" HorizontalAlignment="Center" FontSize="10"
+                           Foreground="{StaticResource BrushTextLight}"
+                           Text="{Binding ObjectiveStatusResourceKey, Converter={StaticResource MatchTextConverter}}" />
             </Grid>
         </DataTemplate>
         <converters:CardIdToImagePathConverter x:Key="CardImageConverter" />
-        <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="PlayerIdentityTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -247,7 +272,7 @@
                                    Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
                                    TextAlignment="Center" AutomationProperties.LiveSetting="Polite" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
-                                    Visibility="{Binding IsMissionPreparationComplete,
+                                    Visibility="{Binding IsTrickTurnVisible,
                                         Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Margin="0,0,6,0" Foreground="{StaticResource BrushTextLight}"
                                        Text="{Binding Source=Match_TurnPlayer, Converter={StaticResource MatchTextConverter}}" />

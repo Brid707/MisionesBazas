@@ -15,12 +15,27 @@ namespace Application.UseCases
             int participantSeat)
         {
             MatchRejectionReason playRejectionReason = MatchRejectionReason.None;
-            if (matchState.MissionAttempt?.Phase !=
+            if (matchState.MissionAttempt?.Phase == MissionAttemptPhase.Finished)
+            {
+                playRejectionReason = MatchRejectionReason.MissionAttemptFinished;
+            }
+            else if (matchState.MissionAttempt?.Phase !=
                 TrickTakingMissions.Rules.Enums.MissionAttemptPhase.PlayingTricks)
             {
                 playRejectionReason = MatchRejectionReason.MissionPreparationRequired;
             }
-            else if (matchState.IsDealCompleted)
+            if (playRejectionReason == MatchRejectionReason.None)
+            {
+                playRejectionReason = GetActivePlayRejection(matchState, cardPlaySubmission, participantSeat);
+            }
+            return playRejectionReason;
+        }
+
+        private static MatchRejectionReason GetActivePlayRejection(MatchState matchState,
+            CardPlaySubmission cardPlaySubmission, int participantSeat)
+        {
+            MatchRejectionReason playRejectionReason = MatchRejectionReason.None;
+            if (matchState.IsDealCompleted)
             {
                 playRejectionReason = MatchRejectionReason.DealCompleted;
             }

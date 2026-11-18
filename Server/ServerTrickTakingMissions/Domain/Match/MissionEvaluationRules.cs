@@ -9,7 +9,7 @@ namespace Domain
     /// <summary>
     /// Evaluates completed tricks against active mission objectives and special mission victory conditions.
     /// </summary>
-    public static class MissionEvaluationRules
+    public static partial class MissionEvaluationRules
     {
         /// <summary>
         /// Evaluates a completed trick, verifying captured objectives and evaluating active special mission rules.
@@ -19,240 +19,18 @@ namespace Domain
         /// <exception cref="ArgumentNullException">Thrown when required context fields are null.</exception>
         public static MissionEvaluationResult EvaluateCompletedTrick(MissionEvaluationContext context)
         {
-            if (context is null)
+            ValidateEvaluationContext(context);
+            var updatedObjectives = new List<MissionObjective>(context.CurrentObjectives);
+            MissionEvaluationResult missionEvaluation = EvaluateObjectivesInTrick(context, updatedObjectives);
+            if (missionEvaluation == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                missionEvaluation = EvaluateSpecialRule(context, updatedObjectives);
             }
-
-            if (context.WinningPlay is null)
+            if (missionEvaluation == null)
             {
-                throw new ArgumentNullException(nameof(context.WinningPlay));
+                missionEvaluation = DetermineOverallStatus(context, updatedObjectives);
             }
-
-            if (context.CompletedTrickPlays is null)
-            {
-                throw new ArgumentNullException(nameof(context.CompletedTrickPlays));
-            }
-
-            var updatedObjectives = new List<MissionObjective>(context.CurrentObjectives ?? Array.Empty<MissionObjective>());
-
-            MissionEvaluationResult objectiveResult = EvaluateObjectivesInTrick(context, updatedObjectives);
-            if (objectiveResult != null)
-            {
-                return objectiveResult;
-            }
-
-            MissionEvaluationResult specialRuleResult = EvaluateSpecialRule(context, updatedObjectives);
-            if (specialRuleResult != null)
-            {
-                return specialRuleResult;
-            }
-
-            return DetermineOverallStatus(context, updatedObjectives);
-        }
-
-        private static MissionEvaluationResult EvaluateObjectivesInTrick(
-            MissionEvaluationContext context,
-            List<MissionObjective> updatedObjectives)
-        {
-            var capturedObjectives = new List<MissionObjective>();
-
-            for (int index = 0; index < updatedObjectives.Count; index++)
-            {
-                MissionObjective objective = updatedObjectives[index];
-                if (context.CompletedTrickPlays.Any(play => play.Card.IdCard == objective.CardId))
-                {
-                    if (context.WinningPlay.Seat != objective.AssignedSeat)
-                    {
-                        return FailObjective(updatedObjectives, objective.CardId, MissionFailureReasons.ObjectiveCapturedByWrongSeat);
-                    }
-
-                    capturedObjectives.Add(objective);
-                }
-            }
-
-            MissionEvaluationResult conflictResult = ValidateSimultaneousCaptureConflicts(capturedObjectives, updatedObjectives);
-            if (conflictResult != null)
-            {
-                return conflictResult;
-            }
-
-            MissionEvaluationResult precedenceResult = ValidateOrderPrecedence(context, capturedObjectives, updatedObjectives);
-            if (precedenceResult != null)
-            {
-                return precedenceResult;
-            }
-
-            ApplyCompletedObjectives(context.CurrentTrickNumber, capturedObjectives, updatedObjectives);
-            return null;
-        }
-
-        private static MissionEvaluationResult ValidateSimultaneousCaptureConflicts(
-            List<MissionObjective> capturedObjectives,
-            List<MissionObjective> updatedObjectives)
-        {
-            if (capturedObjectives.Count <= 1)
-            {
-                return null;
-            }
-
-            List<MissionObjective> numericOrdered = capturedObjectives
-                .Where(o => o.Token >= ObjectiveTokenType.OrderOne && o.Token <= ObjectiveTokenType.OrderFive)
-                .ToList();
-            if (numericOrdered.Count > 1)
-            {
-                return FailObjective(updatedObjectives, numericOrdered[1].CardId, MissionFailureReasons.MultipleOrderedTokensInSameTrick);
-            }
-
-            List<MissionObjective> arrowOrdered = capturedObjectives
-                .Where(o => o.Token >= ObjectiveTokenType.ArrowOne && o.Token <= ObjectiveTokenType.ArrowFour)
-                .ToList();
-            if (arrowOrdered.Count > 1)
-            {
-                return FailObjective(updatedObjectives, arrowOrdered[1].CardId, MissionFailureReasons.MultipleArrowTokensInSameTrick);
-            }
-
-            MissionObjective omegaObjective = capturedObjectives.FirstOrDefault(o => o.Token == ObjectiveTokenType.Omega);
-            if (omegaObjective != null)
-            {
-                return FailObjective(updatedObjectives, omegaObjective.CardId, MissionFailureReasons.OmegaSimultaneousCompletion);
-            }
-
-            return null;
-        }
-
-        private static MissionEvaluationResult ValidateOrderPrecedence(
-            MissionEvaluationContext context,
-            List<MissionObjective> capturedObjectives,
-            List<MissionObjective> updatedObjectives)
-        {
-            int completedCountSoFar = updatedObjectives.Count(o => o.Status == ObjectiveStatus.Completed);
-            List<MissionObjective> orderedCaptures = capturedObjectives
-                .OrderBy(o => IsNumericToken(o.Token) ? (int)o.Token : int.MaxValue)
-                .ToList();
-
-            foreach (MissionObjective captured in orderedCaptures)
-            {
-                MissionEvaluationResult numericResult = ValidateNumericTokenPosition(
-                    captured,
-                    completedCountSoFar,
-                    updatedObjectives);
-                if (numericResult != null)
-                {
-                    return numericResult;
-                }
-
-                if (captured.Token >= ObjectiveTokenType.ArrowTwo && captured.Token <= ObjectiveTokenType.ArrowFour)
-                {
-                    ObjectiveTokenType precedingArrow = captured.Token - 1;
-                    bool isPredecessorComplete = updatedObjectives.Any(o => o.Token == precedingArrow && o.Status == ObjectiveStatus.Completed);
-                    if (!isPredecessorComplete)
-                    {
-                        return FailObjective(updatedObjectives, captured.CardId, MissionFailureReasons.PrecedingArrowTokenNotCompleted);
-                    }
-                }
-                else if (captured.Token == ObjectiveTokenType.Omega)
-                {
-                    MissionEvaluationResult omegaResult = ValidateOmegaPrecedence(context, captured, updatedObjectives);
-                    if (omegaResult != null)
-                    {
-                        return omegaResult;
-                    }
-                }
-
-                completedCountSoFar++;
-            }
-
-            return null;
-        }
-
-        private static MissionEvaluationResult ValidateNumericTokenPosition(
-            MissionObjective captured,
-            int completedCountBeforeThis,
-            List<MissionObjective> updatedObjectives)
-        {
-            int currentGlobalOrderPosition = completedCountBeforeThis + 1;
-
-            if (IsNumericToken(captured.Token))
-            {
-                int requiredPosition = (int)captured.Token;
-                if (currentGlobalOrderPosition != requiredPosition)
-                {
-                    return FailObjective(updatedObjectives, captured.CardId, MissionFailureReasons.PrecedingOrderTokenNotCompleted);
-                }
-
-                return null;
-            }
-
-            if (currentGlobalOrderPosition <= (int)ObjectiveTokenType.OrderFive)
-            {
-                ObjectiveTokenType reservedToken = (ObjectiveTokenType)currentGlobalOrderPosition;
-                MissionObjective reservedObjective = updatedObjectives.FirstOrDefault(o => o.Token == reservedToken);
-                if (reservedObjective != null && reservedObjective.Status != ObjectiveStatus.Completed)
-                {
-                    return FailObjective(updatedObjectives, reservedObjective.CardId, MissionFailureReasons.PrecedingOrderTokenNotCompleted);
-                }
-            }
-
-            return null;
-        }
-
-        private static bool IsNumericToken(ObjectiveTokenType token)
-        {
-            return token >= ObjectiveTokenType.OrderOne && token <= ObjectiveTokenType.OrderFive;
-        }
-
-        private static MissionEvaluationResult ValidateOmegaPrecedence(
-            MissionEvaluationContext context,
-            MissionObjective captured,
-            List<MissionObjective> updatedObjectives)
-        {
-            bool hasOtherPending = updatedObjectives.Any(o => o.CardId != captured.CardId && o.Status != ObjectiveStatus.Completed);
-            if (hasOtherPending)
-            {
-                return FailObjective(updatedObjectives, captured.CardId, MissionFailureReasons.OmegaObjectiveNotCompletedLast);
-            }
-
-            if (context.Definition.SpecialRule == SpecialMissionRuleType.M48_OmegaObjectiveCompletedInLastTrick &&
-                context.CurrentTrickNumber != context.TotalTricksInMission)
-            {
-                return FailObjective(updatedObjectives, captured.CardId, MissionFailureReasons.Mission48OmegaNotInLastTrick);
-            }
-
-            return null;
-        }
-
-        private static MissionEvaluationResult FailObjective(
-            List<MissionObjective> updatedObjectives,
-            int failedCardId,
-            string reason)
-        {
-            int index = updatedObjectives.FindIndex(o => o.CardId == failedCardId);
-            if (index >= 0)
-            {
-                updatedObjectives[index] = updatedObjectives[index] with
-                {
-                    Status = ObjectiveStatus.Failed
-                };
-            }
-
-            return MissionEvaluationResult.Fail(updatedObjectives, reason);
-        }
-
-        private static void ApplyCompletedObjectives(
-            int currentTrickNumber,
-            List<MissionObjective> capturedObjectives,
-            List<MissionObjective> updatedObjectives)
-        {
-            foreach (MissionObjective captured in capturedObjectives)
-            {
-                int objIndex = updatedObjectives.FindIndex(o => o.CardId == captured.CardId);
-                updatedObjectives[objIndex] = updatedObjectives[objIndex] with
-                {
-                    Status = ObjectiveStatus.Completed,
-                    CompletedAtTrickNumber = currentTrickNumber
-                };
-            }
+            return missionEvaluation;
         }
 
         private static MissionEvaluationResult EvaluateSpecialRule(

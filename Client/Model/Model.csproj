@@ -226,6 +226,12 @@
       <Name>TrickTakingMissions.Logging.Abstractions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionObjectiveStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionAttemptEvaluationStatus.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />

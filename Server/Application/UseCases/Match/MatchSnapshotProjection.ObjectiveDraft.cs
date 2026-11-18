@@ -38,7 +38,8 @@ namespace Application.UseCases
                     ? (Guid?)matchState.CurrentObjectiveDraftSubmissionId : null,
                 MissionAttemptId = attempt.MissionAttemptId,
                 MissionNumber = attempt.MissionNumber,
-                IsPreparationComplete = attempt.Phase == MissionAttemptPhase.PlayingTricks,
+                IsPreparationComplete = attempt.Phase == MissionAttemptPhase.PlayingTricks ||
+                    attempt.Phase == MissionAttemptPhase.Finished,
                 CurrentObjectiveDraftPlayerUserId = matchState.ParticipantUserIds[attempt.CurrentObjectiveDraftSeat],
                 Objectives = attempt.Objectives.Select(objective => CreateObjectiveSnapshot(matchState, objective))
                     .ToArray()
@@ -56,6 +57,8 @@ namespace Application.UseCases
                 Token = s_objectiveTokens[objective.Token],
                 AssignedPlayerUserId = objective.AssignedSeat.HasValue
                     ? (int?)matchState.ParticipantUserIds[objective.AssignedSeat.Value] : null,
+                Status = MissionEvaluationMapper.MapObjectiveStatus(objective.Status),
+                CompletedAtTrickNumber = objective.CompletedAtTrickNumber,
                 IsRevealed = objective.IsRevealed
             };
         }

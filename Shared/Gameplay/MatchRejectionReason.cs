@@ -17,6 +17,7 @@ namespace Gameplay
         [EnumMember] MustFollowLeadSuit = 8,
         [EnumMember] DealCompleted = 9,
         [EnumMember] SubmissionCapacityReached = 10,
-        [EnumMember] MissionPreparationRequired = 11
+        [EnumMember] MissionPreparationRequired = 11,
+        [EnumMember] MissionAttemptFinished = 12
     }
 }
