@@ -46,6 +46,14 @@ namespace Model.Services
             return isConnected;
         }
 
+        public Task<RadioCommunicationConfirmation> SubmitRadioCommunicationAsync(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.SubmitRadioCommunication(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return ExecuteMatchOperationAsync(channel => channel.PlayCard(cardPlaySubmission, participantUserId),
@@ -80,6 +88,10 @@ namespace Model.Services
             {
                 matchOperationResult = await Task.Run(() => InvokeMatchOperation(
                     matchOperation, lobbyCode, participantUserId));
+            }
+            catch (FaultException)
+            {
+                throw;
             }
             catch (CommunicationException ex)
             {

@@ -4,6 +4,12 @@ namespace Model.GameServices
 {
     public partial class LobbyServiceClient
     {
+        public RadioCommunicationConfirmation SubmitRadioCommunication(RadioCommunicationSubmission submission,
+            int participantUserId)
+        {
+            return Channel.SubmitRadioCommunication(submission, participantUserId);
+        }
+
         public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
         {
             return Channel.GetPlayerMatch(lobbyCode, participantUserId);

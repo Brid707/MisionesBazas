@@ -50,6 +50,8 @@ namespace Application.UseCases
                     MissionEvaluationFailureReason.Mission48OmegaNotInLastTrick },
                 { MissionEvaluationFailureCode.Mission48PendingNonOmegaBeforeLastTrick,
                     MissionEvaluationFailureReason.Mission48PendingNonOmegaBeforeLastTrick },
+                { MissionEvaluationFailureCode.AllParticipantsWonAtLeastOneTrick,
+                    MissionEvaluationFailureReason.AllParticipantsWonAtLeastOneTrick },
                 { MissionEvaluationFailureCode.SpecialMissionConstraint,
                     MissionEvaluationFailureReason.SpecialMissionConstraint }
             };

@@ -60,6 +60,7 @@ namespace ViewModel.ViewModels
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
+            InitializeRadioCommand();
             _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
@@ -140,6 +141,7 @@ namespace ViewModel.ViewModels
                 finally
                 {
                     Interlocked.Exchange(ref _isRequestInProgress, 0);
+                    OnPropertyChanged(nameof(CanChooseRadioCard));
                     UpdateHandCardRaisedStates();
                     CommandManager.InvalidateRequerySuggested();
                 }
@@ -164,6 +166,11 @@ namespace ViewModel.ViewModels
         private async Task SynchronizeCoreAsync()
         {
             string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync();
+            string radioFeedback = await ConfirmPendingRadioAsync();
+            if (radioFeedback != null)
+            {
+                rejectionResourceKey = radioFeedback;
+            }
             if (_pendingCardPlaySubmission != null)
             {
                 MatchFeedbackResourceKey = "Match_Confirming";
@@ -189,18 +196,19 @@ namespace ViewModel.ViewModels
 
         private bool CanPlaySelectedCard(object selectedCard)
         {
-            bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
+            return CanPlayCurrentTurn() && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
+        }
+
+        private bool CanPlayCurrentTurn()
+        {
+            return CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
                 !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
                 CurrentTurnPlayerUserId == _participantUserId;
-            return canPlay && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
         }
 
         private void UpdateHandCardRaisedStates()
         {
-            bool canRaiseForCurrentTurn = !_isDisposed && _isMatchConnected &&
-                _pendingCardPlaySubmission == null && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
-                _pendingObjectiveDraftSubmission == null && CurrentTurnPlayerUserId == _participantUserId;
+            bool canRaiseForCurrentTurn = CanPlayCurrentTurn();
             foreach (HandCardViewModel handCard in OwnHandCards)
             {
                 handCard.UpdateTurnAvailability(canRaiseForCurrentTurn);
@@ -238,7 +246,8 @@ namespace ViewModel.ViewModels
 
         private bool CanRetryPendingMatchRequest()
         {
-            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null) &&
+            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null ||
+                _pendingRadioSubmission != null) &&
                 _isRequestInProgress == 0;
         }
 
@@ -256,10 +265,12 @@ namespace ViewModel.ViewModels
                 UpdatePublicSeatStates(playerSnapshot);
                 ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
                 ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
+                ApplyRadioSnapshot(playerSnapshot);
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 NotifyMissionEvaluationProperties();
+                NotifyMissionInstructionProperties();
                 NotifyMissionTransitionProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }

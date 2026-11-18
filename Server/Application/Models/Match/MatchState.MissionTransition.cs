@@ -95,6 +95,8 @@ namespace Application.Models
             CurrentTrickCardPlays.Clear();
             CapturedCardPlays.Clear();
             ProcessedCardPlayDecisionsBySubmissionId.Clear();
+            RadioCommunicationsByParticipantUserId.Clear();
+            ProcessedRadioCommunicationsBySubmissionId.Clear();
             ProcessedObjectiveDrafts.Clear();
             ObjectiveDraftHistoryByParticipant.Clear();
         }

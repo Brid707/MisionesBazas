@@ -277,4 +277,13 @@
     <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
     <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
+  </ItemGroup>
 </Project>

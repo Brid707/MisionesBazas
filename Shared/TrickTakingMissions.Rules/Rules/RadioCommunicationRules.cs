@@ -15,7 +15,8 @@ namespace TrickTakingMissions.Rules.Rules
         private const int DisruptionTrickThreeThreshold = 3;
 
         /// <summary>
-        /// Validates whether a requested radio communication satisfies all timing, hand, and token placement invariants.
+        /// Validates whether a requested radio communication satisfies all timing, hand,
+        /// and token placement invariants.
         /// </summary>
         /// <param name="context">The contextual state of the player hand, mission rules, and trick progress.</param>
         /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection reason.</returns>
@@ -28,17 +29,23 @@ namespace TrickTakingMissions.Rules.Rules
             }
 
             RadioCommunicationRejectionReason prerequisiteFailure = EvaluatePrerequisites(context);
-            if (prerequisiteFailure != RadioCommunicationRejectionReason.None)
+            RadioCommunicationValidationResult result = RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+            if (prerequisiteFailure == RadioCommunicationRejectionReason.None)
             {
-                return RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+                result = context.CommunicationRule == CommunicationRuleType.Interference
+                    ? EvaluateInterference(context) : EvaluateTokenPosition(context);
             }
+            return result;
+        }
 
-            if (context.CommunicationRule == CommunicationRuleType.Interference)
-            {
-                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference);
-            }
-
-            return EvaluateTokenPosition(context);
+        private static RadioCommunicationValidationResult EvaluateInterference(RadioCommunicationContext context)
+        {
+            bool isEligibleCard =
+                ResolveNonInterferencePositions(context.HandCards, context.CardToCommunicate).Count > 0;
+            return isEligibleCard && context.SelectedPosition == RadioTokenPosition.Interference
+                ? RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference)
+                : RadioCommunicationValidationResult.Reject(
+                    RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
         }
 
         /// <summary>
@@ -53,22 +60,17 @@ namespace TrickTakingMissions.Rules.Rules
             Card candidateCard,
             CommunicationRuleType communicationRule)
         {
-            if (handCards is null || candidateCard is null || candidateCard.Suit == CardSuit.Special)
+            IReadOnlyList<RadioTokenPosition> positions = Array.Empty<RadioTokenPosition>();
+            if (handCards != null && candidateCard != null && candidateCard.Suit != CardSuit.Special &&
+                handCards.Any(card => card.IdCard == candidateCard.IdCard))
             {
-                return Array.Empty<RadioTokenPosition>();
+                positions = ResolveNonInterferencePositions(handCards, candidateCard);
+                if (communicationRule == CommunicationRuleType.Interference && positions.Count > 0)
+                {
+                    positions = new[] { RadioTokenPosition.Interference };
+                }
             }
-
-            if (!handCards.Any(card => card.IdCard == candidateCard.IdCard))
-            {
-                return Array.Empty<RadioTokenPosition>();
-            }
-
-            if (communicationRule == CommunicationRuleType.Interference)
-            {
-                return new[] { RadioTokenPosition.Interference };
-            }
-
-            return ResolveNonInterferencePositions(handCards, candidateCard);
+            return positions;
         }
 
         private static RadioCommunicationRejectionReason EvaluatePrerequisites(RadioCommunicationContext context)

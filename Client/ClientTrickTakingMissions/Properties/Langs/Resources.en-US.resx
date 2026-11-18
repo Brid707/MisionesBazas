@@ -674,4 +674,33 @@
   <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>The next mission is not available yet. Your victory is preserved.</value></data>
   <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Waiting for server confirmation.</value></data>
   <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Disconnected. The server will check the state when you return.</value></data>
+  <data name="MissionInstruction_MissionFive_Description" xml:space="preserve"><value>Mission 5: at the end of the deal, at least one player must have won no tricks. If everyone wins a trick, the mission fails.</value></data>
+  <data name="MissionEvaluation_Error_AllParticipantsWonAtLeastOneTrick" xml:space="preserve"><value>Mission failed: every player won at least one trick.</value></data>
+  <data name="MissionInstruction_MissionSix_Description" xml:space="preserve"><value>Mission 6: complete &gt; before &gt;&gt;; the other objective is unordered. Interference lets you reveal an eligible card without showing highest, lowest or only.</value></data>
+  <data name="MissionInstruction_MissionSeven_Description" xml:space="preserve"><value>Mission 7: complete both unmarked objectives before the Ω objective. It need not be the final trick.</value></data>
+  <data name="MissionInstruction_MissionEight_Description" xml:space="preserve"><value>Mission 8: complete objectives 1, 2 and 3 in that order, in different tricks.</value></data>
+  <data name="Radio_Label_Communicate" xml:space="preserve"><value>Radio — reveal a card</value></data>
+  <data name="Radio_Label_Help" xml:space="preserve"><value>Once per attempt, before a trick starts. Choose a normal highest, lowest or only card of its suit; interference hides its position.</value></data>
+  <data name="Radio_Label_Reveal" xml:space="preserve"><value>Reveal</value></data>
+  <data name="Radio_Label_Played" xml:space="preserve"><value>Already played</value></data>
+  <data name="Radio_Marker_None" xml:space="preserve"><value></value></data>
+  <data name="Radio_Marker_Highest" xml:space="preserve"><value>Highest of its suit</value></data>
+  <data name="Radio_Marker_Only" xml:space="preserve"><value>Only card of its suit</value></data>
+  <data name="Radio_Marker_Lowest" xml:space="preserve"><value>Lowest of its suit</value></data>
+  <data name="Radio_Marker_Hidden" xml:space="preserve"><value>Position hidden</value></data>
+  <data name="Radio_Error_InvalidSubmission" xml:space="preserve"><value>The radio request is invalid.</value></data>
+  <data name="Radio_Error_MatchUnavailable" xml:space="preserve"><value>The match is unavailable.</value></data>
+  <data name="Radio_Error_ParticipantNotAllowed" xml:space="preserve"><value>You cannot communicate in this match.</value></data>
+  <data name="Radio_Error_WrongMissionAttempt" xml:space="preserve"><value>The attempt changed. Review your hand before communicating.</value></data>
+  <data name="Radio_Error_SubmissionIdentityReused" xml:space="preserve"><value>The radio identifier does not match the original request.</value></data>
+  <data name="Radio_Error_StaleMatchState" xml:space="preserve"><value>The table changed. Review the state and select again.</value></data>
+  <data name="Radio_Error_MissionPreparationRequired" xml:space="preserve"><value>Complete objective selection first.</value></data>
+  <data name="Radio_Error_MissionAttemptFinished" xml:space="preserve"><value>The attempt has finished.</value></data>
+  <data name="Radio_Error_CardNotInHand" xml:space="preserve"><value>That card is no longer in your hand.</value></data>
+  <data name="Radio_Error_SpecialCardNotAllowed" xml:space="preserve"><value>You cannot reveal a K card over the radio.</value></data>
+  <data name="Radio_Error_AlreadyCommunicatedThisAttempt" xml:space="preserve"><value>You already used the radio this attempt.</value></data>
+  <data name="Radio_Error_CannotCommunicateDuringActiveTrick" xml:space="preserve"><value>Wait until the trick ends before communicating.</value></data>
+  <data name="Radio_Error_InvalidTokenPositionForCard" xml:space="preserve"><value>The card or position does not meet the communication rules.</value></data>
+  <data name="Radio_Error_RequestLimitReached" xml:space="preserve"><value>Too many requests. Please wait a moment.</value></data>
+  <data name="Radio_Error_OperationUnavailable" xml:space="preserve"><value>The communication could not be confirmed. You can check the pending request.</value></data>
 </root>

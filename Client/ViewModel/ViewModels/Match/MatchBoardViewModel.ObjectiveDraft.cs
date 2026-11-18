@@ -34,7 +34,8 @@ namespace ViewModel.ViewModels
         private bool CanSubmitMatchRequest()
         {
             return !_isDisposed && _isMatchConnected && _isRequestInProgress == 0 &&
-                _pendingObjectiveDraftSubmission == null && _pendingCardPlaySubmission == null;
+                _pendingObjectiveDraftSubmission == null && _pendingCardPlaySubmission == null &&
+                _pendingRadioSubmission == null;
         }
 
         private bool CanSubmitObjectiveDraft()

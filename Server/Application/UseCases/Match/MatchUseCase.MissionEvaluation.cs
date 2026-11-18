@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Application.Models;
 using Domain;
@@ -46,7 +47,7 @@ namespace Application.UseCases
             TrickCardPlay[] completedTrickPlays, TrickCardPlay winningTrickPlay)
         {
             MissionDefinition missionDefinition = MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber);
-            if (missionDefinition.SpecialRule != SpecialMissionRuleType.None)
+            if (!MissionAttemptPreparation.CanPrepareMission(missionDefinition.MissionNumber))
             {
                 throw new InvalidOperationException(nameof(missionDefinition.SpecialRule));
             }
@@ -58,10 +59,20 @@ namespace Application.UseCases
                 WinningPlay = winningTrickPlay,
                 CompletedTrickPlays = completedTrickPlays,
                 CurrentObjectives = matchState.MissionAttempt.Objectives,
+                TotalTricksWonBySeat = CreateCandidateTrickWinCounts(matchState, winningTrickPlay.Seat),
                 CaptainSeat = (byte)matchState.MissionCaptainSeat,
                 PlayerCount = matchState.ParticipantUserIds.Length,
                 RoleConfig = matchState.MissionAttempt.RoleConfig
             };
+        }
+        private static IReadOnlyDictionary<int, int> CreateCandidateTrickWinCounts(MatchState matchState,
+            int winningParticipantSeat)
+        {
+            Dictionary<int, int> candidateTrickWinCountsBySeat = matchState.WonTrickCountsBySeat
+                .Select((trickWinCount, participantSeat) => new { participantSeat, trickWinCount })
+                .ToDictionary(entry => entry.participantSeat, entry => entry.trickWinCount);
+            candidateTrickWinCountsBySeat[winningParticipantSeat]++;
+            return candidateTrickWinCountsBySeat;
         }
     }
 }

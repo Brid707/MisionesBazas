@@ -229,4 +229,22 @@
     <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionDestination.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionTransition.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\Radio\CommittedRadioCommunication.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationCommit.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationRejection.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationRequest.cs" />
+    <Compile Include="Models\Match\Radio\RadioPublicMarker.cs" />
+    <Compile Include="Models\Match\MatchState.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\RadioCommunicationRuleMapping.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.RadioCommunication.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
+  </ItemGroup>
 </Project>

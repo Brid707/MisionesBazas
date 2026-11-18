@@ -19,6 +19,12 @@ namespace Gameplay
         [FaultContract(typeof(MatchAccessFault))]
         MissionRetryDecision ConfirmMissionRetry(MissionRetrySubmission submission, int participantUserId);
 
+        [OperationContract(Action = "urn:misiones-bazas:match:SubmitRadioCommunication", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        [FaultContract(typeof(RadioCommunicationFault))]
+        RadioCommunicationConfirmation SubmitRadioCommunication(RadioCommunicationSubmission submission,
+            int participantUserId);
+
         [OperationContract(Action = "urn:misiones-bazas:match:PlayCard", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
         CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId);

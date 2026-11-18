@@ -17,6 +17,7 @@ namespace Gameplay
         [EnumMember] ObjectivesIncompleteAtMissionEnd = 8,
         [EnumMember] Mission48OmegaNotInLastTrick = 9,
         [EnumMember] Mission48PendingNonOmegaBeforeLastTrick = 10,
-        [EnumMember] SpecialMissionConstraint = 11
+        [EnumMember] SpecialMissionConstraint = 11,
+        [EnumMember] AllParticipantsWonAtLeastOneTrick = 12
     }
 }

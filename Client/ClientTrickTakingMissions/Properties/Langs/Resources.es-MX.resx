@@ -674,4 +674,33 @@
   <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>La siguiente misión todavía no está disponible. Se conserva su victoria.</value></data>
   <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Esperando la confirmación del servidor.</value></data>
   <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Sin conexión. El servidor comprobará el estado cuando regreses.</value></data>
+  <data name="MissionInstruction_MissionFive_Description" xml:space="preserve"><value>Misión 5: al finalizar el reparto, al menos un jugador debe seguir sin ganar ninguna baza. Si todos ganan alguna, pierden la misión.</value></data>
+  <data name="MissionEvaluation_Error_AllParticipantsWonAtLeastOneTrick" xml:space="preserve"><value>Misión fallida: todos los jugadores ganaron al menos una baza.</value></data>
+  <data name="MissionInstruction_MissionSix_Description" xml:space="preserve"><value>Misión 6: completa &gt; antes de &gt;&gt;; el otro objetivo no tiene orden. Con interferencia puedes revelar una carta válida, sin indicar si es mayor, menor o única.</value></data>
+  <data name="MissionInstruction_MissionSeven_Description" xml:space="preserve"><value>Misión 7: completa primero los dos objetivos sin ficha y después el objetivo Ω. No tiene que ser la última baza.</value></data>
+  <data name="MissionInstruction_MissionEight_Description" xml:space="preserve"><value>Misión 8: completa los objetivos 1, 2 y 3 en ese orden, en bazas diferentes.</value></data>
+  <data name="Radio_Label_Communicate" xml:space="preserve"><value>Radio — revelar una carta</value></data>
+  <data name="Radio_Label_Help" xml:space="preserve"><value>Una vez por intento y antes de comenzar una baza. Selecciona una carta normal mayor, menor o única de su palo; con interferencia se oculta la posición.</value></data>
+  <data name="Radio_Label_Reveal" xml:space="preserve"><value>Revelar</value></data>
+  <data name="Radio_Label_Played" xml:space="preserve"><value>Ya jugada</value></data>
+  <data name="Radio_Marker_None" xml:space="preserve"><value></value></data>
+  <data name="Radio_Marker_Highest" xml:space="preserve"><value>La mayor del palo</value></data>
+  <data name="Radio_Marker_Only" xml:space="preserve"><value>La única del palo</value></data>
+  <data name="Radio_Marker_Lowest" xml:space="preserve"><value>La menor del palo</value></data>
+  <data name="Radio_Marker_Hidden" xml:space="preserve"><value>Posición oculta</value></data>
+  <data name="Radio_Error_InvalidSubmission" xml:space="preserve"><value>La solicitud de radio no es válida.</value></data>
+  <data name="Radio_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="Radio_Error_ParticipantNotAllowed" xml:space="preserve"><value>No puedes comunicar en esta partida.</value></data>
+  <data name="Radio_Error_WrongMissionAttempt" xml:space="preserve"><value>El intento cambió. Revisa tu mano antes de comunicar.</value></data>
+  <data name="Radio_Error_SubmissionIdentityReused" xml:space="preserve"><value>La identidad de comunicación no coincide con la solicitud original.</value></data>
+  <data name="Radio_Error_StaleMatchState" xml:space="preserve"><value>La mesa cambió. Revisa el estado y selecciona de nuevo.</value></data>
+  <data name="Radio_Error_MissionPreparationRequired" xml:space="preserve"><value>Termina primero la selección de objetivos.</value></data>
+  <data name="Radio_Error_MissionAttemptFinished" xml:space="preserve"><value>El intento ya terminó.</value></data>
+  <data name="Radio_Error_CardNotInHand" xml:space="preserve"><value>Esa carta ya no está en tu mano.</value></data>
+  <data name="Radio_Error_SpecialCardNotAllowed" xml:space="preserve"><value>No puedes revelar una carta K por radio.</value></data>
+  <data name="Radio_Error_AlreadyCommunicatedThisAttempt" xml:space="preserve"><value>Ya utilizaste la radio en este intento.</value></data>
+  <data name="Radio_Error_CannotCommunicateDuringActiveTrick" xml:space="preserve"><value>Espera a que termine la baza para comunicar.</value></data>
+  <data name="Radio_Error_InvalidTokenPositionForCard" xml:space="preserve"><value>La carta o posición no cumple las reglas de comunicación.</value></data>
+  <data name="Radio_Error_RequestLimitReached" xml:space="preserve"><value>Hay demasiadas solicitudes. Espera un momento.</value></data>
+  <data name="Radio_Error_OperationUnavailable" xml:space="preserve"><value>No se pudo confirmar la comunicación. Puedes comprobar la solicitud pendiente.</value></data>
 </root>

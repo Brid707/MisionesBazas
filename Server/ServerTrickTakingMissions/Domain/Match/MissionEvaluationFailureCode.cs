@@ -14,6 +14,7 @@ namespace Domain
         ObjectivesIncompleteAtMissionEnd = 8,
         Mission48OmegaNotInLastTrick = 9,
         Mission48PendingNonOmegaBeforeLastTrick = 10,
-        SpecialMissionConstraint = 11
+        SpecialMissionConstraint = 11,
+        AllParticipantsWonAtLeastOneTrick = 12
     }
 }

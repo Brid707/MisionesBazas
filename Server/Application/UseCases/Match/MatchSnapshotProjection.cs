@@ -29,6 +29,8 @@ namespace Application.UseCases
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
                 MissionTransition = transition,
+                RadioCommunications = CreateRadioCommunications(matchState),
+                RadioMode = GetRadioMode(matchState),
                 MissionRetry = CreateMissionRetry(transition),
                 MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat)

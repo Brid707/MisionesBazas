@@ -8,6 +8,8 @@ namespace Model.Services
     public interface IMatchClient
     {
         event Action<long> MatchStateChanged;
+        Task<RadioCommunicationConfirmation> SubmitRadioCommunicationAsync(
+            RadioCommunicationSubmission submission, int participantUserId);
         Task<MissionObjectiveDraftDecision> ProcessObjectiveDraftActionAsync(
             MissionObjectiveDraftSubmission submission, int participantUserId);
         Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId);

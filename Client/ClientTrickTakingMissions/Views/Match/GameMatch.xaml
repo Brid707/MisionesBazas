@@ -5,6 +5,7 @@
       xmlns:styles="clr-namespace:View.Styles"
       xmlns:language="clr-namespace:View.Properties.Langs"
       xmlns:constants="clr-namespace:ViewModel.Constants;assembly=ViewModel"
+      xmlns:gameplay="clr-namespace:Gameplay;assembly=Model"
       Title="GameMatch">
     <Page.Resources>
         <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
@@ -275,6 +276,111 @@
                         <RowDefinition Height="Auto" /><RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Center">
+                        <ToggleButton x:Name="RadioPanelToggleButton" HorizontalAlignment="Center" Margin="0,0,0,5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Source=Radio_Label_Communicate,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Text="{Binding RadioCommunications.Count}" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <Popup PlacementTarget="{Binding ElementName=RadioPanelToggleButton}" Placement="Top"
+                               IsOpen="{Binding IsChecked, ElementName=RadioPanelToggleButton, Mode=TwoWay}"
+                               StaysOpen="False" AllowsTransparency="True">
+                            <Border Padding="12" MaxWidth="600" BorderThickness="2"
+                                    Background="{StaticResource BrushLobbyMatchSurface}"
+                                    BorderBrush="{StaticResource BrushTextDark}">
+                                <StackPanel>
+                            <StackPanel>
+                                <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                           Text="{Binding Source=Radio_Label_Help,
+                                    Converter={StaticResource MatchTextConverter}}" TextWrapping="Wrap" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <ComboBox Width="110" Height="54" ItemsSource="{Binding OwnHandCards}"
+                                              SelectedItem="{Binding SelectedRadioCard}"
+                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image Height="44" Source="{Binding CardId,
+                                                    Converter={StaticResource CardImageConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox Width="180" ItemsSource="{Binding AvailableRadioMarkers}"
+                                              SelectedItem="{Binding SelectedRadioMarker}"
+                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding ResourceKey,
+                                                    Converter={StaticResource MatchTextConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Command="{Binding SubmitRadioCommunicationCommand}" Margin="4" Padding="8">
+                                        <TextBlock Text="{Binding Source=Radio_Label_Reveal,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        <ItemsControl ItemsSource="{Binding RadioCommunications}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,0,8,4">
+                                        <TextBlock Text="{Binding ParticipantName}" HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                        <Grid Height="56" Width="44" HorizontalAlignment="Center">
+                                            <Image Source="{Binding CardId,
+                                                Converter={StaticResource CardImageConverter}}" />
+                                            <Ellipse Width="10" Height="10" Margin="2"
+                                                     Fill="{StaticResource BrushTextLight}"
+                                                     Stroke="{StaticResource BrushTextDark}">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Highest}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Top" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Only}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Lowest}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Bottom" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                        </Grid>
+                                        <TextBlock Text="{Binding MarkerResourceKey,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                        <TextBlock Text="{Binding Source=Radio_Label_Played,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}"
+                                                   Visibility="{Binding HasCommunicatedCardBeenPlayed,
+                                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                        <TextBlock Text="{Binding MissionInstructionResourceKey,
+                                       Converter={StaticResource MatchTextConverter}}"
+                                   Foreground="{StaticResource BrushTextLight}"
+                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,6"
+                                   Visibility="{Binding IsMissionInstructionVisible,
+                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <TextBlock Text="{Binding MatchFeedbackResourceKey, Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
                                    TextAlignment="Center" AutomationProperties.LiveSetting="Polite" />

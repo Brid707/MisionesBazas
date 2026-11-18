@@ -39,6 +39,8 @@ namespace Domain
                     MissionEvaluationFailureCode.ObjectivesIncompleteAtMissionEnd },
                 { MissionFailureReasons.Mission48OmegaNotInLastTrick,
                     MissionEvaluationFailureCode.Mission48OmegaNotInLastTrick },
+                { MissionFailureReasons.Mission05AllPlayersWonTrick,
+                    MissionEvaluationFailureCode.AllParticipantsWonAtLeastOneTrick },
                 { MissionFailureReasons.Mission48PendingNonOmegaBeforeLastTrick,
                     MissionEvaluationFailureCode.Mission48PendingNonOmegaBeforeLastTrick }
             };

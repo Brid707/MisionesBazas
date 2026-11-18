@@ -149,4 +149,8 @@
     <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />
     <Compile Include="Services\Match\LobbyService.ObjectiveDraft.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mapping\RadioCommunicationMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.RadioCommunication.cs" />
+  </ItemGroup>
 </Project>
