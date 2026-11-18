@@ -1,0 +1,188 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using TrickTakingMissions.Rules.Enums;
+using TrickTakingMissions.Rules.Models;
+
+namespace TrickTakingMissions.Rules.Rules
+{
+    /// <summary>
+    /// Evaluates domain rules for player radio communications and token placement.
+    /// </summary>
+    public static class RadioCommunicationRules
+    {
+        private const int DisruptionTrickTwoThreshold = 2;
+        private const int DisruptionTrickThreeThreshold = 3;
+
+        /// <summary>
+        /// Validates whether a requested radio communication satisfies all timing, hand, and token placement invariants.
+        /// </summary>
+        /// <param name="context">The contextual state of the player hand, mission rules, and trick progress.</param>
+        /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection reason.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is null.</exception>
+        public static RadioCommunicationValidationResult ValidateCommunication(RadioCommunicationContext context)
+        {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            RadioCommunicationRejectionReason prerequisiteFailure = EvaluatePrerequisites(context);
+            if (prerequisiteFailure != RadioCommunicationRejectionReason.None)
+            {
+                return RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+            }
+
+            if (context.CommunicationRule == CommunicationRuleType.Interference)
+            {
+                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference);
+            }
+
+            return EvaluateTokenPosition(context);
+        }
+
+        /// <summary>
+        /// Resolves the collection of allowable radio token positions for a specified candidate card in hand.
+        /// </summary>
+        /// <param name="handCards">The current cards held in the player hand.</param>
+        /// <param name="candidateCard">The candidate card intended to be revealed.</param>
+        /// <param name="communicationRule">The active communication constraint for the mission.</param>
+        /// <returns>A read-only collection of valid <see cref="RadioTokenPosition"/> placements.</returns>
+        public static IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(
+            IReadOnlyList<Card> handCards,
+            Card candidateCard,
+            CommunicationRuleType communicationRule)
+        {
+            if (handCards is null || candidateCard is null || candidateCard.Suit == CardSuit.Special)
+            {
+                return Array.Empty<RadioTokenPosition>();
+            }
+
+            if (!handCards.Any(card => card.IdCard == candidateCard.IdCard))
+            {
+                return Array.Empty<RadioTokenPosition>();
+            }
+
+            if (communicationRule == CommunicationRuleType.Interference)
+            {
+                return new[] { RadioTokenPosition.Interference };
+            }
+
+            return ResolveNonInterferencePositions(handCards, candidateCard);
+        }
+
+        private static RadioCommunicationRejectionReason EvaluatePrerequisites(RadioCommunicationContext context)
+        {
+            if (context.CardToCommunicate is null)
+            {
+                return RadioCommunicationRejectionReason.CardNotInHand;
+            }
+
+            if (context.HasCommunicatedThisAttempt)
+            {
+                return RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
+            }
+
+            if (context.IsSilencedByCaptain)
+            {
+                return RadioCommunicationRejectionReason.SilencedByCaptain;
+            }
+
+            if (context.IsTrickInProgress)
+            {
+                return RadioCommunicationRejectionReason.CannotCommunicateDuringActiveTrick;
+            }
+
+            if (IsDisrupted(context.CommunicationRule, context.CurrentTrickNumber))
+            {
+                return RadioCommunicationRejectionReason.DisruptedUntilTrick;
+            }
+
+            if (context.CardToCommunicate.Suit == CardSuit.Special)
+            {
+                return RadioCommunicationRejectionReason.SpecialCardNotAllowed;
+            }
+
+            if (context.HandCards is null || !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
+            {
+                return RadioCommunicationRejectionReason.CardNotInHand;
+            }
+
+            return RadioCommunicationRejectionReason.None;
+        }
+
+        private static bool IsDisrupted(CommunicationRuleType rule, int currentTrickNumber)
+        {
+            bool isDisruptedAtTrickTwo = rule == CommunicationRuleType.DisruptionUntilTrick2 &&
+                                         currentTrickNumber < DisruptionTrickTwoThreshold;
+            bool isDisruptedAtTrickThree = rule == CommunicationRuleType.DisruptionUntilTrick3 &&
+                                           currentTrickNumber < DisruptionTrickThreeThreshold;
+
+            return isDisruptedAtTrickTwo || isDisruptedAtTrickThree;
+        }
+
+        private static RadioCommunicationValidationResult EvaluateTokenPosition(RadioCommunicationContext context)
+        {
+            List<Card> cardsOfSameSuit = context.HandCards
+                .Where(card => card.Suit == context.CardToCommunicate.Suit)
+                .ToList();
+
+            if (cardsOfSameSuit.Count == 1)
+            {
+                return context.SelectedPosition == RadioTokenPosition.Only
+                    ? RadioCommunicationValidationResult.Success(RadioTokenPosition.Only)
+                    : RadioCommunicationValidationResult.Reject(RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+            }
+
+            int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
+            int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
+
+            bool isHighest = context.CardToCommunicate.Number == highestNumberInSuit &&
+                             context.SelectedPosition == RadioTokenPosition.Highest;
+            bool isLowest = context.CardToCommunicate.Number == lowestNumberInSuit &&
+                            context.SelectedPosition == RadioTokenPosition.Lowest;
+
+            if (isHighest)
+            {
+                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Highest);
+            }
+
+            if (isLowest)
+            {
+                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Lowest);
+            }
+
+            return RadioCommunicationValidationResult.Reject(RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+        }
+
+        private static IReadOnlyList<RadioTokenPosition> ResolveNonInterferencePositions(
+            IReadOnlyList<Card> handCards,
+            Card candidateCard)
+        {
+            List<Card> cardsOfSameSuit = handCards
+                .Where(card => card.Suit == candidateCard.Suit)
+                .ToList();
+
+            if (cardsOfSameSuit.Count == 1)
+            {
+                return new[] { RadioTokenPosition.Only };
+            }
+
+            var validPositions = new List<RadioTokenPosition>(2);
+            int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
+            int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
+
+            if (candidateCard.Number == highestNumberInSuit)
+            {
+                validPositions.Add(RadioTokenPosition.Highest);
+            }
+
+            if (candidateCard.Number == lowestNumberInSuit)
+            {
+                validPositions.Add(RadioTokenPosition.Lowest);
+            }
+
+            return validPositions.AsReadOnly();
+        }
+    }
+}
