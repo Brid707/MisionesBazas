@@ -1,0 +1,36 @@
+<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:language="clr-namespace:View.Properties.Langs"
+    x:Class="View.Controls.GameTitleView">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="640" Height="190" AutomationProperties.Name="{x:Static language:Resources.Common_GameTitle_Title}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="95"/>
+                <RowDefinition Height="95"/>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource GameTitleTextStyle}"
+                    Text="{x:Static language:Resources.Common_GameTitle_FirstLinePrefix_Label}"/>
+                <ContentControl
+                    Style="{StaticResource GameTitleCardLetterStyle}"
+                    Content="{x:Static language:Resources.Common_GameTitle_FirstLineCardLetter_Label}"/>
+                <TextBlock
+                    Style="{StaticResource GameTitleTextStyle}"
+                    Text="{x:Static language:Resources.Common_GameTitle_FirstLineSuffix_Label}"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock
+                    Style="{StaticResource GameTitleTextStyle}"
+                    Text="{x:Static language:Resources.Common_GameTitle_SecondLinePrefix_Label}"/>
+                <ContentControl
+                    Style="{StaticResource GameTitleCardLetterStyle}"
+                    Content="{x:Static language:Resources.Common_GameTitle_SecondLineCardLetter_Label}"/>
+                <TextBlock
+                    Style="{StaticResource GameTitleTextStyle}"
+                    Text="{x:Static language:Resources.Common_GameTitle_SecondLineSuffix_Label}"/>
+            </StackPanel>
+        </Grid>
+    </Viewbox>
+</UserControl>

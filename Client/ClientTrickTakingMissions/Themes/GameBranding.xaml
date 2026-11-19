@@ -1,0 +1,87 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:language="clr-namespace:View.Properties.Langs"
+    xmlns:styles="clr-namespace:View.Styles"
+    xmlns:branding="clr-namespace:View.Controls">
+    <Style x:Key="AuthInputStyle" TargetType="Control">
+        <Setter Property="Background" Value="{StaticResource BrushInputFieldBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource BrushTextDark}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style x:Key="GameTitleTextStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource BrushGoldAccent}"/>
+        <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.GameBrandTitleFontFamily}"/>
+        <Setter Property="FontSize" Value="{x:Static styles:FontTypography.HeroTitleFontSize}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    <Style x:Key="GameTitleCardLetterStyle" TargetType="ContentControl">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid Height="95">
+                        <TextBlock Text="{Binding}" Style="{StaticResource GameTitleTextStyle}"/>
+                        <Image
+                            Width="120"
+                            Height="120"
+                            Margin="-28,-22,-28,-3"
+                            HorizontalAlignment="Center"
+                            Stretch="Uniform"
+                            IsHitTestVisible="False"
+                            Source="/View;component/Assets/Images/Icons/Icon_Game_CardFan.png"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Content" Value="">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="CardStripDecorationStyle" TargetType="Border">
+        <Setter Property="Background">
+            <Setter.Value>
+                <ImageBrush
+                    ImageSource="/View;component/Assets/Images/Backgrounds/Bg_Auth_CardStrip.png"
+                    TileMode="Tile"
+                    ViewportUnits="Absolute"
+                    Viewport="0,0,180,521.19"
+                    Stretch="Uniform"
+                    AlignmentX="Left"
+                    AlignmentY="Top"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Focusable" Value="False"/>
+    </Style>
+    <Style x:Key="AuthSubmitButtonStyle" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="SubmitBorder"
+                        CornerRadius="28"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="SubmitBorder" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="SubmitBorder" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <DataTemplate x:Key="GameTitleTemplate">
+        <branding:GameTitleView/>
+    </DataTemplate>
+</ResourceDictionary>

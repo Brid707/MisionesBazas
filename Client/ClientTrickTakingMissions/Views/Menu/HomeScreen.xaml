@@ -1,87 +1,107 @@
-<Page x:Class="View.Views.HomeScreen"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:language="clr-namespace:View.Properties.Langs"
-      xmlns:styles="clr-namespace:View.Styles"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1365"
-      Title="HomeScreen">
-
+<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:language="clr-namespace:View.Properties.Langs"
+    xmlns:styles="clr-namespace:View.Styles"
+    x:Class="View.Views.HomeScreen"
+    mc:Ignorable="d"
+    d:DesignHeight="768"
+    d:DesignWidth="1365"
+    Title="HomeScreen">
     <Grid Background="{StaticResource BrushTextDark}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.45*" />
-            <ColumnDefinition Width="0.55*" />
+            <ColumnDefinition Width="0.45*"/>
+            <ColumnDefinition Width="0.55*"/>
         </Grid.ColumnDefinitions>
-
-        <Border Grid.Column="0">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStart}"
-                                  Offset="0" />
-                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientStep}"
-                                  Offset="0.5" />
-                    <GradientStop Color="{StaticResource ColorAuthBackgroundGradientEnd}"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </Border.Background>
-            <Grid>
-                <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center"
-                            Margin="40,0,0,120" Width="500">
-                    <Viewbox MaxWidth="500" HorizontalAlignment="Left" Margin="0,0,0,6">
-                        <TextBlock x:Name="GameTitleTextBlock"
-                                   Text="{x:Static language:Resources.HomeScreen_Title}"
-                                   Foreground="{StaticResource BrushGoldAccent}"
-                                   FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                                   FontWeight="Bold"
-                                   FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
-                                   TextWrapping="Wrap"
-                                   TextAlignment="Left" />
-                    </Viewbox>
-
-                    <Grid Margin="0,0,0,16" />
-
-                    <Button x:Name="LanguageButton" Width="260" Height="56"
-                            Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
-                            Background="{StaticResource BrushGoldAccent}"
+        <Border Grid.Column="0" Background="{StaticResource BrushBurgundySurface}"/>
+        <Viewbox Grid.ColumnSpan="2" Stretch="Uniform">
+            <Grid Width="1365" Height="768" Background="{StaticResource BrushTransparent}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.45*"/>
+                    <ColumnDefinition Width="0.55*"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Background="{StaticResource BrushTransparent}">
+                    <Grid>
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Margin="36,0,90,0"
+                            Width="480">
+                            <ContentControl
+                                Content="{x:Static language:Resources.Common_GameTitle_Title}"
+                                ContentTemplate="{StaticResource GameTitleTemplate}"
+                                Height="230"/>
+                            <Grid Margin="0,0,0,16"/>
+                            <Button
+                                x:Name="LanguageButton"
+                                Width="260"
+                                Height="56"
+                                Content="{x:Static language:Resources.HomeScreen_LanguageButton}"
+                                Background="{StaticResource BrushGoldAccent}"
+                                Foreground="{StaticResource BrushDarkText}"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                HorizontalAlignment="Left"
+                                Margin="4,40,0,0"
+                                Command="{Binding SelectLanguageCommand}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid Grid.Column="1" Background="{StaticResource BrushTransparent}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
+                        <Button
+                            x:Name="SignUpButton"
+                            Width="420"
+                            Height="84"
+                            Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
+                            Background="{StaticResource BrushSecondaryButtonBackground}"
                             Foreground="{StaticResource BrushDarkText}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                            FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                            FontWeight="SemiBold" BorderThickness="0"
-                            HorizontalAlignment="Left" Margin="4,40,0,0"
-                            Command="{Binding SelectLanguageCommand}" />
-                </StackPanel>
+                            FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Margin="0,0,0,36"
+                            Command="{Binding SignUpCommand}"/>
+                        <Button
+                            x:Name="LoginButton"
+                            Width="420"
+                            Height="84"
+                            Content="{x:Static language:Resources.HomeScreen_LoginButton}"
+                            Background="{StaticResource BrushDeleteButtonBackground}"
+                            Foreground="{StaticResource BrushDarkText}"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Margin="0,0,0,36"
+                            Command="{Binding LoginCommand}"/>
+                        <Button
+                            x:Name="GuestButton"
+                            Width="420"
+                            Height="84"
+                            Content="{x:Static language:Resources.HomeScreen_GuestButton}"
+                            Background="{StaticResource BrushDeleteButtonBackground}"
+                            Foreground="{StaticResource BrushDarkText}"
+                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                            FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Command="{Binding GuestCommand}"/>
+                    </StackPanel>
+                </Grid>
+                <Border
+                    Grid.ColumnSpan="2"
+                    Panel.ZIndex="1"
+                    Width="180"
+                    Height="768"
+                    HorizontalAlignment="Left"
+                    Margin="520,0,0,0"
+                    Style="{StaticResource CardStripDecorationStyle}"/>
             </Grid>
-        </Border>
-
-        <Grid Grid.Column="1" Background="{StaticResource BrushTextDark}">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="420">
-                <Button x:Name="SignUpButton" Width="420" Height="84"
-                        Content="{x:Static language:Resources.HomeScreen_SignUpButton}"
-                        Background="{StaticResource BrushSecondaryButtonBackground}"
-                        Foreground="{StaticResource BrushDarkText}"
-                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                        FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
-                        Command="{Binding SignUpCommand}" />
-                <Button x:Name="LoginButton" Width="420" Height="84"
-                        Content="{x:Static language:Resources.HomeScreen_LoginButton}"
-                        Background="{StaticResource BrushDeleteButtonBackground}"
-                        Foreground="{StaticResource BrushDarkText}"
-                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                        FontWeight="SemiBold" BorderThickness="0" Margin="0,0,0,36"
-                        Command="{Binding LoginCommand}" />
-                <Button x:Name="GuestButton" Width="420" Height="84"
-                        Content="{x:Static language:Resources.HomeScreen_GuestButton}"
-                        Background="{StaticResource BrushDeleteButtonBackground}"
-                        Foreground="{StaticResource BrushDarkText}"
-                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                        FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
-                        FontWeight="SemiBold" BorderThickness="0"
-                        Command="{Binding GuestCommand}" />
-            </StackPanel>
-        </Grid>
+        </Viewbox>
     </Grid>
 </Page>

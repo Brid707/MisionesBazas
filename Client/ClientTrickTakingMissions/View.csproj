@@ -64,12 +64,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\GameBranding.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Resource Include="Assets\Images\Icons\Icon_Game_CardFan.png" />
+    <Resource Include="Assets\Images\Backgrounds\Bg_Auth_CardStrip.png" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\ChatModerationPresenter.cs" />
     <Compile Include="Controls\OverlappingCardHandPanel.cs" />
+    <Compile Include="Controls\GameTitleView.xaml.cs">
+      <DependentUpon>GameTitleView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\GameTitleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="Services\ChatModerationTextFormatter.cs" />
     <Compile Include="Views\Authentication\ChangePassword.xaml.cs">
       <DependentUpon>ChangePassword.xaml</DependentUpon>

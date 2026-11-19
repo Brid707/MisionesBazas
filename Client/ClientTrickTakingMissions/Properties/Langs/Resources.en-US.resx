@@ -836,4 +836,25 @@
   <data name="Match_Distress_WaitingUsage" xml:space="preserve"><value>Vote recorded. Waiting for crew votes:</value></data>
   <data name="Match_Distress_WaitingDirection" xml:space="preserve"><value>Direction voted. Waiting for direction votes:</value></data>
   <data name="Match_Distress_WaitingCards" xml:space="preserve"><value>Card confirmed. Waiting for all players to select their card:</value></data>
+  <data name="Common_GameTitle_FirstLinePrefix_Label" xml:space="preserve">
+    <value>Trick-Taking</value>
+  </data>
+  <data name="Common_GameTitle_FirstLineCardLetter_Label" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Common_GameTitle_FirstLineSuffix_Label" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="Common_GameTitle_SecondLinePrefix_Label" xml:space="preserve">
+    <value>Missi</value>
+  </data>
+  <data name="Common_GameTitle_SecondLineCardLetter_Label" xml:space="preserve">
+    <value>o</value>
+  </data>
+  <data name="Common_GameTitle_SecondLineSuffix_Label" xml:space="preserve">
+    <value>ns</value>
+  </data>
+  <data name="Common_GameTitle_Title" xml:space="preserve">
+    <value>Trick-Taking Missions</value>
+  </data>
 </root>

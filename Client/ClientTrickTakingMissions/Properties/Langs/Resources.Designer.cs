@@ -1600,5 +1600,54 @@ namespace View.Properties.Langs {
             }
         }
 
+
+        public static string Common_GameTitle_FirstLineCardLetter_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_FirstLineCardLetter_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_FirstLinePrefix_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_FirstLinePrefix_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_FirstLineSuffix_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_FirstLineSuffix_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_SecondLineCardLetter_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_SecondLineCardLetter_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_SecondLinePrefix_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_SecondLinePrefix_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_SecondLineSuffix_Label {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_SecondLineSuffix_Label",
+                    resourceCulture);
+            }
+        }
+
+        public static string Common_GameTitle_Title {
+            get {
+                return ResourceManager.GetString("Common_GameTitle_Title",
+                    resourceCulture);
+            }
+        }
     }
 }
