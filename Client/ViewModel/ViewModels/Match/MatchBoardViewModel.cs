@@ -120,7 +120,6 @@ namespace ViewModel.ViewModels
         {
             if (!_isDisposed && Interlocked.CompareExchange(ref _isRequestInProgress, 1, 0) == 0)
             {
-                UpdateHandCardRaisedStates();
                 try
                 {
                     await SynchronizeCoreAsync();
@@ -146,6 +145,7 @@ namespace ViewModel.ViewModels
                 {
                     Interlocked.Exchange(ref _isRequestInProgress, 0);
                     OnPropertyChanged(nameof(CanChooseRadioCard));
+                    OnPropertyChanged(nameof(CanCommunicate));
                     NotifySpecialPreparationProperties();
                     UpdateHandCardRaisedStates();
                     CommandManager.InvalidateRequerySuggested();
@@ -220,11 +220,28 @@ namespace ViewModel.ViewModels
             return false;
         }
 
+        private bool IsMatchInPlayableState
+        {
+            get
+            {
+                bool isSessionActive = !_isDisposed && _isMatchConnected;
+                bool isMatchLive = _confirmedMatchSnapshot != null && !_confirmedMatchSnapshot.IsDealCompleted;
+                return isSessionActive && isMatchLive;
+            }
+        }
+
         private bool CanPlayCurrentTurn()
         {
-            return CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
-                !IsDistressSignalInProgress && CurrentTurnPlayerUserId == _participantUserId;
+            if (!IsMatchInPlayableState)
+            {
+                return false;
+            }
+
+            bool isTurnActive = CurrentTurnPlayerUserId == _participantUserId;
+            bool isPlayAllowed = !IsDistressSignalInProgress && !IsMissionAttemptFinished;
+            bool isPendingFree = _pendingCardPlaySubmission == null && IsMissionPreparationComplete;
+
+            return isTurnActive && isPlayAllowed && isPendingFree;
         }
 
         private void UpdateHandCardRaisedStates()

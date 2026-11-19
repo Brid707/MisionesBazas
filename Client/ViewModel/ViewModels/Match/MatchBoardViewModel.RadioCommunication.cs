@@ -58,14 +58,33 @@ namespace ViewModel.ViewModels
             set => SetProperty(ref _selectedRadioMarker, value);
         }
 
-        public bool CanChooseRadioCard => CanSubmitMatchRequest() && IsMissionPreparationComplete &&
-            !IsMissionAttemptFinished && !IsDistressSignalInProgress &&
-            (_confirmedMatchSnapshot?.OwnRadioAvailability?.IsAvailable ?? true) &&
-            _confirmedMatchSnapshot?.CurrentTrickCardPlays?.Length == 0 &&
-            !(_confirmedMatchSnapshot.RadioCommunications ?? Array.Empty<PlayerRadioCommunicationSnapshot>())
-                .Any(communication => communication.ParticipantUserId == _participantUserId);
+        private bool IsTrickReadyForCommunication
+        {
+            get
+            {
+                MatchCardPlay[] plays = _confirmedMatchSnapshot?.CurrentTrickCardPlays;
+                return plays == null || plays.Length == 0;
+            }
+        }
 
-        public bool CanCommunicate => CanChooseRadioCard;
+        private bool IsRadioAvailableByRules
+        {
+            get
+            {
+                bool isNotBlocked = !IsDistressSignalInProgress && !IsMissionAttemptFinished;
+                bool isPreparationDone = IsMissionPreparationComplete;
+                bool isRadioReady = _confirmedMatchSnapshot?.OwnRadioAvailability?.IsAvailable ?? true;
+                return isNotBlocked && isPreparationDone && isRadioReady;
+            }
+        }
+
+        public bool CanCommunicate =>
+            IsMatchInPlayableState &&
+            IsRadioAvailableByRules &&
+            IsTrickReadyForCommunication &&
+            !HasLocalPlayerCommunicated;
+
+        public bool CanChooseRadioCard => CanCommunicate;
 
         private void InitializeRadioCommand()
         {
@@ -119,6 +138,11 @@ namespace ViewModel.ViewModels
 
         public async Task ExecuteCardCommunicationFromHandAsync(int cardId)
         {
+            if (_pendingRadioSubmission != null)
+            {
+                return;
+            }
+
             IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
             if (positions != null && positions.Count > 0)
             {
@@ -246,6 +270,7 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(CanChooseRadioCard));
             OnPropertyChanged(nameof(CanCommunicate));
             OnPropertyChanged(nameof(IsCommunicationModeActive));
+            (ToggleCommunicationModeCommand as RelayCommand)?.RaiseCanExecuteChanged();
         }
 
         private static RadioTokenPosition MapMarkerToPosition(RadioCommunicationMarker marker)
