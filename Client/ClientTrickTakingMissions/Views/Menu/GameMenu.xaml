@@ -1,130 +1,143 @@
-<Page x:Class="View.Views.GameMenu"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:views="clr-namespace:View.Views"
-      xmlns:styles="clr-namespace:View.Styles"
-      xmlns:language="clr-namespace:View.Properties.Langs"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1365"
-      Title="GameMenu">
-
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStart}"
-                              Offset="0.0" />
-                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep1}"
-                              Offset="0.3" />
-                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientStep2}"
-                              Offset="0.8" />
-                <GradientStop Color="{StaticResource ColorWindowBackgroundGradientEnd}"
-                              Offset="1.0" />
-            </LinearGradientBrush>
-        </Grid.Background>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="260" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0">
-            <StackPanel Orientation="Horizontal"
+<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:views="clr-namespace:View.Views"
+    xmlns:styles="clr-namespace:View.Styles"
+    xmlns:language="clr-namespace:View.Properties.Langs"
+    x:Class="View.Views.GameMenu"
+    mc:Ignorable="d"
+    d:DesignHeight="768"
+    d:DesignWidth="1365"
+    Title="GameMenu">
+    <Grid Background="{StaticResource BrushBurgundySurface}">
+        <Viewbox Stretch="Uniform">
+            <Grid Width="1365" Height="768" Background="{StaticResource BrushBurgundySurface}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="260"/>
+                </Grid.ColumnDefinitions>
+                <Border
+                    Grid.Column="0"
+                    Width="180"
+                    Height="768"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource CardStripDecorationStyle}"/>
+                <Grid Grid.Column="0">
+                    <StackPanel
+                        Orientation="Horizontal"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
-                        Margin="40,30,0,0">
-                <Button x:Name="ProfileButton"
-                        Width="64" Height="64"
-                        Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
-                        Command="{Binding ProfileCommand}"
-                        ToolTip="{x:Static language:Resources.GameMenu_Profile}">
-                    <ContentControl Content="{Binding CurrentPlayerProfileImage}" Width="56" Height="56"
-                                    ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
-                </Button>
-
-                <TextBlock x:Name="UsernameTextBlock"
-                           Text="{Binding Username}"
-                           Foreground="{StaticResource BrushTextLight}"
-                           FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                           FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
-                           FontWeight="SemiBold"
-                           VerticalAlignment="Center"
-                           Margin="14,0,0,0" />
-            </StackPanel>
-
-            <Button x:Name="TrophyButton"
-                    Width="44" Height="44"
-                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,30,120,0"
-                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Cursor="Hand"
-                    Command="{Binding ScoreBoardCommand}"
-                    ToolTip="{x:Static language:Resources.GameMenu_Tooltip_ScoreBoard}">
-                <TextBlock Text="🏆"
-                           FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
-                           HorizontalAlignment="Center" VerticalAlignment="Center" />
-            </Button>
-
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Viewbox MaxWidth="800" MaxHeight="110" HorizontalAlignment="Center" Margin="0,0,0,44">
-                    <TextBlock x:Name="GameTitleTextBlock"
-                               Text="{x:Static language:Resources.GameMenu_Title}"
-                               Foreground="{StaticResource BrushGoldAccent}"
-                               FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
-                               FontWeight="Bold"
-                               FontSize="{x:Static styles:FontTypography.HeroTitleFontSize}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center" />
-                </Viewbox>
-
-                <StackPanel HorizontalAlignment="Center" Width="440">
-                    <Button x:Name="CreateRoomButton"
-                            Content="{x:Static language:Resources.GameMenu_CreateRoom}"
-                            Width="440" Height="72"
-                            Background="{StaticResource BrushGoldAccent}"
-                            Foreground="{StaticResource BrushDarkText}"
-                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
-                            FontWeight="SemiBold"
-                            BorderThickness="0" Margin="0,0,0,24"
-                            Command="{Binding CreateRoomCommand}" />
-
-                    <Button x:Name="JoinLobbyButton"
-                            Content="{x:Static language:Resources.GameMenu_JoinLobby}"
-                            Width="440" Height="72"
-                            Background="{StaticResource BrushGoldAccent}"
-                            Foreground="{StaticResource BrushDarkText}"
-                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
-                            FontWeight="SemiBold"
-                            BorderThickness="0" Margin="0,0,0,24"
-                            Command="{Binding JoinLobbyCommand}" />
-
-                    <Button x:Name="HowToPlayButton"
-                            Content="{x:Static language:Resources.GameMenu_HowToPlay}"
-                            Width="440" Height="72"
-                            Background="{StaticResource BrushGoldAccent}"
-                            Foreground="{StaticResource BrushDarkText}"
-                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
-                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
-                            FontWeight="SemiBold"
+                        Margin="192,30,0,0">
+                        <Button
+                            x:Name="ProfileButton"
+                            Width="64"
+                            Height="64"
+                            Background="{StaticResource BrushTransparent}"
                             BorderThickness="0"
-                            Command="{Binding HowToPlayCommand}" />
-
-                    <Button x:Name="SignOutButton"
-                            Content="{x:Static language:Resources.GameMenu_SignOut}"
-                            Width="440" Height="72"
-                            Background="{StaticResource BrushDanger}"
+                            Cursor="Hand"
+                            Command="{Binding ProfileCommand}"
+                            ToolTip="{x:Static language:Resources.GameMenu_Profile}">
+                            <ContentControl
+                                Content="{Binding CurrentPlayerProfileImage}"
+                                Width="56"
+                                Height="56"
+                                ContentTemplate="{StaticResource ProfileAvatarTemplate}"/>
+                        </Button>
+                        <TextBlock
+                            x:Name="UsernameTextBlock"
+                            Text="{Binding Username}"
                             Foreground="{StaticResource BrushTextLight}"
                             FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                             FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                             FontWeight="SemiBold"
-                            BorderThickness="2" Margin="0,24,0,0"
-                            Command="{Binding SignOutCommand}" />
-                </StackPanel>
-            </StackPanel>
-        </Grid>
-
-        <!-- Dynamic Modular Friends View -->
-        <views:FriendsView Grid.Column="1" />
+                            VerticalAlignment="Center"
+                            Margin="14,0,0,0"/>
+                    </StackPanel>
+                    <Button
+                        x:Name="TrophyButton"
+                        Width="44"
+                        Height="44"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Margin="0,30,120,0"
+                        Background="{StaticResource BrushTransparent}"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Command="{Binding ScoreBoardCommand}"
+                        ToolTip="{x:Static language:Resources.GameMenu_Tooltip_ScoreBoard}">
+                        <TextBlock
+                            Text="🏆"
+                            FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Button>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="180,0,0,0">
+                        <ContentControl
+                            Content="{x:Static language:Resources.Common_GameTitle_Title}"
+                            ContentTemplate="{StaticResource GameTitleTemplate}"
+                            Width="640"
+                            Height="200"
+                            Margin="0,0,0,24"/>
+                        <StackPanel HorizontalAlignment="Center" Width="440">
+                            <Button
+                                x:Name="CreateRoomButton"
+                                Content="{x:Static language:Resources.GameMenu_CreateRoom}"
+                                Width="440"
+                                Height="72"
+                                Background="{StaticResource BrushGoldAccent}"
+                                Foreground="{StaticResource BrushDarkText}"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                Margin="0,0,0,24"
+                                Command="{Binding CreateRoomCommand}"/>
+                            <Button
+                                x:Name="JoinLobbyButton"
+                                Content="{x:Static language:Resources.GameMenu_JoinLobby}"
+                                Width="440"
+                                Height="72"
+                                Background="{StaticResource BrushGoldAccent}"
+                                Foreground="{StaticResource BrushDarkText}"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                Margin="0,0,0,24"
+                                Command="{Binding JoinLobbyCommand}"/>
+                            <Button
+                                x:Name="HowToPlayButton"
+                                Content="{x:Static language:Resources.GameMenu_HowToPlay}"
+                                Width="440"
+                                Height="72"
+                                Background="{StaticResource BrushGoldAccent}"
+                                Foreground="{StaticResource BrushDarkText}"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.PrimaryActionFontSize}"
+                                FontWeight="SemiBold"
+                                BorderThickness="0"
+                                Command="{Binding HowToPlayCommand}"/>
+                            <Button
+                                x:Name="SignOutButton"
+                                Content="{x:Static language:Resources.GameMenu_SignOut}"
+                                Width="440"
+                                Height="72"
+                                Background="{StaticResource BrushDanger}"
+                                Foreground="{StaticResource BrushTextLight}"
+                                FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
+                                FontWeight="SemiBold"
+                                BorderThickness="2"
+                                Margin="0,24,0,0"
+                                Command="{Binding SignOutCommand}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+                <!-- Dynamic Modular Friends View -->
+                <views:FriendsView Grid.Column="1"/>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Page>

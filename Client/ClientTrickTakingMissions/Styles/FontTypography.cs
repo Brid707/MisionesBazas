@@ -15,10 +15,17 @@ namespace View.Styles
         public static FontFamily BodyFontFamily { get; } =
             new FontFamily("Segoe UI");
 
+        public static FontFamily GameBrandTitleFontFamily { get; } =
+            new FontFamily("Cooper Black, Georgia, Arial Black");
+
+        public static FontFamily AuthenticationHeadingFontFamily { get; } =
+            new FontFamily("Segoe Print, Segoe UI");
+
         // Display and hero title font sizes.
         public const double HeroTitleFontSize = 80.0;
         public const double DisplayTitleFontSize = 64.0;
         public const double ProfileTitleFontSize = 42.0;
+        public const double AuthenticationHeadingFontSize = 48.0;
 
         // Modal and window header font sizes.
         public const double LargeTitleFontSize = 32.0;
