@@ -104,6 +104,10 @@
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
+      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -148,20 +152,6 @@
     <Compile Include="UseCases\Match\MatchPlayValidation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressPassDirection.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalPhase.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalConfirmation.cs" />
     <Compile Include="Models\Match\Distress\DistressSignalRejection.cs" />
     <Compile Include="Models\Match\Distress\DistressSignalRequest.cs" />
     <Compile Include="Models\Match\Distress\DistressSignalCommit.cs" />
@@ -169,17 +159,10 @@
     <Compile Include="UseCases\Match\MatchUseCase.DistressSignal.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\Match\CompletedTrickResolution.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionEvaluation.cs" />
     <Compile Include="UseCases\Match\MissionEvaluationMapper.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionEvaluation.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionObjectiveStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionAttemptEvaluationStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\MissionAttemptPreparationContext.cs" />
@@ -192,10 +175,6 @@
     <Compile Include="UseCases\Match\MissionAttemptPreparation.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionRetry.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionRetry.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryRejectionReason.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\MissionTransitionPolicy.cs" />
@@ -210,17 +189,8 @@
     <Compile Include="Models\Match\MissionTransitionExecutionResult.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionScheduling.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionExecution.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryStatus.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\PlayerMissionPreparationSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftAction.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftRejectionReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveToken.cs" />
     <Compile Include="Models\Match\ObjectiveDraftSubmission.cs" />
     <Compile Include="Models\Match\ObjectiveDraftDecision.cs" />
     <Compile Include="Models\Match\ProcessedObjectiveDraft.cs" />
@@ -229,14 +199,9 @@
     <Compile Include="Models\Match\ObjectiveDraftRejectionReason.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.ObjectiveDraft.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.ObjectiveDraft.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\Match\MatchActionRequestLimits.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
     <Compile Include="Models\Match\MatchStartContext.cs" />
     <Compile Include="Models\Match\MissionTransitionAction.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionDestination.cs" />
@@ -252,29 +217,12 @@
     <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
     <Compile Include="UseCases\Match\RadioCommunicationRuleMapping.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.RadioCommunication.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\MissionTrickStatistics.cs" />
     <Compile Include="Models\Match\Preparation\MissionPreparationRejection.cs" />
     <Compile Include="Models\Match\Preparation\MissionPreparationAction.cs" />
     <Compile Include="UseCases\Match\MissionImplementationPolicy.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\Preparation\MissionPreparationRequest.cs" />
@@ -285,15 +233,8 @@
     <Compile Include="Models\Match\MatchState.SpecialPreparation.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.SpecialPreparation.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.SpecialPreparation.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="UseCases\Match\RadioCommunicationContextFactory.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="UseCases\Match\MatchUseCase.FinalMissionPreparation.cs" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

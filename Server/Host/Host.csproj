@@ -120,6 +120,10 @@
     <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
       <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project><Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
+      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
     <Content Include="ModerationCatalogBackups\ValidatedCatalog.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -229,89 +229,17 @@
       <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
       <Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionObjectiveStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionAttemptEvaluationStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionEvaluationSnapshot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetrySnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryRejectionReason.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Retry\MissionRetryStatus.cs" />
+    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
+      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\Partials\ILobbyServiceCallback.MatchPresence.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\MatchCardPlay.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlaySubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\CardPlayDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressPassDirection.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalPhase.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalConfirmation.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Services\LobbyAndMatch\IMatchClient.cs" />
     <Compile Include="Services\LobbyAndMatch\LobbyClient.Match.cs" />
     <Compile Include="Services\Partials\LobbyServiceClient.Match.cs" />
     <Compile Include="Services\Partials\LobbyResult.Guest.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\PlayerMissionPreparationSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftAction.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveDraftRejectionReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Preparation\MissionObjectiveToken.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
-    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
-  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

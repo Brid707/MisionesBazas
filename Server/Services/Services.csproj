@@ -93,6 +93,10 @@
       <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project>
       <Name>Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
+      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
+      <Name>Gameplay</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -126,11 +130,6 @@
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
       <Name>Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\Gameplay\IMatchService.cs">
-      <Link>Gameplay\IMatchService.cs</Link>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\Match\LobbyService.Match.cs" />
