@@ -20,7 +20,7 @@ namespace ViewModel.ViewModels
         public bool IsMissionPreparationComplete => _confirmedMatchSnapshot?.MissionPreparation?.IsPreparationComplete
             ?? false;
         public bool IsObjectiveDraftVisible => _confirmedMatchSnapshot?.MissionPreparation != null &&
-            !IsMissionPreparationComplete;
+            !IsMissionPreparationComplete && !IsSpecialPreparationVisible;
         public string CurrentObjectiveDraftPlayerName => GetParticipantName(
             _confirmedMatchSnapshot?.MissionPreparation?.CurrentObjectiveDraftPlayerUserId ?? 0);
 
@@ -34,7 +34,8 @@ namespace ViewModel.ViewModels
         private bool CanSubmitMatchRequest()
         {
             return !_isDisposed && _isMatchConnected && _isRequestInProgress == 0 &&
-                _pendingObjectiveDraftSubmission == null && _pendingCardPlaySubmission == null;
+                _pendingObjectiveDraftSubmission == null && _pendingCardPlaySubmission == null &&
+                _pendingRadioSubmission == null && !HasPendingPreparation;
         }
 
         private bool CanSubmitObjectiveDraft()

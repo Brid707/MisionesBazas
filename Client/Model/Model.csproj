@@ -257,9 +257,6 @@
     <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
-    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerRadioCommunicationSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalDecision.cs" />
@@ -287,5 +284,30 @@
     <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionStatus.cs" />
     <Compile Include="..\..\Shared\Gameplay\Progression\MissionTransitionKind.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
   </ItemGroup>
 </Project>

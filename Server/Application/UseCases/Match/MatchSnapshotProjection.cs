@@ -29,10 +29,18 @@ namespace Application.UseCases
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
                 MissionTransition = transition,
+                RadioCommunications = CreateRadioCommunications(matchState),
+                RadioMode = GetRadioMode(matchState),
+                OwnRadioAvailability = CreateRadioAvailability(matchState, participantSeat),
+                MissionConditionProgress = new MissionConditionProgressSnapshot
+                {
+                    TricksWonWithNormalOneCount = matchState.TrickStatistics.TricksWonWithNormalOneCount,
+                    SpecialWinningCardIds = matchState.TrickStatistics.SpecialWinningCardIds.ToArray(),
+                    CapturedHeartCardCount = MatchUseCase.CountCapturedHearts(matchState)
+                },
                 MissionRetry = CreateMissionRetry(transition),
                 MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat),
-                RadioCommunications = CreateRadioCommunicationSnapshots(matchState),
                 DistressSignal = CreateDistressSignalSnapshot(matchState)
             };
         }
@@ -62,37 +70,6 @@ namespace Application.UseCases
                     WonTrickCount = matchState.WonTrickCountsBySeat[participantSeat],
                     WonCardIds = matchState.WonCardIdsBySeat[participantSeat].ToArray()
                 }).ToArray();
-        }
-
-        private static PlayerRadioCommunicationSnapshot[] CreateRadioCommunicationSnapshots(MatchState matchState)
-        {
-            if (matchState.MissionAttempt?.RadioCommunicationsBySeat == null)
-            {
-                return Array.Empty<PlayerRadioCommunicationSnapshot>();
-            }
-
-            PlayerRadioCommunicationSnapshot[] snapshots =
-                new PlayerRadioCommunicationSnapshot[matchState.ParticipantUserIds.Length];
-            for (int seatIndex = 0; seatIndex < matchState.ParticipantUserIds.Length; seatIndex++)
-            {
-                TrickTakingMissions.Rules.Models.PlayerRadioCommunicationState commState =
-                    seatIndex < matchState.MissionAttempt.RadioCommunicationsBySeat.Count
-                        ? matchState.MissionAttempt.RadioCommunicationsBySeat[seatIndex]
-                        : null;
-
-                snapshots[seatIndex] = new PlayerRadioCommunicationSnapshot
-                {
-                    PlayerUserId = matchState.ParticipantUserIds[seatIndex],
-                    Seat = (byte)seatIndex,
-                    CommunicatedCardId = commState?.CommunicatedCard?.IdCard,
-                    TokenPosition = commState?.TokenPosition
-                        ?? TrickTakingMissions.Rules.Enums.RadioTokenPosition.Highest,
-                    HasUsedCommunicationToken = commState?.HasUsedCommunicationToken ?? false,
-                    IsSilencedByCaptain = commState?.IsSilencedByCaptain ?? false
-                };
-            }
-
-            return snapshots;
         }
 
         private static DistressSignalSnapshot CreateDistressSignalSnapshot(MatchState matchState)

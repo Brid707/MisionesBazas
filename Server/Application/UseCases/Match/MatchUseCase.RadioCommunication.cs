@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Application.Models;
-using Gameplay;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
@@ -11,152 +9,145 @@ namespace Application.UseCases
 {
     public sealed partial class MatchUseCase
     {
-        /// <summary>
-        /// Processes a player's radio communication submission according to mission rules and current trick state.
-        /// </summary>
-        /// <param name="submission">The radio communication payload specifying card and position data.</param>
-        /// <param name="participantUserId">The unique identifier of the requesting participant.</param>
-        /// <returns>The decision indicating whether communication was accepted or rejected with details.</returns>
-        public RadioCommunicationDecision CommunicateCard(
-            RadioCommunicationSubmission submission, int participantUserId)
+        private const int MaximumRadioRequestsPerSecond = 4;
+        private const int MaximumRadioLobbyCodeLength = 16;
+
+        public RadioCommunicationCommit SubmitRadioCommunication(
+            RadioCommunicationRequest request, int participantUserId)
         {
-            if (submission == null || string.IsNullOrWhiteSpace(submission.LobbyCode))
+            var result = RejectRadio(request, RadioCommunicationRejection.InvalidSubmission);
+            if (request != null && !string.IsNullOrWhiteSpace(request.LobbyCode) &&
+                request.LobbyCode.Length <= MaximumRadioLobbyCodeLength)
             {
-                return new RadioCommunicationDecision
+                MatchState matchState = _matchStateStore.FindMatch(request.LobbyCode);
+                result = RejectRadio(request, RadioCommunicationRejection.MatchUnavailable);
+                if (matchState != null)
                 {
-                    IsAccepted = false,
-                    RejectionReason = RadioCommunicationRejectionReason.CardNotInHand
-                };
+                    lock (matchState)
+                    {
+                        result = ResolveRadioRequest(matchState, request, participantUserId);
+                    }
+                }
             }
-
-            MatchState matchState = _matchStateStore.FindMatch(submission.LobbyCode);
-            if (matchState == null)
-            {
-                return new RadioCommunicationDecision
-                {
-                    IsAccepted = false,
-                    RejectionReason = RadioCommunicationRejectionReason.CardNotInHand
-                };
-            }
-
-            lock (matchState)
-            {
-                return ProcessRadioCommunicationUnderLock(matchState, submission, participantUserId);
-            }
+            return result;
         }
 
-        private static RadioCommunicationDecision ProcessRadioCommunicationUnderLock(
-            MatchState matchState, RadioCommunicationSubmission submission, int participantUserId)
+        private static RadioCommunicationCommit ResolveRadioRequest(MatchState matchState,
+            RadioCommunicationRequest request, int participantUserId)
         {
-            int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
-            if (!IsValidParticipantAndAttempt(matchState, submission, participantSeat))
+            RadioCommunicationRejection identityRejection =
+                ValidateRadioIdentity(matchState, request, participantUserId);
+            RadioCommunicationCommit result;
+            if (identityRejection != RadioCommunicationRejection.None)
             {
-                return new RadioCommunicationDecision
-                {
-                    IsAccepted = false,
-                    RejectionReason = RadioCommunicationRejectionReason.CardNotInHand
-                };
+                result = RejectRadio(request, identityRejection);
             }
-
-            List<int> handCardIds = matchState.PlayerHandCardIdsBySeat[participantSeat];
-            if (!handCardIds.Contains(submission.CardId))
+            else if (matchState.ProcessedRadioCommunicationsBySubmissionId.TryGetValue(
+                request.RadioCommunicationSubmissionId, out CommittedRadioCommunication previous))
             {
-                return new RadioCommunicationDecision
-                {
-                    IsAccepted = false,
-                    RejectionReason = RadioCommunicationRejectionReason.CardNotInHand
-                };
+                result = previous.ParticipantUserId == participantUserId && previous.Request == request
+                    ? new RadioCommunicationCommit
+                    {
+                        RadioCommunicationSubmissionId = request.RadioCommunicationSubmissionId,
+                        CommittedMatchStateVersion = previous.CommittedMatchStateVersion
+                    }
+                    : RejectRadio(request, RadioCommunicationRejection.SubmissionIdentityReused);
             }
-
-            RadioCommunicationContext context = BuildRadioCommunicationContext(
-                matchState, submission, participantSeat);
-            RadioCommunicationValidationResult validation =
-                RadioCommunicationRules.ValidateCommunication(context);
-
-            if (!validation.IsValid)
+            else
             {
-                return new RadioCommunicationDecision
-                {
-                    IsAccepted = false,
-                    RejectionReason = validation.RejectionReason,
-                    CommittedMatchStateVersion = matchState.MatchStateVersion
-                };
+                result = ProcessNewRadioRequest(matchState, request, participantUserId);
             }
+            return result;
+        }
 
-            PlayerRadioCommunicationState playerCommState =
-                matchState.MissionAttempt.RadioCommunicationsBySeat[participantSeat];
-            PlayerRadioCommunicationState updatedState = new PlayerRadioCommunicationState
+        private static RadioCommunicationRejection ValidateRadioIdentity(MatchState matchState,
+            RadioCommunicationRequest request, int participantUserId)
+        {
+            RadioCommunicationRejection rejection = RadioCommunicationRejection.None;
+            if (!matchState.ParticipantUserIds.Contains(participantUserId))
             {
-                Seat = (byte)participantSeat,
-                HasUsedCommunicationToken = true,
-                IsSilencedByCaptain = playerCommState.IsSilencedByCaptain,
-                CommunicatedCard = context.CardToCommunicate,
-                TokenPosition = validation.ResolvedPosition
+                rejection = RadioCommunicationRejection.ParticipantNotAllowed;
+            }
+            else if (request.MatchId != matchState.MatchId || request.RadioCommunicationSubmissionId == Guid.Empty ||
+                request.SelectedMarker == RadioPublicMarker.None ||
+                !Enum.IsDefined(typeof(RadioPublicMarker), request.SelectedMarker))
+            {
+                rejection = RadioCommunicationRejection.InvalidSubmission;
+            }
+            else if (request.MissionAttemptId != matchState.MissionAttempt.MissionAttemptId)
+            {
+                rejection = RadioCommunicationRejection.WrongMissionAttempt;
+            }
+            return rejection;
+        }
+
+        private static RadioCommunicationCommit ProcessNewRadioRequest(MatchState matchState,
+            RadioCommunicationRequest request, int participantUserId)
+        {
+            RadioCommunicationRejection rejection = ValidateRadioWindow(matchState, request, participantUserId);
+            RadioCommunicationValidationResult validation = null;
+            if (rejection == RadioCommunicationRejection.None)
+            {
+                validation = RadioCommunicationRules.ValidateCommunication(
+                    CreateRadioContext(matchState, request, participantUserId));
+                rejection = RadioCommunicationRuleMapping.MapRejection(validation.RejectionReason);
+            }
+            RadioCommunicationCommit result = RejectRadio(request, rejection);
+            if (rejection == RadioCommunicationRejection.None)
+            {
+                result = matchState.CommitRadioCommunication(new CommittedRadioCommunication
+                {
+                    ParticipantUserId = participantUserId,
+                    Request = request,
+                    ResolvedPublicMarker = RadioCommunicationRuleMapping.MapResolvedMarker(validation.ResolvedPosition),
+                    CommittedMatchStateVersion = matchState.MatchStateVersion + 1
+                });
+            }
+            return result;
+        }
+
+        private static RadioCommunicationRejection ValidateRadioWindow(MatchState matchState,
+            RadioCommunicationRequest request, int participantUserId)
+        {
+            RadioCommunicationRejection rejection = RadioCommunicationRejection.RequestLimitReached;
+            if (MatchActionRequestLimits.ConsumeParticipantWindow(matchState.RadioBudgetsByParticipantUserId,
+                participantUserId, MaximumRadioRequestsPerSecond) != null)
+            {
+                rejection = ValidateRadioPhase(matchState, request);
+            }
+            return rejection;
+        }
+
+        private static RadioCommunicationRejection ValidateRadioPhase(MatchState matchState,
+            RadioCommunicationRequest request)
+        {
+            RadioCommunicationRejection rejection = RadioCommunicationRejection.MissionPreparationRequired;
+            if (matchState.MissionAttempt.Phase == MissionAttemptPhase.Finished)
+            {
+                rejection = RadioCommunicationRejection.MissionAttemptFinished;
+            }
+            else if (matchState.MissionAttempt.Phase == MissionAttemptPhase.PlayingTricks)
+            {
+                rejection = request.ExpectedMatchStateVersion == matchState.MatchStateVersion
+                    ? RadioCommunicationRejection.None : RadioCommunicationRejection.StaleMatchState;
+            }
+            return rejection;
+        }
+
+        private static RadioCommunicationContext CreateRadioContext(MatchState matchState,
+            RadioCommunicationRequest request, int participantUserId)
+        {
+            return RadioCommunicationContextFactory.Create(matchState, participantUserId, request);
+        }
+
+        private static RadioCommunicationCommit RejectRadio(RadioCommunicationRequest request,
+            RadioCommunicationRejection rejection)
+        {
+            return new RadioCommunicationCommit
+            {
+                RadioCommunicationSubmissionId = request?.RadioCommunicationSubmissionId ?? Guid.Empty,
+                Rejection = rejection
             };
-
-            CommitRadioCommunication(matchState, participantSeat, updatedState);
-
-            return new RadioCommunicationDecision
-            {
-                IsAccepted = true,
-                RejectionReason = RadioCommunicationRejectionReason.None,
-                CommittedMatchStateVersion = matchState.MatchStateVersion
-            };
-        }
-
-        private static bool IsValidParticipantAndAttempt(
-            MatchState matchState, RadioCommunicationSubmission submission, int participantSeat)
-        {
-            if (participantSeat < 0 || submission.MatchId != matchState.MatchId)
-            {
-                return false;
-            }
-
-            if (matchState.MissionAttempt == null ||
-                submission.MissionAttemptId != matchState.MissionAttempt.MissionAttemptId)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private static RadioCommunicationContext BuildRadioCommunicationContext(
-            MatchState matchState, RadioCommunicationSubmission submission, int participantSeat)
-        {
-            List<int> handCardIds = matchState.PlayerHandCardIdsBySeat[participantSeat];
-            List<Card> handCards = handCardIds.Select(DeckRules.GetCardById).ToList();
-            Card cardToCommunicate = DeckRules.GetCardById(submission.CardId);
-            MissionDefinition missionDefinition = MissionCatalog.GetMission(
-                matchState.MissionAttempt.MissionNumber);
-            PlayerRadioCommunicationState playerCommState =
-                matchState.MissionAttempt.RadioCommunicationsBySeat[participantSeat];
-
-            return new RadioCommunicationContext
-            {
-                HandCards = handCards,
-                CardToCommunicate = cardToCommunicate,
-                SelectedPosition = submission.SelectedPosition,
-                CommunicationRule = missionDefinition.CommunicationRule,
-                CurrentTrickNumber = matchState.CurrentTrickNumber,
-                IsTrickInProgress = matchState.CurrentTrickCardPlays.Count > 0,
-                HasCommunicatedThisAttempt = playerCommState.HasUsedCommunicationToken,
-                IsSilencedByCaptain = playerCommState.IsSilencedByCaptain
-            };
-        }
-
-        private static void CommitRadioCommunication(
-            MatchState matchState, int participantSeat, PlayerRadioCommunicationState updatedState)
-        {
-            List<PlayerRadioCommunicationState> updatedCommunications =
-                new List<PlayerRadioCommunicationState>(matchState.MissionAttempt.RadioCommunicationsBySeat);
-
-            updatedCommunications[participantSeat] = updatedState;
-
-            matchState.CommitMissionAttemptUpdate(matchState.MissionAttempt with
-            {
-                RadioCommunicationsBySeat = updatedCommunications.AsReadOnly()
-            });
         }
     }
 }

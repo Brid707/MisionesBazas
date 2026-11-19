@@ -19,12 +19,50 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(context));
             }
+            ValidateRequiredWonTrickCounts(context);
             bool isTrickNumberValid = context.CurrentTrickNumber >= 1 &&
                 context.CurrentTrickNumber <= context.TotalTricksInMission;
             bool isWinningPlayIncluded = context.CompletedTrickPlays.Contains(context.WinningPlay);
             if (!isTrickNumberValid || !isWinningPlayIncluded)
             {
                 throw new ArgumentException(nameof(context));
+            }
+        }
+
+        private static void ValidateRequiredWonTrickCounts(MissionEvaluationContext context)
+        {
+            if (IsWonTrickCountValidationRequired(context.Definition.SpecialRule))
+            {
+                if (!MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) ||
+                    context.TotalTricksWonBySeat == null ||
+                    context.TotalTricksWonBySeat.Count != context.PlayerCount)
+                {
+                    throw new ArgumentException(nameof(context.TotalTricksWonBySeat));
+                }
+                ValidateCompletedTrickCounts(context);
+            }
+        }
+
+        private static bool IsWonTrickCountValidationRequired(SpecialMissionRuleType specialRule)
+        {
+            return specialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks ||
+                specialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo ||
+                specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard ||
+                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo ||
+                specialRule == SpecialMissionRuleType.M41_SelectedPlayerWinsOnlyFirstAndLastTrickWithoutSpecialCard ||
+                specialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution;
+        }
+
+        private static void ValidateCompletedTrickCounts(MissionEvaluationContext context)
+        {
+            bool hasInvalidCount = context.TotalTricksWonBySeat.Any(entry =>
+                entry.Key < 0 || entry.Key >= context.PlayerCount || entry.Value < 0);
+            long countedTricks = context.TotalTricksWonBySeat.Sum(entry => (long)entry.Value);
+            bool hasCountedWinningSeat = context.TotalTricksWonBySeat.TryGetValue(context.WinningPlay.Seat,
+                out int winningSeatTrickCount) && winningSeatTrickCount > 0;
+            if (hasInvalidCount || countedTricks != context.CurrentTrickNumber || !hasCountedWinningSeat)
+            {
+                throw new ArgumentException(nameof(context.TotalTricksWonBySeat));
             }
         }
 

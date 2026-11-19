@@ -149,4 +149,16 @@
     <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />
     <Compile Include="Services\Match\LobbyService.ObjectiveDraft.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mapping\RadioCommunicationMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.RadioCommunication.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mapping\MissionPreparationMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.SpecialPreparation.cs" />
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
+      <Name>TrickTakingMissions.Rules</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

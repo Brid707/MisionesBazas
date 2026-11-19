@@ -47,6 +47,16 @@ namespace ViewModel.ViewModels
             {
                 feedbackResourceKey = "MissionRetry_Error_PreparationUnavailable";
             }
+            if (_pendingRadioSubmission != null &&
+                (matchAccessFault?.FailureCode == nameof(RadioCommunicationFailureReason.OperationUnavailable) ||
+                    matchAccessFault?.FailureCode == nameof(RadioCommunicationFailureReason.RequestLimitReached)))
+            {
+                feedbackResourceKey = "Radio_Error_" + matchAccessFault.FailureCode;
+            }
+            if (HasPendingPreparation)
+            {
+                feedbackResourceKey = "MissionPreparation_Error_OperationUnavailable";
+            }
             return feedbackResourceKey;
         }
 

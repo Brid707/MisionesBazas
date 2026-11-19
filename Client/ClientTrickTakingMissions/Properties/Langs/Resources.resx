@@ -174,7 +174,7 @@
     <value>* Debes ingresar un usuario</value>
   </data>
   <data name="Register_EmptyPassword" xml:space="preserve">
-    <value>* Debes ingresar una contraseÃ±a</value>
+    <value>* Debes ingresar una contraseña</value>
   </data>
   <data name="Register_EmptyPasswordConfirmation" xml:space="preserve">
     <value>* Debes ingresar de nuevo la contraseña</value>
@@ -225,7 +225,7 @@
     <value>* Debes ingresar un correo</value>
   </data>
   <data name="Login_EmptyPassword" xml:space="preserve">
-    <value>* Debes ingresar una contraseÃ±a</value>
+    <value>* Debes ingresar una contraseña</value>
   </data>
   <data name="Login_InvalidCredentials" xml:space="preserve">
     <value>* El correo y/o la contraseña no coinciden</value>
@@ -674,6 +674,139 @@
   <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>La siguiente misión todavía no está disponible. Se conserva su victoria.</value></data>
   <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Esperando la confirmación del servidor.</value></data>
   <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Sin conexión. El servidor comprobará el estado cuando regreses.</value></data>
+  <data name="MissionInstruction_MissionFive_Description" xml:space="preserve"><value>Misión 5: al finalizar el reparto, al menos un jugador debe seguir sin ganar ninguna baza. Si todos ganan alguna, pierden la misión.</value></data>
+  <data name="MissionEvaluation_Error_AllParticipantsWonAtLeastOneTrick" xml:space="preserve"><value>Misión fallida: todos los jugadores ganaron al menos una baza.</value></data>
+  <data name="MissionInstruction_MissionSix_Description" xml:space="preserve"><value>Misión 6: completa &gt; antes de &gt;&gt;; el otro objetivo no tiene orden. Con interferencia puedes revelar una carta válida, sin indicar si es mayor, menor o única.</value></data>
+  <data name="MissionInstruction_MissionSeven_Description" xml:space="preserve"><value>Misión 7: completa primero los dos objetivos sin ficha y después el objetivo Ω. No tiene que ser la última baza.</value></data>
+  <data name="MissionInstruction_MissionEight_Description" xml:space="preserve"><value>Misión 8: completa los objetivos 1, 2 y 3 en ese orden, en bazas diferentes.</value></data>
+  <data name="Radio_Label_Communicate" xml:space="preserve"><value>Radio — revelar una carta</value></data>
+  <data name="Radio_Label_Help" xml:space="preserve"><value>Una vez por intento y antes de comenzar una baza. Selecciona una carta normal mayor, menor o única de su palo; con interferencia se oculta la posición.</value></data>
+  <data name="Radio_Label_Reveal" xml:space="preserve"><value>Revelar</value></data>
+  <data name="Radio_Label_Played" xml:space="preserve"><value>Ya jugada</value></data>
+  <data name="Radio_Marker_None" xml:space="preserve"><value></value></data>
+  <data name="Radio_Marker_Highest" xml:space="preserve"><value>La mayor del palo</value></data>
+  <data name="Radio_Marker_Only" xml:space="preserve"><value>La única del palo</value></data>
+  <data name="Radio_Marker_Lowest" xml:space="preserve"><value>La menor del palo</value></data>
+  <data name="Radio_Marker_Hidden" xml:space="preserve"><value>Posición oculta</value></data>
+  <data name="Radio_Error_InvalidSubmission" xml:space="preserve"><value>La solicitud de radio no es válida.</value></data>
+  <data name="Radio_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="Radio_Error_ParticipantNotAllowed" xml:space="preserve"><value>No puedes comunicar en esta partida.</value></data>
+  <data name="Radio_Error_WrongMissionAttempt" xml:space="preserve"><value>El intento cambió. Revisa tu mano antes de comunicar.</value></data>
+  <data name="Radio_Error_SubmissionIdentityReused" xml:space="preserve"><value>La identidad de comunicación no coincide con la solicitud original.</value></data>
+  <data name="Radio_Error_StaleMatchState" xml:space="preserve"><value>La mesa cambió. Revisa el estado y selecciona de nuevo.</value></data>
+  <data name="Radio_Error_MissionPreparationRequired" xml:space="preserve"><value>Termina primero la selección de objetivos.</value></data>
+  <data name="Radio_Error_MissionAttemptFinished" xml:space="preserve"><value>El intento ya terminó.</value></data>
+  <data name="Radio_Error_CardNotInHand" xml:space="preserve"><value>Esa carta ya no está en tu mano.</value></data>
+  <data name="Radio_Error_SpecialCardNotAllowed" xml:space="preserve"><value>No puedes revelar una carta K por radio.</value></data>
+  <data name="Radio_Error_AlreadyCommunicatedThisAttempt" xml:space="preserve"><value>Ya utilizaste la radio en este intento.</value></data>
+  <data name="Radio_Error_CannotCommunicateDuringActiveTrick" xml:space="preserve"><value>Espera a que termine la baza para comunicar.</value></data>
+  <data name="Radio_Error_InvalidTokenPositionForCard" xml:space="preserve"><value>La carta o posición no cumple las reglas de comunicación.</value></data>
+  <data name="Radio_Error_RequestLimitReached" xml:space="preserve"><value>Hay demasiadas solicitudes. Espera un momento.</value></data>
+  <data name="Radio_Error_OperationUnavailable" xml:space="preserve"><value>No se pudo confirmar la comunicación. Puedes comprobar la solicitud pendiente.</value></data>
+  <data name="MissionInstruction_MissionNine_Description" xml:space="preserve"><value>Ganen una baza con un 1 normal; capturarlo no basta.</value></data>
+  <data name="MissionInstruction_MissionTen_Description" xml:space="preserve"><value>Completen los cuatro objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionEleven_Description" xml:space="preserve"><value>El capitán elige a quién silenciar. Completen cuatro objetivos; el marcado 1 debe ser primero.</value></data>
+  <data name="MissionInstruction_MissionTwelve_Description" xml:space="preserve"><value>Completen cuatro objetivos; Omega debe ser el último objetivo.</value></data>
+  <data name="MissionInstruction_MissionThirteen_Description" xml:space="preserve"><value>Cada K debe ganar su propia baza. Si una K pierde, la misión fracasa.</value></data>
+  <data name="MissionInstruction_MissionFourteen_Description" xml:space="preserve"><value>Completen cuatro objetivos. Respeten &gt;, &gt;&gt; y &gt;&gt;&gt;; la radio oculta la posición de su ficha.</value></data>
+  <data name="MissionInstruction_MissionFifteen_Description" xml:space="preserve"><value>Completen los cuatro objetivos en orden numérico 1, 2, 3 y 4.</value></data>
+  <data name="MissionInstruction_MissionSixteen_Description" xml:space="preserve"><value>Terminen el reparto sin que ningún 9 normal gane una baza.</value></data>
+  <data name="MissionInstruction_MissionSeventeen_Description" xml:space="preserve"><value>Completen ambos objetivos sin que un 9 normal gane una baza antes de terminar.</value></data>
+  <data name="MissionInstruction_MissionEighteen_Description" xml:space="preserve"><value>Completen cinco objetivos. La radio está disponible desde la segunda baza.</value></data>
+  <data name="MissionInstruction_MissionNineteen_Description" xml:space="preserve"><value>Completen cinco objetivos, con el 1 primero. La radio se habilita desde la tercera baza.</value></data>
+  <data name="MissionInstruction_MissionTwenty_Description" xml:space="preserve"><value>Sin ver los objetivos, respondan sí o no. El capitán asigna ambos a otro participante y se revelan.</value></data>
+  <data name="MissionPreparation_Stage_RoleSelection" xml:space="preserve"><value>El capitán debe elegir al participante que no podrá usar la radio.</value></data>
+  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>¿Te consideras capaz de ganar todos los objetivos sin verlos? Falta la respuesta de cada participante excepto el capitán.</value></data>
+  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>El capitán debe elegir a otro participante para recibir todos los objetivos. Las respuestas son orientativas.</value></data>
+  <data name="MissionPreparation_Label_Assign" xml:space="preserve"><value>Confirmar participante</value></data>
+  <data name="MissionPreparation_Response_Yes" xml:space="preserve"><value>Sí</value></data>
+  <data name="MissionPreparation_Response_No" xml:space="preserve"><value>No</value></data>
+  <data name="MissionPreparation_Error_InvalidSubmission" xml:space="preserve"><value>La solicitud no es válida.</value></data>
+  <data name="MissionPreparation_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="MissionPreparation_Error_ParticipantNotAllowed" xml:space="preserve"><value>No tienes acceso a esta partida.</value></data>
+  <data name="MissionPreparation_Error_WrongMissionAttempt" xml:space="preserve"><value>El intento cambió; revisa la preparación actual.</value></data>
+  <data name="MissionPreparation_Error_SubmissionIdentityReused" xml:space="preserve"><value>El identificador no corresponde a la solicitud original.</value></data>
+  <data name="MissionPreparation_Error_StageMismatch" xml:space="preserve"><value>La etapa cambió; revisa el estado actualizado.</value></data>
+  <data name="MissionPreparation_Error_StaleMatchState" xml:space="preserve"><value>La mesa cambió; selecciona de nuevo.</value></data>
+  <data name="MissionPreparation_Error_CaptainRequired" xml:space="preserve"><value>Solo el capitán de la misión puede asignar este papel.</value></data>
+  <data name="MissionPreparation_Error_InvalidTarget" xml:space="preserve"><value>Ese participante no puede recibir este papel.</value></data>
+  <data name="MissionPreparation_Error_ResponsesPending" xml:space="preserve"><value>Todavía faltan respuestas.</value></data>
+  <data name="MissionPreparation_Error_AlreadyAnswered" xml:space="preserve"><value>Tu respuesta ya fue registrada.</value></data>
+  <data name="MissionPreparation_Error_RequestLimitReached" xml:space="preserve"><value>Espera un momento antes de intentarlo de nuevo.</value></data>
+  <data name="MissionPreparation_Error_OperationUnavailable" xml:space="preserve"><value>No pudimos confirmar la decisión. Reintenta para comprobarla.</value></data>
+  <data name="Radio_Error_DisruptedUntilTrick" xml:space="preserve"><value>La radio todavía no está habilitada en esta misión.</value></data>
+  <data name="Radio_Error_SilencedByCaptain" xml:space="preserve"><value>El capitán te asignó silencio de radio durante este intento.</value></data>
+  <data name="MissionEvaluation_Error_NormalOneDidNotWinTrick" xml:space="preserve"><value>Ningún 1 normal ganó una baza.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardLostTrick" xml:space="preserve"><value>Una K perdió su baza.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardsDidNotWinAllRequiredTricks" xml:space="preserve"><value>No todas las K ganaron su propia baza.</value></data>
+  <data name="MissionEvaluation_Error_NormalNineWonTrick" xml:space="preserve"><value>Un 9 normal ganó una baza.</value></data>
+  <data name="MissionInstruction_MissionTwentyOne_Description" xml:space="preserve"><value>Completen cinco objetivos: los marcados 1 y 2 primero y segundo; después los demás.</value></data>
+  <data name="MissionInstruction_MissionTwentyTwo_Description" xml:space="preserve"><value>Completen cinco objetivos respetando &gt;, &gt;&gt;, &gt;&gt;&gt; y &gt;&gt;&gt;&gt;. El objetivo sin ficha no tiene posición obligatoria.</value></data>
+  <data name="MissionInstruction_MissionTwentyThree_Description" xml:space="preserve"><value>Completen los cinco objetivos en orden 1, 2, 3, 4 y 5, en bazas diferentes.</value></data>
+  <data name="MissionInstruction_MissionTwentyFour_Description" xml:space="preserve"><value>Completen los seis objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionTwentyFive_Description" xml:space="preserve"><value>Completen seis objetivos, con &gt; antes de &gt;&gt;. La radio oculta la posición de su ficha.</value></data>
+  <data name="MissionInstruction_MissionTwentySix_Description" xml:space="preserve"><value>Ganen dos bazas con dos cartas 1 normales. Capturarlas sin que ganen no cuenta.</value></data>
+  <data name="MissionInstruction_MissionTwentySeven_Description" xml:space="preserve"><value>Sin ver los tres objetivos, respondan sí o no. El capitán asigna todos a otro participante y se revelan.</value></data>
+  <data name="MissionInstruction_MissionTwentyEight_Description" xml:space="preserve"><value>Completen seis objetivos: el 1 primero y Omega último. Radio desde la tercera baza.</value></data>
+  <data name="MissionInstruction_MissionTwentyNine_Description" xml:space="preserve"><value>Terminen el reparto sin superar dos bazas de diferencia entre ningún par de participantes. Radio con interferencia.</value></data>
+  <data name="MissionInstruction_MissionThirty_Description" xml:space="preserve"><value>Completen seis objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;; los demás no tienen posición obligatoria.</value></data>
+  <data name="MissionInstruction_MissionThirtyOne_Description" xml:space="preserve"><value>Completen seis objetivos: los marcados 1, 2 y 3 primero, segundo y tercero; después los demás.</value></data>
+  <data name="MissionInstruction_MissionThirtyTwo_Description" xml:space="preserve"><value>Completen los siete objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionThirtyThree_Description" xml:space="preserve"><value>El elegido debe ganar exactamente una baza con una carta normal. La misión termina al concluir el reparto.</value></data>
+  <data name="MissionInstruction_MissionThirtyFour_Description" xml:space="preserve"><value>El capitán debe ganar la primera y última baza. Nunca superen dos bazas de diferencia entre participantes.</value></data>
+  <data name="MissionInstruction_MissionThirtyFive_Description" xml:space="preserve"><value>Completen siete objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;; los demás no tienen posición obligatoria.</value></data>
+  <data name="MissionPreparation_Label_SelectSingleTrickWinner" xml:space="preserve"><value>El capitán elige quién debe ganar exactamente una baza con una carta normal. Puede elegirse a sí mismo.</value></data>
+  <data name="MissionPreparation_Label_SingleTrickWinner" xml:space="preserve"><value>Debe ganar exactamente una baza:</value></data>
+  <data name="MissionEvaluation_Error_InsufficientNormalOneWinningTricks" xml:space="preserve"><value>No se consiguieron dos bazas ganadas con unos normales.</value></data>
+  <data name="MissionEvaluation_Error_WonTrickDifferenceExceeded" xml:space="preserve"><value>Se superó la diferencia máxima de dos bazas entre participantes.</value></data>
+  <data name="MissionEvaluation_Error_SingleTrickWinnerUnassigned" xml:space="preserve"><value>No se ha asignado al participante que debe ganar una sola baza.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonWithSpecialCard" xml:space="preserve"><value>El participante elegido ganó con una K.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonMultipleTricks" xml:space="preserve"><value>El participante elegido ganó más de una baza.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantDidNotWinExactlyOneTrick" xml:space="preserve"><value>El participante elegido no terminó con exactamente una baza ganada.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinFirstTrick" xml:space="preserve"><value>El capitán no ganó la primera baza.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinLastTrick" xml:space="preserve"><value>El capitán no ganó la última baza.</value></data>
+  <data name="MissionInstruction_MissionThirtySix_Description" xml:space="preserve"><value>Completen siete objetivos: el 1 primero y el 2 segundo.</value></data>
+  <data name="MissionInstruction_MissionThirtySeven_Description" xml:space="preserve"><value>Completen cuatro objetivos.</value></data>
+  <data name="MissionInstruction_MissionThirtyEight_Description" xml:space="preserve"><value>Completen ocho objetivos.</value></data>
+  <data name="MissionInstruction_MissionThirtyNine_Description" xml:space="preserve"><value>Completen ocho objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;.</value></data>
+  <data name="MissionInstruction_MissionForty_Description" xml:space="preserve"><value>Completen ocho objetivos: los marcados 1, 2 y 3 primero, segundo y tercero.</value></data>
+  <data name="MissionInstruction_MissionFortyOne_Description" xml:space="preserve"><value>El elegido gana solo la primera y última baza, ambas con cartas normales.</value></data>
+  <data name="MissionInstruction_MissionFortyTwo_Description" xml:space="preserve"><value>Completen nueve objetivos.</value></data>
+  <data name="MissionInstruction_MissionFortyThree_Description" xml:space="preserve"><value>Completen nueve objetivos.</value></data>
+  <data name="MissionInstruction_MissionFortyFour_Description" xml:space="preserve"><value>Cada K gana su baza en orden: Diamantes, Tréboles, Corazones y Espadas.</value></data>
+  <data name="MissionInstruction_MissionFortyFive_Description" xml:space="preserve"><value>Completen nueve objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;.</value></data>
+  <data name="MissionInstruction_MissionFortySix_Description" xml:space="preserve"><value>El dueño del 9 rojo se identifica; su vecino izquierdo debe capturar las nueve cartas rojas.</value></data>
+  <data name="MissionInstruction_MissionFortySeven_Description" xml:space="preserve"><value>Completen diez objetivos.</value></data>
+  <data name="MissionInstruction_MissionFortyEight_Description" xml:space="preserve"><value>Completen tres objetivos; Omega se captura después de los otros dos y en la última baza del reparto.</value></data>
+  <data name="MissionInstruction_MissionFortyNine_Description" xml:space="preserve"><value>Completen diez objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;.</value></data>
+  <data name="MissionInstruction_MissionFifty_Description" xml:space="preserve"><value>Un participante gana las primeras cuatro bazas, otro solo la última; los demás ganan las intermedias y al menos una cada uno.</value></data>
+  <data name="MissionPreparation_Label_SelectFirstAndLastWinner" xml:space="preserve"><value>El capitán elige quién ganará solo la primera y última baza con cartas normales.</value></data>
+  <data name="MissionPreparation_Stage_HeartNineIdentification" xml:space="preserve"><value>El dueño del 9 rojo debe identificarse antes de jugar.</value></data>
+  <data name="MissionPreparation_Stage_TrickDistributionSelection" xml:space="preserve"><value>El capitán asigna las primeras cuatro y la última baza a dos participantes distintos.</value></data>
+  <data name="MissionPreparation_Button_IdentifyHeartNine" xml:space="preserve"><value>Tengo el 9 rojo</value></data>
+  <data name="MissionPreparation_Button_AssignDistribution" xml:space="preserve"><value>Confirmar ambos papeles</value></data>
+  <data name="MissionRole_Label_FirstAndLast" xml:space="preserve"><value>Primera y última baza:</value></data>
+  <data name="MissionRole_Label_FirstFour" xml:space="preserve"><value>Primeras cuatro bazas:</value></data>
+  <data name="MissionRole_Label_Last" xml:space="preserve"><value>Última baza:</value></data>
+  <data name="MissionRole_Label_HeartNineOwner" xml:space="preserve"><value>Dueño identificado del 9 rojo:</value></data>
+  <data name="MissionRole_Label_HeartCapturer" xml:space="preserve"><value>Debe capturar las rojas:</value></data>
+  <data name="MissionEvaluation_Error_FirstAndLastWinnerUnassigned" xml:space="preserve"><value>Falta elegir al ganador de primera y última baza.</value></data>
+  <data name="MissionEvaluation_Error_FirstTrickWonByWrongParticipant" xml:space="preserve"><value>La primera baza no la ganó el elegido.</value></data>
+  <data name="MissionEvaluation_Error_FirstTrickWonWithSpecialCard" xml:space="preserve"><value>La primera baza se ganó con una K.</value></data>
+  <data name="MissionEvaluation_Error_IntermediateTrickWonBySelectedParticipant" xml:space="preserve"><value>El elegido ganó una baza intermedia.</value></data>
+  <data name="MissionEvaluation_Error_LastTrickWonByWrongParticipant" xml:space="preserve"><value>La última baza no la ganó el elegido.</value></data>
+  <data name="MissionEvaluation_Error_LastTrickWonWithSpecialCard" xml:space="preserve"><value>La última baza se ganó con una K.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardWinningOrderViolated" xml:space="preserve"><value>Las K no ganaron en orden ascendente.</value></data>
+  <data name="MissionEvaluation_Error_HeartNineOwnerUnidentified" xml:space="preserve"><value>No se identificó al dueño del 9 rojo.</value></data>
+  <data name="MissionEvaluation_Error_HeartCapturedByWrongParticipant" xml:space="preserve"><value>Otro participante capturó una carta roja.</value></data>
+  <data name="MissionEvaluation_Error_HeartCardsNotAllCaptured" xml:space="preserve"><value>Faltaron cartas rojas por capturar.</value></data>
+  <data name="MissionEvaluation_Error_TrickDistributionUnassigned" xml:space="preserve"><value>Falta asignar dos papeles válidos y distintos.</value></data>
+  <data name="MissionEvaluation_Error_InitialTricksWonByWrongParticipant" xml:space="preserve"><value>Una de las primeras cuatro bazas la ganó otro participante.</value></data>
+  <data name="MissionEvaluation_Error_InitialTrickWinnerWonExtra" xml:space="preserve"><value>El ganador de las primeras cuatro ganó otra baza.</value></data>
+  <data name="MissionEvaluation_Error_FinalTrickWinnerWonEarly" xml:space="preserve"><value>El ganador de la última ganó una baza antes de tiempo.</value></data>
+  <data name="MissionEvaluation_Error_FinalTrickWonByWrongParticipant" xml:space="preserve"><value>La última baza la ganó otro participante.</value></data>
+  <data name="MissionEvaluation_Error_RemainingParticipantWonNoTrick" xml:space="preserve"><value>Uno de los participantes restantes no ganó ninguna baza.</value></data>
+  <data name="MissionRole_Label_HeartProgress" xml:space="preserve"><value>Rojas capturadas:</value></data>
   <data name="Match_Tooltip_CommunicationToken" xml:space="preserve"><value>Ficha de comunicación. Haz clic para activar el modo de comunicación y elegir una carta.</value></data>
   <data name="Match_Notice_CommunicationActive" xml:space="preserve"><value>Modo comunicación activo: Haz clic en una carta iluminada para revelarla a la tripulación.</value></data>
   <data name="Match_Button_DistressSignal" xml:space="preserve"><value>Señal de Socorro</value></data>

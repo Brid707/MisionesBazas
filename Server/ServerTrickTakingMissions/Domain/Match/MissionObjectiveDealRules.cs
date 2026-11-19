@@ -54,7 +54,7 @@ namespace Domain
                 throw new ArgumentException(nameof(definition));
             }
             ValidateObjectiveDeck(definition, shuffledNormalCardIds);
-            bool shouldStartRevealed = !IsBlindObjectiveMission(definition.SpecialRule);
+            bool shouldStartRevealed = !MissionSetupRules.IsBlindObjectiveAssignmentRule(definition.SpecialRule);
             var drawnObjectives = new List<MissionObjective>(definition.ObjectiveCardCount);
 
             for (int index = 0; index < definition.ObjectiveCardCount; index++)
@@ -132,12 +132,6 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(shuffledNormalCardIds));
             }
-        }
-
-        private static bool IsBlindObjectiveMission(SpecialMissionRuleType specialRule)
-        {
-            return specialRule == SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer ||
-                   specialRule == SpecialMissionRuleType.M27_CaptainAssignsAllObjectivesToOnePlayer;
         }
 
         private static void ShuffleCardIds(int[] cardIds, Random randomGenerator)

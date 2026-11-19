@@ -199,7 +199,7 @@ namespace Application.UseCases
         {
             MissionAttemptState missionAttempt = matchState.MissionAttempt;
             ObjectiveDraftRejectionReason draftRejection = ObjectiveDraftRejectionReason.None;
-            if (MissionCatalog.GetMission(missionAttempt.MissionNumber).SpecialRule != SpecialMissionRuleType.None)
+            if (!MissionAttemptPreparation.CanPrepareMission(missionAttempt.MissionNumber))
             {
                 draftRejection = ObjectiveDraftRejectionReason.UnsupportedDraftMode;
             }

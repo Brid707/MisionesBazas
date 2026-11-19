@@ -54,25 +54,6 @@ namespace Services.Services
             return playDecision;
         }
 
-        public RadioCommunicationDecision CommunicateCard(
-            RadioCommunicationSubmission submission, int participantUserId)
-        {
-            if (submission == null || string.IsNullOrWhiteSpace(submission.LobbyCode) ||
-                submission.LobbyCode.Length > 16)
-            {
-                throw new FaultException<MatchAccessFault>(new MatchAccessFault
-                { FailureCode = FaultInvalidSubmission });
-            }
-            EnsureMatchParticipantAllowed(submission.LobbyCode, participantUserId);
-            RadioCommunicationDecision decision = _lobbyUseCase.Match.CommunicateCard(submission, participantUserId);
-            if (decision.IsAccepted)
-            {
-                BroadcastToRoom(submission.LobbyCode, null,
-                    callback => callback.OnMatchStateChanged(decision.CommittedMatchStateVersion));
-            }
-            return decision;
-        }
-
         public DistressSignalDecision SubmitDistressSignal(
             DistressSignalSubmission submission, int participantUserId)
         {

@@ -64,6 +64,12 @@ namespace Gameplay
         public PlayerRadioCommunicationSnapshot[] RadioCommunications { get; set; }
 
         [DataMember(Order = 20)]
+        public RadioCommunicationMode RadioMode { get; set; }
+        [DataMember(Order = 21)]
+        public MissionConditionProgressSnapshot MissionConditionProgress { get; set; }
+        [DataMember(Order = 22)]
+        public RadioAvailabilitySnapshot OwnRadioAvailability { get; set; }
+        [DataMember(Order = 23)]
         public DistressSignalSnapshot DistressSignal { get; set; }
     }
 }

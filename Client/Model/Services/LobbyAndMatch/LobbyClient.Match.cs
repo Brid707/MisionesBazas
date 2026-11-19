@@ -21,6 +21,37 @@ namespace Model.Services
         private Guid _observedMatchId;
         private int _observedMissionAttemptId;
 
+        public Task<MissionPreparationConfirmation> IdentifyHeartNineOwnerAsync(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.IdentifyHeartNineOwner(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> AssignMissionTrickDistributionAsync(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.AssignMissionTrickDistribution(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> AssignMissionRoleAsync(MissionRoleAssignmentSubmission submission,
+            int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.AssignMissionRole(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> RespondToBlindObjectivesAsync(BlindObjectiveResponseSubmission
+            submission,
+            int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.RespondToBlindObjectives(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public event Action<long> MatchStateChanged;
 
         public async Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId)
@@ -46,6 +77,14 @@ namespace Model.Services
             return isConnected;
         }
 
+        public Task<RadioCommunicationConfirmation> SubmitRadioCommunicationAsync(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.SubmitRadioCommunication(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return ExecuteMatchOperationAsync(channel => channel.PlayCard(cardPlaySubmission, participantUserId),
@@ -63,14 +102,6 @@ namespace Model.Services
             int participantUserId)
         {
             return ExecuteMatchOperationAsync(channel => channel.ConfirmMissionRetry(submission, participantUserId),
-                submission.LobbyCode, participantUserId);
-        }
-
-        public Task<RadioCommunicationDecision> CommunicateCardAsync(
-            RadioCommunicationSubmission submission, int participantUserId)
-        {
-            return ExecuteMatchOperationAsync(
-                channel => channel.CommunicateCard(submission, participantUserId),
                 submission.LobbyCode, participantUserId);
         }
 
@@ -96,6 +127,10 @@ namespace Model.Services
             {
                 matchOperationResult = await Task.Run(() => InvokeMatchOperation(
                     matchOperation, lobbyCode, participantUserId));
+            }
+            catch (FaultException)
+            {
+                throw;
             }
             catch (CommunicationException ex)
             {

@@ -34,7 +34,7 @@ namespace Application.UseCases
 
         internal static bool CanPrepareMission(int missionNumber)
         {
-            return MissionCatalog.GetMission(missionNumber).SpecialRule == SpecialMissionRuleType.None;
+            return MissionImplementationPolicy.CanPrepare(missionNumber);
         }
 
         private static void ValidatePreparedDeal(MissionAttemptPreparationContext preparationContext,
@@ -107,7 +107,9 @@ namespace Application.UseCases
                     CaptainSeat = missionDeal.CaptainSeat,
                     CurrentObjectiveDraftSeat = missionDeal.CaptainSeat,
                     PlayerCount = preparationContext.ParticipantUserIds.Length,
-                    Phase = MissionAttemptPhase.ObjectiveDrafting,
+                    Phase = MissionSpecialPreparationRules.GetInitialPhase(
+                        MissionCatalog.GetMission(preparationContext.MissionNumber)),
+                    RoleConfig = CreateInitialMissionRoles(preparationContext.MissionNumber, missionDeal),
                     Status = MissionAttemptStatus.InProgress,
                     Objectives = objectives.ToArray(),
                     HasUsedDistressSignal = false,
@@ -130,6 +132,17 @@ namespace Application.UseCases
                     objective => objective.CardId),
                 ObjectiveDraftSubmissionId = Guid.NewGuid()
             };
+        }
+        private static MissionRoleConfiguration CreateInitialMissionRoles(int missionNumber, MissionDeal missionDeal)
+        {
+            MissionRoleConfiguration roles = MissionRoleConfiguration.Default;
+            if (MissionCatalog.GetMission(missionNumber).SpecialRule ==
+                SpecialMissionRuleType.M46_SeatLeftOfHeartNineWinsAllHearts)
+            {
+                roles = roles with { HeartNineOwnerSeat =
+                    MissionObjectiveDealRules.GetHeartNineOwnerSeat(missionDeal.HandsBySeat) };
+            }
+            return roles;
         }
     }
 }

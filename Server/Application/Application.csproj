@@ -154,14 +154,10 @@
     <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
-    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationSubmission.cs" />
-    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationDecision.cs" />
-    <Compile Include="..\..\Shared\Gameplay\PlayerRadioCommunicationSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalDecision.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.DistressSignal.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -237,5 +233,59 @@
     <Compile Include="Models\Match\MissionTransitionAction.cs" />
     <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionDestination.cs" />
     <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionTransition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\Radio\CommittedRadioCommunication.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationCommit.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationRejection.cs" />
+    <Compile Include="Models\Match\Radio\RadioCommunicationRequest.cs" />
+    <Compile Include="Models\Match\Radio\RadioPublicMarker.cs" />
+    <Compile Include="Models\Match\MatchState.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\RadioCommunicationRuleMapping.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.RadioCommunication.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\MissionTrickStatistics.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationRejection.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationAction.cs" />
+    <Compile Include="UseCases\Match\MissionImplementationPolicy.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\Preparation\MissionPreparationRequest.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationCommit.cs" />
+    <Compile Include="Models\Match\Preparation\ProcessedMissionPreparation.cs" />
+    <Compile Include="Models\Match\Preparation\SpecialPreparationChange.cs" />
+    <Compile Include="Models\Match\Preparation\PreparedTrickEvaluation.cs" />
+    <Compile Include="Models\Match\MatchState.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.SpecialPreparation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UseCases\Match\RadioCommunicationContextFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UseCases\Match\MatchUseCase.FinalMissionPreparation.cs" />
   </ItemGroup>
 </Project>

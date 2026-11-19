@@ -24,9 +24,11 @@ namespace Domain
 
         public IReadOnlyList<Card> SpecialCardsWonSoFar { get; init; }
 
-        public int TotalNormalOnesWonCount { get; init; }
+        public int TricksWonWithNormalOneCount { get; init; }
 
         public MissionRoleConfiguration RoleConfig { get; init; }
+
+        public int CapturedHeartCardCount { get; init; }
 
         public byte? HeartNineOwnerSeat { get; init; }
 

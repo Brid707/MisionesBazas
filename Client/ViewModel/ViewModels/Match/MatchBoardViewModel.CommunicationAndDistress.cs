@@ -14,20 +14,14 @@ namespace ViewModel.ViewModels
 {
     public sealed partial class MatchBoardViewModel
     {
-        private bool _isCommunicationModeActive;
         private bool _isDistressSignalDialogOpen;
         private PassDirection _selectedDistressDirection = PassDirection.Left;
         private int _selectedDistressCardId;
         private bool _hasShownDistressRejectionNotice;
 
-        public ObservableCollection<PlayerRadioCommunicationSnapshot> RadioCommunications { get; } =
-            new ObservableCollection<PlayerRadioCommunicationSnapshot>();
-
         public ObservableCollection<int> EligibleDistressCardIds { get; } =
             new ObservableCollection<int>();
 
-        public ICommand CommunicateCardCommand { get; private set; }
-        public ICommand ToggleCommunicationModeCommand { get; private set; }
         public ICommand OpenDistressSignalDialogCommand { get; private set; }
         public ICommand CloseDistressSignalDialogCommand { get; private set; }
         public ICommand SelectDistressCardCommand { get; private set; }
@@ -169,18 +163,6 @@ namespace ViewModel.ViewModels
                 ? "Match_Distress_Direction_Right"
                 : "Match_Distress_Direction_Left";
 
-        public bool IsCommunicationModeActive
-        {
-            get => _isCommunicationModeActive;
-            set
-            {
-                if (SetProperty(ref _isCommunicationModeActive, value))
-                {
-                    RefreshCommunicationHighlights();
-                }
-            }
-        }
-
         public bool IsDistressSignalDialogOpen
         {
             get => _isDistressSignalDialogOpen;
@@ -216,46 +198,13 @@ namespace ViewModel.ViewModels
             CurrentDistressStep == DistressSignalStep.SelectingCard &&
             !IsLocalDistressCardSubmitted;
 
-        public bool HasLocalPlayerCommunicated
-        {
-            get
-            {
-                PlayerRadioCommunicationSnapshot localComm = _confirmedMatchSnapshot?.RadioCommunications?
-                    .FirstOrDefault(comm => comm.PlayerUserId == _participantUserId);
-                return localComm?.HasUsedCommunicationToken ?? false;
-            }
-        }
+        public bool HasLocalPlayerCommunicated =>
+            _confirmedMatchSnapshot?.RadioCommunications != null &&
+            _confirmedMatchSnapshot.RadioCommunications.Any(comm => comm.ParticipantUserId == _participantUserId);
 
-        public bool HasAnyPlayerCommunicated
-        {
-            get
-            {
-                if (_confirmedMatchSnapshot?.RadioCommunications == null)
-                {
-                    return false;
-                }
-                return _confirmedMatchSnapshot.RadioCommunications.Any(
-                    comm => comm.HasUsedCommunicationToken);
-            }
-        }
-
-        public bool CanCommunicate
-        {
-            get
-            {
-                bool isContextReady = !_isDisposed && _isMatchConnected &&
-                    _confirmedMatchSnapshot != null &&
-                    !_confirmedMatchSnapshot.IsDealCompleted &&
-                    IsMissionPreparationComplete &&
-                    !IsMissionAttemptFinished;
-
-                bool isNoTrickActive = _confirmedMatchSnapshot?.CurrentTrickCardPlays == null ||
-                    _confirmedMatchSnapshot.CurrentTrickCardPlays.Length == 0;
-
-                return isContextReady && isNoTrickActive &&
-                    !HasLocalPlayerCommunicated && !IsDistressSignalInProgress;
-            }
-        }
+        public bool HasAnyPlayerCommunicated =>
+            _confirmedMatchSnapshot?.RadioCommunications != null &&
+            _confirmedMatchSnapshot.RadioCommunications.Length > 0;
 
         public bool CanUseDistressSignal
         {
@@ -277,12 +226,8 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private void InitializeCommunicationAndDistressCommands()
+        private void InitializeDistressSignalCommands()
         {
-            CommunicateCardCommand = new AsyncRelayCommand(
-                ExecuteCommunicateCardAsync, CanExecuteCommunicateCard);
-            ToggleCommunicationModeCommand = new RelayCommand(
-                ExecuteToggleCommunicationMode, CanToggleCommunicationMode);
             OpenDistressSignalDialogCommand = new RelayCommand(
                 OpenDistressSignalDialog, CanOpenDistressSignalDialog);
             CloseDistressSignalDialogCommand = new AsyncRelayCommand(
@@ -302,93 +247,6 @@ namespace ViewModel.ViewModels
                 ExecuteConfirmDistressCardSelectionAsync, CanExecuteConfirmDistressCard);
             CancelDistressProposalCommand = new AsyncRelayCommand(
                 ExecuteCancelDistressProposalAsync, CanExecuteCancelDistressProposal);
-        }
-
-        private bool CanToggleCommunicationMode(object parameter)
-        {
-            return CanCommunicate;
-        }
-
-        private void ExecuteToggleCommunicationMode(object parameter)
-        {
-            if (CanCommunicate)
-            {
-                IsCommunicationModeActive = !IsCommunicationModeActive;
-            }
-            else
-            {
-                IsCommunicationModeActive = false;
-            }
-        }
-
-        public void RefreshCommunicationHighlights()
-        {
-            foreach (HandCardViewModel handCard in OwnHandCards)
-            {
-                bool isEligible = _isCommunicationModeActive &&
-                    GetValidPositionsForCard(handCard.CardId).Count > 0;
-                handCard.UpdateCommunicationHighlight(_isCommunicationModeActive, isEligible);
-            }
-        }
-
-        private bool CanExecuteCommunicateCard(object parameter)
-        {
-            return CanSubmitMatchRequest() && CanCommunicate;
-        }
-
-        private async Task ExecuteCommunicateCardAsync(object parameter)
-        {
-            if (parameter is Tuple<int, RadioTokenPosition> cardAndPosition)
-            {
-                await CommunicateCardAsync(cardAndPosition.Item1, cardAndPosition.Item2);
-            }
-        }
-
-        public async Task<bool> CommunicateCardAsync(int cardId, RadioTokenPosition position)
-        {
-            if (!CanCommunicate || _confirmedMatchSnapshot == null)
-            {
-                return false;
-            }
-
-            RadioCommunicationSubmission submission = new RadioCommunicationSubmission
-            {
-                MatchId = _confirmedMatchSnapshot.MatchId,
-                LobbyCode = _lobbyCode,
-                MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
-                CardId = cardId,
-                SelectedPosition = position
-            };
-
-            RadioCommunicationDecision decision = await _matchClient.CommunicateCardAsync(
-                submission, _participantUserId);
-
-            if (decision != null && decision.IsAccepted)
-            {
-                await SynchronizeMatchAsync();
-                return true;
-            }
-
-            return false;
-        }
-
-        public IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(int cardId)
-        {
-            if (_confirmedMatchSnapshot?.OwnHandCardIds == null)
-            {
-                return Array.Empty<RadioTokenPosition>();
-            }
-
-            List<Card> handCards = _confirmedMatchSnapshot.OwnHandCardIds
-                .Select(DeckRules.GetCardById)
-                .ToList();
-
-            Card candidateCard = DeckRules.GetCardById(cardId);
-            MissionDefinition missionDef = MissionCatalog.GetMission(
-                _confirmedMatchSnapshot.MissionPreparation.MissionNumber);
-
-            return RadioCommunicationRules.GetValidPositionsForCard(
-                handCards, candidateCard, missionDef.CommunicationRule);
         }
 
         private bool CanOpenDistressSignalDialog(object parameter)
@@ -557,40 +415,6 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private void ApplyRadioCommunicationsAndDistress(PlayerMatchSnapshot playerSnapshot)
-        {
-            RadioCommunications.Clear();
-            if (playerSnapshot.RadioCommunications != null)
-            {
-                foreach (PlayerRadioCommunicationSnapshot comm in playerSnapshot.RadioCommunications)
-                {
-                    RadioCommunications.Add(comm);
-                }
-            }
-
-            PlayerRadioCommunicationSnapshot localComm = playerSnapshot.RadioCommunications?
-                .FirstOrDefault(comm => comm.PlayerUserId == _participantUserId);
-
-            foreach (HandCardViewModel handCard in OwnHandCards)
-            {
-                bool isComm = localComm != null && localComm.CommunicatedCardId.HasValue &&
-                    localComm.CommunicatedCardId.Value == handCard.CardId;
-                handCard.IsCommunicated = isComm;
-                handCard.TokenPosition = isComm ? localComm.TokenPosition : RadioTokenPosition.Highest;
-            }
-
-            UpdateSeatedPlayerCommunications(playerSnapshot);
-
-            if (!CanCommunicate && IsCommunicationModeActive)
-            {
-                IsCommunicationModeActive = false;
-            }
-
-            ApplyDistressSignalState(playerSnapshot);
-            RefreshCommunicationHighlights();
-            NotifyCommunicationAndDistressProperties();
-        }
-
         private void ApplyDistressSignalState(PlayerMatchSnapshot playerSnapshot)
         {
             DistressSignalSnapshot distress = playerSnapshot.DistressSignal;
@@ -617,24 +441,6 @@ namespace ViewModel.ViewModels
             }
         }
 
-        private void UpdateSeatedPlayerCommunications(PlayerMatchSnapshot playerSnapshot)
-        {
-            foreach (LobbyPlayerItemViewModel participant in _seatedPlayers)
-            {
-                PlayerRadioCommunicationSnapshot comm = playerSnapshot.RadioCommunications?
-                    .FirstOrDefault(c => c.PlayerUserId == participant.IdUser);
-
-                if (comm != null && comm.HasUsedCommunicationToken && comm.CommunicatedCardId.HasValue)
-                {
-                    participant.UpdateCommunicatedCard(comm.CommunicatedCardId, comm.TokenPosition);
-                }
-                else
-                {
-                    participant.UpdateCommunicatedCard(null, RadioTokenPosition.Highest);
-                }
-            }
-        }
-
         private void NotifyDistressPhaseVisibilities()
         {
             OnPropertyChanged(nameof(IsDistressInitiatorConfirmVisible));
@@ -646,7 +452,7 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(DistressAgreedDirectionResourceKey));
         }
 
-        private void NotifyCommunicationAndDistressProperties()
+        private void NotifyDistressProperties()
         {
             OnPropertyChanged(nameof(DistressSignal));
             OnPropertyChanged(nameof(HasUsedDistressSignal));
@@ -666,7 +472,6 @@ namespace ViewModel.ViewModels
             NotifyDistressPhaseVisibilities();
             OnPropertyChanged(nameof(HasLocalPlayerCommunicated));
             OnPropertyChanged(nameof(HasAnyPlayerCommunicated));
-            OnPropertyChanged(nameof(CanCommunicate));
             OnPropertyChanged(nameof(CanUseDistressSignal));
             OnPropertyChanged(nameof(CanConfirmDistressCard));
         }

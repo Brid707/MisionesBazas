@@ -61,7 +61,10 @@ namespace ViewModel.ViewModels
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
-            InitializeCommunicationAndDistressCommands();
+            InitializeRadioCommand();
+            InitializeSpecialPreparationCommands();
+            InitializeFinalPreparationCommands();
+            InitializeDistressSignalCommands();
             _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
@@ -142,6 +145,8 @@ namespace ViewModel.ViewModels
                 finally
                 {
                     Interlocked.Exchange(ref _isRequestInProgress, 0);
+                    OnPropertyChanged(nameof(CanChooseRadioCard));
+                    NotifySpecialPreparationProperties();
                     UpdateHandCardRaisedStates();
                     CommandManager.InvalidateRequerySuggested();
                 }
@@ -165,7 +170,13 @@ namespace ViewModel.ViewModels
 
         private async Task SynchronizeCoreAsync()
         {
-            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync();
+            string preparationFeedback = await ConfirmPendingPreparationAsync();
+            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync() ?? preparationFeedback;
+            string radioFeedback = await ConfirmPendingRadioAsync();
+            if (radioFeedback != null)
+            {
+                rejectionResourceKey = radioFeedback;
+            }
             if (_pendingCardPlaySubmission != null)
             {
                 MatchFeedbackResourceKey = "Match_Confirming";
@@ -191,33 +202,19 @@ namespace ViewModel.ViewModels
 
         private bool CanPlaySelectedCard(object selectedCard)
         {
-            if (IsDistressSignalInProgress)
-            {
-                return false;
-            }
+            return CanPlayCurrentTurn() && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
+        }
 
-            if (selectedCard is int cardId)
-            {
-                if (IsCommunicationModeActive)
-                {
-                    return CanCommunicate && GetValidPositionsForCard(cardId).Count > 0;
-                }
-
-                bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
-                    !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
-                    !IsMissionAttemptFinished && CurrentTurnPlayerUserId == _participantUserId;
-                return canPlay && GetPlayableCardIds().Contains(cardId);
-            }
-
-            return false;
+        private bool CanPlayCurrentTurn()
+        {
+            return CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
+                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
+                !IsDistressSignalInProgress && CurrentTurnPlayerUserId == _participantUserId;
         }
 
         private void UpdateHandCardRaisedStates()
         {
-            bool canRaiseForCurrentTurn = !_isDisposed && _isMatchConnected &&
-                _pendingCardPlaySubmission == null && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
-                _pendingObjectiveDraftSubmission == null && CurrentTurnPlayerUserId == _participantUserId;
+            bool canRaiseForCurrentTurn = CanPlayCurrentTurn();
             foreach (HandCardViewModel handCard in OwnHandCards)
             {
                 handCard.UpdateTurnAvailability(canRaiseForCurrentTurn);
@@ -238,44 +235,25 @@ namespace ViewModel.ViewModels
 
         private async Task SubmitSelectedCardAsync(object selectedCard)
         {
-            if (selectedCard is int cardId)
+            if (selectedCard is int cardId && CanPlaySelectedCard(selectedCard))
             {
-                if (IsCommunicationModeActive)
+                _pendingCardPlaySubmission = new CardPlaySubmission
                 {
-                    await ExecuteCardCommunicationFromHandAsync(cardId);
-                    return;
-                }
-
-                if (CanPlaySelectedCard(selectedCard))
-                {
-                    _pendingCardPlaySubmission = new CardPlaySubmission
-                    {
-                        LobbyCode = _lobbyCode,
-                        MatchId = _confirmedMatchSnapshot.MatchId,
-                        MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
-                        CardId = cardId,
-                        CardPlaySubmissionId = Guid.NewGuid(),
-                        ExpectedMatchStateVersion = MatchStateVersion
-                    };
-                    await SynchronizeMatchAsync();
-                }
-            }
-        }
-
-        private async Task ExecuteCardCommunicationFromHandAsync(int cardId)
-        {
-            IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
-            if (positions != null && positions.Count > 0)
-            {
-                RadioTokenPosition resolvedPosition = positions[0];
-                IsCommunicationModeActive = false;
-                await CommunicateCardAsync(cardId, resolvedPosition);
+                    LobbyCode = _lobbyCode,
+                    MatchId = _confirmedMatchSnapshot.MatchId,
+                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
+                    CardId = cardId,
+                    CardPlaySubmissionId = Guid.NewGuid(),
+                    ExpectedMatchStateVersion = MatchStateVersion
+                };
+                await SynchronizeMatchAsync();
             }
         }
 
         private bool CanRetryPendingMatchRequest()
         {
-            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null) &&
+            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null ||
+                _pendingRadioSubmission != null || HasPendingPreparation) &&
                 _isRequestInProgress == 0;
         }
 
@@ -292,15 +270,18 @@ namespace ViewModel.ViewModels
                 HashSet<int> playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
                 ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
+                ApplySpecialPreparationSnapshot(playerSnapshot.MissionPreparation);
                 ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
                 UpdateHandCardRaisedStates();
-                ApplyRadioCommunicationsAndDistress(playerSnapshot);
+                ApplyRadioSnapshot(playerSnapshot);
+                ApplyDistressSignalState(playerSnapshot);
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 NotifyMissionEvaluationProperties();
+                NotifyMissionInstructionProperties();
                 NotifyMissionTransitionProperties();
-                NotifyCommunicationAndDistressProperties();
+                NotifyDistressProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)
@@ -373,17 +354,21 @@ namespace ViewModel.ViewModels
         private string GetActiveMatchFeedback()
         {
             string feedbackResourceKey = "Match_WaitingTurn";
+            if (CurrentTurnPlayerUserId == _participantUserId)
+            {
+                feedbackResourceKey = "Match_YourTurn";
+            }
+            if (_confirmedMatchSnapshot.IsDealCompleted)
+            {
+                feedbackResourceKey = "Match_DealCompleted";
+            }
             if (IsObjectiveDraftVisible)
             {
                 feedbackResourceKey = "MissionDraft_Label_SelectOrPass";
             }
-            else if (_confirmedMatchSnapshot.IsDealCompleted)
+            if (IsSpecialPreparationVisible)
             {
-                feedbackResourceKey = "Match_DealCompleted";
-            }
-            else if (CurrentTurnPlayerUserId == _participantUserId)
-            {
-                feedbackResourceKey = "Match_YourTurn";
+                feedbackResourceKey = SpecialPreparationFeedbackKey;
             }
             return feedbackResourceKey;
         }

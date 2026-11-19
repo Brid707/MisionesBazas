@@ -69,7 +69,9 @@ namespace Application.Models
 
         private void ApplyPreparedMissionAttempt(PreparedMissionAttempt preparedAttempt)
         {
+            bool isInitialAttempt = MissionAttempt == null;
             MissionAttempt = preparedAttempt.MissionAttempt;
+            ResetSpecialPreparationState(isInitialAttempt);
             PlayerHandCardIdsBySeat = preparedAttempt.PlayerHandCardIdsBySeat;
             WonCardIdsBySeat = preparedAttempt.WonCardIdsBySeat;
             WonTrickCountsBySeat = preparedAttempt.WonTrickCountsBySeat;
@@ -95,6 +97,8 @@ namespace Application.Models
             CurrentTrickCardPlays.Clear();
             CapturedCardPlays.Clear();
             ProcessedCardPlayDecisionsBySubmissionId.Clear();
+            RadioCommunicationsByParticipantUserId.Clear();
+            ProcessedRadioCommunicationsBySubmissionId.Clear();
             ProcessedObjectiveDrafts.Clear();
             ObjectiveDraftHistoryByParticipant.Clear();
             ResetDistressState();

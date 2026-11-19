@@ -1,10 +1,11 @@
-<Page x:Class="View.Views.GameMatch"
+﻿<Page x:Class="View.Views.GameMatch"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:converters="clr-namespace:View.Converters"
       xmlns:styles="clr-namespace:View.Styles"
       xmlns:language="clr-namespace:View.Properties.Langs"
       xmlns:constants="clr-namespace:ViewModel.Constants;assembly=ViewModel"
+      xmlns:gameplay="clr-namespace:Gameplay;assembly=Model"
       Title="GameMatch">
     <Page.Resources>
         <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />
@@ -62,6 +63,8 @@
         </DataTemplate>
         <DataTemplate x:Key="PlayerIdentityTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ScrollViewer MaxWidth="184" MaxHeight="124" HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding MissionObjectives}"
                                   VerticalAlignment="Center" Margin="0,0,8,0">
                         <ItemsControl.ItemsPanel>
@@ -76,6 +79,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </ScrollViewer>
                 <StackPanel HorizontalAlignment="Center">
                 <Grid Width="48" Height="48" HorizontalAlignment="Center">
                     <ContentControl Content="{Binding ProfileImage}"
@@ -218,6 +222,15 @@
                                        Converter={StaticResource MatchTextConverter}}" />
                         <TextBlock Text="{Binding MatchBoard.CurrentMissionAttemptNumber}"
                                    Foreground="{StaticResource BrushTextLight}" />
+                        <StackPanel Orientation="Horizontal" Margin="12,0,0,0"
+                            Visibility="{Binding MatchBoard.IsHeartCaptureProgressVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,4,0"
+                                Text="{Binding Source=MissionRole_Label_HeartProgress,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                Text="{Binding MatchBoard.HeartCaptureProgressDisplay}" />
+                        </StackPanel>
                     </StackPanel>
                     <Button Width="42" Height="42" HorizontalAlignment="Right" Margin="0,8,130,0"
                             Background="{StaticResource BrushTransparent}" BorderThickness="0" Padding="0"
@@ -280,6 +293,8 @@
                                                Converter={StaticResource MatchTextConverter}}" />
                                 <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
                                            Text="{Binding CurrentObjectiveDraftPlayerName}" />
+                                <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl ItemsSource="{Binding UnassignedMissionObjectives}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -301,6 +316,7 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                </ScrollViewer>
                                 <Button Command="{Binding PassObjectiveDraftCommand}" Margin="0,8,0,0"
                                         Background="{StaticResource BrushSubmitButtonBackground}">
                                     <TextBlock Text="{Binding Source=MissionDraft_Button_Pass,
@@ -517,8 +533,206 @@
                         <RowDefinition Height="Auto" /><RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding MatchFeedbackResourceKey,
+                        <ToggleButton x:Name="SpecialPreparationToggleButton" Margin="0,0,0,5"
+                            IsChecked="{Binding IsSpecialPreparationPanelOpen, Mode=TwoWay}"
+                            Visibility="{Binding IsSpecialPreparationVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Content="{Binding SpecialPreparationFeedbackKey,
+                                Converter={StaticResource MatchTextConverter}}" />
+                        <Popup PlacementTarget="{Binding ElementName=SpecialPreparationToggleButton}" Placement="Top"
+                            IsOpen="{Binding IsSpecialPreparationPanelOpen, Mode=TwoWay}"
+                            StaysOpen="False" AllowsTransparency="True">
+                            <Border Padding="12" Width="460" Background="{StaticResource BrushLobbyMatchSurface}"
+                                BorderThickness="2" BorderBrush="{StaticResource BrushTextDark}">
+                                <StackPanel>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BrushTextLight}"
+                                        Text="{Binding SpecialPreparationFeedbackKey,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <ComboBox Margin="0,8" ItemsSource="{Binding EligibleRoleParticipants}"
+                                        Visibility="{Binding IsRoleAssignmentVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        DisplayMemberPath="Username" SelectedItem="{Binding SelectedRoleParticipant}"
+                                        IsEnabled="{Binding CanSelectRoleParticipant}" />
+                                    <Button Command="{Binding AssignMissionRoleCommand}"
+                                        Visibility="{Binding IsRoleAssignmentVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Content="{Binding Source=MissionPreparation_Label_Assign,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8"
+                                        Visibility="{Binding IsBlindResponseChoiceVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Button Command="{Binding RespondCapableCommand}" Margin="4,0"
+                                            Content="{Binding Source=MissionPreparation_Response_Yes,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <Button Command="{Binding RespondNotCapableCommand}" Margin="4,0"
+                                            Content="{Binding Source=MissionPreparation_Response_No,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                    </StackPanel>
+                                    <Button Command="{Binding IdentifyHeartNineOwnerCommand}"
+                                        Visibility="{Binding IsHeartNineIdentificationStage,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Content="{Binding Source=MissionPreparation_Button_IdentifyHeartNine,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <StackPanel Visibility="{Binding IsTrickDistributionSelection,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                            Text="{Binding Source=MissionRole_Label_FirstFour,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <ComboBox ItemsSource="{Binding EligibleRoleParticipants}" DisplayMemberPath="Username"
+                                            SelectedItem="{Binding SelectedFirstFourTrickWinner}" Margin="0,5" />
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                            Text="{Binding Source=MissionRole_Label_Last,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <ComboBox ItemsSource="{Binding EligibleRoleParticipants}" DisplayMemberPath="Username"
+                                            SelectedItem="{Binding SelectedLastTrickWinner}" Margin="0,5" />
+                                        <Button Command="{Binding AssignTrickDistributionCommand}"
+                                            Content="{Binding Source=MissionPreparation_Button_AssignDistribution,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding BlindObjectiveResponseDescriptions}"
+                                        Visibility="{Binding AreBlindResponsesVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding ParticipantName}" Margin="0,0,8,0"
+                                                        Foreground="{StaticResource BrushTextLight}" />
+                                                    <TextBlock Text="{Binding ResponseResourceKey,
+                                                        Converter={StaticResource MatchTextConverter}}"
+                                                        Foreground="{StaticResource BrushTextLight}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                        <ToggleButton x:Name="RadioPanelToggleButton" HorizontalAlignment="Center" Margin="0,0,0,5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Source=Radio_Label_Communicate,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Text="{Binding RadioCommunications.Count}" Margin="8,0,0,0" />
+                            </StackPanel>
+                        </ToggleButton>
+                        <Popup PlacementTarget="{Binding ElementName=RadioPanelToggleButton}" Placement="Top"
+                               IsOpen="{Binding IsChecked, ElementName=RadioPanelToggleButton, Mode=TwoWay}"
+                               StaysOpen="False" AllowsTransparency="True">
+                            <Border Padding="12" MaxWidth="600" BorderThickness="2"
+                                    Background="{StaticResource BrushLobbyMatchSurface}"
+                                    BorderBrush="{StaticResource BrushTextDark}">
+                                <StackPanel>
+                            <StackPanel>
+                                <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                           Text="{Binding Source=Radio_Label_Help,
+                                    Converter={StaticResource MatchTextConverter}}" TextWrapping="Wrap" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <ComboBox Width="110" Height="54" ItemsSource="{Binding OwnHandCards}"
+                                              SelectedItem="{Binding SelectedRadioCard}"
+                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image Height="44" Source="{Binding CardId,
+                                                    Converter={StaticResource CardImageConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <ComboBox Width="180" ItemsSource="{Binding AvailableRadioMarkers}"
+                                              SelectedItem="{Binding SelectedRadioMarker}"
+                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding ResourceKey,
+                                                    Converter={StaticResource MatchTextConverter}}" />
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <Button Command="{Binding SubmitRadioCommunicationCommand}" Margin="4" Padding="8">
+                                        <TextBlock Text="{Binding Source=Radio_Label_Reveal,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        <ItemsControl ItemsSource="{Binding RadioCommunications}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="8,0,8,4">
+                                        <TextBlock Text="{Binding ParticipantName}" HorizontalAlignment="Center"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                        <Grid Height="56" Width="44" HorizontalAlignment="Center">
+                                            <Image Source="{Binding CardId,
+                                                Converter={StaticResource CardImageConverter}}" />
+                                            <Ellipse Width="10" Height="10" Margin="2"
+                                                     Fill="{StaticResource BrushTextLight}"
+                                                     Stroke="{StaticResource BrushTextDark}">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Highest}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Top" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Only}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Center" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Marker}"
+                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Lowest}">
+                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                <Setter Property="VerticalAlignment" Value="Bottom" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                        </Grid>
+                                        <TextBlock Text="{Binding MarkerResourceKey,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                        <TextBlock Text="{Binding Source=Radio_Label_Played,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}"
+                                                   Visibility="{Binding HasCommunicatedCardBeenPlayed,
+                                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                            Visibility="{Binding HasSingleTrickWinner,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,6,0"
+                                Text="{Binding Source=MissionPreparation_Label_SingleTrickWinner,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                Text="{Binding SingleTrickWinnerParticipantName}" />
+                        </StackPanel>
+                        <ItemsControl ItemsSource="{Binding ConfirmedMissionRoles}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,6,0"
+                                            Text="{Binding LabelResourceKey, Converter={StaticResource MatchTextConverter}}" />
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}" Text="{Binding ParticipantName}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding MissionInstructionResourceKey,
                                        Converter={StaticResource MatchTextConverter}}"
+                                   Foreground="{StaticResource BrushTextLight}"
+                                   TextAlignment="Center" TextWrapping="Wrap" Margin="0,0,0,6"
+                                   Visibility="{Binding IsMissionInstructionVisible,
+                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <TextBlock Text="{Binding MatchFeedbackResourceKey, Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
                                    TextAlignment="Center" AutomationProperties.LiveSetting="Polite" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
@@ -645,34 +859,6 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-
-                            <!-- Communication Token Toggle Button -->
-                            <Button Width="46" Height="46" Margin="14,0,0,10" VerticalAlignment="Bottom"
-                                    Command="{Binding ToggleCommunicationModeCommand}"
-                                    ToolTip="{Binding Source=Match_Tooltip_CommunicationToken,
-                                        Converter={StaticResource MatchTextConverter}}"
-                                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Padding="0">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Image x:Name="TokenImage" Width="44" Height="44" Stretch="Uniform"
-                                            Source=
-"/View;component/Assets/Images/Tokens/Indicators/Token_Interference.png" />
-                                        <ControlTemplate.Triggers>
-                                            <DataTrigger Binding="{Binding CanCommunicate}" Value="False">
-                                                <Setter TargetName="TokenImage" Property="Opacity" Value="0.3" />
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding IsCommunicationModeActive}" Value="True">
-                                                <Setter TargetName="TokenImage" Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect Color="#FFF36B" BlurRadius="22"
-                                                                          ShadowDepth="0" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
                         </StackPanel>
                     </Grid>
                 </Grid>

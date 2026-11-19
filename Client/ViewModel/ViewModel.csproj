@@ -135,4 +135,20 @@
     <Compile Include="ViewModels\Match\MissionObjectiveViewModel.cs" />
     <Compile Include="ViewModels\Match\MatchBoardViewModel.ObjectiveDraft.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionInstructions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.RadioCommunication.cs" />
+    <Compile Include="ViewModels\Match\RadioMarkerOptionViewModel.cs" />
+    <Compile Include="ViewModels\Match\PlayerRadioCommunicationViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.SpecialPreparation.cs" />
+    <Compile Include="ViewModels\Match\BlindObjectiveResponseViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\PublicMissionRoleViewModel.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.FinalPreparation.cs" />
+  </ItemGroup>
 </Project>

@@ -5,6 +5,10 @@ namespace Domain
     /// </summary>
     public sealed record MissionRoleConfiguration
     {
+        public byte? HeartNineOwnerSeat { get; init; }
+
+        public bool HasIdentifiedHeartNineOwner { get; init; }
+
         public byte? SilencedPlayerSeat { get; init; }
 
         public byte? SoleObjectiveAssigneeSeat { get; init; }

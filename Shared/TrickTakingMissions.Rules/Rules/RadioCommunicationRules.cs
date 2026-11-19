@@ -15,10 +15,12 @@ namespace TrickTakingMissions.Rules.Rules
         private const int DisruptionTrickThreeThreshold = 3;
 
         /// <summary>
-        /// Validates whether a requested radio communication satisfies all timing, hand, and token placement invariants.
+        /// Validates whether a requested radio communication satisfies all timing, hand,
+        /// and token placement invariants.
         /// </summary>
         /// <param name="context">The contextual state of the player hand, mission rules, and trick progress.</param>
-        /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection reason.</returns>
+        /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection
+        /// reason.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is null.</exception>
         public static RadioCommunicationValidationResult ValidateCommunication(RadioCommunicationContext context)
         {
@@ -28,17 +30,23 @@ namespace TrickTakingMissions.Rules.Rules
             }
 
             RadioCommunicationRejectionReason prerequisiteFailure = EvaluatePrerequisites(context);
-            if (prerequisiteFailure != RadioCommunicationRejectionReason.None)
+            RadioCommunicationValidationResult result = RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+            if (prerequisiteFailure == RadioCommunicationRejectionReason.None)
             {
-                return RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+                result = context.CommunicationRule == CommunicationRuleType.Interference
+                    ? EvaluateInterference(context) : EvaluateTokenPosition(context);
             }
+            return result;
+        }
 
-            if (context.CommunicationRule == CommunicationRuleType.Interference)
-            {
-                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference);
-            }
-
-            return EvaluateTokenPosition(context);
+        private static RadioCommunicationValidationResult EvaluateInterference(RadioCommunicationContext context)
+        {
+            bool isEligibleCard =
+                ResolveNonInterferencePositions(context.HandCards, context.CardToCommunicate).Count > 0;
+            return isEligibleCard && context.SelectedPosition == RadioTokenPosition.Interference
+                ? RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference)
+                : RadioCommunicationValidationResult.Reject(
+                    RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
         }
 
         /// <summary>
@@ -53,62 +61,70 @@ namespace TrickTakingMissions.Rules.Rules
             Card candidateCard,
             CommunicationRuleType communicationRule)
         {
-            if (handCards is null || candidateCard is null || candidateCard.Suit == CardSuit.Special)
+            IReadOnlyList<RadioTokenPosition> positions = Array.Empty<RadioTokenPosition>();
+            if (handCards != null && candidateCard != null && candidateCard.Suit != CardSuit.Special &&
+                handCards.Any(card => card.IdCard == candidateCard.IdCard))
             {
-                return Array.Empty<RadioTokenPosition>();
+                positions = ResolveNonInterferencePositions(handCards, candidateCard);
+                if (communicationRule == CommunicationRuleType.Interference && positions.Count > 0)
+                {
+                    positions = new[] { RadioTokenPosition.Interference };
+                }
             }
-
-            if (!handCards.Any(card => card.IdCard == candidateCard.IdCard))
-            {
-                return Array.Empty<RadioTokenPosition>();
-            }
-
-            if (communicationRule == CommunicationRuleType.Interference)
-            {
-                return new[] { RadioTokenPosition.Interference };
-            }
-
-            return ResolveNonInterferencePositions(handCards, candidateCard);
+            return positions;
         }
 
         private static RadioCommunicationRejectionReason EvaluatePrerequisites(RadioCommunicationContext context)
         {
-            if (context.CardToCommunicate is null)
+            RadioCommunicationRejectionReason rejection = GetAvailabilityRejection(context);
+            if (rejection == RadioCommunicationRejectionReason.None)
             {
-                return RadioCommunicationRejectionReason.CardNotInHand;
+                rejection = EvaluateCandidatePrerequisites(context);
             }
+            return rejection;
+        }
 
-            if (context.HasCommunicatedThisAttempt)
+        private static RadioCommunicationRejectionReason EvaluateCandidatePrerequisites(RadioCommunicationContext
+            context)
+        {
+            RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
+            if (context.CardToCommunicate == null || context.HandCards == null ||
+                !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
             {
-                return RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
+                rejection = RadioCommunicationRejectionReason.CardNotInHand;
             }
-
-            if (context.IsSilencedByCaptain)
+            else if (context.CardToCommunicate.Suit == CardSuit.Special)
             {
-                return RadioCommunicationRejectionReason.SilencedByCaptain;
+                rejection = RadioCommunicationRejectionReason.SpecialCardNotAllowed;
             }
+            return rejection;
+        }
 
-            if (context.IsTrickInProgress)
+        /// <summary>Evaluates timing and role availability without revealing a candidate card.</summary>
+        public static RadioCommunicationRejectionReason GetAvailabilityRejection(RadioCommunicationContext context)
+        {
+            if (context == null)
             {
-                return RadioCommunicationRejectionReason.CannotCommunicateDuringActiveTrick;
+                throw new ArgumentNullException(nameof(context));
             }
-
+            RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
             if (IsDisrupted(context.CommunicationRule, context.CurrentTrickNumber))
             {
-                return RadioCommunicationRejectionReason.DisruptedUntilTrick;
+                rejection = RadioCommunicationRejectionReason.DisruptedUntilTrick;
             }
-
-            if (context.CardToCommunicate.Suit == CardSuit.Special)
+            if (context.IsTrickInProgress)
             {
-                return RadioCommunicationRejectionReason.SpecialCardNotAllowed;
+                rejection = RadioCommunicationRejectionReason.CannotCommunicateDuringActiveTrick;
             }
-
-            if (context.HandCards is null || !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
+            if (context.IsSilencedByCaptain)
             {
-                return RadioCommunicationRejectionReason.CardNotInHand;
+                rejection = RadioCommunicationRejectionReason.SilencedByCaptain;
             }
-
-            return RadioCommunicationRejectionReason.None;
+            if (context.HasCommunicatedThisAttempt)
+            {
+                rejection = RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
+            }
+            return rejection;
         }
 
         private static bool IsDisrupted(CommunicationRuleType rule, int currentTrickNumber)
