@@ -4,6 +4,18 @@ namespace Model.GameServices
 {
     public partial class LobbyServiceClient
     {
+        public MissionPreparationConfirmation IdentifyHeartNineOwner(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return Channel.IdentifyHeartNineOwner(submission, participantUserId);
+        }
+
+        public MissionPreparationConfirmation AssignMissionTrickDistribution(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return Channel.AssignMissionTrickDistribution(submission, participantUserId);
+        }
+
         public MissionPreparationConfirmation AssignMissionRole(MissionRoleAssignmentSubmission submission,
             int participantUserId)
         {

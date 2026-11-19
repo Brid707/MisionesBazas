@@ -30,6 +30,22 @@ namespace Gameplay
         [EnumMember] SelectedParticipantWonMultipleTricks = 21,
         [EnumMember] SelectedParticipantDidNotWinExactlyOneTrick = 22,
         [EnumMember] CaptainDidNotWinFirstTrick = 23,
-        [EnumMember] CaptainDidNotWinLastTrick = 24
+        [EnumMember] CaptainDidNotWinLastTrick = 24,
+        [EnumMember] FirstAndLastWinnerUnassigned = 25,
+        [EnumMember] FirstTrickWonByWrongParticipant = 26,
+        [EnumMember] FirstTrickWonWithSpecialCard = 27,
+        [EnumMember] IntermediateTrickWonBySelectedParticipant = 28,
+        [EnumMember] LastTrickWonByWrongParticipant = 29,
+        [EnumMember] LastTrickWonWithSpecialCard = 30,
+        [EnumMember] SpecialCardWinningOrderViolated = 31,
+        [EnumMember] HeartNineOwnerUnidentified = 32,
+        [EnumMember] HeartCapturedByWrongParticipant = 33,
+        [EnumMember] HeartCardsNotAllCaptured = 34,
+        [EnumMember] TrickDistributionUnassigned = 35,
+        [EnumMember] InitialTricksWonByWrongParticipant = 36,
+        [EnumMember] InitialTrickWinnerWonExtra = 37,
+        [EnumMember] FinalTrickWinnerWonEarly = 38,
+        [EnumMember] FinalTrickWonByWrongParticipant = 39,
+        [EnumMember] RemainingParticipantWonNoTrick = 40
     }
 }

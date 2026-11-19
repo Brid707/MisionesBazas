@@ -21,6 +21,21 @@ namespace Model.Services
         private Guid _observedMatchId;
         private int _observedMissionAttemptId;
 
+        public Task<MissionPreparationConfirmation> IdentifyHeartNineOwnerAsync(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.IdentifyHeartNineOwner(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> AssignMissionTrickDistributionAsync(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.AssignMissionTrickDistribution(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public Task<MissionPreparationConfirmation> AssignMissionRoleAsync(MissionRoleAssignmentSubmission submission,
             int participantUserId)
         {

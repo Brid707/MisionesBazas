@@ -298,4 +298,8 @@
     <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
     <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
+  </ItemGroup>
 </Project>

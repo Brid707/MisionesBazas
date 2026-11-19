@@ -99,4 +99,10 @@
     <Compile Include="Match\MissionRoleAssignmentContext.cs" />
     <Compile Include="Match\MissionSpecialPreparationRules.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Match\MissionTrickDistributionContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Match\MissionSpecialPreparationRules.FinalMissions.cs" />
+  </ItemGroup>
 </Project>

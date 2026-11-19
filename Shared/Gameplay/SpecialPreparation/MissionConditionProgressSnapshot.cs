@@ -12,5 +12,7 @@ namespace Gameplay
 
         [DataMember(Order = 2)]
         public int[] SpecialWinningCardIds { get; set; }
+        [DataMember(Order = 3)]
+        public int CapturedHeartCardCount { get; set; }
     }
 }

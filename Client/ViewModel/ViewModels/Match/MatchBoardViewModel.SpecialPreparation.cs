@@ -12,6 +12,8 @@ namespace ViewModel.ViewModels
     public sealed partial class MatchBoardViewModel
     {
         private MissionRoleAssignmentSubmission _pendingRoleAssignment;
+        private HeartNineIdentificationSubmission _pendingHeartIdentification;
+        private MissionTrickDistributionSubmission _pendingTrickDistribution;
         private BlindObjectiveResponseSubmission _pendingBlindResponse;
         private LobbyPlayerItemViewModel _selectedRoleParticipant;
         private bool _isSpecialPreparationPanelOpen;
@@ -32,8 +34,10 @@ namespace ViewModel.ViewModels
         public ICommand RespondNotCapableCommand { get; private set; }
         public bool IsSpecialPreparationVisible => PreparationStage == MissionPreparationStage.RoleSelection ||
             PreparationStage == MissionPreparationStage.BlindResponses ||
-            PreparationStage == MissionPreparationStage.AssigneeSelection;
-        public bool IsRoleAssignmentVisible => EligibleRoleParticipants.Count > 0;
+            PreparationStage == MissionPreparationStage.AssigneeSelection ||
+            PreparationStage == MissionPreparationStage.HeartNineIdentification ||
+            PreparationStage == MissionPreparationStage.TrickDistributionSelection;
+        public bool IsRoleAssignmentVisible => EligibleRoleParticipants.Count > 0 && !IsTrickDistributionSelection;
         public bool IsBlindResponseChoiceVisible =>
             _confirmedMatchSnapshot?.MissionPreparation?.CanRespondToBlindObjectives ?? false;
         public bool AreBlindResponsesVisible => PreparationStage == MissionPreparationStage.BlindResponses ||
@@ -41,14 +45,13 @@ namespace ViewModel.ViewModels
         public bool CanRespondBlindObjectives => CanSubmitMatchRequest() &&
             (_confirmedMatchSnapshot?.MissionPreparation?.CanRespondToBlindObjectives ?? false);
         public bool CanSelectRoleParticipant => CanSubmitMatchRequest() && EligibleRoleParticipants.Count > 0;
-        public string SpecialPreparationFeedbackKey => PreparationStage == MissionPreparationStage.RoleSelection &&
-            _confirmedMatchSnapshot?.MissionPreparation?.MissionNumber == MissionThirtyThreeNumber
-                ? "MissionPreparation_Label_SelectSingleTrickWinner" : "MissionPreparation_Stage_" + PreparationStage;
+        public string SpecialPreparationFeedbackKey => GetSpecialPreparationFeedbackKey();
         public bool HasSingleTrickWinner =>
             _confirmedMatchSnapshot?.MissionPreparation?.SingleTrickWinnerParticipantUserId.HasValue ?? false;
         public string SingleTrickWinnerParticipantName => GetParticipantName(
             _confirmedMatchSnapshot?.MissionPreparation?.SingleTrickWinnerParticipantUserId ?? 0);
-        private bool HasPendingPreparation => _pendingRoleAssignment != null || _pendingBlindResponse != null;
+        private bool HasPendingPreparation => _pendingRoleAssignment != null || _pendingBlindResponse != null ||
+            _pendingHeartIdentification != null || _pendingTrickDistribution != null;
         private MissionPreparationStage PreparationStage => _confirmedMatchSnapshot?.MissionPreparation?.Stage ??
             MissionPreparationStage.None;
 
@@ -117,8 +120,7 @@ namespace ViewModel.ViewModels
             {
                 try
                 {
-                    Guid expectedIdentity = _pendingRoleAssignment?.MissionPreparationSubmissionId ??
-                        _pendingBlindResponse.MissionPreparationSubmissionId;
+                    Guid expectedIdentity = GetPendingPreparationIdentity();
                     MissionPreparationConfirmation confirmation = await SubmitPendingPreparationAsync();
                     if (confirmation == null || confirmation.MissionPreparationSubmissionId != expectedIdentity)
                     {
@@ -146,10 +148,14 @@ namespace ViewModel.ViewModels
             {
                 confirmation = await _matchClient.AssignMissionRoleAsync(_pendingRoleAssignment, _participantUserId);
             }
+            else if (_pendingBlindResponse != null)
+            {
+                confirmation = await _matchClient.RespondToBlindObjectivesAsync(_pendingBlindResponse,
+                    _participantUserId);
+            }
             else
             {
-                confirmation = await _matchClient.RespondToBlindObjectivesAsync(
-                    _pendingBlindResponse, _participantUserId);
+                confirmation = await SubmitPendingFinalPreparationAsync();
             }
             return confirmation;
         }
@@ -158,6 +164,8 @@ namespace ViewModel.ViewModels
         {
             _pendingRoleAssignment = null;
             _pendingBlindResponse = null;
+            _pendingHeartIdentification = null;
+            _pendingTrickDistribution = null;
         }
 
         private void ApplySpecialPreparationSnapshot(PlayerMissionPreparationSnapshot preparation)
@@ -186,6 +194,7 @@ namespace ViewModel.ViewModels
             {
                 IsSpecialPreparationPanelOpen = false;
             }
+            ApplyFinalMissionRoles(preparation);
             NotifySpecialPreparationProperties();
         }
 
@@ -198,6 +207,11 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(CanRespondBlindObjectives));
             OnPropertyChanged(nameof(CanSelectRoleParticipant));
             OnPropertyChanged(nameof(SpecialPreparationFeedbackKey));
+            OnPropertyChanged(nameof(IsTrickDistributionSelection));
+            OnPropertyChanged(nameof(IsHeartNineIdentificationStage));
+            OnPropertyChanged(nameof(IsHeartCaptureProgressVisible));
+            OnPropertyChanged(nameof(HeartCaptureProgressDisplay));
+            OnPropertyChanged(nameof(CanIdentifyHeartNineOwnership));
             OnPropertyChanged(nameof(HasSingleTrickWinner));
             OnPropertyChanged(nameof(SingleTrickWinnerParticipantName));
         }

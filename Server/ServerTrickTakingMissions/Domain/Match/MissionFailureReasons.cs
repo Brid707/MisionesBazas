@@ -49,6 +49,9 @@ namespace Domain
         public const string ObjectivesIncompleteAtMissionEnd = "Not all mission objectives were completed before the end of the mission.";
         public const string MissionSuccessMessage = "Mission completed successfully!";
 
+        public const string Mission46HeartsIncomplete =
+            "Not all Heart cards were captured by the required participant.";
+
         public const int MaxTrickDifferenceThreshold = 2;
         public const int Mission50InitialTricksCount = 4;
         public const int TotalSpecialCardsCount = 4;

@@ -6,6 +6,18 @@ namespace Gameplay
     [ServiceContract]
     public interface IMatchService
     {
+        [OperationContract(Action = "urn:misiones-bazas:match:IdentifyHeartNineOwner", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        [FaultContract(typeof(MissionPreparationFault))]
+        MissionPreparationConfirmation IdentifyHeartNineOwner(
+            HeartNineIdentificationSubmission submission, int participantUserId);
+
+        [OperationContract(Action = "urn:misiones-bazas:match:AssignMissionTrickDistribution", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        [FaultContract(typeof(MissionPreparationFault))]
+        MissionPreparationConfirmation AssignMissionTrickDistribution(
+            MissionTrickDistributionSubmission submission, int participantUserId);
+
         [OperationContract(Action = "urn:misiones-bazas:match:AssignMissionRole", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
         [FaultContract(typeof(MissionPreparationFault))]

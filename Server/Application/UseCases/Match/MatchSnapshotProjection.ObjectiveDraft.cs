@@ -31,7 +31,7 @@ namespace Application.UseCases
             MatchState matchState, int participantSeat)
         {
             MissionAttemptState attempt = matchState.MissionAttempt;
-            return new PlayerMissionPreparationSnapshot
+            var snapshot = new PlayerMissionPreparationSnapshot
             {
                 AvailableObjectiveDraftSubmissionId = participantSeat == attempt.CurrentObjectiveDraftSeat &&
                     attempt.Phase == MissionAttemptPhase.ObjectiveDrafting
@@ -61,6 +61,28 @@ namespace Application.UseCases
                 Objectives = attempt.Objectives.Select(objective => CreateObjectiveSnapshot(matchState, objective))
                     .ToArray()
             };
+            ApplyFinalPreparationSnapshot(snapshot, matchState, participantSeat);
+            return snapshot;
+        }
+
+        private static void ApplyFinalPreparationSnapshot(PlayerMissionPreparationSnapshot snapshot,
+            MatchState matchState, int participantSeat)
+        {
+            MissionAttemptState attempt = matchState.MissionAttempt;
+            snapshot.FirstAndLastTrickWinnerParticipantUserId = GetParticipantForRole(matchState,
+                attempt.RoleConfig?.FirstAndLastTrickWinnerSeat);
+            snapshot.FirstFourTricksWinnerParticipantUserId = GetParticipantForRole(matchState,
+                attempt.RoleConfig?.FirstFourTricksWinnerSeat);
+            snapshot.LastTrickWinnerParticipantUserId = GetParticipantForRole(matchState,
+                attempt.RoleConfig?.LastTrickWinnerSeat);
+            snapshot.HeartNineOwnerParticipantUserId = attempt.RoleConfig?.HasIdentifiedHeartNineOwner == true
+                ? GetParticipantForRole(matchState, attempt.RoleConfig.HeartNineOwnerSeat) : null;
+            snapshot.RequiredHeartCaptureParticipantUserId = attempt.RoleConfig?.HasIdentifiedHeartNineOwner == true
+                ? GetParticipantForRole(matchState, MissionSpecialPreparationRules.GetRequiredHeartCaptureSeat(
+                    attempt.RoleConfig, attempt.PlayerCount)) : null;
+            snapshot.CanIdentifyHeartNineOwnership = GetPreparationStage(matchState) ==
+                MissionPreparationStage.HeartNineIdentification && attempt.RoleConfig?.HeartNineOwnerSeat ==
+                    participantSeat;
         }
 
         private static MissionObjectiveSnapshot CreateObjectiveSnapshot(

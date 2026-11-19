@@ -8,6 +8,26 @@ namespace Services.Services
 {
     public sealed partial class LobbyService
     {
+        public MissionPreparationConfirmation IdentifyHeartNineOwner(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            if (submission == null)
+            {
+                throw CreatePreparationFault(MissionPreparationFailureReason.InvalidSubmission);
+            }
+            return CommitMissionPreparation(MissionPreparationMapper.MapSubmission(submission), participantUserId);
+        }
+
+        public MissionPreparationConfirmation AssignMissionTrickDistribution(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            if (submission == null)
+            {
+                throw CreatePreparationFault(MissionPreparationFailureReason.InvalidSubmission);
+            }
+            return CommitMissionPreparation(MissionPreparationMapper.MapSubmission(submission), participantUserId);
+        }
+
         public MissionPreparationConfirmation AssignMissionRole(MissionRoleAssignmentSubmission submission,
             int participantUserId)
         {

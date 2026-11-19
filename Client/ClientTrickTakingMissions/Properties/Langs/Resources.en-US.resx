@@ -765,4 +765,46 @@
   <data name="MissionEvaluation_Error_SelectedParticipantDidNotWinExactlyOneTrick" xml:space="preserve"><value>The selected participant did not finish with exactly one trick won.</value></data>
   <data name="MissionEvaluation_Error_CaptainDidNotWinFirstTrick" xml:space="preserve"><value>The captain did not win the first trick.</value></data>
   <data name="MissionEvaluation_Error_CaptainDidNotWinLastTrick" xml:space="preserve"><value>The captain did not win the last trick.</value></data>
+  <data name="MissionInstruction_MissionThirtySix_Description" xml:space="preserve"><value>Complete seven objectives: token 1 first and token 2 second.</value></data>
+  <data name="MissionInstruction_MissionThirtySeven_Description" xml:space="preserve"><value>Complete four objectives.</value></data>
+  <data name="MissionInstruction_MissionThirtyEight_Description" xml:space="preserve"><value>Complete eight objectives.</value></data>
+  <data name="MissionInstruction_MissionThirtyNine_Description" xml:space="preserve"><value>Complete eight objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order.</value></data>
+  <data name="MissionInstruction_MissionForty_Description" xml:space="preserve"><value>Complete eight objectives: tokens 1, 2 and 3 first, second and third.</value></data>
+  <data name="MissionInstruction_MissionFortyOne_Description" xml:space="preserve"><value>The selected player wins only the first and last trick, both with normal cards.</value></data>
+  <data name="MissionInstruction_MissionFortyTwo_Description" xml:space="preserve"><value>Complete nine objectives.</value></data>
+  <data name="MissionInstruction_MissionFortyThree_Description" xml:space="preserve"><value>Complete nine objectives.</value></data>
+  <data name="MissionInstruction_MissionFortyFour_Description" xml:space="preserve"><value>Each K wins its trick in order: Diamond, Club, Heart and Spade.</value></data>
+  <data name="MissionInstruction_MissionFortyFive_Description" xml:space="preserve"><value>Complete nine objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order.</value></data>
+  <data name="MissionInstruction_MissionFortySix_Description" xml:space="preserve"><value>The Heart 9 holder identifies themselves; their left neighbour must capture all nine Heart cards.</value></data>
+  <data name="MissionInstruction_MissionFortySeven_Description" xml:space="preserve"><value>Complete ten objectives.</value></data>
+  <data name="MissionInstruction_MissionFortyEight_Description" xml:space="preserve"><value>Complete three objectives; capture Omega after the other two and in the final trick of the deal.</value></data>
+  <data name="MissionInstruction_MissionFortyNine_Description" xml:space="preserve"><value>Complete ten objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order.</value></data>
+  <data name="MissionInstruction_MissionFifty_Description" xml:space="preserve"><value>One player wins the first four tricks, another only the last; the others win the middle tricks and at least one each.</value></data>
+  <data name="MissionPreparation_Label_SelectFirstAndLastWinner" xml:space="preserve"><value>The captain selects who wins only the first and last trick with normal cards.</value></data>
+  <data name="MissionPreparation_Stage_HeartNineIdentification" xml:space="preserve"><value>The Heart 9 holder must identify themselves before play.</value></data>
+  <data name="MissionPreparation_Stage_TrickDistributionSelection" xml:space="preserve"><value>The captain assigns the first four and last trick to two different participants.</value></data>
+  <data name="MissionPreparation_Button_IdentifyHeartNine" xml:space="preserve"><value>I hold the Heart 9</value></data>
+  <data name="MissionPreparation_Button_AssignDistribution" xml:space="preserve"><value>Confirm both roles</value></data>
+  <data name="MissionRole_Label_FirstAndLast" xml:space="preserve"><value>First and last trick:</value></data>
+  <data name="MissionRole_Label_FirstFour" xml:space="preserve"><value>First four tricks:</value></data>
+  <data name="MissionRole_Label_Last" xml:space="preserve"><value>Last trick:</value></data>
+  <data name="MissionRole_Label_HeartNineOwner" xml:space="preserve"><value>Identified Heart 9 holder:</value></data>
+  <data name="MissionRole_Label_HeartCapturer" xml:space="preserve"><value>Must capture all Hearts:</value></data>
+  <data name="MissionEvaluation_Error_FirstAndLastWinnerUnassigned" xml:space="preserve"><value>The first-and-last-trick winner is unassigned.</value></data>
+  <data name="MissionEvaluation_Error_FirstTrickWonByWrongParticipant" xml:space="preserve"><value>The selected participant did not win the first trick.</value></data>
+  <data name="MissionEvaluation_Error_FirstTrickWonWithSpecialCard" xml:space="preserve"><value>The first trick was won with a K.</value></data>
+  <data name="MissionEvaluation_Error_IntermediateTrickWonBySelectedParticipant" xml:space="preserve"><value>The selected participant won a middle trick.</value></data>
+  <data name="MissionEvaluation_Error_LastTrickWonByWrongParticipant" xml:space="preserve"><value>The selected participant did not win the last trick.</value></data>
+  <data name="MissionEvaluation_Error_LastTrickWonWithSpecialCard" xml:space="preserve"><value>The last trick was won with a K.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardWinningOrderViolated" xml:space="preserve"><value>The K cards did not win in ascending order.</value></data>
+  <data name="MissionEvaluation_Error_HeartNineOwnerUnidentified" xml:space="preserve"><value>The Heart 9 holder was not identified.</value></data>
+  <data name="MissionEvaluation_Error_HeartCapturedByWrongParticipant" xml:space="preserve"><value>A different participant captured a Heart card.</value></data>
+  <data name="MissionEvaluation_Error_HeartCardsNotAllCaptured" xml:space="preserve"><value>Not all Heart cards were captured.</value></data>
+  <data name="MissionEvaluation_Error_TrickDistributionUnassigned" xml:space="preserve"><value>Two valid distinct roles have not been assigned.</value></data>
+  <data name="MissionEvaluation_Error_InitialTricksWonByWrongParticipant" xml:space="preserve"><value>Another participant won one of the first four tricks.</value></data>
+  <data name="MissionEvaluation_Error_InitialTrickWinnerWonExtra" xml:space="preserve"><value>The first-four winner won an extra trick.</value></data>
+  <data name="MissionEvaluation_Error_FinalTrickWinnerWonEarly" xml:space="preserve"><value>The final-trick winner won too early.</value></data>
+  <data name="MissionEvaluation_Error_FinalTrickWonByWrongParticipant" xml:space="preserve"><value>Another participant won the final trick.</value></data>
+  <data name="MissionEvaluation_Error_RemainingParticipantWonNoTrick" xml:space="preserve"><value>A remaining participant won no tricks.</value></data>
+  <data name="MissionRole_Label_HeartProgress" xml:space="preserve"><value>Hearts captured:</value></data>
 </root>

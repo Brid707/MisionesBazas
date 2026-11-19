@@ -27,6 +27,22 @@ namespace Domain
         SelectedParticipantWonMultipleTricks = 21,
         SelectedParticipantDidNotWinExactlyOneTrick = 22,
         CaptainDidNotWinFirstTrick = 23,
-        CaptainDidNotWinLastTrick = 24
+        CaptainDidNotWinLastTrick = 24,
+        FirstAndLastWinnerUnassigned = 25,
+        FirstTrickWonByWrongParticipant = 26,
+        FirstTrickWonWithSpecialCard = 27,
+        IntermediateTrickWonBySelectedParticipant = 28,
+        LastTrickWonByWrongParticipant = 29,
+        LastTrickWonWithSpecialCard = 30,
+        SpecialCardWinningOrderViolated = 31,
+        HeartNineOwnerUnidentified = 32,
+        HeartCapturedByWrongParticipant = 33,
+        HeartCardsNotAllCaptured = 34,
+        TrickDistributionUnassigned = 35,
+        InitialTricksWonByWrongParticipant = 36,
+        InitialTrickWinnerWonExtra = 37,
+        FinalTrickWinnerWonEarly = 38,
+        FinalTrickWonByWrongParticipant = 39,
+        RemainingParticipantWonNoTrick = 40
     }
 }

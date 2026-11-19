@@ -146,4 +146,8 @@
     <Compile Include="ViewModels\Match\MatchBoardViewModel.SpecialPreparation.cs" />
     <Compile Include="ViewModels\Match\BlindObjectiveResponseViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\PublicMissionRoleViewModel.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.FinalPreparation.cs" />
+  </ItemGroup>
 </Project>

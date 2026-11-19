@@ -109,7 +109,7 @@ namespace Application.UseCases
                     PlayerCount = preparationContext.ParticipantUserIds.Length,
                     Phase = MissionSpecialPreparationRules.GetInitialPhase(
                         MissionCatalog.GetMission(preparationContext.MissionNumber)),
-                    RoleConfig = MissionRoleConfiguration.Default,
+                    RoleConfig = CreateInitialMissionRoles(preparationContext.MissionNumber, missionDeal),
                     Status = MissionAttemptStatus.InProgress,
                     Objectives = objectives.ToArray()
                 },
@@ -122,6 +122,17 @@ namespace Application.UseCases
                     objective => objective.CardId),
                 ObjectiveDraftSubmissionId = Guid.NewGuid()
             };
+        }
+        private static MissionRoleConfiguration CreateInitialMissionRoles(int missionNumber, MissionDeal missionDeal)
+        {
+            MissionRoleConfiguration roles = MissionRoleConfiguration.Default;
+            if (MissionCatalog.GetMission(missionNumber).SpecialRule ==
+                SpecialMissionRuleType.M46_SeatLeftOfHeartNineWinsAllHearts)
+            {
+                roles = roles with { HeartNineOwnerSeat =
+                    MissionObjectiveDealRules.GetHeartNineOwnerSeat(missionDeal.HandsBySeat) };
+            }
+            return roles;
         }
     }
 }

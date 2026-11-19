@@ -7,6 +7,10 @@ namespace Model.Services
     /// <summary>Provides recipient-specific match state and retry-safe play requests on the lobby channel.</summary>
     public interface IMatchClient
     {
+        Task<MissionPreparationConfirmation> IdentifyHeartNineOwnerAsync(
+            HeartNineIdentificationSubmission submission, int participantUserId);
+        Task<MissionPreparationConfirmation> AssignMissionTrickDistributionAsync(
+            MissionTrickDistributionSubmission submission, int participantUserId);
         Task<MissionPreparationConfirmation> AssignMissionRoleAsync(
             MissionRoleAssignmentSubmission submission, int participantUserId);
         Task<MissionPreparationConfirmation> RespondToBlindObjectivesAsync(

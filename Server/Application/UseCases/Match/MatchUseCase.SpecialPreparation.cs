@@ -78,10 +78,50 @@ namespace Application.UseCases
 
         private static bool HasValidPreparationShape(MissionPreparationRequest request)
         {
-            return request.Action == MissionPreparationAction.AssignRole
-                ? request.SelectedParticipantUserId != 0 && request.Response == BlindObjectiveCapableResponse.Pending
-                : request.SelectedParticipantUserId == 0 && (request.Response == BlindObjectiveCapableResponse.Yes ||
-                    request.Response == BlindObjectiveCapableResponse.No);
+            bool isValid;
+            switch (request.Action)
+            {
+                case MissionPreparationAction.AssignRole:
+                    isValid = HasNoDistributionTargets(request) && request.SelectedParticipantUserId != 0 &&
+                        request.Response == BlindObjectiveCapableResponse.Pending;
+                    break;
+                case MissionPreparationAction.RecordBlindResponse:
+                    isValid = HasValidBlindResponsePayload(request);
+                    break;
+                case MissionPreparationAction.IdentifyHeartNineOwner:
+                    isValid = HasNoDistributionTargets(request) && HasNoSingleRolePayload(request);
+                    break;
+                case MissionPreparationAction.AssignTrickDistribution:
+                    isValid = HasValidDistributionPayload(request);
+                    break;
+                default:
+                    isValid = false;
+                    break;
+            }
+            return isValid;
+        }
+
+        private static bool HasNoDistributionTargets(MissionPreparationRequest request)
+        {
+            return request.FirstFourTricksWinnerParticipantUserId == 0 && request.LastTrickWinnerParticipantUserId == 0;
+        }
+
+        private static bool HasNoSingleRolePayload(MissionPreparationRequest request)
+        {
+            return request.SelectedParticipantUserId == 0 && request.Response == BlindObjectiveCapableResponse.Pending;
+        }
+
+        private static bool HasValidBlindResponsePayload(MissionPreparationRequest request)
+        {
+            return HasNoDistributionTargets(request) && request.SelectedParticipantUserId == 0 &&
+                (request.Response == BlindObjectiveCapableResponse.Yes || request.Response ==
+                    BlindObjectiveCapableResponse.No);
+        }
+
+        private static bool HasValidDistributionPayload(MissionPreparationRequest request)
+        {
+            return HasNoSingleRolePayload(request) && request.FirstFourTricksWinnerParticipantUserId != 0 &&
+                request.LastTrickWinnerParticipantUserId != 0;
         }
 
         private static MissionPreparationCommit ProcessNewPreparation(MatchState matchState,
@@ -100,13 +140,23 @@ namespace Application.UseCases
             MissionPreparationRequest request, int participantUserId)
         {
             MissionPreparationCommit commit;
-            if (request.Action == MissionPreparationAction.AssignRole)
+            switch (request.Action)
             {
-                commit = AssignRequestedMissionRole(matchState, request, participantUserId);
-            }
-            else
-            {
-                commit = RecordBlindResponse(matchState, request, participantUserId);
+                case MissionPreparationAction.AssignRole:
+                    commit = AssignRequestedMissionRole(matchState, request, participantUserId);
+                    break;
+                case MissionPreparationAction.RecordBlindResponse:
+                    commit = RecordBlindResponse(matchState, request, participantUserId);
+                    break;
+                case MissionPreparationAction.IdentifyHeartNineOwner:
+                    commit = IdentifyRequestedHeartNineOwner(matchState, request, participantUserId);
+                    break;
+                case MissionPreparationAction.AssignTrickDistribution:
+                    commit = AssignRequestedTrickDistribution(matchState, request, participantUserId);
+                    break;
+                default:
+                    commit = RejectPreparation(request, MissionPreparationRejection.InvalidSubmission);
+                    break;
             }
             return commit;
         }
@@ -134,7 +184,7 @@ namespace Application.UseCases
             }
             else
             {
-                bool isCurrentVersion = request.Action == MissionPreparationAction.AssignRole
+                bool isCurrentVersion = request.Action != MissionPreparationAction.RecordBlindResponse
                     ? request.ExpectedMatchStateVersion == matchState.MatchStateVersion
                     : request.ExpectedMatchStateVersion >= matchState.PreparationStageOpenedVersion &&
                         request.ExpectedMatchStateVersion <= matchState.MatchStateVersion;

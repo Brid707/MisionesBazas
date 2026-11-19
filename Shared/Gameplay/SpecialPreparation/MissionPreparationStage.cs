@@ -12,6 +12,8 @@ namespace Gameplay
         [EnumMember] AssigneeSelection = 3,
         [EnumMember] ObjectiveDrafting = 4,
         [EnumMember] PlayingTricks = 5,
-        [EnumMember] Finished = 6
+        [EnumMember] Finished = 6,
+        [EnumMember] HeartNineIdentification = 7,
+        [EnumMember] TrickDistributionSelection = 8
     }
 }

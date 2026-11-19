@@ -5,13 +5,15 @@ using TrickTakingMissions.Rules.Models;
 namespace Domain
 {
     /// <summary>Controls special preparation without lobby-host or transport dependencies.</summary>
-    public static class MissionSpecialPreparationRules
+    public static partial class MissionSpecialPreparationRules
     {
         public static MissionAttemptPhase GetInitialPhase(MissionDefinition definition)
         {
             MissionAttemptPhase phase = definition.ObjectiveCardCount == 0
                 ? MissionAttemptPhase.PlayingTricks : MissionAttemptPhase.ObjectiveDrafting;
-            if (IsRoleSelectionRequired(definition.SpecialRule))
+            if (IsSingleRoleSelectionRequired(definition.SpecialRule) ||
+                definition.SpecialRule == SpecialMissionRuleType.M46_SeatLeftOfHeartNineWinsAllHearts ||
+                definition.SpecialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution)
             {
                 phase = MissionAttemptPhase.RoleAndPreparation;
             }
@@ -33,7 +35,7 @@ namespace Domain
         private static bool IsRoleContextValid(MissionRoleAssignmentContext context)
         {
             return context?.Attempt != null && context.Definition != null &&
-                IsRoleSelectionRequired(context.Definition.SpecialRule) &&
+                IsSingleRoleSelectionRequired(context.Definition.SpecialRule) &&
                 context.Attempt.Phase == MissionAttemptPhase.RoleAndPreparation &&
                 context.ActingParticipantSeat == context.Attempt.CaptainSeat &&
                 context.SelectedParticipantSeat >= 0 && context.SelectedParticipantSeat < context.Attempt.PlayerCount;
@@ -55,11 +57,12 @@ namespace Domain
                     ? MissionAttemptPhase.ObjectiveDrafting : MissionAttemptPhase.PlayingTricks
             };
         }
-        private static bool IsRoleSelectionRequired(SpecialMissionRuleType specialRule)
+        private static bool IsSingleRoleSelectionRequired(SpecialMissionRuleType specialRule)
         {
             return MissionSetupRules.IsBlindObjectiveAssignmentRule(specialRule) ||
                 specialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer ||
-                specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard;
+                specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard ||
+                specialRule == SpecialMissionRuleType.M41_SelectedPlayerWinsOnlyFirstAndLastTrickWithoutSpecialCard;
         }
 
         private static MissionRoleConfiguration CreateAssignedRoles(MissionRoleAssignmentContext context)
@@ -74,9 +77,14 @@ namespace Domain
             {
                 roles = roles with { SilencedPlayerSeat = selectedParticipantSeat };
             }
-            else
+            else if (context.Definition.SpecialRule ==
+                SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard)
             {
                 roles = roles with { SingleTrickWinnerSeat = selectedParticipantSeat };
+            }
+            else
+            {
+                roles = roles with { FirstAndLastTrickWinnerSeat = selectedParticipantSeat };
             }
             return roles;
         }

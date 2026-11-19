@@ -37,7 +37,7 @@ namespace Application.UseCases
         {
             bool isBlind = MissionSetupRules.IsBlindObjectiveAssignmentRule(
                 MissionCatalog.GetMission(state.MissionAttempt.MissionNumber).SpecialRule);
-            MissionPreparationStage stage = MissionPreparationStage.RoleSelection;
+            MissionPreparationStage stage = GetRolePreparationStage(state);
             if (isBlind)
             {
                 stage = MissionSetupRules.AreAllBlindResponsesRecorded(state.BlindResponsesBySeat,
@@ -47,11 +47,41 @@ namespace Application.UseCases
             return stage;
         }
 
+        private static MissionPreparationStage GetRolePreparationStage(MatchState state)
+        {
+            SpecialMissionRuleType rule = MissionCatalog.GetMission(state.MissionAttempt.MissionNumber).SpecialRule;
+            MissionPreparationStage stage = MissionPreparationStage.RoleSelection;
+            if (rule == SpecialMissionRuleType.M46_SeatLeftOfHeartNineWinsAllHearts)
+            {
+                stage = MissionPreparationStage.HeartNineIdentification;
+            }
+            else if (rule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution)
+            {
+                stage = MissionPreparationStage.TrickDistributionSelection;
+            }
+            return stage;
+        }
+
+        private static int? GetParticipantForRole(MatchState state, byte? seat)
+        {
+            return seat.HasValue ? (int?)state.ParticipantUserIds[seat.Value] : null;
+        }
+
         private static int[] GetEligibleRoleParticipants(MatchState state, int participantSeat)
         {
-            return Enumerable.Range(0, state.ParticipantUserIds.Length).Where(target =>
-                MissionSpecialPreparationRules.CanAssignRole(MatchUseCase.CreateRoleContext(state,
-                    participantSeat, target))).Select(target => state.ParticipantUserIds[target]).ToArray();
+            int[] candidates;
+            if (GetPreparationStage(state) == MissionPreparationStage.TrickDistributionSelection &&
+                participantSeat == state.MissionCaptainSeat)
+            {
+                candidates = (int[])state.ParticipantUserIds.Clone();
+            }
+            else
+            {
+                candidates = Enumerable.Range(0, state.ParticipantUserIds.Length).Where(target =>
+                    MissionSpecialPreparationRules.CanAssignRole(MatchUseCase.CreateRoleContext(state,
+                        participantSeat, target))).Select(target => state.ParticipantUserIds[target]).ToArray();
+            }
+            return candidates;
         }
 
         private static BlindObjectiveResponse MapBlindResponse(BlindObjectiveCapableResponse response)

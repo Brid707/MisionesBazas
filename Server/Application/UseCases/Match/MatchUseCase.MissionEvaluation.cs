@@ -66,6 +66,9 @@ namespace Application.UseCases
                 CaptainSeat = (byte)matchState.MissionCaptainSeat,
                 PlayerCount = matchState.ParticipantUserIds.Length,
                 RoleConfig = matchState.MissionAttempt.RoleConfig,
+                HeartNineOwnerSeat = matchState.MissionAttempt.RoleConfig?.HeartNineOwnerSeat,
+                CapturedHeartCardCount = CreateCandidateHeartCaptureCount(matchState,
+                    completedTrickPlays, winningTrickPlay),
                 TricksWonWithNormalOneCount = candidateStatistics.TricksWonWithNormalOneCount,
                 SpecialCardsWonSoFar = candidateStatistics.SpecialWinningCardIds.Select(DeckRules.GetCardById).ToArray()
             };
@@ -79,6 +82,18 @@ namespace Application.UseCases
                 .ToDictionary(entry => entry.participantSeat, entry => entry.trickWinCount);
             candidateTrickWinCountsBySeat[winningParticipantSeat]++;
             return candidateTrickWinCountsBySeat;
+        }
+        private static int CreateCandidateHeartCaptureCount(MatchState state, TrickCardPlay[] trick,
+            TrickCardPlay winningPlay)
+        {
+            int capturedHeartCardCount = CountCapturedHearts(state);
+            byte? requiredSeat = MissionSpecialPreparationRules.GetRequiredHeartCaptureSeat(
+                state.MissionAttempt.RoleConfig, state.ParticipantUserIds.Length);
+            if (requiredSeat == winningPlay.Seat)
+            {
+                capturedHeartCardCount += trick.Count(play => play.Card.Suit == CardSuit.Heart);
+            }
+            return capturedHeartCardCount;
         }
     }
 }

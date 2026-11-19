@@ -36,6 +36,22 @@ namespace ViewModel.ViewModels
         private const int MissionThirtyFourNumber = 34;
         private const int MissionThirtyFiveNumber = 35;
 
+        private const int MissionThirtySixNumber = 36;
+        private const int MissionThirtySevenNumber = 37;
+        private const int MissionThirtyEightNumber = 38;
+        private const int MissionThirtyNineNumber = 39;
+        private const int MissionFortyNumber = 40;
+        private const int MissionFortyOneNumber = 41;
+        private const int MissionFortyTwoNumber = 42;
+        private const int MissionFortyThreeNumber = 43;
+        private const int MissionFortyFourNumber = 44;
+        private const int MissionFortyFiveNumber = 45;
+        private const int MissionFortySixNumber = 46;
+        private const int MissionFortySevenNumber = 47;
+        private const int MissionFortyEightNumber = 48;
+        private const int MissionFortyNineNumber = 49;
+        private const int MissionFiftyNumber = 50;
+
         private static readonly System.Collections.Generic.IReadOnlyDictionary<int, string> s_missionInstructions =
             new System.Collections.Generic.Dictionary<int, string>
             {
@@ -69,7 +85,22 @@ namespace ViewModel.ViewModels
                 { MissionThirtyTwoNumber, "MissionInstruction_MissionThirtyTwo_Description" },
                 { MissionThirtyThreeNumber, "MissionInstruction_MissionThirtyThree_Description" },
                 { MissionThirtyFourNumber, "MissionInstruction_MissionThirtyFour_Description" },
-                { MissionThirtyFiveNumber, "MissionInstruction_MissionThirtyFive_Description" }
+                { MissionThirtyFiveNumber, "MissionInstruction_MissionThirtyFive_Description" },
+                { MissionThirtySixNumber, "MissionInstruction_MissionThirtySix_Description" },
+                { MissionThirtySevenNumber, "MissionInstruction_MissionThirtySeven_Description" },
+                { MissionThirtyEightNumber, "MissionInstruction_MissionThirtyEight_Description" },
+                { MissionThirtyNineNumber, "MissionInstruction_MissionThirtyNine_Description" },
+                { MissionFortyNumber, "MissionInstruction_MissionForty_Description" },
+                { MissionFortyOneNumber, "MissionInstruction_MissionFortyOne_Description" },
+                { MissionFortyTwoNumber, "MissionInstruction_MissionFortyTwo_Description" },
+                { MissionFortyThreeNumber, "MissionInstruction_MissionFortyThree_Description" },
+                { MissionFortyFourNumber, "MissionInstruction_MissionFortyFour_Description" },
+                { MissionFortyFiveNumber, "MissionInstruction_MissionFortyFive_Description" },
+                { MissionFortySixNumber, "MissionInstruction_MissionFortySix_Description" },
+                { MissionFortySevenNumber, "MissionInstruction_MissionFortySeven_Description" },
+                { MissionFortyEightNumber, "MissionInstruction_MissionFortyEight_Description" },
+                { MissionFortyNineNumber, "MissionInstruction_MissionFortyNine_Description" },
+                { MissionFiftyNumber, "MissionInstruction_MissionFifty_Description" }
             };
 
         public bool IsMissionInstructionVisible =>

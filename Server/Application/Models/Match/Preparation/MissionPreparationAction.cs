@@ -4,6 +4,8 @@ namespace Application.Models
     public enum MissionPreparationAction
     {
         AssignRole = 0,
-        RecordBlindResponse = 1
+        RecordBlindResponse = 1,
+        IdentifyHeartNineOwner = 2,
+        AssignTrickDistribution = 3
     }
 }

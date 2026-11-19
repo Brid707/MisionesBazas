@@ -276,4 +276,11 @@
   <ItemGroup>
     <Compile Include="UseCases\Match\RadioCommunicationContextFactory.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UseCases\Match\MatchUseCase.FinalMissionPreparation.cs" />
+  </ItemGroup>
 </Project>

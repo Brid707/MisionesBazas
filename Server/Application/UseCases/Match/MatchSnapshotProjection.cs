@@ -35,7 +35,8 @@ namespace Application.UseCases
                 MissionConditionProgress = new MissionConditionProgressSnapshot
                 {
                     TricksWonWithNormalOneCount = matchState.TrickStatistics.TricksWonWithNormalOneCount,
-                    SpecialWinningCardIds = matchState.TrickStatistics.SpecialWinningCardIds.ToArray()
+                    SpecialWinningCardIds = matchState.TrickStatistics.SpecialWinningCardIds.ToArray(),
+                    CapturedHeartCardCount = MatchUseCase.CountCapturedHearts(matchState)
                 },
                 MissionRetry = CreateMissionRetry(transition),
                 MissionEvaluation = CreateMissionEvaluation(matchState),

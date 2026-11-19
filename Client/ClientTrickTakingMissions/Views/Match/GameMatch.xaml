@@ -201,6 +201,15 @@
                                        Converter={StaticResource MatchTextConverter}}" />
                         <TextBlock Text="{Binding MatchBoard.CurrentMissionAttemptNumber}"
                                    Foreground="{StaticResource BrushTextLight}" />
+                        <StackPanel Orientation="Horizontal" Margin="12,0,0,0"
+                            Visibility="{Binding MatchBoard.IsHeartCaptureProgressVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,4,0"
+                                Text="{Binding Source=MissionRole_Label_HeartProgress,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                Text="{Binding MatchBoard.HeartCaptureProgressDisplay}" />
+                        </StackPanel>
                     </StackPanel>
                     <Button Width="46" Height="42" HorizontalAlignment="Right" Content="?"
                             Background="{StaticResource BrushTransparent}"
@@ -238,6 +247,8 @@
                                                Converter={StaticResource MatchTextConverter}}" />
                                 <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
                                            Text="{Binding CurrentObjectiveDraftPlayerName}" />
+                                <ScrollViewer MaxHeight="240" VerticalScrollBarVisibility="Auto"
+                                              HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl ItemsSource="{Binding UnassignedMissionObjectives}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate><WrapPanel HorizontalAlignment="Center" /></ItemsPanelTemplate>
@@ -256,6 +267,7 @@
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                                </ScrollViewer>
                                 <Button Command="{Binding PassObjectiveDraftCommand}" Margin="0,8,0,0"
                                         Background="{StaticResource BrushSubmitButtonBackground}">
                                     <TextBlock Text="{Binding Source=MissionDraft_Button_Pass,
@@ -312,6 +324,27 @@
                                                 Converter={StaticResource MatchTextConverter}}" />
                                         <Button Command="{Binding RespondNotCapableCommand}" Margin="4,0"
                                             Content="{Binding Source=MissionPreparation_Response_No,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                    </StackPanel>
+                                    <Button Command="{Binding IdentifyHeartNineOwnerCommand}"
+                                        Visibility="{Binding IsHeartNineIdentificationStage,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Content="{Binding Source=MissionPreparation_Button_IdentifyHeartNine,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <StackPanel Visibility="{Binding IsTrickDistributionSelection,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                            Text="{Binding Source=MissionRole_Label_FirstFour,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <ComboBox ItemsSource="{Binding EligibleRoleParticipants}" DisplayMemberPath="Username"
+                                            SelectedItem="{Binding SelectedFirstFourTrickWinner}" Margin="0,5" />
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                            Text="{Binding Source=MissionRole_Label_Last,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <ComboBox ItemsSource="{Binding EligibleRoleParticipants}" DisplayMemberPath="Username"
+                                            SelectedItem="{Binding SelectedLastTrickWinner}" Margin="0,5" />
+                                        <Button Command="{Binding AssignTrickDistributionCommand}"
+                                            Content="{Binding Source=MissionPreparation_Button_AssignDistribution,
                                                 Converter={StaticResource MatchTextConverter}}" />
                                     </StackPanel>
                                     <ItemsControl ItemsSource="{Binding BlindObjectiveResponseDescriptions}"
@@ -440,6 +473,17 @@
                             <TextBlock Foreground="{StaticResource BrushTextLight}"
                                 Text="{Binding SingleTrickWinnerParticipantName}" />
                         </StackPanel>
+                        <ItemsControl ItemsSource="{Binding ConfirmedMissionRoles}" HorizontalAlignment="Center">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,6,0"
+                                            Text="{Binding LabelResourceKey, Converter={StaticResource MatchTextConverter}}" />
+                                        <TextBlock Foreground="{StaticResource BrushTextLight}" Text="{Binding ParticipantName}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         <TextBlock Text="{Binding MissionInstructionResourceKey,
                                        Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}"

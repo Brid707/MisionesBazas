@@ -48,7 +48,9 @@ namespace Domain
             return specialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks ||
                 specialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo ||
                 specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard ||
-                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo;
+                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo ||
+                specialRule == SpecialMissionRuleType.M41_SelectedPlayerWinsOnlyFirstAndLastTrickWithoutSpecialCard ||
+                specialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution;
         }
 
         private static void ValidateCompletedTrickCounts(MissionEvaluationContext context)

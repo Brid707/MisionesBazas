@@ -28,6 +28,8 @@ namespace Domain
 
         public MissionRoleConfiguration RoleConfig { get; init; }
 
+        public int CapturedHeartCardCount { get; init; }
+
         public byte? HeartNineOwnerSeat { get; init; }
 
         public byte CaptainSeat { get; init; }

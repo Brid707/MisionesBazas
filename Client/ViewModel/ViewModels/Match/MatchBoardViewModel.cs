@@ -62,6 +62,7 @@ namespace ViewModel.ViewModels
             InitializeObjectiveDraftCommands();
             InitializeRadioCommand();
             InitializeSpecialPreparationCommands();
+            InitializeFinalPreparationCommands();
             _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);

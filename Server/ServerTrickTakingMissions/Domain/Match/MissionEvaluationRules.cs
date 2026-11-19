@@ -11,6 +11,8 @@ namespace Domain
     /// </summary>
     public static partial class MissionEvaluationRules
     {
+        private const int FirstMissionTrickNumber = 1;
+        private const int FirstSpecialCardRank = (int)SpecialCardSymbol.Diamond;
         /// <summary>
         /// Evaluates a completed trick, verifying captured objectives and evaluating active special mission rules.
         /// </summary>
@@ -163,22 +165,19 @@ namespace Domain
             List<MissionObjective> updatedObjectives)
         {
             int remainingSpecialToWin = MissionFailureReasons.TotalSpecialCardsCount - CountSpecialCardsWon(context);
-            int remainingTricks = context.TotalTricksInMission - context.CurrentTrickNumber;
             MissionEvaluationResult result = null;
-            if (context.Definition.SpecialRule == SpecialMissionRuleType.M13_WinTrickWithEverySpecialCard &&
-                remainingSpecialToWin == 0)
-            {
-                result = MissionEvaluationResult.Success(updatedObjectives,
-                    MissionFailureReasons.MissionSuccessMessage);
-            }
-            else if (context.Definition.SpecialRule ==
-                SpecialMissionRuleType.M44_SpecialCardsWinTricksInAscendingOrder &&
+            if (context.Definition.SpecialRule == SpecialMissionRuleType.M44_SpecialCardsWinTricksInAscendingOrder &&
                 context.WinningPlay.Card.Suit == CardSuit.Special && !IsSpecialCardAscending(context))
             {
                 result = MissionEvaluationResult.Fail(updatedObjectives,
                     MissionFailureReasons.Mission44SpecialOrderViolated);
             }
-            else if (remainingSpecialToWin > remainingTricks)
+            if (result == null && remainingSpecialToWin == 0)
+            {
+                result = MissionEvaluationResult.Success(updatedObjectives,
+                    MissionFailureReasons.MissionSuccessMessage);
+            }
+            if (result == null && remainingSpecialToWin > context.TotalTricksInMission - context.CurrentTrickNumber)
             {
                 result = MissionEvaluationResult.Fail(updatedObjectives,
                     MissionFailureReasons.Mission13NotAllSpecialCardsWon);
@@ -211,7 +210,7 @@ namespace Domain
             SpecialCardSymbol currentSymbol = context.WinningPlay.Card.SpecialSymbol;
             int priorSpecialCount = (context.SpecialCardsWonSoFar ?? Array.Empty<Card>())
                 .Count(card => card.Suit == CardSuit.Special && card.IdCard != context.WinningPlay.Card.IdCard);
-            SpecialCardSymbol expectedSymbol = (SpecialCardSymbol)(priorSpecialCount + 1);
+            SpecialCardSymbol expectedSymbol = (SpecialCardSymbol)(priorSpecialCount + FirstSpecialCardRank);
 
             return currentSymbol == expectedSymbol;
         }
@@ -299,48 +298,49 @@ namespace Domain
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
-            if (!context.RoleConfig.FirstAndLastTrickWinnerSeat.HasValue)
+            MissionEvaluationResult result = MissionEvaluationResult.Fail(updatedObjectives,
+                MissionFailureReasons.Mission41RoleUnassigned);
+            byte? selectedSeat = context.RoleConfig?.FirstAndLastTrickWinnerSeat;
+            if (selectedSeat.HasValue && selectedSeat.Value < context.PlayerCount)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41RoleUnassigned);
+                result = EvaluateFirstAndLastWinner(context, updatedObjectives);
             }
+            return result;
+        }
 
-            byte targetSeat = context.RoleConfig.FirstAndLastTrickWinnerSeat.Value;
-            bool isFirstTrick = context.CurrentTrickNumber == 1;
+        private static MissionEvaluationResult EvaluateFirstAndLastWinner(MissionEvaluationContext context,
+            List<MissionObjective> objectives)
+        {
+            bool isFirstTrick = context.CurrentTrickNumber == FirstMissionTrickNumber;
             bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
-
-            if (isFirstTrick)
+            bool hasSelectedWinner = context.WinningPlay.Seat == context.RoleConfig.FirstAndLastTrickWinnerSeat;
+            string failureReason = null;
+            if (isFirstTrick || isLastTrick)
             {
-                if (context.WinningPlay.Seat != targetSeat)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41FirstTrickNotWonBySelected);
-                }
-
-                if (context.WinningPlay.Card.Suit == CardSuit.Special)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41FirstTrickWonWithSpecial);
-                }
+                failureReason = GetFirstOrLastWinnerFailure(context, hasSelectedWinner);
             }
-            else if (!isLastTrick)
+            else if (hasSelectedWinner)
             {
-                if (context.WinningPlay.Seat == targetSeat)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41IntermediateTrickWonBySelected);
-                }
+                failureReason = MissionFailureReasons.Mission41IntermediateTrickWonBySelected;
             }
-            else
+            return failureReason == null ? null : MissionEvaluationResult.Fail(objectives, failureReason);
+        }
+
+        private static string GetFirstOrLastWinnerFailure(MissionEvaluationContext context, bool hasSelectedWinner)
+        {
+            bool isFirstTrick = context.CurrentTrickNumber == FirstMissionTrickNumber;
+            string failureReason = null;
+            if (!hasSelectedWinner)
             {
-                if (context.WinningPlay.Seat != targetSeat)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41LastTrickNotWonBySelected);
-                }
-
-                if (context.WinningPlay.Card.Suit == CardSuit.Special)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission41LastTrickWonWithSpecial);
-                }
+                failureReason = isFirstTrick ? MissionFailureReasons.Mission41FirstTrickNotWonBySelected
+                    : MissionFailureReasons.Mission41LastTrickNotWonBySelected;
             }
-
-            return null;
+            else if (context.WinningPlay.Card.Suit == CardSuit.Special)
+            {
+                failureReason = isFirstTrick ? MissionFailureReasons.Mission41FirstTrickWonWithSpecial
+                    : MissionFailureReasons.Mission41LastTrickWonWithSpecial;
+            }
+            return failureReason;
         }
 
         private static MissionEvaluationResult EvaluateDistributionConstraints(
@@ -364,72 +364,111 @@ namespace Domain
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
-            if (!context.HeartNineOwnerSeat.HasValue)
+            string failureReason = null;
+            MissionEvaluationResult result = null;
+            if (!context.HeartNineOwnerSeat.HasValue || context.HeartNineOwnerSeat.Value >= context.PlayerCount)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission46HeartNineUnidentified);
+                failureReason = MissionFailureReasons.Mission46HeartNineUnidentified;
             }
+            else
+            {
+                failureReason = GetHeartCaptureFailure(context);
+            }
+            if (failureReason != null)
+            {
+                result = MissionEvaluationResult.Fail(updatedObjectives, failureReason);
+            }
+            else if (context.CapturedHeartCardCount == s_requiredHeartCardCount)
+            {
+                result = MissionEvaluationResult.Success(updatedObjectives,
+                    MissionFailureReasons.MissionSuccessMessage);
+            }
+            return result;
+        }
 
-            byte targetSeat = (byte)((context.HeartNineOwnerSeat.Value + 1) % context.PlayerCount);
+        private static readonly int s_requiredHeartCardCount =
+            TrickTakingMissions.Rules.Rules.DeckRules.CreateStandardDeck().Count(card => card.Suit == CardSuit.Heart);
+
+        private static string GetHeartCaptureFailure(MissionEvaluationContext context)
+        {
+            if (context.CapturedHeartCardCount < 0 || context.CapturedHeartCardCount > s_requiredHeartCardCount)
+            {
+                throw new ArgumentException(nameof(context.CapturedHeartCardCount));
+            }
+            byte targetSeat = ParticipantSeatRules.GetNextClockwiseSeat(context.HeartNineOwnerSeat.Value,
+                context.PlayerCount);
             bool hasHeartCard = context.CompletedTrickPlays.Any(play => play.Card.Suit == CardSuit.Heart);
-
+            string failureReason = null;
             if (hasHeartCard && context.WinningPlay.Seat != targetSeat)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission46HeartCapturedByWrongSeat);
+                failureReason = MissionFailureReasons.Mission46HeartCapturedByWrongSeat;
             }
-
-            return null;
+            else if (context.CurrentTrickNumber == context.TotalTricksInMission &&
+                context.CapturedHeartCardCount != s_requiredHeartCardCount)
+            {
+                failureReason = MissionFailureReasons.Mission46HeartsIncomplete;
+            }
+            return failureReason;
         }
 
         private static MissionEvaluationResult EvaluateMission50(
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
-            if (!context.RoleConfig.FirstFourTricksWinnerSeat.HasValue ||
-                !context.RoleConfig.LastTrickWinnerSeat.HasValue)
+            string failureReason = MissionFailureReasons.Mission50RolesUnassigned;
+            if (MissionSetupRules.ValidateRoleConfiguration(context.Definition, context.RoleConfig,
+                context.PlayerCount))
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50RolesUnassigned);
+                failureReason = GetTrickDistributionFailure(context);
             }
+            return failureReason == null ? null : MissionEvaluationResult.Fail(updatedObjectives, failureReason);
+        }
 
-            byte roleA = context.RoleConfig.FirstFourTricksWinnerSeat.Value;
-            byte roleB = context.RoleConfig.LastTrickWinnerSeat.Value;
-
+        private static string GetTrickDistributionFailure(MissionEvaluationContext context)
+        {
+            string failureReason = null;
+            bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
             if (context.CurrentTrickNumber <= MissionFailureReasons.Mission50InitialTricksCount)
             {
-                if (context.WinningPlay.Seat != roleA)
+                if (context.WinningPlay.Seat != context.RoleConfig.FirstFourTricksWinnerSeat)
                 {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50FirstFourTricksWrongWinner);
+                    failureReason = MissionFailureReasons.Mission50FirstFourTricksWrongWinner;
                 }
             }
-            else if (context.WinningPlay.Seat == roleA)
+            else
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50FirstFourWinnerWonExtra);
+                failureReason = GetLateTrickDistributionFailure(context, isLastTrick);
             }
-
-            bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
-            if (!isLastTrick && context.WinningPlay.Seat == roleB)
+            if (failureReason == null && context.CurrentTrickNumber >= context.TotalTricksInMission - 1)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50LastTrickWinnerWonEarly);
-            }
-
-            if (isLastTrick && context.WinningPlay.Seat != roleB)
-            {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50LastTrickWrongWinner);
-            }
-
-            bool isPenultimateOrLastTrick = context.CurrentTrickNumber >= context.TotalTricksInMission - 1;
-            if (isPenultimateOrLastTrick)
-            {
-                bool allRemainingWon = Enumerable.Range(0, context.PlayerCount)
-                    .Where(seat => seat != roleA && seat != roleB)
+                bool haveRemainingParticipantsWon = Enumerable.Range(0, context.PlayerCount)
+                    .Where(seat => seat != context.RoleConfig.FirstFourTricksWinnerSeat &&
+                        seat != context.RoleConfig.LastTrickWinnerSeat)
                     .All(seat => GetTricksWon(context.TotalTricksWonBySeat, seat) > 0);
-
-                if (!allRemainingWon)
+                if (!haveRemainingParticipantsWon)
                 {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission50RemainingPlayerWonNoTrick);
+                    failureReason = MissionFailureReasons.Mission50RemainingPlayerWonNoTrick;
                 }
             }
+            return failureReason;
+        }
 
-            return null;
+        private static string GetLateTrickDistributionFailure(MissionEvaluationContext context, bool isLastTrick)
+        {
+            string failureReason = null;
+            if (context.WinningPlay.Seat == context.RoleConfig.FirstFourTricksWinnerSeat)
+            {
+                failureReason = MissionFailureReasons.Mission50FirstFourWinnerWonExtra;
+            }
+            else if (!isLastTrick && context.WinningPlay.Seat == context.RoleConfig.LastTrickWinnerSeat)
+            {
+                failureReason = MissionFailureReasons.Mission50LastTrickWinnerWonEarly;
+            }
+            else if (isLastTrick && context.WinningPlay.Seat != context.RoleConfig.LastTrickWinnerSeat)
+            {
+                failureReason = MissionFailureReasons.Mission50LastTrickWrongWinner;
+            }
+            return failureReason;
         }
 
         private static MissionEvaluationResult DetermineOverallStatus(

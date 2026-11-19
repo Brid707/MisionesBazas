@@ -24,6 +24,10 @@ namespace Application.Models
 
         public int SelectedParticipantUserId { get; init; }
 
+        public int FirstFourTricksWinnerParticipantUserId { get; init; }
+
+        public int LastTrickWinnerParticipantUserId { get; init; }
+
         public BlindObjectiveCapableResponse Response { get; init; }
     }
 }

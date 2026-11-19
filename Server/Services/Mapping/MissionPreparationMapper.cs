@@ -7,6 +7,36 @@ namespace Services.Mapping
 {
     internal static class MissionPreparationMapper
     {
+        internal static MissionPreparationRequest MapSubmission(HeartNineIdentificationSubmission submission)
+        {
+            return new MissionPreparationRequest
+            {
+                LobbyCode = submission.LobbyCode,
+                MatchId = submission.MatchId,
+                MissionAttemptId = submission.MissionAttemptId,
+                MissionPreparationStageId = submission.MissionPreparationStageId,
+                MissionPreparationSubmissionId = submission.MissionPreparationSubmissionId,
+                ExpectedMatchStateVersion = submission.ExpectedMatchStateVersion,
+                Action = MissionPreparationAction.IdentifyHeartNineOwner
+            };
+        }
+
+        internal static MissionPreparationRequest MapSubmission(MissionTrickDistributionSubmission submission)
+        {
+            return new MissionPreparationRequest
+            {
+                LobbyCode = submission.LobbyCode,
+                MatchId = submission.MatchId,
+                MissionAttemptId = submission.MissionAttemptId,
+                MissionPreparationStageId = submission.MissionPreparationStageId,
+                MissionPreparationSubmissionId = submission.MissionPreparationSubmissionId,
+                ExpectedMatchStateVersion = submission.ExpectedMatchStateVersion,
+                FirstFourTricksWinnerParticipantUserId = submission.FirstFourTricksWinnerParticipantUserId,
+                LastTrickWinnerParticipantUserId = submission.LastTrickWinnerParticipantUserId,
+                Action = MissionPreparationAction.AssignTrickDistribution
+            };
+        }
+
         internal static MissionPreparationRequest MapSubmission(MissionRoleAssignmentSubmission submission)
         {
             return new MissionPreparationRequest
