@@ -20,5 +20,20 @@ namespace Application.Ports
         Guid StartMatch(Application.Models.MatchStartContext startContext);
         PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);
         CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId);
+        /// <summary>
+        /// Validates and records a player's radio communication token usage.
+        /// </summary>
+        /// <param name="submission">The radio communication submission.</param>
+        /// <param name="participantUserId">The requesting participant user identifier.</param>
+        /// <returns>A decision describing acceptance or rejection reason.</returns>
+        RadioCommunicationDecision CommunicateCard(RadioCommunicationSubmission submission, int participantUserId);
+
+        /// <summary>
+        /// Submits a distress signal pass decision, executing the card rotation when all participants agree.
+        /// </summary>
+        /// <param name="submission">The distress signal submission.</param>
+        /// <param name="participantUserId">The requesting participant user identifier.</param>
+        /// <returns>A decision describing acceptance and execution status.</returns>
+        DistressSignalDecision SubmitDistressSignal(DistressSignalSubmission submission, int participantUserId);
     }
 }

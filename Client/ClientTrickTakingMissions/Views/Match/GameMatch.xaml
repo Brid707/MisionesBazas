@@ -44,7 +44,22 @@
             </Grid>
         </DataTemplate>
         <converters:CardIdToImagePathConverter x:Key="CardImageConverter" />
+        <converters:RadioTokenPositionToVerticalAlignmentConverter x:Key="RadioTokenPositionConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="CommunicatedCardTemplate">
+            <Grid Width="46" Height="64" Margin="4">
+                <Border BorderThickness="1.5" CornerRadius="3"
+                        BorderBrush="{StaticResource BrushGoldAccent}">
+                    <Image Stretch="Uniform"
+                           Source="{Binding CommunicatedCardId,
+                               Converter={StaticResource CardImageConverter}}" />
+                </Border>
+                <Image Width="22" Height="22" Stretch="Uniform" HorizontalAlignment="Center"
+                       Source="/View;component/Assets/Images/Tokens/Indicators/Token_Interference.png"
+                       VerticalAlignment="{Binding CommunicatedTokenPosition,
+                           Converter={StaticResource RadioTokenPositionConverter}}" />
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="PlayerIdentityTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <ItemsControl ItemsSource="{Binding MissionObjectives}"
@@ -69,7 +84,8 @@
                            HorizontalAlignment="Right" VerticalAlignment="Top" Stretch="Uniform"
                            Source="/View;component/Assets/Images/Tokens/Indicators/Token_Captain.png"
                            ToolTip="{Binding Source=Match_Captain, Converter={StaticResource MatchTextConverter}}"
-                           Visibility="{Binding IsMissionCaptain, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                           Visibility="{Binding IsMissionCaptain,
+                               Converter={StaticResource BooleanToVisibilityConverter}}" />
                 </Grid>
                 <TextBlock Text="{Binding Username}" HorizontalAlignment="Center" Margin="0,4,0,0"
                            Foreground="{StaticResource BrushTextLight}"
@@ -77,7 +93,8 @@
                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Margin="0,0,4,0" Foreground="{StaticResource BrushTextLight}"
-                               Text="{Binding Source=Match_WonTricksCount, Converter={StaticResource MatchTextConverter}}" />
+                               Text="{Binding Source=Match_WonTricksCount,
+                                   Converter={StaticResource MatchTextConverter}}" />
                     <TextBlock Text="{Binding WonTrickCount}" Foreground="{StaticResource BrushTextLight}" />
                 </StackPanel>
                 </StackPanel>
@@ -132,6 +149,10 @@
                 </StackPanel>
                 <ContentControl Content="{Binding}" Margin="8,0,0,0" VerticalAlignment="Center"
                                 ContentTemplate="{StaticResource WonCardsTemplate}" />
+                <ContentControl Content="{Binding}" Margin="8,0,0,0" VerticalAlignment="Center"
+                                ContentTemplate="{StaticResource CommunicatedCardTemplate}"
+                                Visibility="{Binding HasCommunicatedCard,
+                                    Converter={StaticResource BooleanToVisibilityConverter}}" />
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Key="PlayedCardTemplate">
@@ -198,6 +219,26 @@
                         <TextBlock Text="{Binding MatchBoard.CurrentMissionAttemptNumber}"
                                    Foreground="{StaticResource BrushTextLight}" />
                     </StackPanel>
+                    <Button Width="42" Height="42" HorizontalAlignment="Right" Margin="0,8,130,0"
+                            Background="{StaticResource BrushTransparent}" BorderThickness="0" Padding="0"
+                            Command="{Binding MatchBoard.OpenDistressSignalDialogCommand}"
+                            ToolTip="{Binding Source=Match_Button_DistressSignal,
+                                Converter={StaticResource MatchTextConverter}}">
+                        <Image Width="36" Height="36" Stretch="Uniform"
+                               Source="/View;component/Assets/Images/Tokens/Indicators/Token_Distress.png">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Opacity" Value="1.0" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MatchBoard.CanUseDistressSignal}"
+                                                     Value="False">
+                                            <Setter Property="Opacity" Value="0.3" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
                     <Button Width="46" Height="42" HorizontalAlignment="Right" Content="?"
                             Background="{StaticResource BrushTransparent}"
                             Foreground="{StaticResource BrushTextDark}"
@@ -215,13 +256,18 @@
                                     VerticalAlignment="Center" ContentTemplate="{StaticResource SidePlayerTemplate}" />
                     <StackPanel x:Name="TopPlayerSeat" Grid.Column="1" Orientation="Horizontal"
                                 HorizontalAlignment="Center" VerticalAlignment="Top"
-                                Visibility="{Binding HasTopPlayer, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                Visibility="{Binding HasTopPlayer,
+                                    Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ContentControl Content="{Binding TopPlayer}"
                                         ContentTemplate="{StaticResource HorizontalHiddenHandTemplate}" />
                         <ContentControl Content="{Binding TopPlayer}" Margin="16,0,0,0" VerticalAlignment="Center"
                                         ContentTemplate="{StaticResource PlayerIdentityTemplate}" />
                         <ContentControl Content="{Binding TopPlayer}" Margin="8,0,0,0" VerticalAlignment="Center"
                                         ContentTemplate="{StaticResource WonCardsTemplate}" />
+                        <ContentControl Content="{Binding TopPlayer}" Margin="8,0,0,0" VerticalAlignment="Center"
+                                        ContentTemplate="{StaticResource CommunicatedCardTemplate}"
+                                        Visibility="{Binding TopPlayer.HasCommunicatedCard,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </StackPanel>
                     <Grid Grid.Column="1" Width="330" Height="340" VerticalAlignment="Bottom" Margin="0,0,0,4"
                           DataContext="{Binding MatchBoard}">
@@ -236,7 +282,9 @@
                                            Text="{Binding CurrentObjectiveDraftPlayerName}" />
                                 <ItemsControl ItemsSource="{Binding UnassignedMissionObjectives}">
                                     <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate><WrapPanel HorizontalAlignment="Center" /></ItemsPanelTemplate>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel HorizontalAlignment="Center" />
+                                        </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
@@ -247,7 +295,8 @@
                                                     ToolTip="{Binding Source=MissionDraft_Button_Select,
                                                         Converter={StaticResource MatchTextConverter}}">
                                                 <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MissionObjectiveArtworkTemplate}" />
+                                                    ContentTemplate="{StaticResource
+                                                        MissionObjectiveArtworkTemplate}" />
                                             </Button>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -267,29 +316,229 @@
                                       ItemsPanel="{StaticResource TrickTablePanel}"
                                       ItemTemplate="{StaticResource PlayedCardTemplate}"
                                       ItemContainerStyle="{StaticResource PlayedCardPositionStyle}"
-                                      Visibility="{Binding ShouldShowLastCompletedTrick, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                      Visibility="{Binding ShouldShowLastCompletedTrick,
+                                          Converter={StaticResource BooleanToVisibilityConverter}}" />
                     </Grid>
+                    <Border Grid.Column="0" Grid.ColumnSpan="3" Panel.ZIndex="50"
+                            DataContext="{Binding MatchBoard}"
+                            Background="{StaticResource BrushBurgundySurface}" Padding="18"
+                            CornerRadius="10" BorderBrush="{StaticResource BrushGoldAccent}" BorderThickness="2"
+                            Width="380" HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Visibility="{Binding IsDistressSignalDialogOpen,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <!-- Phase 1: Confirm initiate vote (Initiator only) -->
+                            <StackPanel Visibility="{Binding IsDistressInitiatorConfirmVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                           Text="{Binding Source=Match_Distress_Title,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,10,0,16" FontSize="12"
+                                           Text="{Binding Source=Match_Distress_ConfirmInitiate,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding ProposeDistressSignalUsageCommand}" Margin="6,0"
+                                            Padding="12,6" Background="{StaticResource BrushSuccessButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Button_Initiate,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />
+                                    </Button>
+                                    <Button Command="{Binding CloseDistressSignalDialogCommand}" Margin="6,0"
+                                            Padding="12,6"
+                                            Background="{StaticResource BrushSecondaryButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Vote_Reject,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Phase 2: Usage Vote (All players vote Yes / No) -->
+                            <StackPanel Visibility="{Binding IsDistressUsageVoteVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                           Text="{Binding Source=Match_Distress_Title,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                            Margin="0,6,0,4">
+                                    <TextBlock Text="{Binding DistressInitiatorName}" FontWeight="Bold"
+                                               Foreground="{StaticResource BrushGoldAccent}" FontSize="12" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding Source=Match_Distress_Proposed_By,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                               Foreground="{StaticResource BrushTextLight}" FontSize="12" />
+                                </StackPanel>
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,6,0,14" FontSize="12"
+                                           Text="{Binding Source=Match_Distress_UsageQuestion,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding VoteDistressUsageYesCommand}" Margin="6,0"
+                                            Padding="14,6" Background="{StaticResource BrushSuccessButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Vote_Accept,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />
+                                    </Button>
+                                    <Button Command="{Binding VoteDistressUsageNoCommand}" Margin="6,0"
+                                            Padding="14,6"
+                                            Background="{StaticResource BrushSecondaryButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Vote_Reject,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Phase 3: Direction Vote (All players vote Left vs Right) -->
+                            <StackPanel Visibility="{Binding IsDistressDirectionVoteVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                           Text="{Binding Source=Match_Distress_Title,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,8,0,12" FontSize="12"
+                                           Text="{Binding Source=Match_Distress_DirectionQuestion,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Command="{Binding VoteDistressDirectionLeftCommand}" Margin="8,0"
+                                            Padding="12,6" Background="{StaticResource BrushSubmitButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Direction_Left,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />
+                                    </Button>
+                                    <Button Command="{Binding VoteDistressDirectionRightCommand}" Margin="8,0"
+                                            Padding="12,6" Background="{StaticResource BrushSubmitButtonBackground}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Direction_Right,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Phase 4: Card Selection (Each player picks 1 card) -->
+                            <StackPanel Visibility="{Binding IsDistressCardSelectionVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                           Text="{Binding Source=Match_Distress_Title,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontWeight="Bold" Margin="0,4,0,2" FontSize="12"
+                                           Text="{Binding DistressAgreedDirectionResourceKey,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,2,0,6" FontSize="11"
+                                           Text="{Binding Source=Match_Distress_CardSelectPrompt,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <ItemsControl ItemsSource="{Binding EligibleDistressCardIds}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel HorizontalAlignment="Center" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Button Background="{StaticResource BrushTransparent}"
+                                                    Padding="0" Margin="2"
+                                                    Command="{Binding DataContext.SelectDistressCardCommand,
+                                                        RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                    CommandParameter="{Binding}">
+                                                <Image Width="36" Height="50" Stretch="Uniform"
+                                                       Source="{Binding Converter={StaticResource
+                                                           CardImageConverter}}" />
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                            Visibility="{Binding CanConfirmDistressCard,
+                                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <TextBlock Text="{Binding Source=Match_Distress_SelectedCard,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                               Foreground="{StaticResource BrushTextLight}"
+                                               VerticalAlignment="Center" FontSize="11" />
+                                    <Image Width="28" Height="38" Stretch="Uniform" Margin="6,0,0,0"
+                                           Source="{Binding SelectedDistressCardId,
+                                               Converter={StaticResource CardImageConverter}}" />
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                                    <Button Command="{Binding ConfirmDistressCardSelectionCommand}" Margin="4,0"
+                                            Padding="14,6" Background="{StaticResource BrushSuccessButtonBackground}"
+                                            IsEnabled="{Binding CanConfirmDistressCard}">
+                                        <TextBlock Text="{Binding Source=Match_Distress_Button_ConfirmPass,
+                                            Converter={StaticResource MatchTextConverter}}"
+                                                   Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Phase 5: Waiting for crew members -->
+                            <StackPanel Visibility="{Binding IsDistressWaitingVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <TextBlock Foreground="{StaticResource BrushGoldAccent}" TextAlignment="Center"
+                                           FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
+                                           FontSize="{x:Static styles:FontTypography.SectionTitleFontSize}"
+                                           Text="{Binding Source=Match_Distress_Title,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <TextBlock Foreground="{StaticResource BrushTextLight}" TextAlignment="Center"
+                                           TextWrapping="Wrap" Margin="0,10,0,6" FontSize="12"
+                                           Text="{Binding DistressStepWaitingResourceKey,
+                                               Converter={StaticResource MatchTextConverter}}" />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,10">
+                                    <TextBlock Text="{Binding Source=Match_Distress_Waiting_Progress,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                               Foreground="{StaticResource BrushTextLight}" FontSize="12" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding DistressWaitingProgressText}"
+                                               Foreground="{StaticResource BrushGoldAccent}"
+                                               FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                                <Button Command="{Binding CancelDistressProposalCommand}" Margin="0,4,0,0"
+                                        Padding="12,6" HorizontalAlignment="Center"
+                                        Background="{StaticResource BrushSecondaryButtonBackground}">
+                                    <TextBlock Text="{Binding Source=Match_Distress_Cancel_Proposal,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                               Foreground="{StaticResource BrushTextLight}" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                 </Grid>
                 <Grid Grid.Row="2" Margin="160,0,160,8" DataContext="{Binding MatchBoard}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" /><RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding MatchFeedbackResourceKey, Converter={StaticResource MatchTextConverter}}"
+                        <TextBlock Text="{Binding MatchFeedbackResourceKey,
+                                       Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}" TextWrapping="Wrap"
                                    TextAlignment="Center" AutomationProperties.LiveSetting="Polite" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                                     Visibility="{Binding IsTrickTurnVisible,
                                         Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Margin="0,0,6,0" Foreground="{StaticResource BrushTextLight}"
-                                       Text="{Binding Source=Match_TurnPlayer, Converter={StaticResource MatchTextConverter}}" />
-                            <TextBlock Text="{Binding CurrentTurnPlayerName}" Foreground="{StaticResource BrushTextLight}" />
+                                       Text="{Binding Source=Match_TurnPlayer,
+                                           Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Text="{Binding CurrentTurnPlayerName}"
+                                       Foreground="{StaticResource BrushTextLight}" />
                         </StackPanel>
-                        <StackPanel x:Name="LastTrickWinnerPanel" Orientation="Horizontal" HorizontalAlignment="Center"
-                                    Visibility="{Binding HasLastTrickWinner, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel x:Name="LastTrickWinnerPanel" Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    Visibility="{Binding HasLastTrickWinner,
+                                        Converter={StaticResource BooleanToVisibilityConverter}}">
                             <TextBlock Margin="0,0,6,0" Foreground="{StaticResource BrushTextLight}"
-                                       Text="{Binding Source=Match_TrickWinner, Converter={StaticResource MatchTextConverter}}" />
-                            <TextBlock Text="{Binding LastTrickWinnerName}" Foreground="{StaticResource BrushTextLight}" />
+                                       Text="{Binding Source=Match_TrickWinner,
+                                           Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Text="{Binding LastTrickWinnerName}"
+                                       Foreground="{StaticResource BrushTextLight}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center"
                                     Visibility="{Binding IsMissionTransitionVisible,
@@ -308,51 +557,123 @@
                             </StackPanel>
                         </StackPanel>
                         <Button Command="{Binding RetryPendingMatchRequestCommand}" HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding Source=Match_Retry, Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Text="{Binding Source=Match_Retry,
+                                Converter={StaticResource MatchTextConverter}}" />
                         </Button>
                     </StackPanel>
                     <Grid Grid.Row="1">
-                        <ContentControl x:Name="LocalPlayerWonCards" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                        Content="{Binding DataContext.BottomPlayer, RelativeSource={RelativeSource AncestorType=Page}}"
+                        <ContentControl x:Name="LocalPlayerWonCards" HorizontalAlignment="Left"
+                                        VerticalAlignment="Bottom"
+                                        Content="{Binding DataContext.BottomPlayer,
+                                            RelativeSource={RelativeSource AncestorType=Page}}"
                                         ContentTemplate="{StaticResource WonCardsTemplate}" />
                         <ContentControl HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                        Content="{Binding DataContext.BottomPlayer, RelativeSource={RelativeSource AncestorType=Page}}"
+                                        Content="{Binding DataContext.BottomPlayer,
+                                            RelativeSource={RelativeSource AncestorType=Page}}"
                                         ContentTemplate="{StaticResource PlayerIdentityTemplate}" />
-                        <ItemsControl x:Name="LocalPlayerHand" ItemsSource="{Binding OwnHandCards}"
-                                      HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="28,0,0,0">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Button Command="{Binding PlayCardCommand}" CommandParameter="{Binding CardId}"
-                                            Margin="-28,0,0,0" Padding="0" Background="{StaticResource BrushTransparent}">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <ContentPresenter />
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                        <Grid Width="72" Height="100">
-                                            <Image Stretch="Uniform" VerticalAlignment="Bottom"
-                                                   Source="{Binding CardId, Converter={StaticResource CardImageConverter}}">
-                                                <Image.Style>
-                                                    <Style TargetType="Image">
-                                                        <Setter Property="Width" Value="72" />
-                                                        <Setter Property="Height" Value="100" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding IsRaisedForCurrentTurn}" Value="False">
-                                                                <Setter Property="Width" Value="50" />
-                                                                <Setter Property="Height" Value="70" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
-                                        </Grid>
-                                    </Button>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom">
+                            <ItemsControl x:Name="LocalPlayerHand" ItemsSource="{Binding OwnHandCards}"
+                                          VerticalAlignment="Bottom" Margin="28,0,0,0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Command="{Binding PlayCardCommand}" CommandParameter="{Binding CardId}"
+                                                Margin="-28,0,0,0" Padding="0"
+                                                Background="{StaticResource BrushTransparent}">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <ContentPresenter />
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <Grid Width="72" Height="100">
+                                                <Image Stretch="Uniform" VerticalAlignment="Bottom"
+                                                       Source="{Binding CardId,
+                                                           Converter={StaticResource CardImageConverter}}">
+                                                    <Image.Style>
+                                                        <Style TargetType="Image">
+                                                            <Setter Property="Width" Value="72" />
+                                                            <Setter Property="Height" Value="100" />
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsRaisedForCurrentTurn}"
+                                                                             Value="False">
+                                                                    <Setter Property="Width" Value="50" />
+                                                                    <Setter Property="Height" Value="70" />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Image.Style>
+                                                </Image>
+                                                <!-- Communication Token Indicator -->
+                                                <Image Width="22" Height="22" Stretch="Uniform"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="{Binding TokenPosition,
+                                                        Converter={StaticResource RadioTokenPositionConverter}}"
+                                                    Visibility="{Binding IsCommunicated,
+                                                        Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Source=
+"/View;component/Assets/Images/Tokens/Indicators/Token_Interference.png" />
+                                            </Grid>
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsHighlightedForCommunication}"
+                                                                     Value="True">
+                                                            <Setter Property="RenderTransform">
+                                                                <Setter.Value>
+                                                                    <TranslateTransform Y="-20" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect Color="#FFF36B"
+                                                                                      BlurRadius="20"
+                                                                                      ShadowDepth="0" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsDimmedForCommunication}"
+                                                                     Value="True">
+                                                            <Setter Property="Opacity" Value="0.35" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <!-- Communication Token Toggle Button -->
+                            <Button Width="46" Height="46" Margin="14,0,0,10" VerticalAlignment="Bottom"
+                                    Command="{Binding ToggleCommunicationModeCommand}"
+                                    ToolTip="{Binding Source=Match_Tooltip_CommunicationToken,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Padding="0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Image x:Name="TokenImage" Width="44" Height="44" Stretch="Uniform"
+                                            Source=
+"/View;component/Assets/Images/Tokens/Indicators/Token_Interference.png" />
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding CanCommunicate}" Value="False">
+                                                <Setter TargetName="TokenImage" Property="Opacity" Value="0.3" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsCommunicationModeActive}" Value="True">
+                                                <Setter TargetName="TokenImage" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FFF36B" BlurRadius="22"
+                                                                          ShadowDepth="0" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>

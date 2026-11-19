@@ -22,5 +22,13 @@ namespace Gameplay
         [OperationContract(Action = "urn:misiones-bazas:match:PlayCard", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
         CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId);
+
+        [OperationContract(Action = "urn:misiones-bazas:match:CommunicateCard", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        RadioCommunicationDecision CommunicateCard(RadioCommunicationSubmission submission, int participantUserId);
+
+        [OperationContract(Action = "urn:misiones-bazas:match:SubmitDistressSignal", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        DistressSignalDecision SubmitDistressSignal(DistressSignalSubmission submission, int participantUserId);
     }
 }

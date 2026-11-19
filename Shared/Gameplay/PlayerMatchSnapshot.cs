@@ -59,5 +59,11 @@ namespace Gameplay
 
         [DataMember(Order = 18)]
         public MissionTransitionSnapshot MissionTransition { get; set; }
+
+        [DataMember(Order = 19)]
+        public PlayerRadioCommunicationSnapshot[] RadioCommunications { get; set; }
+
+        [DataMember(Order = 20)]
+        public DistressSignalSnapshot DistressSignal { get; set; }
     }
 }

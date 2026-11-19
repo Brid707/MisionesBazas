@@ -20,7 +20,7 @@ namespace Persistence.Repository
         private const byte AcceptedFriendshipStatus = 2;
         private const byte OnlineUserStatus = 1;
         private const string BlockPlayerDbUpdateFailureTemplate =
-    "Database update failed while blocking player {BlockedId} by blocker {BlockerId}.";
+            "Database update failed while blocking player {BlockedId} by blocker {BlockerId}.";
         private const string BlockPlayerEntityFailureTemplate =
             "Entity Framework connection failed while blocking player {BlockedId} by blocker {BlockerId}.";
         private const string BlockPlayerSqlFailureTemplate =

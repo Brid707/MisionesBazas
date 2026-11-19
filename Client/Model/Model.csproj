@@ -225,6 +225,10 @@
       <Project>{22D2C703-3C64-40E3-BAFE-F719DDC7D30F}</Project>
       <Name>TrickTakingMissions.Logging.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
+      <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
+      <Name>TrickTakingMissions.Rules</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\Evaluation\MissionObjectiveStatus.cs" />
@@ -253,6 +257,13 @@
     <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
+    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\LobbyAndMatch\IMatchClient.cs" />

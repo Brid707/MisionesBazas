@@ -388,6 +388,7 @@
   <ItemGroup>
     <Compile Include="Converters\MissionObjectiveCardIdToImagePathConverter.cs" />
     <Compile Include="Converters\MissionObjectiveTokenToImagePathConverter.cs" />
+    <Compile Include="Converters\RadioTokenPositionToVerticalAlignmentConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\CardArtworkPathResolver.cs" />

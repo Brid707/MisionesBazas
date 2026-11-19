@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Model.Services;
+using TrickTakingMissions.Rules.Enums;
 using ViewModel.Base;
 
 namespace ViewModel.ViewModels
@@ -18,6 +19,8 @@ namespace ViewModel.ViewModels
         private bool _isMissionCaptain;
         private int _remainingHandCardCount;
         private int _wonTrickCount;
+        private int? _communicatedCardId;
+        private RadioTokenPosition _communicatedTokenPosition;
 
         public LobbyPlayerItemViewModel(int idUser, string username, bool isHost)
         {
@@ -81,6 +84,32 @@ namespace ViewModel.ViewModels
         }
 
         public bool HasWonTricks => WonTrickCount > 0;
+
+        public int? CommunicatedCardId
+        {
+            get => _communicatedCardId;
+            private set
+            {
+                if (SetProperty(ref _communicatedCardId, value))
+                {
+                    OnPropertyChanged(nameof(HasCommunicatedCard));
+                }
+            }
+        }
+
+        public RadioTokenPosition CommunicatedTokenPosition
+        {
+            get => _communicatedTokenPosition;
+            private set => SetProperty(ref _communicatedTokenPosition, value);
+        }
+
+        public bool HasCommunicatedCard => CommunicatedCardId.HasValue;
+
+        public void UpdateCommunicatedCard(int? cardId, RadioTokenPosition tokenPosition)
+        {
+            CommunicatedCardId = cardId;
+            CommunicatedTokenPosition = tokenPosition;
+        }
 
         public void UpdateRemainingHandCardCount(int remainingHandCardCount)
         {

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Gameplay;
 using Model.Services;
 using TrickTakingMissions.Logging.Abstractions.Ports;
+using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 using ViewModel.Base;
@@ -60,6 +61,7 @@ namespace ViewModel.ViewModels
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
+            InitializeCommunicationAndDistressCommands();
             _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
@@ -189,10 +191,25 @@ namespace ViewModel.ViewModels
 
         private bool CanPlaySelectedCard(object selectedCard)
         {
-            bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
-                !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete && !IsMissionAttemptFinished &&
-                CurrentTurnPlayerUserId == _participantUserId;
-            return canPlay && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
+            if (IsDistressSignalInProgress)
+            {
+                return false;
+            }
+
+            if (selectedCard is int cardId)
+            {
+                if (IsCommunicationModeActive)
+                {
+                    return CanCommunicate && GetValidPositionsForCard(cardId).Count > 0;
+                }
+
+                bool canPlay = CanSubmitMatchRequest() && _confirmedMatchSnapshot != null &&
+                    !_confirmedMatchSnapshot.IsDealCompleted && IsMissionPreparationComplete &&
+                    !IsMissionAttemptFinished && CurrentTurnPlayerUserId == _participantUserId;
+                return canPlay && GetPlayableCardIds().Contains(cardId);
+            }
+
+            return false;
         }
 
         private void UpdateHandCardRaisedStates()
@@ -221,18 +238,38 @@ namespace ViewModel.ViewModels
 
         private async Task SubmitSelectedCardAsync(object selectedCard)
         {
-            if (CanPlaySelectedCard(selectedCard))
+            if (selectedCard is int cardId)
             {
-                _pendingCardPlaySubmission = new CardPlaySubmission
+                if (IsCommunicationModeActive)
                 {
-                    LobbyCode = _lobbyCode,
-                    MatchId = _confirmedMatchSnapshot.MatchId,
-                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
-                    CardId = (int)selectedCard,
-                    CardPlaySubmissionId = Guid.NewGuid(),
-                    ExpectedMatchStateVersion = MatchStateVersion
-                };
-                await SynchronizeMatchAsync();
+                    await ExecuteCardCommunicationFromHandAsync(cardId);
+                    return;
+                }
+
+                if (CanPlaySelectedCard(selectedCard))
+                {
+                    _pendingCardPlaySubmission = new CardPlaySubmission
+                    {
+                        LobbyCode = _lobbyCode,
+                        MatchId = _confirmedMatchSnapshot.MatchId,
+                        MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
+                        CardId = cardId,
+                        CardPlaySubmissionId = Guid.NewGuid(),
+                        ExpectedMatchStateVersion = MatchStateVersion
+                    };
+                    await SynchronizeMatchAsync();
+                }
+            }
+        }
+
+        private async Task ExecuteCardCommunicationFromHandAsync(int cardId)
+        {
+            IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
+            if (positions != null && positions.Count > 0)
+            {
+                RadioTokenPosition resolvedPosition = positions[0];
+                IsCommunicationModeActive = false;
+                await CommunicateCardAsync(cardId, resolvedPosition);
             }
         }
 
@@ -252,15 +289,18 @@ namespace ViewModel.ViewModels
                 _confirmedMatchSnapshot = playerSnapshot;
                 ApplyMissionTransitionSnapshot(playerSnapshot.MissionTransition);
                 _isMatchConnected = true;
-                var playableCardIds = new HashSet<int>(GetPlayableCardIds());
+                HashSet<int> playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
                 ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
                 ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
+                UpdateHandCardRaisedStates();
+                ApplyRadioCommunicationsAndDistress(playerSnapshot);
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
                 NotifyMissionEvaluationProperties();
                 NotifyMissionTransitionProperties();
+                NotifyCommunicationAndDistressProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)

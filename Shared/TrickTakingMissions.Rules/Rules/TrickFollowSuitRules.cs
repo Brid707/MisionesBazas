@@ -36,7 +36,7 @@ namespace TrickTakingMissions.Rules.Rules
 
                 foreach (Card card in playerHand)
                 {
-                    if (!shouldFollowLeadSuit || card.Suit == leadPlay.Card.Suit)
+                    if (!shouldFollowLeadSuit || card.Suit == leadPlay.Card.Suit || card.Suit == CardSuit.Special)
                     {
                         playableCardIds.Add(card.IdCard);
                     }
@@ -105,6 +105,7 @@ namespace TrickTakingMissions.Rules.Rules
             {
                 CardSuit leadSuit = leadPlay.Card.Suit;
                 isFollowSuitViolated = context.CandidateCard.Suit != leadSuit
+                    && context.CandidateCard.Suit != CardSuit.Special
                     && HasCardOfSuit(context.PlayerHand, leadSuit);
             }
 

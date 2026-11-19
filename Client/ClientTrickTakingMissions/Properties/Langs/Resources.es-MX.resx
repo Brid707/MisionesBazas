@@ -423,7 +423,7 @@
     <value>El primer turno iniciará el capitán seleccionando una carta de su mano.</value>
   </data>
   <data name="HowToPlay_RuleB" xml:space="preserve">
-    <value>Después el jugador siguiente en dirección de las manecillas del reloj deberá jugar una carta del mismo color (si la tiene), una carta de otro color si no tiene del mismo color jugado o su carta de rey.</value>
+    <value>Después el jugador siguiente en dirección de las manecillas del reloj deberá jugar una carta del mismo color (si la tiene), una carta de otro color si no tiene del mismo color jugado o una carta de rey en cualquier momento.</value>
   </data>
   <data name="HowToPlay_RuleC" xml:space="preserve">
     <value>Se repetirá el paso b hasta que se llegue al último jugador.</value>
@@ -674,4 +674,33 @@
   <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>La siguiente misión todavía no está disponible. Se conserva su victoria.</value></data>
   <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Esperando la confirmación del servidor.</value></data>
   <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Sin conexión. El servidor comprobará el estado cuando regreses.</value></data>
+  <data name="Match_Tooltip_CommunicationToken" xml:space="preserve"><value>Ficha de comunicación. Haz clic para activar el modo de comunicación y elegir una carta.</value></data>
+  <data name="Match_Notice_CommunicationActive" xml:space="preserve"><value>Modo comunicación activo: Haz clic en una carta iluminada para revelarla a la tripulación.</value></data>
+  <data name="Match_Button_DistressSignal" xml:space="preserve"><value>Señal de Socorro</value></data>
+  <data name="Match_Distress_Title" xml:space="preserve"><value>Lanzar Señal de Socorro</value></data>
+  <data name="Match_Distress_Notice" xml:space="preserve"><value>Cada tripulante pasará una carta al jugador contiguo. Penalización: +1 intento a la misión.</value></data>
+  <data name="Match_Distress_SelectDirection" xml:space="preserve"><value>Dirección del pase:</value></data>
+  <data name="Match_Distress_Direction_Left" xml:space="preserve"><value>← Pasar a la Izquierda</value></data>
+  <data name="Match_Distress_Direction_Right" xml:space="preserve"><value>Pasar a la Derecha →</value></data>
+  <data name="Match_Distress_SelectCard" xml:space="preserve"><value>Elige la carta a pasar (excepto palo especial):</value></data>
+  <data name="Match_Distress_WaitingVotes" xml:space="preserve"><value>Esperando a la tripulación</value></data>
+  <data name="Match_Button_Confirm" xml:space="preserve"><value>Confirmar Pase</value></data>
+  <data name="Match_Button_Cancel" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Match_Distress_Vote_Accept" xml:space="preserve"><value>Votar a favor / Pasar</value></data>
+  <data name="Match_Distress_Vote_Reject" xml:space="preserve"><value>Votar en contra / Rechazar</value></data>
+  <data name="Match_Distress_Cancel_Proposal" xml:space="preserve"><value>Cancelar Propuesta</value></data>
+  <data name="Match_Distress_Proposed_By" xml:space="preserve"><value>ha propuesto usar la Señal de Socorro.</value></data>
+  <data name="Match_Distress_Waiting_Progress" xml:space="preserve"><value>Esperando a la tripulación:</value></data>
+  <data name="Match_Distress_Vote_Registered" xml:space="preserve"><value>Tu voto ha sido registrado.</value></data>
+  <data name="Match_Distress_RejectedNotice" xml:space="preserve"><value>La señal de socorro fue rechazada o cancelada.</value></data>
+  <data name="Match_Distress_ConfirmInitiate" xml:space="preserve"><value>¿Deseas iniciar una votación con la tripulación para usar la señal de socorro (+1 intento)?</value></data>
+  <data name="Match_Distress_Button_Initiate" xml:space="preserve"><value>Iniciar Votación</value></data>
+  <data name="Match_Distress_UsageQuestion" xml:space="preserve"><value>¿Aceptas utilizar la señal de socorro para pasar una carta a tu vecino? Penalización: +1 intento a la misión.</value></data>
+  <data name="Match_Distress_DirectionQuestion" xml:space="preserve"><value>¡La tripulación aprobó la señal de socorro! Voten la dirección en que se pasarán las cartas:</value></data>
+  <data name="Match_Distress_CardSelectPrompt" xml:space="preserve"><value>Dirección acordada. Elige una carta de tu mano para transferir (excepto cohetes):</value></data>
+  <data name="Match_Distress_SelectedCard" xml:space="preserve"><value>Carta elegida:</value></data>
+  <data name="Match_Distress_Button_ConfirmPass" xml:space="preserve"><value>Confirmar Pase de Carta</value></data>
+  <data name="Match_Distress_WaitingUsage" xml:space="preserve"><value>Voto registrado. Esperando la votación de la tripulación:</value></data>
+  <data name="Match_Distress_WaitingDirection" xml:space="preserve"><value>Dirección votada. Esperando votos de dirección:</value></data>
+  <data name="Match_Distress_WaitingCards" xml:space="preserve"><value>Carta confirmada. Esperando a que todos elijan su carta:</value></data>
 </root>

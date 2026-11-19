@@ -97,6 +97,8 @@ namespace Application.Models
             ProcessedCardPlayDecisionsBySubmissionId.Clear();
             ProcessedObjectiveDrafts.Clear();
             ObjectiveDraftHistoryByParticipant.Clear();
+            ResetDistressState();
+            HasDistressBeenRejected = false;
         }
     }
 }

@@ -13,5 +13,9 @@ namespace Model.Services
         Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId);
         Task<MissionRetryDecision> ConfirmMissionRetryAsync(MissionRetrySubmission submission, int participantUserId);
         Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId);
+        Task<RadioCommunicationDecision> CommunicateCardAsync(
+            RadioCommunicationSubmission submission, int participantUserId);
+        Task<DistressSignalDecision> SubmitDistressSignalAsync(
+            DistressSignalSubmission submission, int participantUserId);
     }
 }

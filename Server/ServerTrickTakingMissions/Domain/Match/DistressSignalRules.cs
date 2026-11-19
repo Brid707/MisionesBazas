@@ -17,7 +17,8 @@ namespace Domain
         /// Validates whether a distress signal card pass can be executed under current attempt conditions.
         /// </summary>
         /// <param name="context">The distress signal context containing hands, selections, and attempt state.</param>
-        /// <returns>True if the distress signal is valid and all selected cards are non-special cards in hand; otherwise, false.</returns>
+        /// <returns>True if the distress signal is valid and all selected cards are
+        /// non-special cards in hand; otherwise, false.</returns>
         public static bool CanExecuteDistressSignal(DistressSignalContext context)
         {
             if (context is null || !AreTimingPrerequisitesMet(context))
@@ -38,7 +39,8 @@ namespace Domain
             }
 
             return Enumerable.Range(0, playerCount)
-                .All(seat => IsValidPassSelection(context.HandsBySeat[seat], context.SelectedPassCardBySeat, (byte)seat));
+                .All(seat => IsValidPassSelection(
+                    context.HandsBySeat[seat], context.SelectedPassCardBySeat, (byte)seat));
         }
 
         /// <summary>
@@ -47,7 +49,9 @@ namespace Domain
         /// <param name="context">The validated distress signal context.</param>
         /// <returns>The updated hands by seat after exchanging the selected cards.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is null.</exception>
-        /// <exception cref="InvalidOperationException">Thrown when the distress signal context does not satisfy domain rules.</exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the distress signal context does not satisfy domain rules.
+        /// </exception>
         public static IReadOnlyList<IReadOnlyList<Card>> ExecuteCardPass(DistressSignalContext context)
         {
             if (context is null)
@@ -61,7 +65,7 @@ namespace Domain
             }
 
             int playerCount = context.HandsBySeat.Count;
-            var updatedHands = new List<List<Card>>(playerCount);
+            List<List<Card>> updatedHands = new List<List<Card>>(playerCount);
 
             for (int seat = 0; seat < playerCount; seat++)
             {

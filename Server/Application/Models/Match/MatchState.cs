@@ -39,6 +39,41 @@ namespace Application.Models
         public List<MatchCardPlay> CapturedCardPlays { get; } = new List<MatchCardPlay>();
         public Dictionary<Guid, ProcessedCardPlay> ProcessedCardPlayDecisionsBySubmissionId { get; } =
             new Dictionary<Guid, ProcessedCardPlay>();
+        public Dictionary<byte, int> PendingDistressPassCardIdsBySeat { get; } =
+            new Dictionary<byte, int>();
+        public Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>
+            PendingDistressDirectionsBySeat { get; } =
+            new Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>();
+        public TrickTakingMissions.Rules.Enums.DistressSignalStep DistressStep { get; set; }
+        public HashSet<byte> DistressUsageYesVotesBySeat { get; } =
+            new HashSet<byte>();
+        public Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>
+            DistressDirectionVotesBySeat { get; } =
+            new Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>();
+        public int? DistressInitiatorUserId { get; set; }
+        public TrickTakingMissions.Rules.Enums.PassDirection? DistressAgreedDirection { get; set; }
+        public bool HasDistressBeenRejected { get; set; }
+
+        public void ResetDistressState()
+        {
+            DistressStep = TrickTakingMissions.Rules.Enums.DistressSignalStep.None;
+            PendingDistressPassCardIdsBySeat.Clear();
+            PendingDistressDirectionsBySeat.Clear();
+            DistressUsageYesVotesBySeat.Clear();
+            DistressDirectionVotesBySeat.Clear();
+            DistressInitiatorUserId = null;
+            DistressAgreedDirection = null;
+        }
+
+        public void CommitMissionAttemptUpdate(Domain.MissionAttemptState missionAttempt)
+        {
+            if (missionAttempt == null || missionAttempt.PlayerCount != ParticipantUserIds.Length)
+            {
+                throw new ArgumentException(nameof(missionAttempt));
+            }
+            MissionAttempt = missionAttempt;
+            MatchStateVersion++;
+        }
 
         public void CommitObjectiveDraft(Domain.MissionAttemptState missionAttempt)
         {

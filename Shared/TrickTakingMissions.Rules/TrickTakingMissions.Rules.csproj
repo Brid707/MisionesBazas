@@ -47,6 +47,7 @@
     <Compile Include="Enums\CardSuit.cs" />
     <Compile Include="Enums\CommunicationRuleType.cs" />
     <Compile Include="Enums\DisconnectionResolutionOption.cs" />
+    <Compile Include="Enums\DistressSignalStep.cs" />
     <Compile Include="Enums\MissionAttemptPhase.cs" />
     <Compile Include="Enums\MissionAttemptStatus.cs" />
     <Compile Include="Enums\ObjectiveStatus.cs" />

@@ -26,7 +26,19 @@ namespace Application.UseCases
             }
             if (playRejectionReason == MatchRejectionReason.None)
             {
-                playRejectionReason = GetActivePlayRejection(matchState, cardPlaySubmission, participantSeat);
+                bool isDistressActive = (matchState.DistressStep !=
+                    TrickTakingMissions.Rules.Enums.DistressSignalStep.None &&
+                    matchState.DistressStep !=
+                    TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed) ||
+                    matchState.PendingDistressPassCardIdsBySeat.Count > 0;
+                if (isDistressActive)
+                {
+                    playRejectionReason = MatchRejectionReason.InvalidSubmission;
+                }
+                else
+                {
+                    playRejectionReason = GetActivePlayRejection(matchState, cardPlaySubmission, participantSeat);
+                }
             }
             return playRejectionReason;
         }
@@ -73,7 +85,7 @@ namespace Application.UseCases
         private static MatchRejectionReason GetRuleRejection(MatchState matchState, int candidateCardId,
             int participantSeat)
         {
-            var playContext = new TrickPlayContext
+            TrickPlayContext playContext = new TrickPlayContext
             {
                 PlayerSeat = (byte)participantSeat,
                 CurrentTurnSeat = (byte)matchState.CurrentTurnPlayerSeat,

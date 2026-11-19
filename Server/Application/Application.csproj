@@ -154,6 +154,15 @@
     <Compile Include="..\..\Shared\Gameplay\PlayerMatchSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="..\..\Shared\Gameplay\MatchRejectionReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\RadioCommunicationDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalDecision.cs" />
+    <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.DistressSignal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Shared\Gameplay\MatchAccessFault.cs" />

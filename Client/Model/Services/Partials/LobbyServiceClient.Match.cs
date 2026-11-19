@@ -24,5 +24,17 @@ namespace Model.GameServices
         {
             return Channel.PlayCard(cardPlaySubmission, participantUserId);
         }
+
+        public RadioCommunicationDecision CommunicateCard(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return Channel.CommunicateCard(submission, participantUserId);
+        }
+
+        public DistressSignalDecision SubmitDistressSignal(
+            DistressSignalSubmission submission, int participantUserId)
+        {
+            return Channel.SubmitDistressSignal(submission, participantUserId);
+        }
     }
 }

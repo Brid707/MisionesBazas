@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="ViewModels\Match\HandCardViewModel.cs" />
     <Compile Include="ViewModels\Match\MatchBoardViewModel.cs" />
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.CommunicationAndDistress.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\Match\PlayedCardViewModel.cs" />

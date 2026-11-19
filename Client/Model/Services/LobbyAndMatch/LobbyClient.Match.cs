@@ -66,6 +66,22 @@ namespace Model.Services
                 submission.LobbyCode, participantUserId);
         }
 
+        public Task<RadioCommunicationDecision> CommunicateCardAsync(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(
+                channel => channel.CommunicateCard(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<DistressSignalDecision> SubmitDistressSignalAsync(
+            DistressSignalSubmission submission, int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(
+                channel => channel.SubmitDistressSignal(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public void OnMatchStateChanged(long matchStateVersion)
         {
             MatchStateChanged?.Invoke(matchStateVersion);

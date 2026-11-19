@@ -423,7 +423,7 @@
     <value>The captain will start the first turn by selecting a card from their hand.</value>
   </data>
   <data name="HowToPlay_RuleB" xml:space="preserve">
-    <value>Then, the next player in clockwise order must play a card of the same suit (if they have one), a card of another suit if they do not have the lead suit, or their king card.</value>
+    <value>Then, the next player in clockwise order must play a card of the same suit (if they have one), a card of another suit if they do not have the lead suit, or a king card at any time.</value>
   </data>
   <data name="HowToPlay_RuleC" xml:space="preserve">
     <value>Step b will be repeated until the last player is reached.</value>
@@ -674,4 +674,33 @@
   <data name="MissionTransition_Status_MissionUnavailable" xml:space="preserve"><value>The next mission is not available yet. Your victory is preserved.</value></data>
   <data name="MissionTransition_Status_AwaitingServer" xml:space="preserve"><value>Waiting for server confirmation.</value></data>
   <data name="MissionTransition_Status_ConnectionUnavailable" xml:space="preserve"><value>Disconnected. The server will check the state when you return.</value></data>
+  <data name="Match_Tooltip_CommunicationToken" xml:space="preserve"><value>Radio communication token. Click to activate communication mode and select a card.</value></data>
+  <data name="Match_Notice_CommunicationActive" xml:space="preserve"><value>Communication mode active: Click a highlighted card to reveal it to the crew.</value></data>
+  <data name="Match_Button_DistressSignal" xml:space="preserve"><value>Distress Signal</value></data>
+  <data name="Match_Distress_Title" xml:space="preserve"><value>Send Distress Signal</value></data>
+  <data name="Match_Distress_Notice" xml:space="preserve"><value>Each crew member will pass one card to their neighbor. Penalty: +1 mission attempt.</value></data>
+  <data name="Match_Distress_SelectDirection" xml:space="preserve"><value>Pass direction:</value></data>
+  <data name="Match_Distress_Direction_Left" xml:space="preserve"><value>← Pass Left</value></data>
+  <data name="Match_Distress_Direction_Right" xml:space="preserve"><value>Pass Right →</value></data>
+  <data name="Match_Distress_SelectCard" xml:space="preserve"><value>Select the card to pass (except special suit):</value></data>
+  <data name="Match_Distress_WaitingVotes" xml:space="preserve"><value>Waiting for crew</value></data>
+  <data name="Match_Button_Confirm" xml:space="preserve"><value>Confirm Pass</value></data>
+  <data name="Match_Button_Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Match_Distress_Vote_Accept" xml:space="preserve"><value>Vote to Accept / Pass</value></data>
+  <data name="Match_Distress_Vote_Reject" xml:space="preserve"><value>Vote Against / Reject</value></data>
+  <data name="Match_Distress_Cancel_Proposal" xml:space="preserve"><value>Cancel Proposal</value></data>
+  <data name="Match_Distress_Proposed_By" xml:space="preserve"><value>has proposed using the Distress Signal.</value></data>
+  <data name="Match_Distress_Waiting_Progress" xml:space="preserve"><value>Waiting for crew:</value></data>
+  <data name="Match_Distress_Vote_Registered" xml:space="preserve"><value>Your vote has been recorded.</value></data>
+  <data name="Match_Distress_RejectedNotice" xml:space="preserve"><value>The distress signal was rejected or cancelled.</value></data>
+  <data name="Match_Distress_ConfirmInitiate" xml:space="preserve"><value>Do you want to initiate a crew vote to use the distress signal (+1 attempt)?</value></data>
+  <data name="Match_Distress_Button_Initiate" xml:space="preserve"><value>Start Vote</value></data>
+  <data name="Match_Distress_UsageQuestion" xml:space="preserve"><value>Do you accept using the distress signal to pass 1 card to your neighbor? Penalty: +1 mission attempt.</value></data>
+  <data name="Match_Distress_DirectionQuestion" xml:space="preserve"><value>The crew approved the distress signal! Vote on the direction cards will be passed:</value></data>
+  <data name="Match_Distress_CardSelectPrompt" xml:space="preserve"><value>Agreed direction. Select one card from your hand to transfer (except rockets):</value></data>
+  <data name="Match_Distress_SelectedCard" xml:space="preserve"><value>Selected card:</value></data>
+  <data name="Match_Distress_Button_ConfirmPass" xml:space="preserve"><value>Confirm Card Pass</value></data>
+  <data name="Match_Distress_WaitingUsage" xml:space="preserve"><value>Vote recorded. Waiting for crew votes:</value></data>
+  <data name="Match_Distress_WaitingDirection" xml:space="preserve"><value>Direction voted. Waiting for direction votes:</value></data>
+  <data name="Match_Distress_WaitingCards" xml:space="preserve"><value>Card confirmed. Waiting for all players to select their card:</value></data>
 </root>

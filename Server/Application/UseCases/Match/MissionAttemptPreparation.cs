@@ -109,7 +109,17 @@ namespace Application.UseCases
                     PlayerCount = preparationContext.ParticipantUserIds.Length,
                     Phase = MissionAttemptPhase.ObjectiveDrafting,
                     Status = MissionAttemptStatus.InProgress,
-                    Objectives = objectives.ToArray()
+                    Objectives = objectives.ToArray(),
+                    HasUsedDistressSignal = false,
+                    RadioCommunicationsBySeat = Enumerable.Range(0, preparationContext.ParticipantUserIds.Length)
+                        .Select(seatIndex => new PlayerRadioCommunicationState
+                        {
+                            Seat = (byte)seatIndex,
+                            HasUsedCommunicationToken = false,
+                            IsSilencedByCaptain = false,
+                            CommunicatedCard = null,
+                            TokenPosition = RadioTokenPosition.Highest
+                        }).ToArray()
                 },
                 PlayerHandCardIdsBySeat = missionDeal.HandsBySeat.Select(hand =>
                     hand.Select(card => card.IdCard).ToList()).ToArray(),
