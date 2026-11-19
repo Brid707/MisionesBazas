@@ -259,8 +259,12 @@
     <Compile Include="..\..\Shared\Gameplay\IMatchService.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalSubmission.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalActionType.cs" />
-    <Compile Include="..\..\Shared\Gameplay\DistressSignalDecision.cs" />
     <Compile Include="..\..\Shared\Gameplay\DistressSignalSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Distress\DistressPassDirection.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalPhase.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\Distress\DistressSignalConfirmation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\LobbyAndMatch\IMatchClient.cs" />

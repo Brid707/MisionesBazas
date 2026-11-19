@@ -13,22 +13,25 @@ namespace View.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            VerticalAlignment resolvedAlignment = VerticalAlignment.Center;
             if (value is RadioTokenPosition tokenPosition)
             {
                 switch (tokenPosition)
                 {
                     case RadioTokenPosition.Highest:
-                        return VerticalAlignment.Top;
+                        resolvedAlignment = VerticalAlignment.Top;
+                        break;
                     case RadioTokenPosition.Lowest:
-                        return VerticalAlignment.Bottom;
+                        resolvedAlignment = VerticalAlignment.Bottom;
+                        break;
                     case RadioTokenPosition.Only:
                     case RadioTokenPosition.Interference:
                     default:
-                        return VerticalAlignment.Center;
+                        resolvedAlignment = VerticalAlignment.Center;
+                        break;
                 }
             }
-
-            return VerticalAlignment.Center;
+            return resolvedAlignment;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

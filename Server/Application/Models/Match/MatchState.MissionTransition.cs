@@ -70,6 +70,12 @@ namespace Application.Models
         private void ApplyPreparedMissionAttempt(PreparedMissionAttempt preparedAttempt)
         {
             bool isInitialAttempt = MissionAttempt == null;
+            bool isSameMissionRetry = !isInitialAttempt &&
+                MissionAttempt.MissionNumber == preparedAttempt.MissionAttempt.MissionNumber;
+            if (!isSameMissionRetry)
+            {
+                HasAppliedDistressPenaltyInCurrentMission = false;
+            }
             MissionAttempt = preparedAttempt.MissionAttempt;
             ResetSpecialPreparationState(isInitialAttempt);
             PlayerHandCardIdsBySeat = preparedAttempt.PlayerHandCardIdsBySeat;

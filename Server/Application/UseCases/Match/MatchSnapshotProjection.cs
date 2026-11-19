@@ -75,7 +75,7 @@ namespace Application.UseCases
         private static DistressSignalSnapshot CreateDistressSignalSnapshot(MatchState matchState)
         {
             bool hasUsed = matchState.MissionAttempt?.HasUsedDistressSignal ?? false;
-            bool inProgress = matchState.DistressStep !=
+            bool isInProgress = matchState.DistressStep !=
                 TrickTakingMissions.Rules.Enums.DistressSignalStep.None &&
                 matchState.DistressStep !=
                 TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed && !hasUsed;
@@ -100,24 +100,65 @@ namespace Application.UseCases
                 .ToArray();
 
             int leftVotes = matchState.DistressDirectionVotesBySeat.Values
-                .Count(dir => dir == TrickTakingMissions.Rules.Enums.PassDirection.Left);
+                .Count(direction => direction == TrickTakingMissions.Rules.Enums.PassDirection.Left);
             int rightVotes = matchState.DistressDirectionVotesBySeat.Values
-                .Count(dir => dir == TrickTakingMissions.Rules.Enums.PassDirection.Right);
+                .Count(direction => direction == TrickTakingMissions.Rules.Enums.PassDirection.Right);
 
             return new DistressSignalSnapshot
             {
                 HasUsedDistressSignal = hasUsed,
-                IsInProgress = inProgress,
-                AgreedDirection = agreedDirection,
+                IsInProgress = isInProgress,
+                AgreedDirection = MapDistressPassDirection(agreedDirection),
                 SubmittedParticipantUserIds = submittedCardUserIds,
                 InitiatorUserId = matchState.DistressInitiatorUserId ?? 0,
                 HasBeenRejected = matchState.HasDistressBeenRejected,
-                CurrentStep = matchState.DistressStep,
+                CurrentStep = MapDistressSignalPhase(matchState.DistressStep),
                 VotedYesUserIds = votedYesUserIds,
                 DirectionVotedUserIds = directionVotedUserIds,
                 LeftDirectionVotesCount = leftVotes,
                 RightDirectionVotesCount = rightVotes
             };
+        }
+
+        private static DistressPassDirection MapDistressPassDirection(
+            TrickTakingMissions.Rules.Enums.PassDirection direction)
+        {
+            DistressPassDirection mappedDirection = DistressPassDirection.None;
+            if (direction == TrickTakingMissions.Rules.Enums.PassDirection.Left)
+            {
+                mappedDirection = DistressPassDirection.Left;
+            }
+            else if (direction == TrickTakingMissions.Rules.Enums.PassDirection.Right)
+            {
+                mappedDirection = DistressPassDirection.Right;
+            }
+            return mappedDirection;
+        }
+
+        private static DistressSignalPhase MapDistressSignalPhase(
+            TrickTakingMissions.Rules.Enums.DistressSignalStep step)
+        {
+            DistressSignalPhase mappedPhase;
+            switch (step)
+            {
+                case TrickTakingMissions.Rules.Enums.DistressSignalStep.VotingToUse:
+                    mappedPhase = DistressSignalPhase.VotingToUse;
+                    break;
+                case TrickTakingMissions.Rules.Enums.DistressSignalStep.VotingDirection:
+                    mappedPhase = DistressSignalPhase.VotingDirection;
+                    break;
+                case TrickTakingMissions.Rules.Enums.DistressSignalStep.SelectingCard:
+                    mappedPhase = DistressSignalPhase.SelectingCard;
+                    break;
+                case TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed:
+                    mappedPhase = DistressSignalPhase.Completed;
+                    break;
+                case TrickTakingMissions.Rules.Enums.DistressSignalStep.None:
+                default:
+                    mappedPhase = DistressSignalPhase.None;
+                    break;
+            }
+            return mappedPhase;
         }
     }
 }

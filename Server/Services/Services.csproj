@@ -154,6 +154,10 @@
     <Compile Include="Services\Match\LobbyService.RadioCommunication.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\DistressSignalMapper.cs" />
+    <Compile Include="Services\Match\LobbyService.DistressSignal.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Mapping\MissionPreparationMapper.cs" />
     <Compile Include="Services\Match\LobbyService.SpecialPreparation.cs" />
     <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">

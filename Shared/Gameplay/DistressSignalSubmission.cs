@@ -1,6 +1,5 @@
 using System;
 using System.Runtime.Serialization;
-using TrickTakingMissions.Rules.Enums;
 
 namespace Gameplay
 {
@@ -23,7 +22,7 @@ namespace Gameplay
         public int CardIdToPass { get; set; }
 
         [DataMember(Order = 5)]
-        public PassDirection SelectedDirection { get; set; }
+        public DistressPassDirection SelectedDirection { get; set; }
 
         [DataMember(Order = 6)]
         public bool IsVoteAccepted { get; set; } = true;

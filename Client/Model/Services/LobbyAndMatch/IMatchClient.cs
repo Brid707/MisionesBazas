@@ -23,7 +23,7 @@ namespace Model.Services
         Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId);
         Task<MissionRetryDecision> ConfirmMissionRetryAsync(MissionRetrySubmission submission, int participantUserId);
         Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId);
-        Task<DistressSignalDecision> SubmitDistressSignalAsync(
+        Task<DistressSignalConfirmation> SubmitDistressSignalAsync(
             DistressSignalSubmission submission, int participantUserId);
     }
 }

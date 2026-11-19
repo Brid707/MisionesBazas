@@ -27,9 +27,10 @@ namespace Application.Ports
         /// <summary>
         /// Submits a distress signal pass decision, executing the card rotation when all participants agree.
         /// </summary>
-        /// <param name="submission">The distress signal submission.</param>
+        /// <param name="request">The distress signal request.</param>
         /// <param name="participantUserId">The requesting participant user identifier.</param>
-        /// <returns>A decision describing acceptance and execution status.</returns>
-        DistressSignalDecision SubmitDistressSignal(DistressSignalSubmission submission, int participantUserId);
+        /// <returns>A commit describing acceptance and execution status.</returns>
+        Application.Models.DistressSignalCommit SubmitDistressSignal(
+            Application.Models.DistressSignalRequest request, int participantUserId);
     }
 }

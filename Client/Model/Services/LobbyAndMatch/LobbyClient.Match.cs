@@ -105,7 +105,7 @@ namespace Model.Services
                 submission.LobbyCode, participantUserId);
         }
 
-        public Task<DistressSignalDecision> SubmitDistressSignalAsync(
+        public Task<DistressSignalConfirmation> SubmitDistressSignalAsync(
             DistressSignalSubmission submission, int participantUserId)
         {
             return ExecuteMatchOperationAsync(

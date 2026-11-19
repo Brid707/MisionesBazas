@@ -55,6 +55,7 @@ namespace Gameplay
 
         [OperationContract(Action = "urn:misiones-bazas:match:SubmitDistressSignal", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
-        DistressSignalDecision SubmitDistressSignal(DistressSignalSubmission submission, int participantUserId);
+        [FaultContract(typeof(DistressSignalFault))]
+        DistressSignalConfirmation SubmitDistressSignal(DistressSignalSubmission submission, int participantUserId);
     }
 }

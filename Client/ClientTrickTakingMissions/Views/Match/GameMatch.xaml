@@ -543,8 +543,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
                                     <Button Command="{Binding ConfirmDistressCardSelectionCommand}" Margin="4,0"
-                                            Padding="14,6" Background="{StaticResource BrushSuccessButtonBackground}"
-                                            IsEnabled="{Binding CanConfirmDistressCard}">
+                                            Padding="14,6" Background="{StaticResource BrushSuccessButtonBackground}">
                                         <TextBlock Text="{Binding Source=Match_Distress_Button_ConfirmPass,
                                             Converter={StaticResource MatchTextConverter}}"
                                                    Foreground="{StaticResource BrushTextLight}" FontWeight="Bold" />

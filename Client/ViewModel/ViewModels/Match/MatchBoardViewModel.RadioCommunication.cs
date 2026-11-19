@@ -15,6 +15,15 @@ namespace ViewModel.ViewModels
 {
     public sealed partial class MatchBoardViewModel
     {
+        private static readonly IReadOnlyDictionary<RadioTokenPosition, RadioCommunicationMarker>
+            RadioMarkersByPosition = new Dictionary<RadioTokenPosition, RadioCommunicationMarker>
+            {
+                { RadioTokenPosition.Highest, RadioCommunicationMarker.Highest },
+                { RadioTokenPosition.Only, RadioCommunicationMarker.Only },
+                { RadioTokenPosition.Lowest, RadioCommunicationMarker.Lowest },
+                { RadioTokenPosition.Interference, RadioCommunicationMarker.Hidden }
+            };
+
         private RadioCommunicationSubmission _pendingRadioSubmission;
         private HandCardViewModel _selectedRadioCard;
         private RadioMarkerOptionViewModel _selectedRadioMarker;
@@ -89,7 +98,8 @@ namespace ViewModel.ViewModels
         private void InitializeRadioCommand()
         {
             SubmitRadioCommunicationCommand = new AsyncRelayCommand(SubmitRadioCommunicationAsync, CanSubmitRadio);
-            ToggleCommunicationModeCommand = new RelayCommand(ExecuteToggleCommunicationMode, CanToggleCommunicationMode);
+            ToggleCommunicationModeCommand = new RelayCommand(
+                ExecuteToggleCommunicationMode, CanToggleCommunicationMode);
         }
 
         private bool CanToggleCommunicationMode(object parameter) => CanCommunicate;
@@ -108,58 +118,54 @@ namespace ViewModel.ViewModels
 
         public IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(int cardId)
         {
-            if (_confirmedMatchSnapshot?.OwnHandCardIds == null)
+            IReadOnlyList<RadioTokenPosition> validPositions = Array.Empty<RadioTokenPosition>();
+            if (_confirmedMatchSnapshot?.OwnHandCardIds != null)
             {
-                return Array.Empty<RadioTokenPosition>();
+                Card[] handCards = OwnHandCards.Select(card => DeckRules.GetCardById(card.CardId)).ToArray();
+                Card candidateCard = DeckRules.GetCardById(cardId);
+                CommunicationRuleType mode = _confirmedMatchSnapshot.RadioMode == RadioCommunicationMode.Interference
+                    ? CommunicationRuleType.Interference
+                    : CommunicationRuleType.Standard;
+                validPositions = RadioCommunicationRules.GetValidPositionsForCard(handCards, candidateCard, mode);
             }
-
-            var handCards = OwnHandCards.Select(c => DeckRules.GetCardById(c.CardId)).ToArray();
-            Card candidateCard = DeckRules.GetCardById(cardId);
-            CommunicationRuleType mode = _confirmedMatchSnapshot.RadioMode == RadioCommunicationMode.Interference
-                ? CommunicationRuleType.Interference : CommunicationRuleType.Standard;
-
-            return RadioCommunicationRules.GetValidPositionsForCard(handCards, candidateCard, mode);
+            return validPositions;
         }
 
         public void RefreshCommunicationHighlights()
         {
-            if (OwnHandCards == null)
+            if (OwnHandCards != null)
             {
-                return;
-            }
-
-            foreach (HandCardViewModel handCard in OwnHandCards)
-            {
-                bool isEligible = _isCommunicationModeActive &&
-                    GetValidPositionsForCard(handCard.CardId).Count > 0;
-                handCard.UpdateCommunicationHighlight(_isCommunicationModeActive, isEligible);
+                foreach (HandCardViewModel handCard in OwnHandCards)
+                {
+                    bool isEligible = _isCommunicationModeActive &&
+                        GetValidPositionsForCard(handCard.CardId).Count > 0;
+                    handCard.UpdateCommunicationHighlight(_isCommunicationModeActive, isEligible);
+                }
             }
         }
 
         public async Task ExecuteCardCommunicationFromHandAsync(int cardId)
         {
-            if (_pendingRadioSubmission != null)
+            if (_pendingRadioSubmission == null)
             {
-                return;
-            }
-
-            IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
-            if (positions != null && positions.Count > 0)
-            {
-                RadioTokenPosition resolvedPosition = positions[0];
-                IsCommunicationModeActive = false;
-                RadioCommunicationMarker marker = s_radioMarkers[resolvedPosition];
-                _pendingRadioSubmission = new RadioCommunicationSubmission
+                IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
+                if (positions != null && positions.Count > 0)
                 {
-                    LobbyCode = _lobbyCode,
-                    MatchId = _confirmedMatchSnapshot.MatchId,
-                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
-                    RadioCommunicationSubmissionId = Guid.NewGuid(),
-                    ExpectedMatchStateVersion = MatchStateVersion,
-                    CardId = cardId,
-                    SelectedMarker = marker
-                };
-                await SynchronizeMatchAsync();
+                    RadioTokenPosition resolvedPosition = positions[0];
+                    IsCommunicationModeActive = false;
+                    RadioCommunicationMarker marker = RadioMarkersByPosition[resolvedPosition];
+                    _pendingRadioSubmission = new RadioCommunicationSubmission
+                    {
+                        LobbyCode = _lobbyCode,
+                        MatchId = _confirmedMatchSnapshot.MatchId,
+                        MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
+                        RadioCommunicationSubmissionId = Guid.NewGuid(),
+                        ExpectedMatchStateVersion = MatchStateVersion,
+                        CardId = cardId,
+                        SelectedMarker = marker
+                    };
+                    await SynchronizeMatchAsync();
+                }
             }
         }
 
@@ -221,13 +227,14 @@ namespace ViewModel.ViewModels
             AvailableRadioMarkers.Clear();
             if (SelectedRadioCard != null && _confirmedMatchSnapshot != null)
             {
-                var hand = OwnHandCards.Select(card => DeckRules.GetCardById(card.CardId)).ToArray();
+                Card[] hand = OwnHandCards.Select(card => DeckRules.GetCardById(card.CardId)).ToArray();
                 CommunicationRuleType mode = _confirmedMatchSnapshot.RadioMode == RadioCommunicationMode.Interference
-                    ? CommunicationRuleType.Interference : CommunicationRuleType.Standard;
+                    ? CommunicationRuleType.Interference
+                    : CommunicationRuleType.Standard;
                 foreach (RadioTokenPosition position in RadioCommunicationRules.GetValidPositionsForCard(hand,
                     DeckRules.GetCardById(SelectedRadioCard.CardId), mode))
                 {
-                    AvailableRadioMarkers.Add(new RadioMarkerOptionViewModel(s_radioMarkers[position]));
+                    AvailableRadioMarkers.Add(new RadioMarkerOptionViewModel(RadioMarkersByPosition[position]));
                 }
             }
             SelectedRadioMarker = AvailableRadioMarkers.FirstOrDefault();
@@ -248,15 +255,18 @@ namespace ViewModel.ViewModels
             }
             RefreshRadioMarkerChoices();
 
-            PlayerRadioCommunicationSnapshot localComm = snapshot.RadioCommunications?
-                .FirstOrDefault(comm => comm.ParticipantUserId == _participantUserId);
+            PlayerRadioCommunicationSnapshot localCommunication = snapshot.RadioCommunications?
+                .FirstOrDefault(communication => communication.ParticipantUserId == _participantUserId);
 
             foreach (HandCardViewModel handCard in OwnHandCards)
             {
-                bool isComm = localComm != null && !localComm.HasCommunicatedCardBeenPlayed &&
-                    localComm.CommunicatedCardId == handCard.CardId;
-                handCard.IsCommunicated = isComm;
-                handCard.TokenPosition = isComm ? MapMarkerToPosition(localComm.Marker) : RadioTokenPosition.Highest;
+                bool isCommunicated = localCommunication != null &&
+                    !localCommunication.HasCommunicatedCardBeenPlayed &&
+                    localCommunication.CommunicatedCardId == handCard.CardId;
+                handCard.IsCommunicated = isCommunicated;
+                handCard.TokenPosition = isCommunicated
+                    ? MapMarkerToPosition(localCommunication.Marker)
+                    : RadioTokenPosition.Highest;
             }
 
             UpdateSeatedPlayerCommunications(snapshot);
@@ -287,34 +297,25 @@ namespace ViewModel.ViewModels
 
         private void UpdateSeatedPlayerCommunications(PlayerMatchSnapshot playerSnapshot)
         {
-            if (_seatedPlayers == null)
+            if (_seatedPlayers != null)
             {
-                return;
-            }
-
-            foreach (LobbyPlayerItemViewModel participant in _seatedPlayers)
-            {
-                PlayerRadioCommunicationSnapshot comm = playerSnapshot.RadioCommunications?
-                    .FirstOrDefault(c => c.ParticipantUserId == participant.IdUser);
-
-                if (comm != null && !comm.HasCommunicatedCardBeenPlayed && comm.CommunicatedCardId > 0)
+                foreach (LobbyPlayerItemViewModel participant in _seatedPlayers)
                 {
-                    participant.UpdateCommunicatedCard(comm.CommunicatedCardId, MapMarkerToPosition(comm.Marker));
-                }
-                else
-                {
-                    participant.UpdateCommunicatedCard(null, RadioTokenPosition.Highest);
+                    PlayerRadioCommunicationSnapshot communication = playerSnapshot.RadioCommunications?
+                        .FirstOrDefault(item => item.ParticipantUserId == participant.IdUser);
+
+                    if (communication != null && !communication.HasCommunicatedCardBeenPlayed &&
+                        communication.CommunicatedCardId > 0)
+                    {
+                        participant.UpdateCommunicatedCard(
+                            communication.CommunicatedCardId, MapMarkerToPosition(communication.Marker));
+                    }
+                    else
+                    {
+                        participant.UpdateCommunicatedCard(null, RadioTokenPosition.Highest);
+                    }
                 }
             }
         }
-
-        private static readonly IReadOnlyDictionary<RadioTokenPosition, RadioCommunicationMarker> s_radioMarkers =
-            new Dictionary<RadioTokenPosition, RadioCommunicationMarker>
-            {
-                { RadioTokenPosition.Highest, RadioCommunicationMarker.Highest },
-                { RadioTokenPosition.Only, RadioCommunicationMarker.Only },
-                { RadioTokenPosition.Lowest, RadioCommunicationMarker.Lowest },
-                { RadioTokenPosition.Interference, RadioCommunicationMarker.Hidden }
-            };
     }
 }

@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Gameplay;
@@ -15,7 +15,7 @@ namespace ViewModel.ViewModels
     public sealed partial class MatchBoardViewModel
     {
         private bool _isDistressSignalDialogOpen;
-        private PassDirection _selectedDistressDirection = PassDirection.Left;
+        private DistressPassDirection _selectedDistressDirection = DistressPassDirection.Left;
         private int _selectedDistressCardId;
         private bool _hasShownDistressRejectionNotice;
 
@@ -39,8 +39,8 @@ namespace ViewModel.ViewModels
 
         public bool IsDistressSignalInProgress => DistressSignal?.IsInProgress ?? false;
 
-        public DistressSignalStep CurrentDistressStep =>
-            DistressSignal?.CurrentStep ?? DistressSignalStep.None;
+        public DistressSignalPhase CurrentDistressStep =>
+            DistressSignal?.CurrentStep ?? DistressSignalPhase.None;
 
         public bool IsLocalDistressUsageVoted
         {
@@ -71,41 +71,42 @@ namespace ViewModel.ViewModels
 
         public bool IsDistressInitiatorConfirmVisible =>
             IsDistressSignalDialogOpen &&
-            (!IsDistressSignalInProgress || CurrentDistressStep == DistressSignalStep.None);
+            (!IsDistressSignalInProgress || CurrentDistressStep == DistressSignalPhase.None);
 
         public bool IsDistressUsageVoteVisible =>
             IsDistressSignalDialogOpen &&
-            CurrentDistressStep == DistressSignalStep.VotingToUse &&
+            CurrentDistressStep == DistressSignalPhase.VotingToUse &&
             !IsLocalDistressUsageVoted;
 
         public bool IsDistressDirectionVoteVisible =>
             IsDistressSignalDialogOpen &&
-            CurrentDistressStep == DistressSignalStep.VotingDirection &&
+            CurrentDistressStep == DistressSignalPhase.VotingDirection &&
             !IsLocalDistressDirectionVoted;
 
         public bool IsDistressCardSelectionVisible =>
             IsDistressSignalDialogOpen &&
-            CurrentDistressStep == DistressSignalStep.SelectingCard &&
+            CurrentDistressStep == DistressSignalPhase.SelectingCard &&
             !IsLocalDistressCardSubmitted;
 
         public bool IsDistressWaitingVisible =>
             IsDistressSignalDialogOpen && (
-                (CurrentDistressStep == DistressSignalStep.VotingToUse && IsLocalDistressUsageVoted) ||
-                (CurrentDistressStep == DistressSignalStep.VotingDirection && IsLocalDistressDirectionVoted) ||
-                (CurrentDistressStep == DistressSignalStep.SelectingCard && IsLocalDistressCardSubmitted));
+                (CurrentDistressStep == DistressSignalPhase.VotingToUse && IsLocalDistressUsageVoted) ||
+                (CurrentDistressStep == DistressSignalPhase.VotingDirection && IsLocalDistressDirectionVoted) ||
+                (CurrentDistressStep == DistressSignalPhase.SelectingCard && IsLocalDistressCardSubmitted));
 
         public string DistressInitiatorName
         {
             get
             {
+                string initiatorName = string.Empty;
                 int initiatorId = DistressSignal?.InitiatorUserId ?? 0;
-                if (initiatorId == 0)
+                if (initiatorId != 0)
                 {
-                    return string.Empty;
+                    LobbyPlayerItemViewModel matchedPlayer = _seatedPlayers?
+                        .FirstOrDefault(player => player.IdUser == initiatorId);
+                    initiatorName = matchedPlayer?.Username ?? GetParticipantName(initiatorId);
                 }
-                LobbyPlayerItemViewModel player = _seatedPlayers?
-                    .FirstOrDefault(p => p.IdUser == initiatorId);
-                return player?.Username ?? GetParticipantName(initiatorId);
+                return initiatorName;
             }
         }
 
@@ -122,19 +123,16 @@ namespace ViewModel.ViewModels
         {
             get
             {
-                if (CurrentDistressStep == DistressSignalStep.VotingToUse)
+                int currentCount = DistressCardsSubmittedCount;
+                if (CurrentDistressStep == DistressSignalPhase.VotingToUse)
                 {
-                    return $"{DistressUsageYesVotesCount} / {DistressTotalPlayersCount}";
+                    currentCount = DistressUsageYesVotesCount;
                 }
-                if (CurrentDistressStep == DistressSignalStep.VotingDirection)
+                else if (CurrentDistressStep == DistressSignalPhase.VotingDirection)
                 {
-                    return $"{DistressDirectionVotesCount} / {DistressTotalPlayersCount}";
+                    currentCount = DistressDirectionVotesCount;
                 }
-                if (CurrentDistressStep == DistressSignalStep.SelectingCard)
-                {
-                    return $"{DistressCardsSubmittedCount} / {DistressTotalPlayersCount}";
-                }
-                return $"{DistressCardsSubmittedCount} / {DistressTotalPlayersCount}";
+                return $"{currentCount} / {DistressTotalPlayersCount}";
             }
         }
 
@@ -142,24 +140,25 @@ namespace ViewModel.ViewModels
         {
             get
             {
-                if (CurrentDistressStep == DistressSignalStep.VotingToUse)
+                string resourceKey = "Match_Distress_WaitingVotes";
+                if (CurrentDistressStep == DistressSignalPhase.VotingToUse)
                 {
-                    return "Match_Distress_WaitingUsage";
+                    resourceKey = "Match_Distress_WaitingUsage";
                 }
-                if (CurrentDistressStep == DistressSignalStep.VotingDirection)
+                else if (CurrentDistressStep == DistressSignalPhase.VotingDirection)
                 {
-                    return "Match_Distress_WaitingDirection";
+                    resourceKey = "Match_Distress_WaitingDirection";
                 }
-                if (CurrentDistressStep == DistressSignalStep.SelectingCard)
+                else if (CurrentDistressStep == DistressSignalPhase.SelectingCard)
                 {
-                    return "Match_Distress_WaitingCards";
+                    resourceKey = "Match_Distress_WaitingCards";
                 }
-                return "Match_Distress_WaitingVotes";
+                return resourceKey;
             }
         }
 
         public string DistressAgreedDirectionResourceKey =>
-            DistressSignal?.AgreedDirection == PassDirection.Right
+            DistressSignal?.AgreedDirection == DistressPassDirection.Right
                 ? "Match_Distress_Direction_Right"
                 : "Match_Distress_Direction_Left";
 
@@ -175,7 +174,7 @@ namespace ViewModel.ViewModels
             }
         }
 
-        public PassDirection SelectedDistressDirection
+        public DistressPassDirection SelectedDistressDirection
         {
             get => _selectedDistressDirection;
             set => SetProperty(ref _selectedDistressDirection, value);
@@ -189,18 +188,20 @@ namespace ViewModel.ViewModels
                 if (SetProperty(ref _selectedDistressCardId, value))
                 {
                     OnPropertyChanged(nameof(CanConfirmDistressCard));
+                    CommandManager.InvalidateRequerySuggested();
                 }
             }
         }
 
         public bool CanConfirmDistressCard =>
             SelectedDistressCardId > 0 &&
-            CurrentDistressStep == DistressSignalStep.SelectingCard &&
+            CurrentDistressStep == DistressSignalPhase.SelectingCard &&
             !IsLocalDistressCardSubmitted;
 
         public bool HasLocalPlayerCommunicated =>
             _confirmedMatchSnapshot?.RadioCommunications != null &&
-            _confirmedMatchSnapshot.RadioCommunications.Any(comm => comm.ParticipantUserId == _participantUserId);
+            _confirmedMatchSnapshot.RadioCommunications.Any(
+                communication => communication.ParticipantUserId == _participantUserId);
 
         public bool HasAnyPlayerCommunicated =>
             _confirmedMatchSnapshot?.RadioCommunications != null &&
@@ -289,7 +290,7 @@ namespace ViewModel.ViewModels
         private bool CanExecuteVoteDistressUsage(object parameter)
         {
             return CanSubmitMatchRequest() && IsDistressSignalInProgress &&
-                CurrentDistressStep == DistressSignalStep.VotingToUse && !IsLocalDistressUsageVoted;
+                CurrentDistressStep == DistressSignalPhase.VotingToUse && !IsLocalDistressUsageVoted;
         }
 
         private async Task ExecuteVoteDistressUsageYesAsync(object parameter)
@@ -309,14 +310,14 @@ namespace ViewModel.ViewModels
         private bool CanExecuteVoteDistressDirection(object parameter)
         {
             return CanSubmitMatchRequest() && IsDistressSignalInProgress &&
-                CurrentDistressStep == DistressSignalStep.VotingDirection && !IsLocalDistressDirectionVoted;
+                CurrentDistressStep == DistressSignalPhase.VotingDirection && !IsLocalDistressDirectionVoted;
         }
 
         private async Task ExecuteVoteDistressDirectionLeftAsync(object parameter)
         {
             DistressSignalSubmission submission = CreateDistressSubmission(
                 DistressSignalActionType.VoteDirection, true);
-            submission.SelectedDirection = PassDirection.Left;
+            submission.SelectedDirection = DistressPassDirection.Left;
             await SendDistressSubmissionAsync(submission);
         }
 
@@ -324,7 +325,7 @@ namespace ViewModel.ViewModels
         {
             DistressSignalSubmission submission = CreateDistressSubmission(
                 DistressSignalActionType.VoteDirection, true);
-            submission.SelectedDirection = PassDirection.Right;
+            submission.SelectedDirection = DistressPassDirection.Right;
             await SendDistressSubmissionAsync(submission);
         }
 
@@ -338,7 +339,7 @@ namespace ViewModel.ViewModels
             DistressSignalSubmission submission = CreateDistressSubmission(
                 DistressSignalActionType.SubmitPassCard, true);
             submission.CardIdToPass = SelectedDistressCardId;
-            submission.SelectedDirection = DistressSignal?.AgreedDirection ?? PassDirection.Left;
+            submission.SelectedDirection = DistressSignal?.AgreedDirection ?? DistressPassDirection.Left;
             await SendDistressSubmissionAsync(submission);
         }
 
@@ -369,21 +370,26 @@ namespace ViewModel.ViewModels
 
         private async Task<bool> SendDistressSubmissionAsync(DistressSignalSubmission submission)
         {
-            if (_confirmedMatchSnapshot == null)
+            bool isAccepted = false;
+            if (_confirmedMatchSnapshot != null)
             {
-                return false;
+                try
+                {
+                    DistressSignalConfirmation confirmation = await _matchClient.SubmitDistressSignalAsync(
+                        submission, _participantUserId);
+                    if (confirmation != null)
+                    {
+                        isAccepted = true;
+                        await SynchronizeMatchAsync();
+                    }
+                }
+                catch (FaultException<DistressSignalFault> ex)
+                {
+                    MatchFeedbackResourceKey = "Distress_Error_" + ex.Detail.FailureReason;
+                    await SynchronizeMatchAsync();
+                }
             }
-
-            DistressSignalDecision decision = await _matchClient.SubmitDistressSignalAsync(
-                submission, _participantUserId);
-
-            if (decision != null && decision.IsAccepted)
-            {
-                await SynchronizeMatchAsync();
-                return true;
-            }
-
-            return false;
+            return isAccepted;
         }
 
         private void SelectDistressCard(object parameter)
@@ -421,7 +427,7 @@ namespace ViewModel.ViewModels
             if (distress != null && distress.IsInProgress)
             {
                 SelectedDistressDirection = distress.AgreedDirection;
-                if (distress.CurrentStep == DistressSignalStep.SelectingCard)
+                if (distress.CurrentStep == DistressSignalPhase.SelectingCard)
                 {
                     PopulateEligibleDistressCards();
                 }
@@ -474,6 +480,7 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(HasAnyPlayerCommunicated));
             OnPropertyChanged(nameof(CanUseDistressSignal));
             OnPropertyChanged(nameof(CanConfirmDistressCard));
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }

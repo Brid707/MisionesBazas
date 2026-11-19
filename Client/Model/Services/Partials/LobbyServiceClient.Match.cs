@@ -55,7 +55,7 @@ namespace Model.GameServices
             return Channel.PlayCard(cardPlaySubmission, participantUserId);
         }
 
-        public DistressSignalDecision SubmitDistressSignal(
+        public DistressSignalConfirmation SubmitDistressSignal(
             DistressSignalSubmission submission, int participantUserId)
         {
             return Channel.SubmitDistressSignal(submission, participantUserId);

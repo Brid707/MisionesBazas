@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
-using TrickTakingMissions.Rules.Enums;
 
 namespace Gameplay
 {
@@ -16,7 +15,7 @@ namespace Gameplay
         public bool IsInProgress { get; set; }
 
         [DataMember(Order = 3)]
-        public PassDirection AgreedDirection { get; set; }
+        public DistressPassDirection AgreedDirection { get; set; }
 
         [DataMember(Order = 4)]
         public int[] SubmittedParticipantUserIds { get; set; }
@@ -31,7 +30,7 @@ namespace Gameplay
         public bool HasBeenRejected { get; set; }
 
         [DataMember(Order = 8)]
-        public DistressSignalStep CurrentStep { get; set; }
+        public DistressSignalPhase CurrentStep { get; set; }
 
         [DataMember(Order = 9)]
         public int[] VotedYesUserIds { get; set; }

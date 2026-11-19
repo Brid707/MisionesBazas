@@ -55,6 +55,7 @@ namespace Application.Models
         public int? DistressInitiatorUserId { get; set; }
         public TrickTakingMissions.Rules.Enums.PassDirection? DistressAgreedDirection { get; set; }
         public bool HasDistressBeenRejected { get; set; }
+        public bool HasAppliedDistressPenaltyInCurrentMission { get; set; }
 
         public void ResetDistressState()
         {
