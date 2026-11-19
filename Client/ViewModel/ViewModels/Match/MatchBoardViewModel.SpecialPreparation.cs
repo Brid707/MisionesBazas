@@ -41,7 +41,13 @@ namespace ViewModel.ViewModels
         public bool CanRespondBlindObjectives => CanSubmitMatchRequest() &&
             (_confirmedMatchSnapshot?.MissionPreparation?.CanRespondToBlindObjectives ?? false);
         public bool CanSelectRoleParticipant => CanSubmitMatchRequest() && EligibleRoleParticipants.Count > 0;
-        public string SpecialPreparationFeedbackKey => "MissionPreparation_Stage_" + PreparationStage;
+        public string SpecialPreparationFeedbackKey => PreparationStage == MissionPreparationStage.RoleSelection &&
+            _confirmedMatchSnapshot?.MissionPreparation?.MissionNumber == MissionThirtyThreeNumber
+                ? "MissionPreparation_Label_SelectSingleTrickWinner" : "MissionPreparation_Stage_" + PreparationStage;
+        public bool HasSingleTrickWinner =>
+            _confirmedMatchSnapshot?.MissionPreparation?.SingleTrickWinnerParticipantUserId.HasValue ?? false;
+        public string SingleTrickWinnerParticipantName => GetParticipantName(
+            _confirmedMatchSnapshot?.MissionPreparation?.SingleTrickWinnerParticipantUserId ?? 0);
         private bool HasPendingPreparation => _pendingRoleAssignment != null || _pendingBlindResponse != null;
         private MissionPreparationStage PreparationStage => _confirmedMatchSnapshot?.MissionPreparation?.Stage ??
             MissionPreparationStage.None;
@@ -192,6 +198,8 @@ namespace ViewModel.ViewModels
             OnPropertyChanged(nameof(CanRespondBlindObjectives));
             OnPropertyChanged(nameof(CanSelectRoleParticipant));
             OnPropertyChanged(nameof(SpecialPreparationFeedbackKey));
+            OnPropertyChanged(nameof(HasSingleTrickWinner));
+            OnPropertyChanged(nameof(SingleTrickWinnerParticipantName));
         }
     }
 }

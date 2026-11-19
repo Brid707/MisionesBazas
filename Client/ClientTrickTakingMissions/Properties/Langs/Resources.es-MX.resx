@@ -716,8 +716,8 @@
   <data name="MissionInstruction_MissionNineteen_Description" xml:space="preserve"><value>Completen cinco objetivos, con el 1 primero. La radio se habilita desde la tercera baza.</value></data>
   <data name="MissionInstruction_MissionTwenty_Description" xml:space="preserve"><value>Sin ver los objetivos, respondan sí o no. El capitán asigna ambos a otro participante y se revelan.</value></data>
   <data name="MissionPreparation_Stage_RoleSelection" xml:space="preserve"><value>El capitán debe elegir al participante que no podrá usar la radio.</value></data>
-  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>¿Te consideras capaz de ganar ambos objetivos sin verlos? Falta la respuesta de cada participante excepto el capitán.</value></data>
-  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>El capitán debe elegir a otro participante para recibir ambos objetivos. Las respuestas son orientativas.</value></data>
+  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>¿Te consideras capaz de ganar todos los objetivos sin verlos? Falta la respuesta de cada participante excepto el capitán.</value></data>
+  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>El capitán debe elegir a otro participante para recibir todos los objetivos. Las respuestas son orientativas.</value></data>
   <data name="MissionPreparation_Label_Assign" xml:space="preserve"><value>Confirmar participante</value></data>
   <data name="MissionPreparation_Response_Yes" xml:space="preserve"><value>Sí</value></data>
   <data name="MissionPreparation_Response_No" xml:space="preserve"><value>No</value></data>
@@ -740,4 +740,29 @@
   <data name="MissionEvaluation_Error_SpecialCardLostTrick" xml:space="preserve"><value>Una K perdió su baza.</value></data>
   <data name="MissionEvaluation_Error_SpecialCardsDidNotWinAllRequiredTricks" xml:space="preserve"><value>No todas las K ganaron su propia baza.</value></data>
   <data name="MissionEvaluation_Error_NormalNineWonTrick" xml:space="preserve"><value>Un 9 normal ganó una baza.</value></data>
+  <data name="MissionInstruction_MissionTwentyOne_Description" xml:space="preserve"><value>Completen cinco objetivos: los marcados 1 y 2 primero y segundo; después los demás.</value></data>
+  <data name="MissionInstruction_MissionTwentyTwo_Description" xml:space="preserve"><value>Completen cinco objetivos respetando &gt;, &gt;&gt;, &gt;&gt;&gt; y &gt;&gt;&gt;&gt;. El objetivo sin ficha no tiene posición obligatoria.</value></data>
+  <data name="MissionInstruction_MissionTwentyThree_Description" xml:space="preserve"><value>Completen los cinco objetivos en orden 1, 2, 3, 4 y 5, en bazas diferentes.</value></data>
+  <data name="MissionInstruction_MissionTwentyFour_Description" xml:space="preserve"><value>Completen los seis objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionTwentyFive_Description" xml:space="preserve"><value>Completen seis objetivos, con &gt; antes de &gt;&gt;. La radio oculta la posición de su ficha.</value></data>
+  <data name="MissionInstruction_MissionTwentySix_Description" xml:space="preserve"><value>Ganen dos bazas con dos cartas 1 normales. Capturarlas sin que ganen no cuenta.</value></data>
+  <data name="MissionInstruction_MissionTwentySeven_Description" xml:space="preserve"><value>Sin ver los tres objetivos, respondan sí o no. El capitán asigna todos a otro participante y se revelan.</value></data>
+  <data name="MissionInstruction_MissionTwentyEight_Description" xml:space="preserve"><value>Completen seis objetivos: el 1 primero y Omega último. Radio desde la tercera baza.</value></data>
+  <data name="MissionInstruction_MissionTwentyNine_Description" xml:space="preserve"><value>Terminen el reparto sin superar dos bazas de diferencia entre ningún par de participantes. Radio con interferencia.</value></data>
+  <data name="MissionInstruction_MissionThirty_Description" xml:space="preserve"><value>Completen seis objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;; los demás no tienen posición obligatoria.</value></data>
+  <data name="MissionInstruction_MissionThirtyOne_Description" xml:space="preserve"><value>Completen seis objetivos: los marcados 1, 2 y 3 primero, segundo y tercero; después los demás.</value></data>
+  <data name="MissionInstruction_MissionThirtyTwo_Description" xml:space="preserve"><value>Completen los siete objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionThirtyThree_Description" xml:space="preserve"><value>El elegido debe ganar exactamente una baza con una carta normal. La misión termina al concluir el reparto.</value></data>
+  <data name="MissionInstruction_MissionThirtyFour_Description" xml:space="preserve"><value>El capitán debe ganar la primera y última baza. Nunca superen dos bazas de diferencia entre participantes.</value></data>
+  <data name="MissionInstruction_MissionThirtyFive_Description" xml:space="preserve"><value>Completen siete objetivos respetando &gt;, &gt;&gt; y &gt;&gt;&gt;; los demás no tienen posición obligatoria.</value></data>
+  <data name="MissionPreparation_Label_SelectSingleTrickWinner" xml:space="preserve"><value>El capitán elige quién debe ganar exactamente una baza con una carta normal. Puede elegirse a sí mismo.</value></data>
+  <data name="MissionPreparation_Label_SingleTrickWinner" xml:space="preserve"><value>Debe ganar exactamente una baza:</value></data>
+  <data name="MissionEvaluation_Error_InsufficientNormalOneWinningTricks" xml:space="preserve"><value>No se consiguieron dos bazas ganadas con unos normales.</value></data>
+  <data name="MissionEvaluation_Error_WonTrickDifferenceExceeded" xml:space="preserve"><value>Se superó la diferencia máxima de dos bazas entre participantes.</value></data>
+  <data name="MissionEvaluation_Error_SingleTrickWinnerUnassigned" xml:space="preserve"><value>No se ha asignado al participante que debe ganar una sola baza.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonWithSpecialCard" xml:space="preserve"><value>El participante elegido ganó con una K.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonMultipleTricks" xml:space="preserve"><value>El participante elegido ganó más de una baza.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantDidNotWinExactlyOneTrick" xml:space="preserve"><value>El participante elegido no terminó con exactamente una baza ganada.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinFirstTrick" xml:space="preserve"><value>El capitán no ganó la primera baza.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinLastTrick" xml:space="preserve"><value>El capitán no ganó la última baza.</value></data>
 </root>

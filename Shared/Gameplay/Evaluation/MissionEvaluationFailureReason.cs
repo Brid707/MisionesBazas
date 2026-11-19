@@ -22,6 +22,14 @@ namespace Gameplay
         [EnumMember] NormalOneDidNotWinTrick = 13,
         [EnumMember] SpecialCardLostTrick = 14,
         [EnumMember] SpecialCardsDidNotWinAllRequiredTricks = 15,
-        [EnumMember] NormalNineWonTrick = 16
+        [EnumMember] NormalNineWonTrick = 16,
+        [EnumMember] InsufficientNormalOneWinningTricks = 17,
+        [EnumMember] WonTrickDifferenceExceeded = 18,
+        [EnumMember] SingleTrickWinnerUnassigned = 19,
+        [EnumMember] SelectedParticipantWonWithSpecialCard = 20,
+        [EnumMember] SelectedParticipantWonMultipleTricks = 21,
+        [EnumMember] SelectedParticipantDidNotWinExactlyOneTrick = 22,
+        [EnumMember] CaptainDidNotWinFirstTrick = 23,
+        [EnumMember] CaptainDidNotWinLastTrick = 24
     }
 }

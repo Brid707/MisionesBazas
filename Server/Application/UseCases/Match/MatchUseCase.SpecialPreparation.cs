@@ -156,8 +156,7 @@ namespace Application.UseCases
             {
                 rejection = MissionPreparationRejection.CaptainRequired;
             }
-            else if (context.Definition.SpecialRule ==
-                SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer &&
+            else if (MissionSetupRules.IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule) &&
                 !MissionSetupRules.AreAllBlindResponsesRecorded(matchState.BlindResponsesBySeat,
                     matchState.ParticipantUserIds.Length, (byte)matchState.MissionCaptainSeat))
             {
@@ -193,8 +192,8 @@ namespace Application.UseCases
         {
             byte seat = (byte)Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
             MissionPreparationRejection rejection = MissionPreparationRejection.InvalidSubmission;
-            bool isBlindMission = MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber).SpecialRule ==
-                SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer;
+            bool isBlindMission = MissionSetupRules.IsBlindObjectiveAssignmentRule(
+                MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber).SpecialRule);
             if (isBlindMission && seat != matchState.MissionCaptainSeat)
             {
                 rejection = matchState.BlindResponsesBySeat.ContainsKey(seat)

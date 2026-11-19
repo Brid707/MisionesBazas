@@ -5,7 +5,7 @@ namespace Application.UseCases
 {
     internal static class MissionImplementationPolicy
     {
-        private const int MaximumImplementedMissionNumber = 20;
+        private const int MaximumImplementedMissionNumber = 35;
 
         internal static bool CanPrepare(int missionNumber)
         {

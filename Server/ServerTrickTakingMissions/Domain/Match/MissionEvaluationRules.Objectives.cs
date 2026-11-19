@@ -19,7 +19,7 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(context));
             }
-            ValidateZeroTrickMissionCounts(context);
+            ValidateRequiredWonTrickCounts(context);
             bool isTrickNumberValid = context.CurrentTrickNumber >= 1 &&
                 context.CurrentTrickNumber <= context.TotalTricksInMission;
             bool isWinningPlayIncluded = context.CompletedTrickPlays.Contains(context.WinningPlay);
@@ -29,9 +29,9 @@ namespace Domain
             }
         }
 
-        private static void ValidateZeroTrickMissionCounts(MissionEvaluationContext context)
+        private static void ValidateRequiredWonTrickCounts(MissionEvaluationContext context)
         {
-            if (context.Definition.SpecialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks)
+            if (IsWonTrickCountValidationRequired(context.Definition.SpecialRule))
             {
                 if (!MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) ||
                     context.TotalTricksWonBySeat == null ||
@@ -41,6 +41,14 @@ namespace Domain
                 }
                 ValidateCompletedTrickCounts(context);
             }
+        }
+
+        private static bool IsWonTrickCountValidationRequired(SpecialMissionRuleType specialRule)
+        {
+            return specialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks ||
+                specialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo ||
+                specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard ||
+                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo;
         }
 
         private static void ValidateCompletedTrickCounts(MissionEvaluationContext context)

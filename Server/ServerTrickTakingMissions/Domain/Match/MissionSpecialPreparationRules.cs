@@ -9,12 +9,9 @@ namespace Domain
     {
         public static MissionAttemptPhase GetInitialPhase(MissionDefinition definition)
         {
-            bool isRoleAssignmentRequired = definition.SpecialRule ==
-                SpecialMissionRuleType.M11_CaptainSilencesOnePlayer ||
-                definition.SpecialRule == SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer;
             MissionAttemptPhase phase = definition.ObjectiveCardCount == 0
                 ? MissionAttemptPhase.PlayingTricks : MissionAttemptPhase.ObjectiveDrafting;
-            if (isRoleAssignmentRequired)
+            if (IsRoleSelectionRequired(definition.SpecialRule))
             {
                 phase = MissionAttemptPhase.RoleAndPreparation;
             }
@@ -24,8 +21,7 @@ namespace Domain
         public static bool CanAssignRole(MissionRoleAssignmentContext context)
         {
             bool isAllowed = IsRoleContextValid(context);
-            if (isAllowed && context.Definition.SpecialRule ==
-                SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer)
+            if (isAllowed && MissionSetupRules.IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule))
             {
                 isAllowed = context.SelectedParticipantSeat != context.Attempt.CaptainSeat &&
                     MissionSetupRules.AreAllBlindResponsesRecorded(context.ResponsesBySeat,
@@ -37,9 +33,7 @@ namespace Domain
         private static bool IsRoleContextValid(MissionRoleAssignmentContext context)
         {
             return context?.Attempt != null && context.Definition != null &&
-                (context.Definition.SpecialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer ||
-                    context.Definition.SpecialRule ==
-                        SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer) &&
+                IsRoleSelectionRequired(context.Definition.SpecialRule) &&
                 context.Attempt.Phase == MissionAttemptPhase.RoleAndPreparation &&
                 context.ActingParticipantSeat == context.Attempt.CaptainSeat &&
                 context.SelectedParticipantSeat >= 0 && context.SelectedParticipantSeat < context.Attempt.PlayerCount;
@@ -51,18 +45,40 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(context));
             }
-            byte targetSeat = (byte)context.SelectedParticipantSeat;
-            bool isBlindAssignment = context.Definition.SpecialRule ==
-                SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer;
-            MissionRoleConfiguration roles = context.Attempt.RoleConfig ?? MissionRoleConfiguration.Default;
+            bool isBlindAssignment = MissionSetupRules.IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule);
             return context.Attempt with
             {
-                RoleConfig = isBlindAssignment ? roles with { SoleObjectiveAssigneeSeat = targetSeat } :
-                    roles with { SilencedPlayerSeat = targetSeat },
+                RoleConfig = CreateAssignedRoles(context),
                 Objectives = isBlindAssignment ? MissionSetupRules.AutoAssignAllObjectives(context.Attempt.Objectives,
-                    targetSeat) : context.Attempt.Objectives,
-                Phase = isBlindAssignment ? MissionAttemptPhase.PlayingTricks : MissionAttemptPhase.ObjectiveDrafting
+                    (byte)context.SelectedParticipantSeat) : context.Attempt.Objectives,
+                Phase = context.Definition.SpecialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer
+                    ? MissionAttemptPhase.ObjectiveDrafting : MissionAttemptPhase.PlayingTricks
             };
+        }
+        private static bool IsRoleSelectionRequired(SpecialMissionRuleType specialRule)
+        {
+            return MissionSetupRules.IsBlindObjectiveAssignmentRule(specialRule) ||
+                specialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer ||
+                specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard;
+        }
+
+        private static MissionRoleConfiguration CreateAssignedRoles(MissionRoleAssignmentContext context)
+        {
+            byte selectedParticipantSeat = (byte)context.SelectedParticipantSeat;
+            MissionRoleConfiguration roles = context.Attempt.RoleConfig ?? MissionRoleConfiguration.Default;
+            if (MissionSetupRules.IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule))
+            {
+                roles = roles with { SoleObjectiveAssigneeSeat = selectedParticipantSeat };
+            }
+            else if (context.Definition.SpecialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer)
+            {
+                roles = roles with { SilencedPlayerSeat = selectedParticipantSeat };
+            }
+            else
+            {
+                roles = roles with { SingleTrickWinnerSeat = selectedParticipantSeat };
+            }
+            return roles;
         }
     }
 }

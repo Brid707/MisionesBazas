@@ -39,5 +39,7 @@ namespace Gameplay
         public int? SilencedParticipantUserId { get; set; }
         [DataMember(Order = 13)]
         public int? SoleObjectiveAssigneeUserId { get; set; }
+        [DataMember(Order = 14)]
+        public int? SingleTrickWinnerParticipantUserId { get; set; }
     }
 }

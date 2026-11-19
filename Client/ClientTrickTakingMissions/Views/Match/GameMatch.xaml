@@ -48,6 +48,8 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <DataTemplate x:Key="PlayerIdentityTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <ScrollViewer MaxWidth="184" MaxHeight="124" HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled">
                     <ItemsControl ItemsSource="{Binding MissionObjectives}"
                                   VerticalAlignment="Center" Margin="0,0,8,0">
                         <ItemsControl.ItemsPanel>
@@ -62,6 +64,7 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+                    </ScrollViewer>
                 <StackPanel HorizontalAlignment="Center">
                 <Grid Width="48" Height="48" HorizontalAlignment="Center">
                     <ContentControl Content="{Binding ProfileImage}"
@@ -428,6 +431,15 @@
                                 </StackPanel>
                             </Border>
                         </Popup>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                            Visibility="{Binding HasSingleTrickWinner,
+                                Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Foreground="{StaticResource BrushTextLight}" Margin="0,0,6,0"
+                                Text="{Binding Source=MissionPreparation_Label_SingleTrickWinner,
+                                    Converter={StaticResource MatchTextConverter}}" />
+                            <TextBlock Foreground="{StaticResource BrushTextLight}"
+                                Text="{Binding SingleTrickWinnerParticipantName}" />
+                        </StackPanel>
                         <TextBlock Text="{Binding MissionInstructionResourceKey,
                                        Converter={StaticResource MatchTextConverter}}"
                                    Foreground="{StaticResource BrushTextLight}"

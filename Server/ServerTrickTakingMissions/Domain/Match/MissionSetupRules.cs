@@ -38,7 +38,7 @@ namespace Domain
         private static bool CanAssignDraftObjective(MissionDraftContext context)
         {
             bool canAssign = !context.CurrentObjectives[context.ObjectiveIndex].AssignedSeat.HasValue;
-            if (IsSoleAssigneeRule(context.Definition.SpecialRule))
+            if (IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule))
             {
                 canAssign = canAssign && context.RoleConfig != null &&
                     context.RoleConfig.SoleObjectiveAssigneeSeat == context.AttemptingSeat;
@@ -183,7 +183,7 @@ namespace Domain
         {
             return context != null && context.Definition != null && context.CurrentObjectives != null &&
                 MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) &&
-                !IsSoleAssigneeRule(context.Definition.SpecialRule) &&
+                !IsBlindObjectiveAssignmentRule(context.Definition.SpecialRule) &&
                 context.AttemptingSeat == context.CurrentObjectiveDraftSeat &&
                 context.AttemptingSeat < context.PlayerCount &&
                 context.CurrentObjectives.Any(objective => !objective.AssignedSeat.HasValue);
@@ -210,7 +210,7 @@ namespace Domain
             };
         }
 
-        private static bool IsSoleAssigneeRule(SpecialMissionRuleType specialRule)
+        public static bool IsBlindObjectiveAssignmentRule(SpecialMissionRuleType specialRule)
         {
             return specialRule == SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer ||
                    specialRule == SpecialMissionRuleType.M27_CaptainAssignsAllObjectivesToOnePlayer;

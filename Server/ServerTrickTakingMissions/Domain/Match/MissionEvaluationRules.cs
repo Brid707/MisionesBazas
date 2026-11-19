@@ -69,26 +69,30 @@ namespace Domain
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
+            MissionEvaluationResult result = null;
             if (context.Definition.SpecialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks)
             {
-                bool everyPlayerWonAtLeastOne = Enumerable.Range(0, context.PlayerCount)
+                bool hasEveryParticipantWon = Enumerable.Range(0, context.PlayerCount)
                     .All(seat => GetTricksWon(context.TotalTricksWonBySeat, seat) > 0);
-
-                if (everyPlayerWonAtLeastOne)
+                if (hasEveryParticipantWon)
                 {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission05AllPlayersWonTrick);
+                    result = MissionEvaluationResult.Fail(updatedObjectives,
+                        MissionFailureReasons.Mission05AllPlayersWonTrick);
                 }
             }
-            else if (context.Definition.SpecialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo)
+            else if (context.Definition.SpecialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo ||
+                context.Definition.SpecialRule ==
+                    SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo)
             {
-                int trickSpread = CalculateTrickDifferenceSpread(context.TotalTricksWonBySeat, context.PlayerCount);
-                if (trickSpread > MissionFailureReasons.MaxTrickDifferenceThreshold)
+                int wonTrickDifference = CalculateTrickDifferenceSpread(
+                    context.TotalTricksWonBySeat, context.PlayerCount);
+                if (wonTrickDifference > MissionFailureReasons.MaxTrickDifferenceThreshold)
                 {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission29TrickDifferenceExceeded);
+                    result = MissionEvaluationResult.Fail(updatedObjectives,
+                        MissionFailureReasons.Mission29TrickDifferenceExceeded);
                 }
             }
-
-            return null;
+            return result;
         }
 
         private static MissionEvaluationResult EvaluateCardNumberConstraints(
@@ -111,16 +115,29 @@ namespace Domain
                     }
                     break;
                 case SpecialMissionRuleType.M26_TwoTricksWonWithNumberOne:
-                    int missingOnes = MissionFailureReasons.Mission26RequiredOnesCount -
-                        context.TricksWonWithNormalOneCount;
-                    if (missingOnes > context.TotalTricksInMission - context.CurrentTrickNumber)
-                    {
-                        result = MissionEvaluationResult.Fail(updatedObjectives,
-                            MissionFailureReasons.Mission26LessTwoTricksWonWithOne);
-                    }
+                    result = EvaluateTwoWinningNormalOnes(context, updatedObjectives);
                     break;
                 default:
                     break;
+            }
+            return result;
+        }
+
+        private static MissionEvaluationResult EvaluateTwoWinningNormalOnes(MissionEvaluationContext context,
+            List<MissionObjective> updatedObjectives)
+        {
+            int missingWinningNormalOnes = MissionFailureReasons.Mission26RequiredOnesCount -
+                context.TricksWonWithNormalOneCount;
+            MissionEvaluationResult result = null;
+            if (missingWinningNormalOnes <= 0)
+            {
+                result = MissionEvaluationResult.Success(updatedObjectives,
+                    MissionFailureReasons.MissionSuccessMessage);
+            }
+            else if (missingWinningNormalOnes > context.TotalTricksInMission - context.CurrentTrickNumber)
+            {
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission26LessTwoTricksWonWithOne);
             }
             return result;
         }
@@ -223,55 +240,59 @@ namespace Domain
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
-            if (!context.RoleConfig.SingleTrickWinnerSeat.HasValue)
+            MissionEvaluationResult result = MissionEvaluationResult.Fail(updatedObjectives,
+                MissionFailureReasons.Mission33RoleUnassigned);
+            byte? selectedParticipantSeat = context.RoleConfig?.SingleTrickWinnerSeat;
+            if (selectedParticipantSeat.HasValue && selectedParticipantSeat.Value < context.PlayerCount)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission33RoleUnassigned);
+                result = EvaluateSingleTrickWinner(context, updatedObjectives);
             }
+            return result;
+        }
 
-            byte targetSeat = context.RoleConfig.SingleTrickWinnerSeat.Value;
-            if (context.WinningPlay.Seat == targetSeat)
+        private static MissionEvaluationResult EvaluateSingleTrickWinner(MissionEvaluationContext context,
+            List<MissionObjective> updatedObjectives)
+        {
+            byte selectedParticipantSeat = context.RoleConfig.SingleTrickWinnerSeat.Value;
+            int selectedParticipantWonTrickCount = GetTricksWon(context.TotalTricksWonBySeat, selectedParticipantSeat);
+            MissionEvaluationResult result = null;
+            if (context.WinningPlay.Seat == selectedParticipantSeat &&
+                context.WinningPlay.Card.Suit == CardSuit.Special)
             {
-                if (context.WinningPlay.Card.Suit == CardSuit.Special)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission33WonWithSpecialCard);
-                }
-
-                if (GetTricksWon(context.TotalTricksWonBySeat, targetSeat) > 1)
-                {
-                    return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission33WonMultipleTricks);
-                }
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission33WonWithSpecialCard);
             }
-
-            bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
-            if (isLastTrick && GetTricksWon(context.TotalTricksWonBySeat, targetSeat) != 1)
+            else if (selectedParticipantWonTrickCount > 1)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission33DidNotWinExactlyOneTrick);
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission33WonMultipleTricks);
             }
-
-            return null;
+            else if (context.CurrentTrickNumber == context.TotalTricksInMission &&
+                selectedParticipantWonTrickCount != 1)
+            {
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission33DidNotWinExactlyOneTrick);
+            }
+            return result;
         }
 
         private static MissionEvaluationResult EvaluateMission34(
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
+            MissionEvaluationResult result = null;
             if (context.CurrentTrickNumber == 1 && context.WinningPlay.Seat != context.CaptainSeat)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission34CaptainDidNotWinFirstTrick);
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission34CaptainDidNotWinFirstTrick);
             }
-
-            if (context.CurrentTrickNumber == context.TotalTricksInMission && context.WinningPlay.Seat != context.CaptainSeat)
+            else if (context.CurrentTrickNumber == context.TotalTricksInMission &&
+                context.WinningPlay.Seat != context.CaptainSeat)
             {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission34CaptainDidNotWinLastTrick);
+                result = MissionEvaluationResult.Fail(updatedObjectives,
+                    MissionFailureReasons.Mission34CaptainDidNotWinLastTrick);
             }
-
-            int spread = CalculateTrickDifferenceSpread(context.TotalTricksWonBySeat, context.PlayerCount);
-            if (spread > MissionFailureReasons.MaxTrickDifferenceThreshold)
-            {
-                return MissionEvaluationResult.Fail(updatedObjectives, MissionFailureReasons.Mission29TrickDifferenceExceeded);
-            }
-
-            return null;
+            return result;
         }
 
         private static MissionEvaluationResult EvaluateMission41(
@@ -456,17 +477,15 @@ namespace Domain
 
         private static int CalculateTrickDifferenceSpread(IReadOnlyDictionary<int, int> tricksBySeat, int playerCount)
         {
-            int maxWins = 0;
-            int minWins = int.MaxValue;
-
-            for (int seat = 0; seat < playerCount; seat++)
+            int maximumWonTrickCount = 0;
+            int minimumWonTrickCount = int.MaxValue;
+            for (int participantSeat = 0; participantSeat < playerCount; participantSeat++)
             {
-                int wins = GetTricksWon(tricksBySeat, seat);
-                if (wins > maxWins) maxWins = wins;
-                if (wins < minWins) minWins = wins;
+                int wonTrickCount = GetTricksWon(tricksBySeat, participantSeat);
+                maximumWonTrickCount = Math.Max(maximumWonTrickCount, wonTrickCount);
+                minimumWonTrickCount = Math.Min(minimumWonTrickCount, wonTrickCount);
             }
-
-            return maxWins - minWins;
+            return maximumWonTrickCount - minimumWonTrickCount;
         }
 
         private static int CountSpecialCardsWon(MissionEvaluationContext context)

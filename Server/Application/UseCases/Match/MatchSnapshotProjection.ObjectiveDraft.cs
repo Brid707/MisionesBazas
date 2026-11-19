@@ -53,6 +53,8 @@ namespace Application.UseCases
                     ? (int?)matchState.ParticipantUserIds[attempt.RoleConfig.SilencedPlayerSeat.Value] : null,
                 SoleObjectiveAssigneeUserId = attempt.RoleConfig?.SoleObjectiveAssigneeSeat.HasValue == true
                     ? (int?)matchState.ParticipantUserIds[attempt.RoleConfig.SoleObjectiveAssigneeSeat.Value] : null,
+                SingleTrickWinnerParticipantUserId = attempt.RoleConfig?.SingleTrickWinnerSeat.HasValue == true
+                    ? (int?)matchState.ParticipantUserIds[attempt.RoleConfig.SingleTrickWinnerSeat.Value] : null,
                 IsPreparationComplete = attempt.Phase == MissionAttemptPhase.PlayingTricks ||
                     attempt.Phase == MissionAttemptPhase.Finished,
                 CurrentObjectiveDraftPlayerUserId = matchState.ParticipantUserIds[attempt.CurrentObjectiveDraftSeat],

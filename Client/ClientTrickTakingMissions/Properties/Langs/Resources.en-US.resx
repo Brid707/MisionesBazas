@@ -716,8 +716,8 @@
   <data name="MissionInstruction_MissionNineteen_Description" xml:space="preserve"><value>Complete five objectives, with token 1 first. Radio opens from trick three.</value></data>
   <data name="MissionInstruction_MissionTwenty_Description" xml:space="preserve"><value>Answer yes or no without seeing the objectives. The captain assigns both to another player, then reveals them.</value></data>
   <data name="MissionPreparation_Stage_RoleSelection" xml:space="preserve"><value>The captain must choose the participant who cannot use radio.</value></data>
-  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>Can you win both objectives without seeing them? Each participant except the captain must answer.</value></data>
-  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>The captain must choose another participant to receive both objectives. Responses are advisory.</value></data>
+  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>Can you win all objectives without seeing them? Each participant except the captain must answer.</value></data>
+  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>The captain must choose another participant to receive all objectives. Responses are advisory.</value></data>
   <data name="MissionPreparation_Label_Assign" xml:space="preserve"><value>Confirm participant</value></data>
   <data name="MissionPreparation_Response_Yes" xml:space="preserve"><value>Yes</value></data>
   <data name="MissionPreparation_Response_No" xml:space="preserve"><value>No</value></data>
@@ -740,4 +740,29 @@
   <data name="MissionEvaluation_Error_SpecialCardLostTrick" xml:space="preserve"><value>A K lost its trick.</value></data>
   <data name="MissionEvaluation_Error_SpecialCardsDidNotWinAllRequiredTricks" xml:space="preserve"><value>Not every K won its own trick.</value></data>
   <data name="MissionEvaluation_Error_NormalNineWonTrick" xml:space="preserve"><value>A normal 9 won a trick.</value></data>
+  <data name="MissionInstruction_MissionTwentyOne_Description" xml:space="preserve"><value>Complete five objectives: tokens 1 and 2 first and second, then the others.</value></data>
+  <data name="MissionInstruction_MissionTwentyTwo_Description" xml:space="preserve"><value>Complete five objectives in &gt;, &gt;&gt;, &gt;&gt;&gt; and &gt;&gt;&gt;&gt; order. The unmarked objective has no fixed position.</value></data>
+  <data name="MissionInstruction_MissionTwentyThree_Description" xml:space="preserve"><value>Complete all five objectives in order 1, 2, 3, 4 and 5, in separate tricks.</value></data>
+  <data name="MissionInstruction_MissionTwentyFour_Description" xml:space="preserve"><value>Complete all six assigned objectives.</value></data>
+  <data name="MissionInstruction_MissionTwentyFive_Description" xml:space="preserve"><value>Complete six objectives, with &gt; before &gt;&gt;. Radio token positions remain hidden.</value></data>
+  <data name="MissionInstruction_MissionTwentySix_Description" xml:space="preserve"><value>Win two tricks with two normal 1 cards. Capturing a losing 1 does not count.</value></data>
+  <data name="MissionInstruction_MissionTwentySeven_Description" xml:space="preserve"><value>Answer yes or no without seeing the three objectives. The captain assigns all to another player, then reveals them.</value></data>
+  <data name="MissionInstruction_MissionTwentyEight_Description" xml:space="preserve"><value>Complete six objectives: token 1 first and Omega last. Radio opens from trick three.</value></data>
+  <data name="MissionInstruction_MissionTwentyNine_Description" xml:space="preserve"><value>Finish the deal without a difference greater than two tricks between any players. Radio has interference.</value></data>
+  <data name="MissionInstruction_MissionThirty_Description" xml:space="preserve"><value>Complete six objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order; the others have no fixed position.</value></data>
+  <data name="MissionInstruction_MissionThirtyOne_Description" xml:space="preserve"><value>Complete six objectives: tokens 1, 2 and 3 first, second and third, then the others.</value></data>
+  <data name="MissionInstruction_MissionThirtyTwo_Description" xml:space="preserve"><value>Complete all seven assigned objectives.</value></data>
+  <data name="MissionInstruction_MissionThirtyThree_Description" xml:space="preserve"><value>The selected player must win exactly one trick with a normal card. The mission ends after the full deal.</value></data>
+  <data name="MissionInstruction_MissionThirtyFour_Description" xml:space="preserve"><value>The captain must win the first and last trick. Never exceed a difference of two tricks between players.</value></data>
+  <data name="MissionInstruction_MissionThirtyFive_Description" xml:space="preserve"><value>Complete seven objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order; the others have no fixed position.</value></data>
+  <data name="MissionPreparation_Label_SelectSingleTrickWinner" xml:space="preserve"><value>The captain selects who must win exactly one trick with a normal card. The captain may select themselves.</value></data>
+  <data name="MissionPreparation_Label_SingleTrickWinner" xml:space="preserve"><value>Must win exactly one trick:</value></data>
+  <data name="MissionEvaluation_Error_InsufficientNormalOneWinningTricks" xml:space="preserve"><value>Two tricks were not won with normal 1 cards.</value></data>
+  <data name="MissionEvaluation_Error_WonTrickDifferenceExceeded" xml:space="preserve"><value>The difference between players exceeded two tricks.</value></data>
+  <data name="MissionEvaluation_Error_SingleTrickWinnerUnassigned" xml:space="preserve"><value>The participant required to win one trick has not been assigned.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonWithSpecialCard" xml:space="preserve"><value>The selected participant won with a K.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantWonMultipleTricks" xml:space="preserve"><value>The selected participant won more than one trick.</value></data>
+  <data name="MissionEvaluation_Error_SelectedParticipantDidNotWinExactlyOneTrick" xml:space="preserve"><value>The selected participant did not finish with exactly one trick won.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinFirstTrick" xml:space="preserve"><value>The captain did not win the first trick.</value></data>
+  <data name="MissionEvaluation_Error_CaptainDidNotWinLastTrick" xml:space="preserve"><value>The captain did not win the last trick.</value></data>
 </root>

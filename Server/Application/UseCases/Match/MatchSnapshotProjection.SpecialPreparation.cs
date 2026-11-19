@@ -35,8 +35,8 @@ namespace Application.UseCases
 
         private static MissionPreparationStage GetSpecialPreparationStage(MatchState state)
         {
-            bool isBlind = MissionCatalog.GetMission(state.MissionAttempt.MissionNumber).SpecialRule ==
-                SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer;
+            bool isBlind = MissionSetupRules.IsBlindObjectiveAssignmentRule(
+                MissionCatalog.GetMission(state.MissionAttempt.MissionNumber).SpecialRule);
             MissionPreparationStage stage = MissionPreparationStage.RoleSelection;
             if (isBlind)
             {

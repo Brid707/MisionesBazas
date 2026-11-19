@@ -19,6 +19,14 @@ namespace Domain
         NormalOneDidNotWinTrick = 13,
         SpecialCardLostTrick = 14,
         SpecialCardsDidNotWinAllRequiredTricks = 15,
-        NormalNineWonTrick = 16
+        NormalNineWonTrick = 16,
+        InsufficientNormalOneWinningTricks = 17,
+        WonTrickDifferenceExceeded = 18,
+        SingleTrickWinnerUnassigned = 19,
+        SelectedParticipantWonWithSpecialCard = 20,
+        SelectedParticipantWonMultipleTricks = 21,
+        SelectedParticipantDidNotWinExactlyOneTrick = 22,
+        CaptainDidNotWinFirstTrick = 23,
+        CaptainDidNotWinLastTrick = 24
     }
 }
