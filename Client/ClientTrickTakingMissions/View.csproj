@@ -69,6 +69,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\ChatModerationPresenter.cs" />
+    <Compile Include="Controls\OverlappingCardHandPanel.cs" />
     <Compile Include="Services\ChatModerationTextFormatter.cs" />
     <Compile Include="Views\Authentication\ChangePassword.xaml.cs">
       <DependentUpon>ChangePassword.xaml</DependentUpon>
