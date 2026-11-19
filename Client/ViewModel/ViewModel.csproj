@@ -117,42 +117,42 @@
     <Compile Include="Models\ProfileImageSelection.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionEvaluation.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.MissionEvaluation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionTransition.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.MissionTransition.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="ViewModels\Match\HandCardViewModel.cs" />
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.cs" />
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.CommunicationAndDistress.cs" />
+    <Compile Include="ViewModels\Match\Cards\HandCardViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.CommunicationAndDistress.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\PlayedCardViewModel.cs" />
+    <Compile Include="ViewModels\Match\Cards\PlayedCardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\MatchTablePosition.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MissionObjectiveViewModel.cs" />
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.ObjectiveDraft.cs" />
+    <Compile Include="ViewModels\Match\Objectives\MissionObjectiveViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.ObjectiveDraft.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.MissionInstructions.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.MissionInstructions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.RadioCommunication.cs" />
-    <Compile Include="ViewModels\Match\RadioMarkerOptionViewModel.cs" />
-    <Compile Include="ViewModels\Match\PlayerRadioCommunicationViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.RadioCommunication.cs" />
+    <Compile Include="ViewModels\Match\Radio\RadioMarkerOptionViewModel.cs" />
+    <Compile Include="ViewModels\Match\Radio\PlayerRadioCommunicationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.SpecialPreparation.cs" />
-    <Compile Include="ViewModels\Match\BlindObjectiveResponseViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.SpecialPreparation.cs" />
+    <Compile Include="ViewModels\Match\Objectives\BlindObjectiveResponseViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModels\Match\PublicMissionRoleViewModel.cs" />
-    <Compile Include="ViewModels\Match\MatchBoardViewModel.FinalPreparation.cs" />
+    <Compile Include="ViewModels\Match\Objectives\PublicMissionRoleViewModel.cs" />
+    <Compile Include="ViewModels\Match\Board\MatchBoardViewModel.FinalPreparation.cs" />
   </ItemGroup>
 </Project>

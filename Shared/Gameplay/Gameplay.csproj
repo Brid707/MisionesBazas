@@ -44,26 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardPlayDecision.cs" />
-    <Compile Include="CardPlaySubmission.cs" />
-    <Compile Include="DistressSignalActionType.cs" />
-    <Compile Include="DistressSignalSnapshot.cs" />
-    <Compile Include="DistressSignalSubmission.cs" />
     <Compile Include="Distress\DistressPassDirection.cs" />
+    <Compile Include="Distress\DistressSignalActionType.cs" />
     <Compile Include="Distress\DistressSignalConfirmation.cs" />
     <Compile Include="Distress\DistressSignalFailureReason.cs" />
     <Compile Include="Distress\DistressSignalFault.cs" />
     <Compile Include="Distress\DistressSignalPhase.cs" />
+    <Compile Include="Distress\DistressSignalSnapshot.cs" />
+    <Compile Include="Distress\DistressSignalSubmission.cs" />
     <Compile Include="Evaluation\MissionAttemptEvaluationStatus.cs" />
     <Compile Include="Evaluation\MissionEvaluationFailureReason.cs" />
     <Compile Include="Evaluation\MissionEvaluationSnapshot.cs" />
     <Compile Include="Evaluation\MissionObjectiveStatus.cs" />
     <Compile Include="IMatchService.cs" />
     <Compile Include="MatchAccessFault.cs" />
-    <Compile Include="MatchCardPlay.cs" />
-    <Compile Include="MatchRejectionReason.cs" />
     <Compile Include="PlayerCapturedCardsSnapshot.cs" />
-    <Compile Include="PlayerMatchSnapshot.cs" />
     <Compile Include="Preparation\MissionObjectiveDraftAction.cs" />
     <Compile Include="Preparation\MissionObjectiveDraftDecision.cs" />
     <Compile Include="Preparation\MissionObjectiveDraftRejectionReason.cs" />
@@ -99,6 +94,11 @@
     <Compile Include="SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
     <Compile Include="SpecialPreparation\MissionTrickDistributionSubmission.cs" />
     <Compile Include="SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+    <Compile Include="Tricks\CardPlayDecision.cs" />
+    <Compile Include="Tricks\CardPlaySubmission.cs" />
+    <Compile Include="Tricks\MatchCardPlay.cs" />
+    <Compile Include="Tricks\MatchRejectionReason.cs" />
+    <Compile Include="Tricks\PlayerMatchSnapshot.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

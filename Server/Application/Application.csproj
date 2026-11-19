@@ -142,70 +142,70 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MatchState.cs" />
-    <Compile Include="Models\Match\ProcessedCardPlay.cs" />
+    <Compile Include="Models\Match\State\MatchState.cs" />
+    <Compile Include="Models\Match\Tricks\ProcessedCardPlay.cs" />
     <Compile Include="Ports\Match\IMatchStateStore.cs" />
     <Compile Include="Ports\Match\IMissionDeckDealer.cs" />
     <Compile Include="Ports\Match\IMatchUseCase.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.cs" />
-    <Compile Include="UseCases\Match\MatchPlayValidation.cs" />
+    <Compile Include="UseCases\Match\Core\MatchUseCase.cs" />
+    <Compile Include="UseCases\Match\Core\MatchSnapshotProjection.cs" />
+    <Compile Include="UseCases\Match\Core\MatchPlayValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\Distress\DistressSignalRejection.cs" />
     <Compile Include="Models\Match\Distress\DistressSignalRequest.cs" />
     <Compile Include="Models\Match\Distress\DistressSignalCommit.cs" />
     <Compile Include="Models\Match\Distress\DistressParticipantAction.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.DistressSignal.cs" />
+    <Compile Include="UseCases\Match\Distress\MatchUseCase.DistressSignal.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\CompletedTrickResolution.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionEvaluation.cs" />
-    <Compile Include="UseCases\Match\MissionEvaluationMapper.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionEvaluation.cs" />
+    <Compile Include="Models\Match\Tricks\CompletedTrickResolution.cs" />
+    <Compile Include="UseCases\Match\Evaluation\MatchUseCase.MissionEvaluation.cs" />
+    <Compile Include="UseCases\Match\Evaluation\MissionEvaluationMapper.cs" />
+    <Compile Include="UseCases\Match\Evaluation\MatchSnapshotProjection.MissionEvaluation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MissionAttemptPreparationContext.cs" />
-    <Compile Include="Models\Match\PreparedMissionAttempt.cs" />
-    <Compile Include="Models\Match\MatchState.MissionTransition.cs" />
-    <Compile Include="Models\Match\MissionRetryRequest.cs" />
-    <Compile Include="Models\Match\MissionRetryConfirmation.cs" />
-    <Compile Include="Models\Match\MissionRetryRejectionReason.cs" />
-    <Compile Include="Models\Match\ProcessedMissionRetry.cs" />
-    <Compile Include="UseCases\Match\MissionAttemptPreparation.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionRetry.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionRetry.cs" />
+    <Compile Include="Models\Match\State\MissionAttemptPreparationContext.cs" />
+    <Compile Include="Models\Match\State\PreparedMissionAttempt.cs" />
+    <Compile Include="Models\Match\Transition\MatchState.MissionTransition.cs" />
+    <Compile Include="Models\Match\Retry\MissionRetryRequest.cs" />
+    <Compile Include="Models\Match\Retry\MissionRetryConfirmation.cs" />
+    <Compile Include="Models\Match\Retry\MissionRetryRejectionReason.cs" />
+    <Compile Include="Models\Match\Retry\ProcessedMissionRetry.cs" />
+    <Compile Include="UseCases\Match\Preparation\MissionAttemptPreparation.cs" />
+    <Compile Include="UseCases\Match\Retry\MatchUseCase.MissionRetry.cs" />
+    <Compile Include="UseCases\Match\Retry\MatchSnapshotProjection.MissionRetry.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MissionTransitionPolicy.cs" />
-    <Compile Include="Models\Match\MissionTransitionScheduleStatus.cs" />
+    <Compile Include="Models\Match\Transition\MissionTransitionPolicy.cs" />
+    <Compile Include="Models\Match\Transition\MissionTransitionScheduleStatus.cs" />
     <Compile Include="Ports\Match\IMatchClock.cs" />
     <Compile Include="Ports\Match\IMatchParticipantPresence.cs" />
     <Compile Include="Ports\Match\IMatchStateChangePublisher.cs" />
-    <Compile Include="Models\Match\MatchExecutionDependencies.cs" />
-    <Compile Include="Models\Match\MatchPresenceQuery.cs" />
-    <Compile Include="Models\Match\MatchParticipantPresence.cs" />
-    <Compile Include="Models\Match\MissionTransitionWork.cs" />
-    <Compile Include="Models\Match\MissionTransitionExecutionResult.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionScheduling.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionExecution.cs" />
+    <Compile Include="Models\Match\State\MatchExecutionDependencies.cs" />
+    <Compile Include="Models\Match\State\MatchPresenceQuery.cs" />
+    <Compile Include="Models\Match\State\MatchParticipantPresence.cs" />
+    <Compile Include="Models\Match\Transition\MissionTransitionWork.cs" />
+    <Compile Include="Models\Match\Transition\MissionTransitionExecutionResult.cs" />
+    <Compile Include="UseCases\Match\Transition\MatchUseCase.MissionTransitionScheduling.cs" />
+    <Compile Include="UseCases\Match\Transition\MatchUseCase.MissionTransitionExecution.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\ObjectiveDraftSubmission.cs" />
-    <Compile Include="Models\Match\ObjectiveDraftDecision.cs" />
-    <Compile Include="Models\Match\ProcessedObjectiveDraft.cs" />
-    <Compile Include="Models\Match\MatchActionRequestBudget.cs" />
-    <Compile Include="Models\Match\ObjectiveDraftAction.cs" />
-    <Compile Include="Models\Match\ObjectiveDraftRejectionReason.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.ObjectiveDraft.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.ObjectiveDraft.cs" />
-    <Compile Include="Models\Match\MatchActionRequestLimits.cs" />
+    <Compile Include="Models\Match\Draft\ObjectiveDraftSubmission.cs" />
+    <Compile Include="Models\Match\Draft\ObjectiveDraftDecision.cs" />
+    <Compile Include="Models\Match\Draft\ProcessedObjectiveDraft.cs" />
+    <Compile Include="Models\Match\State\MatchActionRequestBudget.cs" />
+    <Compile Include="Models\Match\Draft\ObjectiveDraftAction.cs" />
+    <Compile Include="Models\Match\Draft\ObjectiveDraftRejectionReason.cs" />
+    <Compile Include="UseCases\Match\ObjectiveDraft\MatchUseCase.ObjectiveDraft.cs" />
+    <Compile Include="UseCases\Match\ObjectiveDraft\MatchSnapshotProjection.ObjectiveDraft.cs" />
+    <Compile Include="Models\Match\State\MatchActionRequestLimits.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MatchStartContext.cs" />
-    <Compile Include="Models\Match\MissionTransitionAction.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.MissionTransitionDestination.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.MissionTransition.cs" />
+    <Compile Include="Models\Match\State\MatchStartContext.cs" />
+    <Compile Include="Models\Match\Transition\MissionTransitionAction.cs" />
+    <Compile Include="UseCases\Match\Transition\MatchUseCase.MissionTransitionDestination.cs" />
+    <Compile Include="UseCases\Match\Transition\MatchSnapshotProjection.MissionTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\Radio\CommittedRadioCommunication.cs" />
@@ -213,16 +213,16 @@
     <Compile Include="Models\Match\Radio\RadioCommunicationRejection.cs" />
     <Compile Include="Models\Match\Radio\RadioCommunicationRequest.cs" />
     <Compile Include="Models\Match\Radio\RadioPublicMarker.cs" />
-    <Compile Include="Models\Match\MatchState.RadioCommunication.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.RadioCommunication.cs" />
-    <Compile Include="UseCases\Match\RadioCommunicationRuleMapping.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.RadioCommunication.cs" />
+    <Compile Include="Models\Match\State\MatchState.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\Radio\MatchUseCase.RadioCommunication.cs" />
+    <Compile Include="UseCases\Match\Radio\RadioCommunicationRuleMapping.cs" />
+    <Compile Include="UseCases\Match\Radio\MatchSnapshotProjection.RadioCommunication.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Match\MissionTrickStatistics.cs" />
+    <Compile Include="Models\Match\Tricks\MissionTrickStatistics.cs" />
     <Compile Include="Models\Match\Preparation\MissionPreparationRejection.cs" />
     <Compile Include="Models\Match\Preparation\MissionPreparationAction.cs" />
-    <Compile Include="UseCases\Match\MissionImplementationPolicy.cs" />
+    <Compile Include="UseCases\Match\Core\MissionImplementationPolicy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Match\Preparation\MissionPreparationRequest.cs" />
@@ -230,11 +230,11 @@
     <Compile Include="Models\Match\Preparation\ProcessedMissionPreparation.cs" />
     <Compile Include="Models\Match\Preparation\SpecialPreparationChange.cs" />
     <Compile Include="Models\Match\Preparation\PreparedTrickEvaluation.cs" />
-    <Compile Include="Models\Match\MatchState.SpecialPreparation.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.SpecialPreparation.cs" />
-    <Compile Include="UseCases\Match\MatchSnapshotProjection.SpecialPreparation.cs" />
-    <Compile Include="UseCases\Match\RadioCommunicationContextFactory.cs" />
-    <Compile Include="UseCases\Match\MatchUseCase.FinalMissionPreparation.cs" />
+    <Compile Include="Models\Match\State\MatchState.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\Preparation\MatchUseCase.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\Preparation\MatchSnapshotProjection.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\Radio\RadioCommunicationContextFactory.cs" />
+    <Compile Include="UseCases\Match\Preparation\MatchUseCase.FinalMissionPreparation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

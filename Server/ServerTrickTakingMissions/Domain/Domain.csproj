@@ -46,36 +46,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChatModeration\ProhibitedChatExpression.cs" />
-    <Compile Include="ChatModeration\NormalizedChatMessageText.cs" />
-    <Compile Include="ChatModeration\ChatMessageTextNormalizer.cs" />
-    <Compile Include="ChatModeration\ChatMessageModerator.cs" />
-    <Compile Include="ChatModeration\ChatMessageModerationDecision.cs" />
-    <Compile Include="ChatModeration\ChatInfractionRules.cs" />
-    <Compile Include="ChatModeration\ChatInfractionCategory.cs" />
+    <Compile Include="Account\UserAccountRules.cs" />
     <Compile Include="ChatModeration\ChatAccountInfractionState.cs" />
+    <Compile Include="ChatModeration\ChatInfractionCategory.cs" />
+    <Compile Include="ChatModeration\ChatInfractionRules.cs" />
+    <Compile Include="ChatModeration\ChatMessageModerationDecision.cs" />
+    <Compile Include="ChatModeration\ChatMessageModerator.cs" />
+    <Compile Include="ChatModeration\ChatMessageTextNormalizer.cs" />
+    <Compile Include="ChatModeration\NormalizedChatMessageText.cs" />
+    <Compile Include="ChatModeration\ProhibitedChatExpression.cs" />
     <Compile Include="Compatibility\IsExternalInit.cs" />
     <Compile Include="Lobby\GuestIdentityRules.cs" />
     <Compile Include="Lobby\LobbyCodeRules.cs" />
     <Compile Include="Lobby\LobbyRoomRules.cs" />
-    <Compile Include="Match\DeckDealRules.cs" />
-    <Compile Include="Match\DisconnectionPolicyRules.cs" />
-    <Compile Include="Match\DistressSignalContext.cs" />
-    <Compile Include="Match\DistressSignalRules.cs" />
-    <Compile Include="Match\MatchPlayerCountRules.cs" />
-    <Compile Include="Match\MissionAttemptState.cs" />
-    <Compile Include="Match\MissionDeal.cs" />
-    <Compile Include="Match\MissionDraftContext.cs" />
-    <Compile Include="Match\MissionEvaluationContext.cs" />
-    <Compile Include="Match\MissionEvaluationResult.cs" />
-    <Compile Include="Match\MissionEvaluationRules.cs" />
-    <Compile Include="Match\MissionFailureReasons.cs" />
-    <Compile Include="Match\MissionObjectiveDealRules.cs" />
-    <Compile Include="Match\MissionProgressionRules.cs" />
-    <Compile Include="Match\MissionRoleConfiguration.cs" />
-    <Compile Include="Match\MissionSetupRules.cs" />
-    <Compile Include="Match\TrickTurnRules.cs" />
-    <Compile Include="Account\UserAccountRules.cs" />
+    <Compile Include="Match\Distress\DistressSignalContext.cs" />
+    <Compile Include="Match\Distress\DistressSignalRules.cs" />
+    <Compile Include="Match\Evaluation\MissionEvaluationContext.cs" />
+    <Compile Include="Match\Evaluation\MissionEvaluationFailureCode.cs" />
+    <Compile Include="Match\Evaluation\MissionEvaluationResult.cs" />
+    <Compile Include="Match\Evaluation\MissionEvaluationRules.cs" />
+    <Compile Include="Match\Evaluation\MissionEvaluationRules.Objectives.cs" />
+    <Compile Include="Match\Evaluation\MissionFailureReasons.cs" />
+    <Compile Include="Match\Lifecycle\DisconnectionPolicyRules.cs" />
+    <Compile Include="Match\Lifecycle\MissionAttemptState.cs" />
+    <Compile Include="Match\Lifecycle\MissionProgressionRules.cs" />
+    <Compile Include="Match\Setup\DeckDealRules.cs" />
+    <Compile Include="Match\Setup\MatchPlayerCountRules.cs" />
+    <Compile Include="Match\Setup\MissionDeal.cs" />
+    <Compile Include="Match\Setup\MissionDraftContext.cs" />
+    <Compile Include="Match\Setup\MissionObjectiveDealRules.cs" />
+    <Compile Include="Match\Setup\MissionRoleAssignmentContext.cs" />
+    <Compile Include="Match\Setup\MissionRoleConfiguration.cs" />
+    <Compile Include="Match\Setup\MissionSetupRules.cs" />
+    <Compile Include="Match\Setup\MissionTrickDistributionContext.cs" />
+    <Compile Include="Match\Setup\ParticipantSeatRules.cs" />
+    <Compile Include="Match\SpecialPreparation\MissionSpecialPreparationRules.cs" />
+    <Compile Include="Match\SpecialPreparation\MissionSpecialPreparationRules.FinalMissions.cs" />
+    <Compile Include="Match\Tricks\TrickTurnRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,22 +94,5 @@
       <Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Match\MissionEvaluationRules.Objectives.cs" />
-    <Compile Include="Match\MissionEvaluationFailureCode.cs" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="Match\ParticipantSeatRules.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Match\MissionRoleAssignmentContext.cs" />
-    <Compile Include="Match\MissionSpecialPreparationRules.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Match\MissionTrickDistributionContext.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Match\MissionSpecialPreparationRules.FinalMissions.cs" />
-  </ItemGroup>
 </Project>
