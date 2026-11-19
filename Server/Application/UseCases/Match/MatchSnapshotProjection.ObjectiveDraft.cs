@@ -38,6 +38,21 @@ namespace Application.UseCases
                     ? (Guid?)matchState.CurrentObjectiveDraftSubmissionId : null,
                 MissionAttemptId = attempt.MissionAttemptId,
                 MissionNumber = attempt.MissionNumber,
+                Stage = GetPreparationStage(matchState),
+                MissionPreparationStageId = matchState.MissionPreparationStageId,
+                EligibleRoleParticipantUserIds = GetEligibleRoleParticipants(matchState, participantSeat),
+                CanRespondToBlindObjectives = GetPreparationStage(matchState) ==
+                    MissionPreparationStage.BlindResponses &&
+                    participantSeat != matchState.MissionCaptainSeat &&
+                    !matchState.BlindResponsesBySeat.ContainsKey((byte)participantSeat),
+                BlindObjectiveResponses = matchState.BlindResponsesBySeat.Select(entry =>
+                    new BlindObjectiveParticipantSnapshot { ParticipantUserId =
+                        matchState.ParticipantUserIds[entry.Key],
+                        Response = MapBlindResponse(entry.Value) }).ToArray(),
+                SilencedParticipantUserId = attempt.RoleConfig?.SilencedPlayerSeat.HasValue == true
+                    ? (int?)matchState.ParticipantUserIds[attempt.RoleConfig.SilencedPlayerSeat.Value] : null,
+                SoleObjectiveAssigneeUserId = attempt.RoleConfig?.SoleObjectiveAssigneeSeat.HasValue == true
+                    ? (int?)matchState.ParticipantUserIds[attempt.RoleConfig.SoleObjectiveAssigneeSeat.Value] : null,
                 IsPreparationComplete = attempt.Phase == MissionAttemptPhase.PlayingTricks ||
                     attempt.Phase == MissionAttemptPhase.Finished,
                 CurrentObjectiveDraftPlayerUserId = matchState.ParticipantUserIds[attempt.CurrentObjectiveDraftSeat],

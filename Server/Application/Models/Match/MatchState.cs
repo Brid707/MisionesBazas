@@ -9,6 +9,8 @@ namespace Application.Models
         public Domain.MissionAttemptState MissionAttempt { get; private set; }
         public Domain.MissionEvaluationResult LastMissionEvaluation { get; private set; }
 
+        public MissionTrickStatistics TrickStatistics { get; private set; } = new MissionTrickStatistics();
+
         public int LastEvaluatedTrickNumber { get; private set; }
 
         public Guid CurrentObjectiveDraftSubmissionId { get; private set; }
@@ -48,6 +50,7 @@ namespace Application.Models
 
         internal void CommitCompletedTrick(CompletedTrickResolution completedTrick)
         {
+            TrickStatistics = completedTrick.TrickStatistics;
             CurrentTurnPlayerSeat = completedTrick.WinningParticipantSeat;
             LastTrickWinnerUserId = ParticipantUserIds[completedTrick.WinningParticipantSeat];
             WonTrickCountsBySeat[completedTrick.WinningParticipantSeat]++;

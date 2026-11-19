@@ -21,6 +21,22 @@ namespace Model.Services
         private Guid _observedMatchId;
         private int _observedMissionAttemptId;
 
+        public Task<MissionPreparationConfirmation> AssignMissionRoleAsync(MissionRoleAssignmentSubmission submission,
+            int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.AssignMissionRole(submission, participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> RespondToBlindObjectivesAsync(BlindObjectiveResponseSubmission
+            submission,
+            int participantUserId)
+        {
+            return ExecuteMatchOperationAsync(channel => channel.RespondToBlindObjectives(submission,
+                participantUserId),
+                submission.LobbyCode, participantUserId);
+        }
+
         public event Action<long> MatchStateChanged;
 
         public async Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId)

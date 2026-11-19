@@ -39,6 +39,9 @@ namespace Services.Mapping
             RadioCommunicationFailureReason> s_failures =
             new Dictionary<RadioCommunicationRejection, RadioCommunicationFailureReason>
             {
+                { RadioCommunicationRejection.DisruptedUntilTrick,
+                    RadioCommunicationFailureReason.DisruptedUntilTrick },
+                { RadioCommunicationRejection.SilencedByCaptain, RadioCommunicationFailureReason.SilencedByCaptain },
                 { RadioCommunicationRejection.None, RadioCommunicationFailureReason.None },
                 { RadioCommunicationRejection.InvalidSubmission, RadioCommunicationFailureReason.InvalidSubmission },
                 { RadioCommunicationRejection.MatchUnavailable, RadioCommunicationFailureReason.MatchUnavailable },

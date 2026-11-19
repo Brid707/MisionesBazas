@@ -703,4 +703,41 @@
   <data name="Radio_Error_InvalidTokenPositionForCard" xml:space="preserve"><value>La carta o posición no cumple las reglas de comunicación.</value></data>
   <data name="Radio_Error_RequestLimitReached" xml:space="preserve"><value>Hay demasiadas solicitudes. Espera un momento.</value></data>
   <data name="Radio_Error_OperationUnavailable" xml:space="preserve"><value>No se pudo confirmar la comunicación. Puedes comprobar la solicitud pendiente.</value></data>
+  <data name="MissionInstruction_MissionNine_Description" xml:space="preserve"><value>Ganen una baza con un 1 normal; capturarlo no basta.</value></data>
+  <data name="MissionInstruction_MissionTen_Description" xml:space="preserve"><value>Completen los cuatro objetivos asignados.</value></data>
+  <data name="MissionInstruction_MissionEleven_Description" xml:space="preserve"><value>El capitán elige a quién silenciar. Completen cuatro objetivos; el marcado 1 debe ser primero.</value></data>
+  <data name="MissionInstruction_MissionTwelve_Description" xml:space="preserve"><value>Completen cuatro objetivos; Omega debe ser el último objetivo.</value></data>
+  <data name="MissionInstruction_MissionThirteen_Description" xml:space="preserve"><value>Cada K debe ganar su propia baza. Si una K pierde, la misión fracasa.</value></data>
+  <data name="MissionInstruction_MissionFourteen_Description" xml:space="preserve"><value>Completen cuatro objetivos. Respeten &gt;, &gt;&gt; y &gt;&gt;&gt;; la radio oculta la posición de su ficha.</value></data>
+  <data name="MissionInstruction_MissionFifteen_Description" xml:space="preserve"><value>Completen los cuatro objetivos en orden numérico 1, 2, 3 y 4.</value></data>
+  <data name="MissionInstruction_MissionSixteen_Description" xml:space="preserve"><value>Terminen el reparto sin que ningún 9 normal gane una baza.</value></data>
+  <data name="MissionInstruction_MissionSeventeen_Description" xml:space="preserve"><value>Completen ambos objetivos sin que un 9 normal gane una baza antes de terminar.</value></data>
+  <data name="MissionInstruction_MissionEighteen_Description" xml:space="preserve"><value>Completen cinco objetivos. La radio está disponible desde la segunda baza.</value></data>
+  <data name="MissionInstruction_MissionNineteen_Description" xml:space="preserve"><value>Completen cinco objetivos, con el 1 primero. La radio se habilita desde la tercera baza.</value></data>
+  <data name="MissionInstruction_MissionTwenty_Description" xml:space="preserve"><value>Sin ver los objetivos, respondan sí o no. El capitán asigna ambos a otro participante y se revelan.</value></data>
+  <data name="MissionPreparation_Stage_RoleSelection" xml:space="preserve"><value>El capitán debe elegir al participante que no podrá usar la radio.</value></data>
+  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>¿Te consideras capaz de ganar ambos objetivos sin verlos? Falta la respuesta de cada participante excepto el capitán.</value></data>
+  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>El capitán debe elegir a otro participante para recibir ambos objetivos. Las respuestas son orientativas.</value></data>
+  <data name="MissionPreparation_Label_Assign" xml:space="preserve"><value>Confirmar participante</value></data>
+  <data name="MissionPreparation_Response_Yes" xml:space="preserve"><value>Sí</value></data>
+  <data name="MissionPreparation_Response_No" xml:space="preserve"><value>No</value></data>
+  <data name="MissionPreparation_Error_InvalidSubmission" xml:space="preserve"><value>La solicitud no es válida.</value></data>
+  <data name="MissionPreparation_Error_MatchUnavailable" xml:space="preserve"><value>La partida no está disponible.</value></data>
+  <data name="MissionPreparation_Error_ParticipantNotAllowed" xml:space="preserve"><value>No tienes acceso a esta partida.</value></data>
+  <data name="MissionPreparation_Error_WrongMissionAttempt" xml:space="preserve"><value>El intento cambió; revisa la preparación actual.</value></data>
+  <data name="MissionPreparation_Error_SubmissionIdentityReused" xml:space="preserve"><value>El identificador no corresponde a la solicitud original.</value></data>
+  <data name="MissionPreparation_Error_StageMismatch" xml:space="preserve"><value>La etapa cambió; revisa el estado actualizado.</value></data>
+  <data name="MissionPreparation_Error_StaleMatchState" xml:space="preserve"><value>La mesa cambió; selecciona de nuevo.</value></data>
+  <data name="MissionPreparation_Error_CaptainRequired" xml:space="preserve"><value>Solo el capitán de la misión puede asignar este papel.</value></data>
+  <data name="MissionPreparation_Error_InvalidTarget" xml:space="preserve"><value>Ese participante no puede recibir este papel.</value></data>
+  <data name="MissionPreparation_Error_ResponsesPending" xml:space="preserve"><value>Todavía faltan respuestas.</value></data>
+  <data name="MissionPreparation_Error_AlreadyAnswered" xml:space="preserve"><value>Tu respuesta ya fue registrada.</value></data>
+  <data name="MissionPreparation_Error_RequestLimitReached" xml:space="preserve"><value>Espera un momento antes de intentarlo de nuevo.</value></data>
+  <data name="MissionPreparation_Error_OperationUnavailable" xml:space="preserve"><value>No pudimos confirmar la decisión. Reintenta para comprobarla.</value></data>
+  <data name="Radio_Error_DisruptedUntilTrick" xml:space="preserve"><value>La radio todavía no está habilitada en esta misión.</value></data>
+  <data name="Radio_Error_SilencedByCaptain" xml:space="preserve"><value>El capitán te asignó silencio de radio durante este intento.</value></data>
+  <data name="MissionEvaluation_Error_NormalOneDidNotWinTrick" xml:space="preserve"><value>Ningún 1 normal ganó una baza.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardLostTrick" xml:space="preserve"><value>Una K perdió su baza.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardsDidNotWinAllRequiredTricks" xml:space="preserve"><value>No todas las K ganaron su propia baza.</value></data>
+  <data name="MissionEvaluation_Error_NormalNineWonTrick" xml:space="preserve"><value>Un 9 normal ganó una baza.</value></data>
 </root>

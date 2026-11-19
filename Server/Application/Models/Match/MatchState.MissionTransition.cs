@@ -69,7 +69,9 @@ namespace Application.Models
 
         private void ApplyPreparedMissionAttempt(PreparedMissionAttempt preparedAttempt)
         {
+            bool isInitialAttempt = MissionAttempt == null;
             MissionAttempt = preparedAttempt.MissionAttempt;
+            ResetSpecialPreparationState(isInitialAttempt);
             PlayerHandCardIdsBySeat = preparedAttempt.PlayerHandCardIdsBySeat;
             WonCardIdsBySeat = preparedAttempt.WonCardIdsBySeat;
             WonTrickCountsBySeat = preparedAttempt.WonTrickCountsBySeat;

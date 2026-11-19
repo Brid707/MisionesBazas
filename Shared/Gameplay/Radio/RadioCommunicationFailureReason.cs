@@ -21,6 +21,8 @@ namespace Gameplay
         [EnumMember] CannotCommunicateDuringActiveTrick = 12,
         [EnumMember] InvalidTokenPositionForCard = 13,
         [EnumMember] RequestLimitReached = 14,
-        [EnumMember] OperationUnavailable = 15
+        [EnumMember] OperationUnavailable = 15,
+        [EnumMember] DisruptedUntilTrick = 16,
+        [EnumMember] SilencedByCaptain = 17
     }
 }

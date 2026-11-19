@@ -53,6 +53,10 @@ namespace ViewModel.ViewModels
             {
                 feedbackResourceKey = "Radio_Error_" + matchAccessFault.FailureCode;
             }
+            if (HasPendingPreparation)
+            {
+                feedbackResourceKey = "MissionPreparation_Error_OperationUnavailable";
+            }
             return feedbackResourceKey;
         }
 

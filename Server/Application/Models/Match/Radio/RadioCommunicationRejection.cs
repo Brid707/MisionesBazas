@@ -18,6 +18,8 @@ namespace Application.Models
         CannotCommunicateDuringActiveTrick = 12,
         InvalidTokenPositionForCard = 13,
         RequestLimitReached = 14,
-        OperationUnavailable = 15
+        OperationUnavailable = 15,
+        DisruptedUntilTrick = 16,
+        SilencedByCaptain = 17
     }
 }

@@ -15,6 +15,10 @@ namespace Domain
         Mission48OmegaNotInLastTrick = 9,
         Mission48PendingNonOmegaBeforeLastTrick = 10,
         SpecialMissionConstraint = 11,
-        AllParticipantsWonAtLeastOneTrick = 12
+        AllParticipantsWonAtLeastOneTrick = 12,
+        NormalOneDidNotWinTrick = 13,
+        SpecialCardLostTrick = 14,
+        SpecialCardsDidNotWinAllRequiredTricks = 15,
+        NormalNineWonTrick = 16
     }
 }

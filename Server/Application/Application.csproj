@@ -247,4 +247,33 @@
     <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
     <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\MissionTrickStatistics.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationRejection.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationAction.cs" />
+    <Compile Include="UseCases\Match\MissionImplementationPolicy.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Match\Preparation\MissionPreparationRequest.cs" />
+    <Compile Include="Models\Match\Preparation\MissionPreparationCommit.cs" />
+    <Compile Include="Models\Match\Preparation\ProcessedMissionPreparation.cs" />
+    <Compile Include="Models\Match\Preparation\SpecialPreparationChange.cs" />
+    <Compile Include="Models\Match\Preparation\PreparedTrickEvaluation.cs" />
+    <Compile Include="Models\Match\MatchState.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\MatchUseCase.SpecialPreparation.cs" />
+    <Compile Include="UseCases\Match\MatchSnapshotProjection.SpecialPreparation.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UseCases\Match\RadioCommunicationContextFactory.cs" />
+  </ItemGroup>
 </Project>

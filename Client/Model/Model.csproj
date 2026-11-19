@@ -286,4 +286,16 @@
     <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationMode.cs" />
     <Compile Include="..\..\Shared\Gameplay\Radio\RadioCommunicationSubmission.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationConfirmation.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFailureReason.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationFault.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
+    <Compile Include="..\..\Shared\Gameplay\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+  </ItemGroup>
 </Project>

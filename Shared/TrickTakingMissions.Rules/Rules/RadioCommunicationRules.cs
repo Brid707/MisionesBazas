@@ -19,7 +19,8 @@ namespace TrickTakingMissions.Rules.Rules
         /// and token placement invariants.
         /// </summary>
         /// <param name="context">The contextual state of the player hand, mission rules, and trick progress.</param>
-        /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection reason.</returns>
+        /// <returns>A <see cref="RadioCommunicationValidationResult"/> indicating success or the specific rejection
+        /// reason.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="context"/> is null.</exception>
         public static RadioCommunicationValidationResult ValidateCommunication(RadioCommunicationContext context)
         {
@@ -75,42 +76,55 @@ namespace TrickTakingMissions.Rules.Rules
 
         private static RadioCommunicationRejectionReason EvaluatePrerequisites(RadioCommunicationContext context)
         {
-            if (context.CardToCommunicate is null)
+            RadioCommunicationRejectionReason rejection = GetAvailabilityRejection(context);
+            if (rejection == RadioCommunicationRejectionReason.None)
             {
-                return RadioCommunicationRejectionReason.CardNotInHand;
+                rejection = EvaluateCandidatePrerequisites(context);
             }
+            return rejection;
+        }
 
-            if (context.HasCommunicatedThisAttempt)
+        private static RadioCommunicationRejectionReason EvaluateCandidatePrerequisites(RadioCommunicationContext
+            context)
+        {
+            RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
+            if (context.CardToCommunicate == null || context.HandCards == null ||
+                !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
             {
-                return RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
+                rejection = RadioCommunicationRejectionReason.CardNotInHand;
             }
-
-            if (context.IsSilencedByCaptain)
+            else if (context.CardToCommunicate.Suit == CardSuit.Special)
             {
-                return RadioCommunicationRejectionReason.SilencedByCaptain;
+                rejection = RadioCommunicationRejectionReason.SpecialCardNotAllowed;
             }
+            return rejection;
+        }
 
-            if (context.IsTrickInProgress)
+        /// <summary>Evaluates timing and role availability without revealing a candidate card.</summary>
+        public static RadioCommunicationRejectionReason GetAvailabilityRejection(RadioCommunicationContext context)
+        {
+            if (context == null)
             {
-                return RadioCommunicationRejectionReason.CannotCommunicateDuringActiveTrick;
+                throw new ArgumentNullException(nameof(context));
             }
-
+            RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
             if (IsDisrupted(context.CommunicationRule, context.CurrentTrickNumber))
             {
-                return RadioCommunicationRejectionReason.DisruptedUntilTrick;
+                rejection = RadioCommunicationRejectionReason.DisruptedUntilTrick;
             }
-
-            if (context.CardToCommunicate.Suit == CardSuit.Special)
+            if (context.IsTrickInProgress)
             {
-                return RadioCommunicationRejectionReason.SpecialCardNotAllowed;
+                rejection = RadioCommunicationRejectionReason.CannotCommunicateDuringActiveTrick;
             }
-
-            if (context.HandCards is null || !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
+            if (context.IsSilencedByCaptain)
             {
-                return RadioCommunicationRejectionReason.CardNotInHand;
+                rejection = RadioCommunicationRejectionReason.SilencedByCaptain;
             }
-
-            return RadioCommunicationRejectionReason.None;
+            if (context.HasCommunicatedThisAttempt)
+            {
+                rejection = RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
+            }
+            return rejection;
         }
 
         private static bool IsDisrupted(CommunicationRuleType rule, int currentTrickNumber)

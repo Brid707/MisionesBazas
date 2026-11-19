@@ -19,6 +19,8 @@ namespace Application.Ports
             Application.Models.MissionTransitionWork transitionWork, bool hasPreparationFailed);
         Application.Models.RadioCommunicationCommit SubmitRadioCommunication(
             Application.Models.RadioCommunicationRequest request, int participantUserId);
+        Application.Models.MissionPreparationCommit ProcessMissionPreparation(
+            Application.Models.MissionPreparationRequest request, int participantUserId);
         Guid StartMatch(Application.Models.MatchStartContext startContext);
         PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);
         CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId);

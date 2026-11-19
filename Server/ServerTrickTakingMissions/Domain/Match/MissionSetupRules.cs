@@ -7,7 +7,8 @@ using TrickTakingMissions.Rules.Models;
 namespace Domain
 {
     /// <summary>
-    /// Governs the pre-match draft phase, clockwise seat rotation, blind objective capability polling, and captain role assignments.
+    /// Governs the pre-match draft phase, clockwise seat rotation, blind objective capability polling, and captain
+    /// role assignments.
     /// </summary>
     public static class MissionSetupRules
     {
@@ -56,8 +57,10 @@ namespace Domain
         /// <param name="objectiveIndex">The zero-based index of the target objective to assign.</param>
         /// <param name="assignedSeat">The player seat index receiving the objective.</param>
         /// <returns>An updated immutable list of objectives.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentObjectives"/> is null.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="objectiveIndex"/> is out of bounds.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentObjectives"/> is
+        /// null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="objectiveIndex"/> is out of
+        /// bounds.</exception>
         public static IReadOnlyList<MissionObjective> AssignObjective(
             IReadOnlyList<MissionObjective> currentObjectives,
             int objectiveIndex,
@@ -88,8 +91,10 @@ namespace Domain
         /// </summary>
         /// <param name="currentObjectives">The current list of mission objectives.</param>
         /// <param name="assignedSeat">The single player seat index receiving all objectives.</param>
-        /// <returns>An updated immutable list where all objectives belong to the assigned seat and are revealed.</returns>
-        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentObjectives"/> is null.</exception>
+        /// <returns>An updated immutable list where all objectives belong to the assigned seat and are
+        /// revealed.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="currentObjectives"/> is
+        /// null.</exception>
         public static IReadOnlyList<MissionObjective> AutoAssignAllObjectives(
             IReadOnlyList<MissionObjective> currentObjectives,
             byte assignedSeat)
@@ -117,19 +122,21 @@ namespace Domain
         /// </summary>
         /// <param name="responsesBySeat">The map of player responses indexed by seat.</param>
         /// <param name="playerCount">The total number of seated participants.</param>
-        /// <returns>True if every seated player has submitted a non-pending response; otherwise, false.</returns>
+        /// <returns>True if every participant except the captain has answered yes or no.</returns>
         public static bool AreAllBlindResponsesRecorded(
             IReadOnlyDictionary<byte, BlindObjectiveCapableResponse> responsesBySeat,
-            int playerCount)
+            int playerCount, byte captainSeat)
         {
-            if (responsesBySeat is null || playerCount <= 0)
+            bool areResponsesComplete = responsesBySeat != null &&
+                MatchPlayerCountRules.IsPlayerCountSupported(playerCount) && captainSeat < playerCount;
+            if (areResponsesComplete)
             {
-                return false;
+                areResponsesComplete = Enumerable.Range(0, playerCount).Where(seat => seat != captainSeat)
+                    .All(seat => responsesBySeat.TryGetValue((byte)seat, out BlindObjectiveCapableResponse response) &&
+                        (response == BlindObjectiveCapableResponse.Yes || response ==
+                            BlindObjectiveCapableResponse.No));
             }
-
-            return Enumerable.Range(0, playerCount)
-                .All(seat => responsesBySeat.TryGetValue((byte)seat, out BlindObjectiveCapableResponse response) &&
-                             response != BlindObjectiveCapableResponse.Pending);
+            return areResponsesComplete;
         }
 
         /// <summary>

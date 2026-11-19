@@ -6,6 +6,18 @@ namespace Gameplay
     [ServiceContract]
     public interface IMatchService
     {
+        [OperationContract(Action = "urn:misiones-bazas:match:AssignMissionRole", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        [FaultContract(typeof(MissionPreparationFault))]
+        MissionPreparationConfirmation AssignMissionRole(MissionRoleAssignmentSubmission submission, int
+            participantUserId);
+
+        [OperationContract(Action = "urn:misiones-bazas:match:RespondToBlindObjectives", ReplyAction = "*")]
+        [FaultContract(typeof(MatchAccessFault))]
+        [FaultContract(typeof(MissionPreparationFault))]
+        MissionPreparationConfirmation RespondToBlindObjectives(BlindObjectiveResponseSubmission submission, int
+            participantUserId);
+
         [OperationContract(Action = "urn:misiones-bazas:match:ProcessObjectiveDraftAction", ReplyAction = "*")]
         [FaultContract(typeof(MatchAccessFault))]
         MissionObjectiveDraftDecision ProcessObjectiveDraftAction(

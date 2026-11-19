@@ -22,10 +22,10 @@ namespace Application.UseCases
                 Card = DeckRules.GetCardById(play.CardId)
             }).ToArray();
             TrickCardPlay winningTrickPlay = TrickWinnerRules.DetermineTrickWinner(domainTrickPlays);
-            MissionEvaluationContext missionEvaluationContext = CreateMissionEvaluationContext(
+            PreparedTrickEvaluation preparedEvaluation = CreateMissionEvaluationContext(
                 matchState, domainTrickPlays, winningTrickPlay);
             MissionEvaluationResult missionEvaluationResult =
-                MissionEvaluationRules.EvaluateCompletedTrick(missionEvaluationContext);
+                MissionEvaluationRules.EvaluateCompletedTrick(preparedEvaluation.Context);
             MissionAttemptState updatedMissionAttempt = matchState.MissionAttempt with
             {
                 Objectives = missionEvaluationResult.UpdatedObjectives.ToArray(),
@@ -39,11 +39,12 @@ namespace Application.UseCases
                 WinningParticipantSeat = winningTrickPlay.Seat,
                 CompletedTrickNumber = matchState.CurrentTrickNumber,
                 MissionEvaluation = missionEvaluationResult,
+                TrickStatistics = preparedEvaluation.Statistics,
                 UpdatedMissionAttempt = updatedMissionAttempt
             };
         }
 
-        private static MissionEvaluationContext CreateMissionEvaluationContext(MatchState matchState,
+        private static PreparedTrickEvaluation CreateMissionEvaluationContext(MatchState matchState,
             TrickCardPlay[] completedTrickPlays, TrickCardPlay winningTrickPlay)
         {
             MissionDefinition missionDefinition = MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber);
@@ -51,7 +52,9 @@ namespace Application.UseCases
             {
                 throw new InvalidOperationException(nameof(missionDefinition.SpecialRule));
             }
-            return new MissionEvaluationContext
+            MissionTrickStatistics candidateStatistics =
+                matchState.TrickStatistics.IncludeWinner(winningTrickPlay.Card);
+            var context = new MissionEvaluationContext
             {
                 Definition = missionDefinition,
                 TotalTricksInMission = matchState.MaximumMissionTrickCount,
@@ -62,8 +65,11 @@ namespace Application.UseCases
                 TotalTricksWonBySeat = CreateCandidateTrickWinCounts(matchState, winningTrickPlay.Seat),
                 CaptainSeat = (byte)matchState.MissionCaptainSeat,
                 PlayerCount = matchState.ParticipantUserIds.Length,
-                RoleConfig = matchState.MissionAttempt.RoleConfig
+                RoleConfig = matchState.MissionAttempt.RoleConfig,
+                TricksWonWithNormalOneCount = candidateStatistics.TricksWonWithNormalOneCount,
+                SpecialCardsWonSoFar = candidateStatistics.SpecialWinningCardIds.Select(DeckRules.GetCardById).ToArray()
             };
+            return new PreparedTrickEvaluation { Context = context, Statistics = candidateStatistics };
         }
         private static IReadOnlyDictionary<int, int> CreateCandidateTrickWinCounts(MatchState matchState,
             int winningParticipantSeat)

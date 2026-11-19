@@ -38,11 +38,58 @@ namespace Application.UseCases
                 { RadioPublicMarker.Hidden, RadioCommunicationMarker.Hidden }
             };
 
-        private static RadioCommunicationMode GetRadioMode(MatchState matchState)
+        private static RadioCommunicationMode GetRadioMode(MatchState state)
         {
-            return MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber).CommunicationRule ==
-                CommunicationRuleType.Interference ? RadioCommunicationMode.Interference
-                    : RadioCommunicationMode.Standard;
+            CommunicationRuleType mode =
+                MissionCatalog.GetMission(state.MissionAttempt.MissionNumber).CommunicationRule;
+            return s_radioModes[mode];
         }
+
+        private static readonly System.Collections.Generic.IReadOnlyDictionary<CommunicationRuleType,
+            RadioCommunicationMode> s_radioModes =
+            new System.Collections.Generic.Dictionary<CommunicationRuleType, RadioCommunicationMode>
+            {
+                { CommunicationRuleType.Standard, RadioCommunicationMode.Standard },
+                { CommunicationRuleType.Interference, RadioCommunicationMode.Interference },
+                { CommunicationRuleType.DisruptionUntilTrick2, RadioCommunicationMode.DisruptionUntilTrick2 },
+                { CommunicationRuleType.DisruptionUntilTrick3, RadioCommunicationMode.DisruptionUntilTrick3 }
+            };
+
+        private static RadioAvailabilitySnapshot CreateRadioAvailability(MatchState state, int participantSeat)
+        {
+            RadioCommunicationRejection rejection = RadioCommunicationRejection.MissionPreparationRequired;
+            if (state.MissionAttempt.Phase == MissionAttemptPhase.Finished)
+            {
+                rejection = RadioCommunicationRejection.MissionAttemptFinished;
+            }
+            else if (state.MissionAttempt.Phase == MissionAttemptPhase.PlayingTricks)
+            {
+                rejection = RadioCommunicationRuleMapping.MapRejection(RadioCommunicationRules.GetAvailabilityRejection(
+                    RadioCommunicationContextFactory.Create(state, state.ParticipantUserIds[participantSeat])));
+            }
+            return new RadioAvailabilitySnapshot
+            {
+                IsAvailable = rejection == RadioCommunicationRejection.None,
+                FailureReason = s_radioAvailabilityFailures[rejection]
+            };
+        }
+
+        private static readonly System.Collections.Generic.IReadOnlyDictionary<RadioCommunicationRejection,
+            RadioCommunicationFailureReason> s_radioAvailabilityFailures =
+            new System.Collections.Generic.Dictionary<RadioCommunicationRejection, RadioCommunicationFailureReason>
+            {
+                { RadioCommunicationRejection.None, RadioCommunicationFailureReason.None },
+                { RadioCommunicationRejection.MissionPreparationRequired,
+                    RadioCommunicationFailureReason.MissionPreparationRequired },
+                { RadioCommunicationRejection.MissionAttemptFinished,
+                    RadioCommunicationFailureReason.MissionAttemptFinished },
+                { RadioCommunicationRejection.AlreadyCommunicatedThisAttempt,
+                    RadioCommunicationFailureReason.AlreadyCommunicatedThisAttempt },
+                { RadioCommunicationRejection.SilencedByCaptain, RadioCommunicationFailureReason.SilencedByCaptain },
+                { RadioCommunicationRejection.CannotCommunicateDuringActiveTrick,
+                    RadioCommunicationFailureReason.CannotCommunicateDuringActiveTrick },
+                { RadioCommunicationRejection.DisruptedUntilTrick,
+                    RadioCommunicationFailureReason.DisruptedUntilTrick },
+            };
     }
 }

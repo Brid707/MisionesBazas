@@ -7,6 +7,10 @@ namespace Model.Services
     /// <summary>Provides recipient-specific match state and retry-safe play requests on the lobby channel.</summary>
     public interface IMatchClient
     {
+        Task<MissionPreparationConfirmation> AssignMissionRoleAsync(
+            MissionRoleAssignmentSubmission submission, int participantUserId);
+        Task<MissionPreparationConfirmation> RespondToBlindObjectivesAsync(
+            BlindObjectiveResponseSubmission submission, int participantUserId);
         event Action<long> MatchStateChanged;
         Task<RadioCommunicationConfirmation> SubmitRadioCommunicationAsync(
             RadioCommunicationSubmission submission, int participantUserId);

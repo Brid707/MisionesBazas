@@ -703,4 +703,41 @@
   <data name="Radio_Error_InvalidTokenPositionForCard" xml:space="preserve"><value>The card or position does not meet the communication rules.</value></data>
   <data name="Radio_Error_RequestLimitReached" xml:space="preserve"><value>Too many requests. Please wait a moment.</value></data>
   <data name="Radio_Error_OperationUnavailable" xml:space="preserve"><value>The communication could not be confirmed. You can check the pending request.</value></data>
+  <data name="MissionInstruction_MissionNine_Description" xml:space="preserve"><value>Win a trick with a normal 1; capturing it does not count.</value></data>
+  <data name="MissionInstruction_MissionTen_Description" xml:space="preserve"><value>Complete all four assigned objectives.</value></data>
+  <data name="MissionInstruction_MissionEleven_Description" xml:space="preserve"><value>The captain silences one player. Complete four objectives, with token 1 first.</value></data>
+  <data name="MissionInstruction_MissionTwelve_Description" xml:space="preserve"><value>Complete four objectives; Omega must be the last objective.</value></data>
+  <data name="MissionInstruction_MissionThirteen_Description" xml:space="preserve"><value>Each K must win its own trick. A losing K fails the mission.</value></data>
+  <data name="MissionInstruction_MissionFourteen_Description" xml:space="preserve"><value>Complete four objectives in &gt;, &gt;&gt; and &gt;&gt;&gt; order; radio token positions remain hidden.</value></data>
+  <data name="MissionInstruction_MissionFifteen_Description" xml:space="preserve"><value>Complete the four objectives in numeric order: 1, 2, 3 and 4.</value></data>
+  <data name="MissionInstruction_MissionSixteen_Description" xml:space="preserve"><value>Finish the deal without a normal 9 winning a trick.</value></data>
+  <data name="MissionInstruction_MissionSeventeen_Description" xml:space="preserve"><value>Complete both objectives without a normal 9 winning a trick before completion.</value></data>
+  <data name="MissionInstruction_MissionEighteen_Description" xml:space="preserve"><value>Complete five objectives. Radio is available from trick two.</value></data>
+  <data name="MissionInstruction_MissionNineteen_Description" xml:space="preserve"><value>Complete five objectives, with token 1 first. Radio opens from trick three.</value></data>
+  <data name="MissionInstruction_MissionTwenty_Description" xml:space="preserve"><value>Answer yes or no without seeing the objectives. The captain assigns both to another player, then reveals them.</value></data>
+  <data name="MissionPreparation_Stage_RoleSelection" xml:space="preserve"><value>The captain must choose the participant who cannot use radio.</value></data>
+  <data name="MissionPreparation_Stage_BlindResponses" xml:space="preserve"><value>Can you win both objectives without seeing them? Each participant except the captain must answer.</value></data>
+  <data name="MissionPreparation_Stage_AssigneeSelection" xml:space="preserve"><value>The captain must choose another participant to receive both objectives. Responses are advisory.</value></data>
+  <data name="MissionPreparation_Label_Assign" xml:space="preserve"><value>Confirm participant</value></data>
+  <data name="MissionPreparation_Response_Yes" xml:space="preserve"><value>Yes</value></data>
+  <data name="MissionPreparation_Response_No" xml:space="preserve"><value>No</value></data>
+  <data name="MissionPreparation_Error_InvalidSubmission" xml:space="preserve"><value>The request is invalid.</value></data>
+  <data name="MissionPreparation_Error_MatchUnavailable" xml:space="preserve"><value>The match is unavailable.</value></data>
+  <data name="MissionPreparation_Error_ParticipantNotAllowed" xml:space="preserve"><value>You cannot access this match.</value></data>
+  <data name="MissionPreparation_Error_WrongMissionAttempt" xml:space="preserve"><value>The attempt changed; check the current preparation.</value></data>
+  <data name="MissionPreparation_Error_SubmissionIdentityReused" xml:space="preserve"><value>The identifier does not match the original request.</value></data>
+  <data name="MissionPreparation_Error_StageMismatch" xml:space="preserve"><value>The stage changed; check the refreshed state.</value></data>
+  <data name="MissionPreparation_Error_StaleMatchState" xml:space="preserve"><value>The table changed; select again.</value></data>
+  <data name="MissionPreparation_Error_CaptainRequired" xml:space="preserve"><value>Only the mission captain can assign this role.</value></data>
+  <data name="MissionPreparation_Error_InvalidTarget" xml:space="preserve"><value>That participant cannot receive this role.</value></data>
+  <data name="MissionPreparation_Error_ResponsesPending" xml:space="preserve"><value>Some responses are still pending.</value></data>
+  <data name="MissionPreparation_Error_AlreadyAnswered" xml:space="preserve"><value>Your response is already recorded.</value></data>
+  <data name="MissionPreparation_Error_RequestLimitReached" xml:space="preserve"><value>Wait a moment before trying again.</value></data>
+  <data name="MissionPreparation_Error_OperationUnavailable" xml:space="preserve"><value>We could not confirm the decision. Retry to check it.</value></data>
+  <data name="Radio_Error_DisruptedUntilTrick" xml:space="preserve"><value>Radio is not available yet in this mission.</value></data>
+  <data name="Radio_Error_SilencedByCaptain" xml:space="preserve"><value>The captain assigned you radio silence for this attempt.</value></data>
+  <data name="MissionEvaluation_Error_NormalOneDidNotWinTrick" xml:space="preserve"><value>No normal 1 won a trick.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardLostTrick" xml:space="preserve"><value>A K lost its trick.</value></data>
+  <data name="MissionEvaluation_Error_SpecialCardsDidNotWinAllRequiredTricks" xml:space="preserve"><value>Not every K won its own trick.</value></data>
+  <data name="MissionEvaluation_Error_NormalNineWonTrick" xml:space="preserve"><value>A normal 9 won a trick.</value></data>
 </root>

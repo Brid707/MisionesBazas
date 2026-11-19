@@ -95,4 +95,8 @@
   <ItemGroup>
     <Compile Include="Match\ParticipantSeatRules.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Match\MissionRoleAssignmentContext.cs" />
+    <Compile Include="Match\MissionSpecialPreparationRules.cs" />
+  </ItemGroup>
 </Project>

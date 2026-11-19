@@ -137,20 +137,7 @@ namespace Application.UseCases
         private static RadioCommunicationContext CreateRadioContext(MatchState matchState,
             RadioCommunicationRequest request, int participantUserId)
         {
-            int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
-            var hand = matchState.PlayerHandCardIdsBySeat[participantSeat].Select(DeckRules.GetCardById).ToArray();
-            return new RadioCommunicationContext
-            {
-                HandCards = hand,
-                CardToCommunicate = hand.FirstOrDefault(card => card.IdCard == request.CardId),
-                CurrentTrickNumber = matchState.CurrentTrickNumber,
-                IsTrickInProgress = matchState.CurrentTrickCardPlays.Count > 0,
-                HasCommunicatedThisAttempt = matchState.RadioCommunicationsByParticipantUserId
-                    .ContainsKey(participantUserId),
-                CommunicationRule =
-                    MissionCatalog.GetMission(matchState.MissionAttempt.MissionNumber).CommunicationRule,
-                SelectedPosition = RadioCommunicationRuleMapping.MapRequestedMarker(request.SelectedMarker)
-            };
+            return RadioCommunicationContextFactory.Create(matchState, participantUserId, request);
         }
 
         private static RadioCommunicationCommit RejectRadio(RadioCommunicationRequest request,

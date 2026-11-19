@@ -18,6 +18,10 @@ namespace Gameplay
         [EnumMember] Mission48OmegaNotInLastTrick = 9,
         [EnumMember] Mission48PendingNonOmegaBeforeLastTrick = 10,
         [EnumMember] SpecialMissionConstraint = 11,
-        [EnumMember] AllParticipantsWonAtLeastOneTrick = 12
+        [EnumMember] AllParticipantsWonAtLeastOneTrick = 12,
+        [EnumMember] NormalOneDidNotWinTrick = 13,
+        [EnumMember] SpecialCardLostTrick = 14,
+        [EnumMember] SpecialCardsDidNotWinAllRequiredTricks = 15,
+        [EnumMember] NormalNineWonTrick = 16
     }
 }

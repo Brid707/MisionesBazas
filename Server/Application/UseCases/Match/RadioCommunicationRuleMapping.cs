@@ -41,9 +41,9 @@ namespace Application.UseCases
             new Dictionary<RadioCommunicationRejectionReason, RadioCommunicationRejection>
             {
                 { RadioCommunicationRejectionReason.DisruptedUntilTrick,
-                    RadioCommunicationRejection.OperationUnavailable },
+                    RadioCommunicationRejection.DisruptedUntilTrick },
                 { RadioCommunicationRejectionReason.SilencedByCaptain,
-                    RadioCommunicationRejection.OperationUnavailable },
+                    RadioCommunicationRejection.SilencedByCaptain },
                 { RadioCommunicationRejectionReason.None, RadioCommunicationRejection.None },
                 { RadioCommunicationRejectionReason.CardNotInHand, RadioCommunicationRejection.CardNotInHand },
                 { RadioCommunicationRejectionReason.SpecialCardNotAllowed,

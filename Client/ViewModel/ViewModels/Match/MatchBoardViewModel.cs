@@ -61,6 +61,7 @@ namespace ViewModel.ViewModels
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             InitializeObjectiveDraftCommands();
             InitializeRadioCommand();
+            InitializeSpecialPreparationCommands();
             _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
                 TimeSpan.FromMilliseconds(250));
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
@@ -142,6 +143,7 @@ namespace ViewModel.ViewModels
                 {
                     Interlocked.Exchange(ref _isRequestInProgress, 0);
                     OnPropertyChanged(nameof(CanChooseRadioCard));
+                    NotifySpecialPreparationProperties();
                     UpdateHandCardRaisedStates();
                     CommandManager.InvalidateRequerySuggested();
                 }
@@ -165,7 +167,8 @@ namespace ViewModel.ViewModels
 
         private async Task SynchronizeCoreAsync()
         {
-            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync();
+            string preparationFeedback = await ConfirmPendingPreparationAsync();
+            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync() ?? preparationFeedback;
             string radioFeedback = await ConfirmPendingRadioAsync();
             if (radioFeedback != null)
             {
@@ -247,7 +250,7 @@ namespace ViewModel.ViewModels
         private bool CanRetryPendingMatchRequest()
         {
             return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null ||
-                _pendingRadioSubmission != null) &&
+                _pendingRadioSubmission != null || HasPendingPreparation) &&
                 _isRequestInProgress == 0;
         }
 
@@ -264,6 +267,7 @@ namespace ViewModel.ViewModels
                 var playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
                 ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
+                ApplySpecialPreparationSnapshot(playerSnapshot.MissionPreparation);
                 ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
                 ApplyRadioSnapshot(playerSnapshot);
                 ReplacePublicPlays(playerSnapshot);
@@ -344,17 +348,21 @@ namespace ViewModel.ViewModels
         private string GetActiveMatchFeedback()
         {
             string feedbackResourceKey = "Match_WaitingTurn";
+            if (CurrentTurnPlayerUserId == _participantUserId)
+            {
+                feedbackResourceKey = "Match_YourTurn";
+            }
+            if (_confirmedMatchSnapshot.IsDealCompleted)
+            {
+                feedbackResourceKey = "Match_DealCompleted";
+            }
             if (IsObjectiveDraftVisible)
             {
                 feedbackResourceKey = "MissionDraft_Label_SelectOrPass";
             }
-            else if (_confirmedMatchSnapshot.IsDealCompleted)
+            if (IsSpecialPreparationVisible)
             {
-                feedbackResourceKey = "Match_DealCompleted";
-            }
-            else if (CurrentTurnPlayerUserId == _participantUserId)
-            {
-                feedbackResourceKey = "Match_YourTurn";
+                feedbackResourceKey = SpecialPreparationFeedbackKey;
             }
             return feedbackResourceKey;
         }

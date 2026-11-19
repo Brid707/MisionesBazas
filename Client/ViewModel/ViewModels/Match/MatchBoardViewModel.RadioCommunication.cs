@@ -43,7 +43,8 @@ namespace ViewModel.ViewModels
         }
 
         public bool CanChooseRadioCard => CanSubmitMatchRequest() && IsMissionPreparationComplete &&
-            !IsMissionAttemptFinished && _confirmedMatchSnapshot?.CurrentTrickCardPlays?.Length == 0 &&
+            !IsMissionAttemptFinished && (_confirmedMatchSnapshot?.OwnRadioAvailability?.IsAvailable ?? true) &&
+            _confirmedMatchSnapshot?.CurrentTrickCardPlays?.Length == 0 &&
             !(_confirmedMatchSnapshot.RadioCommunications ?? Array.Empty<PlayerRadioCommunicationSnapshot>())
                 .Any(communication => communication.ParticipantUserId == _participantUserId);
 

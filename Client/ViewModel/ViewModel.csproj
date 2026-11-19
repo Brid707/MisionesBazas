@@ -142,4 +142,8 @@
     <Compile Include="ViewModels\Match\RadioMarkerOptionViewModel.cs" />
     <Compile Include="ViewModels\Match\PlayerRadioCommunicationViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ViewModels\Match\MatchBoardViewModel.SpecialPreparation.cs" />
+    <Compile Include="ViewModels\Match\BlindObjectiveResponseViewModel.cs" />
+  </ItemGroup>
 </Project>

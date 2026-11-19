@@ -4,6 +4,18 @@ namespace Model.GameServices
 {
     public partial class LobbyServiceClient
     {
+        public MissionPreparationConfirmation AssignMissionRole(MissionRoleAssignmentSubmission submission,
+            int participantUserId)
+        {
+            return Channel.AssignMissionRole(submission, participantUserId);
+        }
+
+        public MissionPreparationConfirmation RespondToBlindObjectives(BlindObjectiveResponseSubmission submission,
+            int participantUserId)
+        {
+            return Channel.RespondToBlindObjectives(submission, participantUserId);
+        }
+
         public RadioCommunicationConfirmation SubmitRadioCommunication(RadioCommunicationSubmission submission,
             int participantUserId)
         {

@@ -276,6 +276,59 @@
                         <RowDefinition Height="Auto" /><RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <StackPanel HorizontalAlignment="Center">
+                        <ToggleButton x:Name="SpecialPreparationToggleButton" Margin="0,0,0,5"
+                            IsChecked="{Binding IsSpecialPreparationPanelOpen, Mode=TwoWay}"
+                            Visibility="{Binding IsSpecialPreparationVisible,
+                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Content="{Binding SpecialPreparationFeedbackKey,
+                                Converter={StaticResource MatchTextConverter}}" />
+                        <Popup PlacementTarget="{Binding ElementName=SpecialPreparationToggleButton}" Placement="Top"
+                            IsOpen="{Binding IsSpecialPreparationPanelOpen, Mode=TwoWay}"
+                            StaysOpen="False" AllowsTransparency="True">
+                            <Border Padding="12" Width="460" Background="{StaticResource BrushLobbyMatchSurface}"
+                                BorderThickness="2" BorderBrush="{StaticResource BrushTextDark}">
+                                <StackPanel>
+                                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource BrushTextLight}"
+                                        Text="{Binding SpecialPreparationFeedbackKey,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <ComboBox Margin="0,8" ItemsSource="{Binding EligibleRoleParticipants}"
+                                        Visibility="{Binding IsRoleAssignmentVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        DisplayMemberPath="Username" SelectedItem="{Binding SelectedRoleParticipant}"
+                                        IsEnabled="{Binding CanSelectRoleParticipant}" />
+                                    <Button Command="{Binding AssignMissionRoleCommand}"
+                                        Visibility="{Binding IsRoleAssignmentVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Content="{Binding Source=MissionPreparation_Label_Assign,
+                                            Converter={StaticResource MatchTextConverter}}" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8"
+                                        Visibility="{Binding IsBlindResponseChoiceVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Button Command="{Binding RespondCapableCommand}" Margin="4,0"
+                                            Content="{Binding Source=MissionPreparation_Response_Yes,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                        <Button Command="{Binding RespondNotCapableCommand}" Margin="4,0"
+                                            Content="{Binding Source=MissionPreparation_Response_No,
+                                                Converter={StaticResource MatchTextConverter}}" />
+                                    </StackPanel>
+                                    <ItemsControl ItemsSource="{Binding BlindObjectiveResponseDescriptions}"
+                                        Visibility="{Binding AreBlindResponsesVisible,
+                                            Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding ParticipantName}" Margin="0,0,8,0"
+                                                        Foreground="{StaticResource BrushTextLight}" />
+                                                    <TextBlock Text="{Binding ResponseResourceKey,
+                                                        Converter={StaticResource MatchTextConverter}}"
+                                                        Foreground="{StaticResource BrushTextLight}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
                         <ToggleButton x:Name="RadioPanelToggleButton" HorizontalAlignment="Center" Margin="0,0,0,5">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Source=Radio_Label_Communicate,

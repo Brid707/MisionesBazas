@@ -31,6 +31,12 @@ namespace Application.UseCases
                 MissionTransition = transition,
                 RadioCommunications = CreateRadioCommunications(matchState),
                 RadioMode = GetRadioMode(matchState),
+                OwnRadioAvailability = CreateRadioAvailability(matchState, participantSeat),
+                MissionConditionProgress = new MissionConditionProgressSnapshot
+                {
+                    TricksWonWithNormalOneCount = matchState.TrickStatistics.TricksWonWithNormalOneCount,
+                    SpecialWinningCardIds = matchState.TrickStatistics.SpecialWinningCardIds.ToArray()
+                },
                 MissionRetry = CreateMissionRetry(transition),
                 MissionEvaluation = CreateMissionEvaluation(matchState),
                 MissionPreparation = CreateMissionPreparation(matchState, participantSeat)

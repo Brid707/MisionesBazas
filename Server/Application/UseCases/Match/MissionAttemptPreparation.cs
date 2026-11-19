@@ -34,12 +34,7 @@ namespace Application.UseCases
 
         internal static bool CanPrepareMission(int missionNumber)
         {
-            MissionDefinition missionDefinition = MissionCatalog.GetMission(missionNumber);
-            bool hasSupportedSpecialRule = missionDefinition.SpecialRule == SpecialMissionRuleType.None ||
-                missionDefinition.SpecialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks;
-            bool hasSupportedCommunication = missionDefinition.CommunicationRule == CommunicationRuleType.Standard ||
-                missionDefinition.CommunicationRule == CommunicationRuleType.Interference;
-            return hasSupportedSpecialRule && hasSupportedCommunication;
+            return MissionImplementationPolicy.CanPrepare(missionNumber);
         }
 
         private static void ValidatePreparedDeal(MissionAttemptPreparationContext preparationContext,
@@ -112,8 +107,9 @@ namespace Application.UseCases
                     CaptainSeat = missionDeal.CaptainSeat,
                     CurrentObjectiveDraftSeat = missionDeal.CaptainSeat,
                     PlayerCount = preparationContext.ParticipantUserIds.Length,
-                    Phase = objectives.Count == 0
-                        ? MissionAttemptPhase.PlayingTricks : MissionAttemptPhase.ObjectiveDrafting,
+                    Phase = MissionSpecialPreparationRules.GetInitialPhase(
+                        MissionCatalog.GetMission(preparationContext.MissionNumber)),
+                    RoleConfig = MissionRoleConfiguration.Default,
                     Status = MissionAttemptStatus.InProgress,
                     Objectives = objectives.ToArray()
                 },

@@ -7,6 +7,8 @@ namespace Gameplay
     public enum RadioCommunicationMode
     {
         [EnumMember] Standard = 0,
-        [EnumMember] Interference = 1
+        [EnumMember] Interference = 1,
+        [EnumMember] DisruptionUntilTrick2 = 2,
+        [EnumMember] DisruptionUntilTrick3 = 3
     }
 }
