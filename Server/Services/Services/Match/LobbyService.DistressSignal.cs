@@ -22,8 +22,8 @@ namespace Services.Services
         /// <exception cref="FaultException{MatchAccessFault}">
         /// Thrown when participant is unauthorized or the operation is unavailable.
         /// </exception>
-        public DistressSignalConfirmation SubmitDistressSignal(
-            DistressSignalSubmission submission, int participantUserId)
+        public DistressSignalConfirmation SubmitDistressSignal(DistressSignalSubmission submission,
+            int participantUserId)
         {
             if (!IsSubmissionValid(submission))
             {
@@ -53,8 +53,7 @@ namespace Services.Services
             };
         }
 
-        private DistressSignalCommit ExecuteDistressSignal(
-            DistressSignalSubmission submission, int participantUserId)
+        private DistressSignalCommit ExecuteDistressSignal(DistressSignalSubmission submission, int participantUserId)
         {
             DistressSignalCommit signalCommit;
 
