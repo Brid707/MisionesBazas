@@ -184,19 +184,14 @@ namespace Host
             ILobbyChatMessageUseCase lobbyChatMessageUseCase = context.ChatMessageUseCase;
             IAccountAccessPolicy accountAccessPolicy = context.AccountAccessPolicy;
             ILoggerFactory loggerFactory = context.LoggerFactory;
-            var matchUseCase = new MatchUseCase(
-                new InMemoryMatchStateStore(),
-                new SecureMissionDeckDealer(),
+            var matchUseCase = new MatchUseCase(new InMemoryMatchStateStore(), new SecureMissionDeckDealer(),
                 new MatchExecutionDependencies
                 {
                     Logger = loggerFactory.CreateLogger<MatchUseCase>(),
                     MatchClock = new MonotonicMatchClock(),
                     ParticipantPresence = new LobbyMatchPresence(loggerFactory.CreateLogger<LobbyMatchPresence>())
                 });
-            var lobbyUseCase = new LobbyUseCase(
-                userRepository,
-                new LobbyHostSelection(),
-                matchUseCase,
+            var lobbyUseCase = new LobbyUseCase(userRepository, new LobbyHostSelection(), matchUseCase,
                 loggerFactory.CreateLogger<LobbyUseCase>());
             ILoggerService lobbyServiceLogger = loggerFactory.CreateLogger<LobbyService>();
             var instanceProvider = new FuncInstanceProvider<LobbyService>(

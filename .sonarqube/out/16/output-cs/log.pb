@@ -1,0 +1,1 @@
+Roslyn version: 5.9.0.0Language version: CSharp9!Concurrent execution: enabledµ°File 'C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Rules\obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs' was recognized as generated

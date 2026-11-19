@@ -1,0 +1,1 @@
+[ROC:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\Services.csprojòCSharp9

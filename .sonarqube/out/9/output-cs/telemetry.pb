@@ -1,0 +1,1 @@
+aRUC:\Users\oscar\source\repos\TrickTakingMissions\Server\Application\Application.csprojòCSharp9

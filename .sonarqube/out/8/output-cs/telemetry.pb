@@ -1,0 +1,1 @@
+qReC:\Users\oscar\source\repos\TrickTakingMissions\Server\ServerTrickTakingMissions\Domain\Domain.csprojòCSharp9

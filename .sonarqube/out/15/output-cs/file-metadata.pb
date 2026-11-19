@@ -1,0 +1,13 @@
+[
+RC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\LobbyHostingContext.csutf-8ƒ
+xC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.csutf-8k
+bC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\MissionTransitionScheduler.csutf-8d
+[C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\MonotonicMatchClock.csutf-8h
+_C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\SecureMissionDeckDealer.csutf-8h
+_C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\InMemoryMatchStateStore.csutf-8_
+VC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Properties\AssemblyInfo.csutf-8[
+RC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\ProfileImageHosting.csutf-8O
+FC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Program.csutf-8p
+gC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\DependencyInjection\FuncInstanceProvider.csutf-8~
+uC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\DependencyInjection\DependencyInjectionServiceBehavior.csutf-8Z
+QC:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\LobbyHostSelection.csutf-8

@@ -17,7 +17,7 @@ namespace Persistence.Repository
     {
         private readonly ILoggerService _logger;
         private const string GetUserByEmailEntityFailureTemplate =
-    "Entity Framework connection failed while querying user by email {Email}.";
+            "Entity Framework connection failed while querying user by email {Email}.";
         private const string GetUserByEmailSqlFailureTemplate =
             "SQL execution failed while querying user by email {Email}.";
 

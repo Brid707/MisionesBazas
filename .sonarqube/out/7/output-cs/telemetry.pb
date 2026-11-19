@@ -1,0 +1,1 @@
+jR\C:\Users\oscar\source\repos\TrickTakingMissions\Client\ClientTrickTakingMissions\View.csprojò	CSharp7_3

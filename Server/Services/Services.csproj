@@ -144,7 +144,6 @@
     <Compile Include="Services\Match\LobbyMatchPresence.cs" />
     <Compile Include="Services\Match\LobbyCallbackPresenceLease.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />
     <Compile Include="Services\Match\LobbyService.ObjectiveDraft.cs" />
@@ -165,4 +164,5 @@
       <Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

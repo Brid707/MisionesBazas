@@ -138,7 +138,7 @@ namespace Model.Services
             catch (Exception ex)
             {
                 _logger.Warning(FallbackEndpointLogTemplate, ex.GetType().Name);
-                NetTcpBinding binding = new NetTcpBinding(SecurityMode.Transport);
+                NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
                 EndpointAddress endpointAddress = new EndpointAddress(DefaultEndpointAddress);
                 _channelFactory = new ChannelFactory<IAccountManagementServiceChannel>(binding, endpointAddress);
             }

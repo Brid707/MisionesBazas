@@ -1,0 +1,1 @@
+ƒRwC:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.ProfileImages\Infrastructure.ProfileImages.csprojòCSharp9

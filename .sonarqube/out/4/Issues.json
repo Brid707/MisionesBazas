@@ -1,0 +1,154 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilador de Microsoft (R) Visual C#",
+        "version": "5.10.0.0",
+        "fileVersion": "5.10.0-1.26380.3 (6cf38df40de9a5fa4b2e996807fe195d4c4d1f98)",
+        "semanticVersion": "5.10.0",
+        "language": "es-ES"
+      },
+      "results": [
+        {
+          "ruleId": "S2245",
+          "level": "warning",
+          "message": "Use a cryptographically strong random number generator.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Client/Model/Session/UserSession.cs",
+                "region": {
+                  "startLine": 14,
+                  "startColumn": 51,
+                  "endLine": 14,
+                  "endColumn": 63
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5332",
+          "level": "warning",
+          "message": "Using http protocol is insecure. Use https instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Client/Model/Services/Account/AccountManagementClient.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 37,
+                  "endLine": 40,
+                  "endColumn": 96
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5332",
+          "level": "warning",
+          "message": "Using http protocol is insecure. Use https instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Client/Model/Services/Account/AccountManagementClient.cs",
+                "region": {
+                  "startLine": 40,
+                  "startColumn": 112,
+                  "endLine": 40,
+                  "endColumn": 179
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5332",
+          "level": "warning",
+          "message": "Using http protocol is insecure. Use https instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Client/Model/Services/Account/AccountManagementClient.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 37,
+                  "endLine": 43,
+                  "endColumn": 96
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S5332",
+          "level": "warning",
+          "message": "Using http protocol is insecure. Use https instead.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Client/Model/Services/Account/AccountManagementClient.cs",
+                "region": {
+                  "startLine": 43,
+                  "startColumn": 112,
+                  "endLine": 43,
+                  "endColumn": 179
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "S2245": {
+          "id": "S2245",
+          "shortDescription": "Pseudorandom number generators (PRNGs) should not be used in security contexts",
+          "fullDescription": "Pseudorandom number generators (PRNGs) produce sequences that only approximate true randomness and are not suitable for security-sensitive contexts.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Vulnerability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S5332": {
+          "id": "S5332",
+          "shortDescription": "Clear-text protocols should not be used",
+          "fullDescription": "Using clear-text protocols exposes data in transit to eavesdropping and man-in-the-middle attacks.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Minor Vulnerability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+]RQC:\Users\oscar\source\repos\TrickTakingMissions\Client\ViewModel\ViewModel.csprojòCSharp9

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/integration/2015/1">
+  <ProjectName>Infrastructure.Email</ProjectName>
+  <ProjectLanguage>C#</ProjectLanguage>
+  <ProjectType>Product</ProjectType>
+  <ProjectGuid>84a9f63d-9b2e-4d1c-8a54-7e319c04e6b2</ProjectGuid>
+  <FullPath>C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Email\Infrastructure.Email.csproj</FullPath>
+  <IsExcluded>false</IsExcluded>
+  <AnalysisResultFiles>
+    <AnalysisResultFile Id="FilesToAnalyze" Location="C:\Users\oscar\source\repos\TrickTakingMissions\.sonarqube\conf\10\FilesToAnalyze.txt" />
+  </AnalysisResultFiles>
+  <AnalysisSettings>
+    <Property Name="sonar.cs.roslyn.reportFilePaths">C:\Users\oscar\source\repos\TrickTakingMissions\.sonarqube\out\10\Issues.json</Property>
+    <Property Name="sonar.cs.analyzer.projectOutPaths">C:\Users\oscar\source\repos\TrickTakingMissions\.sonarqube\out\10</Property>
+    <Property Name="sonar.cs.scanner.telemetry">C:\Users\oscar\source\repos\TrickTakingMissions\.sonarqube\out\10\Telemetry.json</Property>
+  </AnalysisSettings>
+  <Configuration>Debug</Configuration>
+  <Platform>AnyCPU</Platform>
+</ProjectInfo>

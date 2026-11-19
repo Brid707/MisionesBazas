@@ -1,0 +1,16 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\LobbyHostSelection.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\DependencyInjection\DependencyInjectionServiceBehavior.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\DependencyInjection\FuncInstanceProvider.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Program.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Properties\AssemblyInfo.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\ProfileImageHosting.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\InMemoryMatchStateStore.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\SecureMissionDeckDealer.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\MonotonicMatchClock.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\Gameplay\MissionTransitionScheduler.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\LobbyHostingContext.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\ModerationCatalogBackups\ValidatedCatalog.xml
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\ModerationCatalogs\ProhibitedChatExpressions.en-US.xml
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\ModerationCatalogs\ProhibitedChatExpressions.es-MX.xml
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\App.config
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Host\packages.config

@@ -1,0 +1,1 @@
+uRgC:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Email\Infrastructure.Email.csprojò	CSharp7_3

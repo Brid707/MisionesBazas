@@ -1,0 +1,1 @@
+}RqC:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csprojòCSharp9

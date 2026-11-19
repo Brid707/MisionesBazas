@@ -1,0 +1,3 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.ProfileImages\FileProfileImageStorage.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.ProfileImages\ProfileImageProcessor.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.ProfileImages\ProfileImageHeader.cs

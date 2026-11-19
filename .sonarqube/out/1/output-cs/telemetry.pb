@@ -1,0 +1,1 @@
+ÅRuC:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging\TrickTakingMissions.Logging.csprojÚCSharp9

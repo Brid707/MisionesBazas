@@ -39,7 +39,7 @@ namespace Host
             string endpointAddress = ConfigurationManager.AppSettings["ProfileImageEndpointAddress"] ??
                 "net.tcp://localhost:8090/ProfileImageService";
             var host = new ServiceHost(service, new Uri(endpointAddress));
-            var binding = new NetTcpBinding(SecurityMode.Transport)
+            var binding = new NetTcpBinding(SecurityMode.None)
             {
                 MaxReceivedMessageSize = ProfileImageLimits.MaximumTransportMessageBytes,
                 MaxBufferSize = ProfileImageLimits.MaximumTransportMessageBytes,
@@ -47,7 +47,6 @@ namespace Host
                 ReceiveTimeout = TimeSpan.FromMinutes(5)
             };
             binding.ReaderQuotas.MaxArrayLength = ProfileImageLimits.MaximumUploadBytes;
-            binding.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;
             host.AddServiceEndpoint(typeof(IProfileImageService), binding, string.Empty);
             host.Description.Behaviors.Add(new ServiceThrottlingBehavior
             {

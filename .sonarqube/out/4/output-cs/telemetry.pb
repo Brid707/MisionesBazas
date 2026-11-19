@@ -1,0 +1,1 @@
+WRIC:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Model.csprojò	CSharp7_3

@@ -1,0 +1,1 @@
+cRUC:\Users\oscar\source\repos\TrickTakingMissions\Server\Persistence\Persistence.csprojò	CSharp7_3

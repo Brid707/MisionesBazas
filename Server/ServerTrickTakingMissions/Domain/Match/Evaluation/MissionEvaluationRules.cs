@@ -182,6 +182,7 @@ namespace Domain
             bool isSpecialCardMission = context.Definition.SpecialRule ==
                 SpecialMissionRuleType.M13_WinTrickWithEverySpecialCard || context.Definition.SpecialRule ==
                 SpecialMissionRuleType.M44_SpecialCardsWinTricksInAscendingOrder;
+
             if (isSpecialCardMission)
             {
                 bool hasLostSpecialCard = context.CompletedTrickPlays.Any(play =>
@@ -191,6 +192,7 @@ namespace Domain
                     MissionFailureReasons.Mission13SpecialCardLostTrick)
                     : EvaluateSpecialCardProgress(context, updatedObjectives);
             }
+
             return result;
         }
 

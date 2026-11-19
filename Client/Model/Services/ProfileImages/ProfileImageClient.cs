@@ -104,7 +104,7 @@ namespace Model.Services
                 CommunicationState.Opened)
             {
                 Dispose();
-                var binding = new NetTcpBinding(SecurityMode.Transport)
+                var binding = new NetTcpBinding(SecurityMode.None)
                 {
                     MaxReceivedMessageSize = ProfileImageLimits.MaximumTransportMessageBytes,
                     MaxBufferSize = ProfileImageLimits.MaximumTransportMessageBytes,
@@ -113,7 +113,6 @@ namespace Model.Services
                     SendTimeout = TimeSpan.FromSeconds(10)
                 };
                 binding.ReaderQuotas.MaxArrayLength = ProfileImageLimits.MaximumUploadBytes;
-                binding.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;
                 _channelFactory = new DuplexChannelFactory<IProfileImageService>(new InstanceContext(this),
                     binding, new EndpointAddress(_endpointAddress));
                 _channelFactory.Endpoint.EndpointBehaviors.Add(new AccountSessionEndpointBehavior());

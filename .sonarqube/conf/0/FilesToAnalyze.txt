@@ -1,0 +1,5 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging.Abstractions\NullLoggerFactory.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging.Abstractions\NullLoggerService.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging.Abstractions\Ports\ILoggerFactory.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging.Abstractions\Ports\ILoggerService.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging.Abstractions\Properties\AssemblyInfo.cs

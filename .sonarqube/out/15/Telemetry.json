@@ -1,0 +1,9 @@
+﻿{"dotnetenterprise.s4net.build.override_treat_warnings_as_errors.cnt":"true"}
+{"dotnetenterprise.s4net.build.target_framework_moniker":".NETFramework,Version=v4.7.2"}
+{"dotnetenterprise.s4net.build.deterministic.cnt":"true"}
+{"dotnetenterprise.s4net.build.netcore_sdk_version.cnt":"NotSet"}
+{"dotnetenterprise.s4net.build.dependencies.log4net.cnt":"true"}
+{"dotnetenterprise.s4net.build.dependencies.entityframework.cnt":"true"}
+{"dotnetenterprise.s4net.build.dependencies.system_configuration.cnt":"true"}
+{"dotnetenterprise.s4net.build.dependencies.system_web.cnt":"true"}
+{"dotnetenterprise.s4net.build.dependencies.system_servicemodel.cnt":"true"}

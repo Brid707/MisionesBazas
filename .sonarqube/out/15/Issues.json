@@ -1,0 +1,182 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Compilador de Microsoft (R) Visual C#",
+        "version": "5.10.0.0",
+        "fileVersion": "5.10.0-1.26380.3 (6cf38df40de9a5fa4b2e996807fe195d4c4d1f98)",
+        "semanticVersion": "5.10.0",
+        "language": "es-ES"
+      },
+      "results": [
+        {
+          "ruleId": "S2245",
+          "level": "warning",
+          "message": "Use a cryptographically strong random number generator.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/LobbyHostSelection.cs",
+                "region": {
+                  "startLine": 11,
+                  "startColumn": 56,
+                  "endLine": 11,
+                  "endColumn": 68
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S2930",
+          "level": "warning",
+          "message": "Dispose '_shutdown' when it is no longer needed.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/Gameplay/MissionTransitionScheduler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 50,
+                  "endLine": 21,
+                  "endColumn": 91
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "S8949",
+          "level": "warning",
+          "message": "Pass the 'this._shutdown.Token' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/Gameplay/MissionTransitionScheduler.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 29,
+                  "endLine": 49,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/Gameplay/MissionTransitionScheduler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 50,
+                  "endLine": 21,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null
+            }
+          }
+        },
+        {
+          "ruleId": "S8949",
+          "level": "warning",
+          "message": "Pass the 'this._shutdown.Token' to this method to allow cancellation of the operation, or use 'CancellationToken.None' to opt out explicitly.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/Gameplay/MissionTransitionScheduler.cs",
+                "region": {
+                  "startLine": 131,
+                  "startColumn": 21,
+                  "endLine": 131,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "relatedLocations": [
+            {
+              "physicalLocation": {
+                "uri": "file:///C:/Users/oscar/source/repos/TrickTakingMissions/Server/Host/Gameplay/MissionTransitionScheduler.cs",
+                "region": {
+                  "startLine": 21,
+                  "startColumn": 50,
+                  "endLine": 21,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1,
+            "customProperties": {
+              "0": null
+            }
+          }
+        }
+      ],
+      "rules": {
+        "S2245": {
+          "id": "S2245",
+          "shortDescription": "Pseudorandom number generators (PRNGs) should not be used in security contexts",
+          "fullDescription": "Pseudorandom number generators (PRNGs) produce sequences that only approximate true randomness and are not suitable for security-sensitive contexts.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Vulnerability",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S2930": {
+          "id": "S2930",
+          "shortDescription": "\"IDisposables\" should be disposed",
+          "fullDescription": "When writing managed code, there is no need to worry about memory allocation or deallocation as it is taken care of by the garbage collector. However, certain objects, such as Bitmap, utilize unmanaged memory for specific purposes like pointer arithmetic. These objects may have substantial unmanaged memory footprints while having minimal managed footprints. Unfortunately, the garbage collector only recognizes the small managed footprint and does not promptly reclaim the corresponding unmanaged memory (by invoking the finalizer method of Bitmap) for efficiency reasons.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Blocker Bug",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        },
+        "S8949": {
+          "id": "S8949",
+          "shortDescription": "The overload accepting a 'CancellationToken' should be used",
+          "fullDescription": "When a CancellationToken is available but not forwarded to a method that has an overload accepting one, the cancellation request is silently ignored.",
+          "defaultLevel": "warning",
+          "properties": {
+            "category": "Major Bug",
+            "isEnabledByDefault": true,
+            "tags": [
+              "C#",
+              "MainSourceScope",
+              "TestSourceScope",
+              "SonarWay"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

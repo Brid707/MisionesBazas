@@ -1,0 +1,72 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\LobbyStateChangedEventArgs.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\ChatAccountBanAppliedEventArgs.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Security\AccountSessionEndpointBehavior.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\GameServices\Reference.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Properties\AssemblyInfo.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Security\PasswordHasher.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Wcf\GameChannelCloser.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Account\IAccountManagementClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Account\AccountManagementClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Account\AuthenticationClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Friendship\IFriendshipClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Friendship\FriendshipClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Friendship\IFriendsRequestClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Friendship\FriendsRequestClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\ILobbyClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\LobbyClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Wcf\WcfFaultHandler.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\IFriendshipSession.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\FriendshipSession.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\ILobbySession.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\LobbySession.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\UserSession.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Session\UserSessionData.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\DataContracts\ProfileImages\ProfileImageUpload.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\DataContracts\ProfileImages\PlayerProfileImageReference.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\Contracts\ProfileImages\IProfileImageCallback.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\Contracts\ProfileImages\IProfileImageService.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\DataContracts\ProfileImages\ProfileImageContent.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Services\DataContracts\ProfileImages\ProfileImageFault.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\ProfileImageCache.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\ProfileImageCacheEntry.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\IProfileImageClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\ProfileImageOperationException.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\ProfileImageClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\ProfileImages\IProfileImageCache.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\ProfileImages\ProfileImageLimits.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\ProfileImages\ProfileImageFailureCodes.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Partials\ILobbyServiceCallback.MatchPresence.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\IMatchClient.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\LobbyAndMatch\LobbyClient.Match.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Partials\LobbyServiceClient.Match.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Services\Partials\LobbyResult.Guest.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\app.config
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\configuration.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\configuration91.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\Reference.svcmap
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\service.wsdl
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\service.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\service1.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendShipService\Services.DTO.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\configuration.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\configuration91.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\Reference.svcmap
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\service.wsdl
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\service.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\service1.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\IFriendsRequestService\Services.DTO.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\configuration.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\configuration91.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\Model.ILobbyService.LobbyResult.datasource
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\Reference.svcmap
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\service.wsdl
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\service.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\service1.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\ILobbyService\Services.DTO.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\configuration.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\configuration91.svcinfo
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\item.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\item1.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\item2.xsd
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\Reference.svcmap
+C:\Users\oscar\source\repos\TrickTakingMissions\Client\Model\Connected Services\UserLoginService\UserLoginService.wsdl

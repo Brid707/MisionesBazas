@@ -1,0 +1,1 @@
+[ROC:\Users\oscar\source\repos\TrickTakingMissions\Shared\Gameplay\Gameplay.csprojòCSharp9

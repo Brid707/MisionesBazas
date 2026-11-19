@@ -1,0 +1,652 @@
+{
+  "scannerProperties": [
+    {
+      "key": "sonar.scanner.app",
+      "value": "ScannerMSBuild"
+    },
+    {
+      "key": "sonar.scanner.appVersion",
+      "value": "12.1"
+    },
+    {
+      "key": "sonar.scanner.bootstrapStartTime",
+      "value": "1795113259000"
+    },
+    {
+      "key": "sonar.projectKey",
+      "value": "TrickTakingMissions"
+    },
+    {
+      "key": "sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar"
+    },
+    {
+      "key": "sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions"
+    },
+    {
+      "key": "sonar.pullrequest.cache.basepath",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions"
+    },
+    {
+      "key": "sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\.vs\\ServerTrickTakingMissions.slnx\\v18\\DocumentLayout.backup.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\.vs\\ServerTrickTakingMissions.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\packages\\EntityFramework.6.5.2\\tools\\init.ps1,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\packages\\EntityFramework.6.5.2\\tools\\install.ps1,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\packages\\EntityFramework.6.5.2\\tools\\net6.0\\any\\ef6.runtimeconfig.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\ProfileImages\\ProfileImageLimits.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\ProfileImages\\ProfileImageFailureCodes.cs"
+    },
+    {
+      "key": "sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "sonar.modules",
+      "value": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F,78BB068A-8E30-499E-887F-1F6BE4863672,84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2,C36681C2-ACEC-4779-B280-E9B8CE8FDAB7,C3CE4B74-C003-42A1-9DBD-75F8213916EB,3A42C25B-7E6D-4FCC-968C-3A7641118B4E,A53B0772-76DF-4F1D-A540-B8C73E0F1F17,26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2,439733C3-C43D-4C1A-BE6D-C25EDC280575,9B4E4D71-29C3-4809-8C84-B835E37E31D6,32C771CD-15CC-4A90-B9B8-CB1004D90B79,67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95,2EF9D0F2-99EE-43F7-851F-B0440C8585ED,B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35,0BD0344E-3851-4F90-A9D1-298D169F966F"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.projectKey",
+      "value": "TrickTakingMissions:22D2C703-3C64-40E3-BAFE-F719DDC7D30F"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.projectName",
+      "value": "TrickTakingMissions.Logging.Abstractions"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod0"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions\\NullLoggerFactory.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions\\NullLoggerService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions\\Ports\\ILoggerFactory.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions\\Ports\\ILoggerService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging.Abstractions\\Properties\\AssemblyInfo.cs"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\0"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\0\\Issues.json"
+    },
+    {
+      "key": "22D2C703-3C64-40E3-BAFE-F719DDC7D30F.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\0\\Telemetry.json"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.projectKey",
+      "value": "TrickTakingMissions:78BB068A-8E30-499E-887F-1F6BE4863672"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.projectName",
+      "value": "TrickTakingMissions.Logging"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod1"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\obj\\project.assets.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\obj\\TrickTakingMissions.Logging.csproj.nuget.dgspec.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\Log4NetConfigurator.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\LoggerFactory.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\LoggerService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Logging\\Properties\\AssemblyInfo.cs"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\1"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\1\\Issues.json"
+    },
+    {
+      "key": "78BB068A-8E30-499E-887F-1F6BE4863672.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\1\\Telemetry.json"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.projectKey",
+      "value": "TrickTakingMissions:84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.projectName",
+      "value": "Infrastructure.Email"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod2"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\bin\\Debug\\Infrastructure.Email.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\EmailService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Email\\Properties\\AssemblyInfo.cs"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\10"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\10\\Issues.json"
+    },
+    {
+      "key": "84A9F63D-9B2E-4D1C-8A54-7E319C04E6B2.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\10\\Telemetry.json"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.projectKey",
+      "value": "TrickTakingMissions:C36681C2-ACEC-4779-B280-E9B8CE8FDAB7"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.projectName",
+      "value": "Persistence"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod3"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\.vs\\Persistence.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\bin\\Debug\\Persistance.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\bin\\Debug\\Persistence.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\bin\\Release\\Persistence.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\BlockedAccountEmailRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\ModerationDatabaseConnection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\AttemptCard.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\AttemptObjective.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\AttemptRulePlayer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Card.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Communication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\DistressTransfer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\DistressUse.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Experience.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Friendship.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Game.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\GameMission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\GamePlayer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\GameSystemMessage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Invitation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Lobby.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\LobbyMessage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\LobbyPlayer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\FriendshipRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Mission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\MissionAttempt.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\MissionRestriction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\MissionToken.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\PlayerLevels_Result.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\NormalCard.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Play.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\PlayerBlock.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\PlayerProfile.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\RuleDefinition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\SpecialCard.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Trick.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\User.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\UserPartial.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\UserRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\ChatInfractionRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Repository\\PlayerProfileRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\TrickTakingMissionsModel.Context.tt,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\TrickTakingMissionsModel.tt,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\TrickTakingMissionsModel.edmx,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\TrickTakingMissionsModel.edmx.diagram,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Scripts\\SetupDatabase.sql,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Migrations\\002_PermanentlyBlockedAccountEmail.sql,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Persistence\\Migrations\\001_ChatModeration.sql"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\11"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\11\\Issues.json"
+    },
+    {
+      "key": "C36681C2-ACEC-4779-B280-E9B8CE8FDAB7.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\11\\Telemetry.json"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.projectKey",
+      "value": "TrickTakingMissions:C3CE4B74-C003-42A1-9DBD-75F8213916EB"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.projectName",
+      "value": "Services"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod4"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\.vs\\Services.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\bin\\Debug\\Services.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Friends\\IFriendshipService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Friends\\IFriendshipServiceCallback.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Friends\\IFriendsRequestService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\LobbyChatMessageSubmissionOutcome.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\LobbyChatMessageRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\LobbyChatMessageRejectionMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\LobbyChatMessageSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\ChatInfractionNotice.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\ChatAccountBanType.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ChatModeration\\ChatAccountBanNotice.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Security\\AuthenticatedAccountSessionRegistry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Security\\AuthenticatedAccountSession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Security\\AccountSessionHeader.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Lobby\\ILobbyCallback.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Lobby\\ILobbyService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Account\\IAccountManagementService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\Account\\IUserLoginService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Friends\\Friend.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Friends\\FriendRequest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Friends\\GameInvitation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Lobby\\Lobby.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Lobby\\LobbyMessage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Lobby\\LobbyPlayer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Lobby\\LobbyResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Lobby\\LobbySettings.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Common\\OperationResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Account\\User.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\Account\\UserRegister.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\ChannelDisconnectObserver.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Friends\\FriendshipService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Friends\\FriendsRequestService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Lobby\\LobbyService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Account\\AccountManagementService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Account\\UserLoginService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ProfileImages\\ProfileImageUpload.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\ProfileImages\\ProfileImageSubscriptions.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ProfileImages\\PlayerProfileImageReference.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\ProfileImages\\IProfileImageCallback.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Contracts\\ProfileImages\\IProfileImageService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ProfileImages\\ProfileImageContent.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\ProfileImages\\ProfileImageService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\DataContracts\\ProfileImages\\ProfileImageFault.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.Match.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Security\\GuestParticipantCredentials.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\MissionRetryMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.MissionRetry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyMatchPresence.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyCallbackPresenceLease.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\MissionObjectiveDraftMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.ObjectiveDraft.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\RadioCommunicationMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.RadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\DistressSignalMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.DistressSignal.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Mapping\\MissionPreparationMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Services\\Services\\Match\\LobbyService.SpecialPreparation.cs"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\12"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\12\\Issues.json"
+    },
+    {
+      "key": "C3CE4B74-C003-42A1-9DBD-75F8213916EB.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\12\\Telemetry.json"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.projectKey",
+      "value": "TrickTakingMissions:3A42C25B-7E6D-4FCC-968C-3A7641118B4E"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.projectName",
+      "value": "Infrastructure.ProfileImages"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod5"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\.vs\\Infrastructure.ProfileImages.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\FileProfileImageStorage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\ProfileImageProcessor.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.ProfileImages\\ProfileImageHeader.cs"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\13"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\13\\Issues.json"
+    },
+    {
+      "key": "3A42C25B-7E6D-4FCC-968C-3A7641118B4E.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\13\\Telemetry.json"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.projectKey",
+      "value": "TrickTakingMissions:A53B0772-76DF-4F1D-A540-B8C73E0F1F17"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.projectName",
+      "value": "Infrastructure.Moderation"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod6"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\ChatCatalogReadState.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\ChatCatalogXmlReader.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\ChatModerationCatalogBackup.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Infrastructure.Moderation\\ProhibitedChatExpressionCatalog.cs"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\14"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\14\\Issues.json"
+    },
+    {
+      "key": "A53B0772-76DF-4F1D-A540-B8C73E0F1F17.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\14\\Telemetry.json"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.projectKey",
+      "value": "TrickTakingMissions:26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.projectName",
+      "value": "Host"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod7"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\packages.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\.vs\\Host.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Host.exe.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Infrastructure.Email.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Persistence.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\ServerTrickTakingMissions.exe.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Debug\\Services.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Release\\Host.exe.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\bin\\Release\\Persistence.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\.vs\\Host.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\.vs\\TrickTakingMissionsServer.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\packages\\EntityFramework.6.5.2\\tools\\init.ps1,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\packages\\EntityFramework.6.5.2\\tools\\install.ps1,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\packages\\EntityFramework.6.5.2\\tools\\net6.0\\any\\ef6.runtimeconfig.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\LobbyHostSelection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\DependencyInjection\\DependencyInjectionServiceBehavior.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\DependencyInjection\\FuncInstanceProvider.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Program.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\ProfileImageHosting.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Gameplay\\InMemoryMatchStateStore.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Gameplay\\SecureMissionDeckDealer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Gameplay\\MonotonicMatchClock.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\Gameplay\\MissionTransitionScheduler.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\LobbyHostingContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\ModerationCatalogBackups\\ValidatedCatalog.xml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\ModerationCatalogs\\ProhibitedChatExpressions.en-US.xml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Host\\ModerationCatalogs\\ProhibitedChatExpressions.es-MX.xml"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\15"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\15\\Issues.json"
+    },
+    {
+      "key": "26CE1C4B-E520-4C14-B7E6-9E6F5A5805C2.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\15\\Telemetry.json"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.projectKey",
+      "value": "TrickTakingMissions:439733C3-C43D-4C1A-BE6D-C25EDC280575"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.projectName",
+      "value": "TrickTakingMissions.Rules"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod8"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\.vs\\TrickTakingMissions.Rules.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\.vs\\TrickTakingMissions.Rules.slnx\\v18\\DocumentLayout.backup.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\.vs\\TrickTakingMissions.Rules.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Compatibility\\IsExternalInit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\BlindObjectiveCapableResponse.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\CardSuit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\CommunicationRuleType.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\DisconnectionResolutionOption.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\DistressSignalStep.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\MissionAttemptPhase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\MissionAttemptStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\ObjectiveStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\ObjectiveTokenType.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\PassDirection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\RadioCommunicationRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\RadioTokenPosition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\SpecialCardSymbol.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\SpecialMissionRuleType.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Enums\\TrickPlayRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\Card.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\MissionDefinition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\MissionObjective.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\PlayerRadioCommunicationState.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\RadioCommunicationContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\RadioCommunicationValidationResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\TrickCardPlay.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\TrickPlayContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Models\\TrickPlayValidationResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\DeckRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\LeadCardResolver.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\MissionCatalog.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\RadioCommunicationRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\TrickFollowSuitRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\TrickTakingMissions.Rules\\Rules\\TrickWinnerRules.cs"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\16,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\2"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\16\\Issues.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\2\\Issues.json"
+    },
+    {
+      "key": "439733C3-C43D-4C1A-BE6D-C25EDC280575.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\16\\Telemetry.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\2\\Telemetry.json"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.projectKey",
+      "value": "TrickTakingMissions:9B4E4D71-29C3-4809-8C84-B835E37E31D6"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.projectName",
+      "value": "Gameplay"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod9"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressPassDirection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalActionType.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalConfirmation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalFailureReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalFault.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalPhase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Distress\\DistressSignalSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Evaluation\\MissionAttemptEvaluationStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Evaluation\\MissionEvaluationFailureReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Evaluation\\MissionEvaluationSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Evaluation\\MissionObjectiveStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\IMatchService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\MatchAccessFault.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\PlayerCapturedCardsSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveDraftAction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveDraftDecision.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveDraftRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveDraftSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\MissionObjectiveToken.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Preparation\\PlayerMissionPreparationSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Progression\\MissionTransitionKind.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Progression\\MissionTransitionSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Progression\\MissionTransitionStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\PlayerRadioCommunicationSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationConfirmation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationFailureReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationFault.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationMarker.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationMode.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Radio\\RadioCommunicationSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Retry\\MissionRetryDecision.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Retry\\MissionRetryRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Retry\\MissionRetrySnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Retry\\MissionRetryStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Retry\\MissionRetrySubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\BlindObjectiveParticipantSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\BlindObjectiveResponse.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\BlindObjectiveResponseSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\HeartNineIdentificationSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionConditionProgressSnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionPreparationConfirmation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionPreparationFailureReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionPreparationFault.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionPreparationStage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionRoleAssignmentSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\MissionTrickDistributionSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\SpecialPreparation\\RadioAvailabilitySnapshot.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Tricks\\CardPlayDecision.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Tricks\\CardPlaySubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Tricks\\MatchCardPlay.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Tricks\\MatchRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Shared\\Gameplay\\Tricks\\PlayerMatchSnapshot.cs"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\3"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\3\\Issues.json"
+    },
+    {
+      "key": "9B4E4D71-29C3-4809-8C84-B835E37E31D6.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\3\\Telemetry.json"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.projectKey",
+      "value": "TrickTakingMissions:32C771CD-15CC-4A90-B9B8-CB1004D90B79"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.projectName",
+      "value": "Model"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod10"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\app.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\.vs\\Model.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\bin\\Debug\\Model.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\LobbyStateChangedEventArgs.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\ChatAccountBanAppliedEventArgs.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Security\\AccountSessionEndpointBehavior.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\GameServices\\Reference.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Security\\PasswordHasher.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Wcf\\GameChannelCloser.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Account\\IAccountManagementClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Account\\AccountManagementClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Account\\AuthenticationClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Friendship\\IFriendshipClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Friendship\\FriendshipClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Friendship\\IFriendsRequestClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Friendship\\FriendsRequestClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\ILobbyClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\LobbyClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Wcf\\WcfFaultHandler.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\IFriendshipSession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\FriendshipSession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\ILobbySession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\LobbySession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\UserSession.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Session\\UserSessionData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\ProfileImageCache.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\ProfileImageCacheEntry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\IProfileImageClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\ProfileImageOperationException.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\ProfileImageClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\ProfileImages\\IProfileImageCache.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Partials\\ILobbyServiceCallback.MatchPresence.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\IMatchClient.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\LobbyAndMatch\\LobbyClient.Match.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Partials\\LobbyServiceClient.Match.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Services\\Partials\\LobbyResult.Guest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\configuration.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\configuration91.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\Reference.svcmap,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\service.wsdl,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\service.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\service1.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendShipService\\Services.DTO.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\configuration.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\configuration91.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\Reference.svcmap,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\service.wsdl,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\service.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\service1.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\IFriendsRequestService\\Services.DTO.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\configuration.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\configuration91.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\Model.ILobbyService.LobbyResult.datasource,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\Reference.svcmap,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\service.wsdl,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\service.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\service1.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\ILobbyService\\Services.DTO.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\configuration.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\configuration91.svcinfo,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\item.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\item1.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\item2.xsd,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\Reference.svcmap,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\Model\\Connected Services\\UserLoginService\\UserLoginService.wsdl"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\4"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\4\\Issues.json"
+    },
+    {
+      "key": "32C771CD-15CC-4A90-B9B8-CB1004D90B79.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\4\\Telemetry.json"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.projectKey",
+      "value": "TrickTakingMissions:67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.projectName",
+      "value": "ViewModel"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod11"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\.vs\\ViewModel.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\bin\\Debug\\Model.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Lobby\\LobbyChatViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Lobby\\LobbyChatMessageViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\IChatModerationPresenter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Base\\AsyncRelayCommand.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Base\\RelayCommand.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Base\\ViewModelBase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Constants\\MessageCode.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Constants\\ViewId.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\IDialogService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\ILanguageService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\INavigationService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\MatchBoardContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\ViewModelNavigationLogging.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\ViewModelUiServices.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Authentication\\ChangePasswordViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\EnterGameCodeViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Authentication\\ForgotPasswordViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Friends\\FriendItemViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Friends\\FriendRequestItemViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Friends\\FriendsViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Lobby\\GameInvitationItemViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\GameMatchViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\GameMenuViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\GameSettingsViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\HomeScreenViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\HowToPlayViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Lobby\\LobbyPlayerItemViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Lobby\\LobbyViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Authentication\\LoginViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Friends\\ManageFriendRequestViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Profile\\ProfileViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Authentication\\RecoverPasswordViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Authentication\\RegisterViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\ScoreBoardViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Menu\\SelectLanguageViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Friends\\SendFriendRequestViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Services\\IProfileImagePicker.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Profile\\ProfileImageViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Constants\\ProfileImageFeedback.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Models\\ProfileImageSelection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.MissionEvaluation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.MissionTransition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Cards\\HandCardViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.CommunicationAndDistress.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Cards\\PlayedCardViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\Constants\\MatchTablePosition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Objectives\\MissionObjectiveViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.ObjectiveDraft.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.MissionInstructions.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.RadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Radio\\RadioMarkerOptionViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Radio\\PlayerRadioCommunicationViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.SpecialPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Objectives\\BlindObjectiveResponseViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Objectives\\PublicMissionRoleViewModel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ViewModel\\ViewModels\\Match\\Board\\MatchBoardViewModel.FinalPreparation.cs"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\5"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\5\\Issues.json"
+    },
+    {
+      "key": "67A5DCD0-C14D-4E90-BEA7-1FF8C68E1B95.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\5\\Telemetry.json"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.projectKey",
+      "value": "TrickTakingMissions:2EF9D0F2-99EE-43F7-851F-B0440C8585ED"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.projectName",
+      "value": "View"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod12"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\MisionesBazas.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\View.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\obj\\project.assets.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\obj\\View.csproj.nuget.dgspec.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\bin\\Debug\\Model.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\bin\\Debug\\View.exe.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\MisionesBazas.slnx\\v18\\DocumentLayout.backup.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\MisionesBazas.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\TrickTakingMissionsClient.slnx\\v18\\DocumentLayout.backup.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\TrickTakingMissionsClient.slnx\\v18\\DocumentLayout.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\MisionesBazas.slnx\\v18\\ResourceExplorer\\settings.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\.vs\\TrickTakingMissionsClient.slnx\\v18\\ResourceExplorer\\settings.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\App.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\ChatModerationPresenter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Controls\\OverlappingCardHandPanel.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Controls\\GameTitleView.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\ChatModerationTextFormatter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\ChangePassword.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\EnterGameCode.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\ForgotPassword.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\GameMenu.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\GameSettings.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\HowToPlay.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Lobby\\Lobby.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\LoginPage.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\RecoverPassword.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\RegisterPage.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Profile\\Profile.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\ScoreBoard.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\SelectLanguageWindow.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\SendFriendRequestPage.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\ManageFriendRequestWindow.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\FriendsView.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Match\\GameMatch.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Styles\\FontTypography.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\ClientLoggingRuntime.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\WpfNavigationService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\WpfDialogService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\WpfLanguageService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\App.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\HomeScreen.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\MainWindow.xaml.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\ByteArrayToImageSourceConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\ProfileImageFeedbackToStringConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Services\\WpfProfileImagePicker.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\CardIdToImagePathConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\MatchFeedbackKeyToStringConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\MissionObjectiveCardIdToImagePathConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\MissionObjectiveTokenToImagePathConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\RadioTokenPositionToVerticalAlignmentConverter.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Converters\\CardArtworkPathResolver.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\Langs\\Resources.resx,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\Langs\\Resources.es-MX.resx,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\Langs\\Resources.en-US.resx,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\DataSources\\Experience.datasource,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\DataSources\\Profile.datasource,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\DataSources\\User.datasource,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Properties\\Settings.settings,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Themes\\Colors.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Themes\\GameBranding.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Controls\\GameTitleView.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\ChangePassword.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\EnterGameCode.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\ForgotPassword.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\GameMenu.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\GameSettings.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\HomeScreen.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\HowToPlay.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Lobby\\Lobby.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\LoginPage.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\MainWindow.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\RecoverPassword.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Authentication\\RegisterPage.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\ScoreBoard.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Menu\\SelectLanguageWindow.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Profile\\Profile.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\SendFriendRequestPage.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\ManageFriendRequestWindow.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Friends\\FriendsView.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Views\\Match\\GameMatch.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Themes\\ProfileImages.xaml,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Icons\\Icon_Game_CardFan.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Backgrounds\\Bg_Auth_CardStrip.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Back_Default.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_King.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Club_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_King.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Diamond_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_King.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Heart_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_King.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Cards\\Card_Spade_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Club_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Diamond_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Heart_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Eight.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Nine.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Seven.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Six.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\ObjectiveCards\\Card_Objective_Spade_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_Captain.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_Disruption_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_Disruption_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_Distress.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_Interference.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\Indicators\\Token_No_Wins.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Arrow_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Arrow_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Arrow_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Arrow_Two.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Omega.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Order_Five.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Order_Four.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Order_One.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Order_Three.png,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Client\\ClientTrickTakingMissions\\Assets\\Images\\Tokens\\ObjectiveMarkers\\Token_Order_Two.png"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\7"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\7\\Issues.json"
+    },
+    {
+      "key": "2EF9D0F2-99EE-43F7-851F-B0440C8585ED.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\7\\Telemetry.json"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.projectKey",
+      "value": "TrickTakingMissions:B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.projectName",
+      "value": "Domain"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod13"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\.vs\\Domain.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Account\\UserAccountRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatAccountInfractionState.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatInfractionCategory.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatInfractionRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatMessageModerationDecision.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatMessageModerator.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ChatMessageTextNormalizer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\NormalizedChatMessageText.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\ChatModeration\\ProhibitedChatExpression.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Compatibility\\IsExternalInit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Lobby\\GuestIdentityRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Lobby\\LobbyCodeRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Lobby\\LobbyRoomRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Distress\\DistressSignalContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Distress\\DistressSignalRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionEvaluationContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionEvaluationFailureCode.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionEvaluationResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionEvaluationRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionEvaluationRules.Objectives.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Evaluation\\MissionFailureReasons.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Lifecycle\\DisconnectionPolicyRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Lifecycle\\MissionAttemptState.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Lifecycle\\MissionProgressionRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\DeckDealRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MatchPlayerCountRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionDeal.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionDraftContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionObjectiveDealRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionRoleAssignmentContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionRoleConfiguration.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionSetupRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\MissionTrickDistributionContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Setup\\ParticipantSeatRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\SpecialPreparation\\MissionSpecialPreparationRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\SpecialPreparation\\MissionSpecialPreparationRules.FinalMissions.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Match\\Tricks\\TrickTurnRules.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\ServerTrickTakingMissions\\Domain\\Properties\\AssemblyInfo.cs"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\8"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\8\\Issues.json"
+    },
+    {
+      "key": "B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\8\\Telemetry.json"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.projectKey",
+      "value": "TrickTakingMissions:0BD0344E-3851-4F90-A9D1-298D169F966F"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.projectName",
+      "value": "Application"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.projectBaseDir",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.working.directory",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\.sonar\\mod14"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.sourceEncoding",
+      "value": "utf-8"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.tests",
+      "value": ""
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.sources",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\App.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\.vs\\Application.csproj.dtbcache.json,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\bin\\Debug\\Application.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\bin\\Debug\\Domain.dll.config,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\ChatModerationPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ChatModeration\\IChatModerationCatalogBackup.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\ChatModeration\\ChatModerationStartup.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IBlockedAccountEmailRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Lobby\\ILobbyHostSelection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Lobby\\LobbyConfiguration.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\ChatMessageRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Account\\AccountAccessPolicy.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IAccountAccessPolicy.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\ChatModeration\\LobbyChatMessageUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ChatModeration\\IProhibitedChatExpressionCatalog.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ChatModeration\\ILobbyChatMessageUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ChatModeration\\IChatInfractionRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IAuthenticatedAccountSessionRegistry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\LobbyChatMessageProcessing.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\ChatInfractionSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\ChatInfractionRecord.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ChatModeration\\AuthenticatedChatMessageSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Account\\AuthenticatedUserData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Lobby\\LobbyActionOutcome.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Lobby\\LobbyParticipantData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Lobby\\LobbyRoomData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Account\\UserAccount.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Account\\UserRegistrationOutcome.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Email\\IEmailService.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Friends\\FriendRequestData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Friends\\FriendSummaryData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Friends\\FriendshipActionOutcome.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Friends\\FriendshipRecordData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Friends\\IFriendshipRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Friends\\IFriendshipUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Lobby\\ILobbyUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IUserLoginUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IAccountManagementUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IUserRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Friends\\FriendshipUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Lobby\\LobbyUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Account\\AccountManagementUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Account\\UserLoginUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Properties\\AssemblyInfo.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ProfileImages\\PlayerProfileImageData.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\ProfileImages\\ProfileImageException.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ProfileImages\\IProfileImageProcessor.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\ProfileImages\\IProfileImageStorage.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Account\\IPlayerProfileRepository.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\ProfileImages\\ProfileImageUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchState.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Tricks\\ProcessedCardPlay.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMatchStateStore.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMissionDeckDealer.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMatchUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Core\\MatchUseCase.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Core\\MatchSnapshotProjection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Core\\MatchPlayValidation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Distress\\DistressSignalRejection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Distress\\DistressSignalRequest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Distress\\DistressSignalCommit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Distress\\DistressParticipantAction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Distress\\MatchUseCase.DistressSignal.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Tricks\\CompletedTrickResolution.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Evaluation\\MatchUseCase.MissionEvaluation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Evaluation\\MissionEvaluationMapper.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Evaluation\\MatchSnapshotProjection.MissionEvaluation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MissionAttemptPreparationContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\PreparedMissionAttempt.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MatchState.MissionTransition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Retry\\MissionRetryRequest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Retry\\MissionRetryConfirmation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Retry\\MissionRetryRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Retry\\ProcessedMissionRetry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Preparation\\MissionAttemptPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Retry\\MatchUseCase.MissionRetry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Retry\\MatchSnapshotProjection.MissionRetry.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MissionTransitionPolicy.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MissionTransitionScheduleStatus.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMatchClock.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMatchParticipantPresence.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Ports\\Match\\IMatchStateChangePublisher.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchExecutionDependencies.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchPresenceQuery.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchParticipantPresence.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MissionTransitionWork.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MissionTransitionExecutionResult.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Transition\\MatchUseCase.MissionTransitionScheduling.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Transition\\MatchUseCase.MissionTransitionExecution.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Draft\\ObjectiveDraftSubmission.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Draft\\ObjectiveDraftDecision.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Draft\\ProcessedObjectiveDraft.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchActionRequestBudget.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Draft\\ObjectiveDraftAction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Draft\\ObjectiveDraftRejectionReason.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\ObjectiveDraft\\MatchUseCase.ObjectiveDraft.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\ObjectiveDraft\\MatchSnapshotProjection.ObjectiveDraft.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchActionRequestLimits.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchStartContext.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Transition\\MissionTransitionAction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Transition\\MatchUseCase.MissionTransitionDestination.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Transition\\MatchSnapshotProjection.MissionTransition.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Radio\\CommittedRadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Radio\\RadioCommunicationCommit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Radio\\RadioCommunicationRejection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Radio\\RadioCommunicationRequest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Radio\\RadioPublicMarker.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchState.RadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Radio\\MatchUseCase.RadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Radio\\RadioCommunicationRuleMapping.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Radio\\MatchSnapshotProjection.RadioCommunication.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Tricks\\MissionTrickStatistics.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\MissionPreparationRejection.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\MissionPreparationAction.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Core\\MissionImplementationPolicy.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\MissionPreparationRequest.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\MissionPreparationCommit.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\ProcessedMissionPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\SpecialPreparationChange.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\Preparation\\PreparedTrickEvaluation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\Models\\Match\\State\\MatchState.SpecialPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Preparation\\MatchUseCase.SpecialPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Preparation\\MatchSnapshotProjection.SpecialPreparation.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Radio\\RadioCommunicationContextFactory.cs,C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\Server\\Application\\UseCases\\Match\\Preparation\\MatchUseCase.FinalMissionPreparation.cs"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.cs.analyzer.projectOutPaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\9"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.cs.roslyn.reportFilePaths",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\9\\Issues.json"
+    },
+    {
+      "key": "0BD0344E-3851-4F90-A9D1-298D169F966F.sonar.cs.scanner.telemetry",
+      "value": "C:\\Users\\oscar\\source\\repos\\TrickTakingMissions\\.sonarqube\\out\\9\\Telemetry.json"
+    },
+    {
+      "key": "sonar.token",
+      "value": "***"
+    },
+    {
+      "key": "sonar.host.url",
+      "value": "http://localhost:9000"
+    }
+  ]
+}

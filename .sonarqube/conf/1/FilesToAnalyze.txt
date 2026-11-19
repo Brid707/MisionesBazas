@@ -1,0 +1,4 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging\Log4NetConfigurator.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging\LoggerFactory.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging\LoggerService.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Shared\TrickTakingMissions.Logging\Properties\AssemblyInfo.cs

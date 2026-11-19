@@ -1,0 +1,4 @@
+﻿C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Moderation\ChatCatalogReadState.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Moderation\ChatCatalogXmlReader.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Moderation\ChatModerationCatalogBackup.cs
+C:\Users\oscar\source\repos\TrickTakingMissions\Server\Infrastructure.Moderation\ProhibitedChatExpressionCatalog.cs
