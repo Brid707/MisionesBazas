@@ -607,105 +607,6 @@
                                 </StackPanel>
                             </Border>
                         </Popup>
-                        <ToggleButton x:Name="RadioPanelToggleButton" HorizontalAlignment="Center" Margin="0,0,0,5">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Source=Radio_Label_Communicate,
-                                    Converter={StaticResource MatchTextConverter}}" />
-                                <TextBlock Text="{Binding RadioCommunications.Count}" Margin="8,0,0,0" />
-                            </StackPanel>
-                        </ToggleButton>
-                        <Popup PlacementTarget="{Binding ElementName=RadioPanelToggleButton}" Placement="Top"
-                               IsOpen="{Binding IsChecked, ElementName=RadioPanelToggleButton, Mode=TwoWay}"
-                               StaysOpen="False" AllowsTransparency="True">
-                            <Border Padding="12" MaxWidth="600" BorderThickness="2"
-                                    Background="{StaticResource BrushLobbyMatchSurface}"
-                                    BorderBrush="{StaticResource BrushTextDark}">
-                                <StackPanel>
-                            <StackPanel>
-                                <TextBlock Foreground="{StaticResource BrushTextLight}"
-                                           Text="{Binding Source=Radio_Label_Help,
-                                    Converter={StaticResource MatchTextConverter}}" TextWrapping="Wrap" />
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <ComboBox Width="110" Height="54" ItemsSource="{Binding OwnHandCards}"
-                                              SelectedItem="{Binding SelectedRadioCard}"
-                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Image Height="44" Source="{Binding CardId,
-                                                    Converter={StaticResource CardImageConverter}}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <ComboBox Width="180" ItemsSource="{Binding AvailableRadioMarkers}"
-                                              SelectedItem="{Binding SelectedRadioMarker}"
-                                              IsEnabled="{Binding CanChooseRadioCard}" Margin="4">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding ResourceKey,
-                                                    Converter={StaticResource MatchTextConverter}}" />
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
-                                    <Button Command="{Binding SubmitRadioCommunicationCommand}" Margin="4" Padding="8">
-                                        <TextBlock Text="{Binding Source=Radio_Label_Reveal,
-                                            Converter={StaticResource MatchTextConverter}}" />
-                                    </Button>
-                                </StackPanel>
-                            </StackPanel>
-                        <ItemsControl ItemsSource="{Binding RadioCommunications}" HorizontalAlignment="Center">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="8,0,8,4">
-                                        <TextBlock Text="{Binding ParticipantName}" HorizontalAlignment="Center"
-                                                   Foreground="{StaticResource BrushTextLight}" />
-                                        <Grid Height="56" Width="44" HorizontalAlignment="Center">
-                                            <Image Source="{Binding CardId,
-                                                Converter={StaticResource CardImageConverter}}" />
-                                            <Ellipse Width="10" Height="10" Margin="2"
-                                                     Fill="{StaticResource BrushTextLight}"
-                                                     Stroke="{StaticResource BrushTextDark}">
-                                                <Ellipse.Style>
-                                                    <Style TargetType="Ellipse">
-                                                        <Setter Property="Visibility" Value="Collapsed" />
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding Marker}"
-                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Highest}">
-                                                                <Setter Property="Visibility" Value="Visible" />
-                                                                <Setter Property="VerticalAlignment" Value="Top" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Marker}"
-                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Only}">
-                                                                <Setter Property="Visibility" Value="Visible" />
-                                                                <Setter Property="VerticalAlignment" Value="Center" />
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Marker}"
-                                                                Value="{x:Static gameplay:RadioCommunicationMarker.Lowest}">
-                                                                <Setter Property="Visibility" Value="Visible" />
-                                                                <Setter Property="VerticalAlignment" Value="Bottom" />
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Ellipse.Style>
-                                            </Ellipse>
-                                        </Grid>
-                                        <TextBlock Text="{Binding MarkerResourceKey,
-                                            Converter={StaticResource MatchTextConverter}}"
-                                                   Foreground="{StaticResource BrushTextLight}" />
-                                        <TextBlock Text="{Binding Source=Radio_Label_Played,
-                                            Converter={StaticResource MatchTextConverter}}"
-                                                   Foreground="{StaticResource BrushTextLight}"
-                                                   Visibility="{Binding HasCommunicatedCardBeenPlayed,
-                                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                                </StackPanel>
-                            </Border>
-                        </Popup>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                             Visibility="{Binding HasSingleTrickWinner,
                                 Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -859,6 +760,33 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
+
+                            <!-- Communication Token Toggle Button -->
+                            <Button Width="46" Height="46" Margin="14,0,0,10" VerticalAlignment="Bottom"
+                                    Command="{Binding ToggleCommunicationModeCommand}"
+                                    ToolTip="{Binding Source=Match_Tooltip_CommunicationToken,
+                                        Converter={StaticResource MatchTextConverter}}"
+                                    Background="{StaticResource BrushTransparent}" BorderThickness="0" Padding="0">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Image x:Name="TokenImage" Width="44" Height="44" Stretch="Uniform"
+                                            Source="/View;component/Assets/Images/Tokens/Indicators/Token_Interference.png" />
+                                        <ControlTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding CanCommunicate}" Value="False">
+                                                <Setter TargetName="TokenImage" Property="Opacity" Value="0.3" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsCommunicationModeActive}" Value="True">
+                                                <Setter TargetName="TokenImage" Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="#FFF36B" BlurRadius="22"
+                                                                          ShadowDepth="0" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Grid>

@@ -202,7 +202,22 @@ namespace ViewModel.ViewModels
 
         private bool CanPlaySelectedCard(object selectedCard)
         {
-            return CanPlayCurrentTurn() && selectedCard is int cardId && GetPlayableCardIds().Contains(cardId);
+            if (IsDistressSignalInProgress)
+            {
+                return false;
+            }
+
+            if (selectedCard is int cardId)
+            {
+                if (IsCommunicationModeActive)
+                {
+                    return CanCommunicate && GetValidPositionsForCard(cardId).Count > 0;
+                }
+
+                return CanPlayCurrentTurn() && GetPlayableCardIds().Contains(cardId);
+            }
+
+            return false;
         }
 
         private bool CanPlayCurrentTurn()
@@ -235,18 +250,27 @@ namespace ViewModel.ViewModels
 
         private async Task SubmitSelectedCardAsync(object selectedCard)
         {
-            if (selectedCard is int cardId && CanPlaySelectedCard(selectedCard))
+            if (selectedCard is int cardId)
             {
-                _pendingCardPlaySubmission = new CardPlaySubmission
+                if (IsCommunicationModeActive)
                 {
-                    LobbyCode = _lobbyCode,
-                    MatchId = _confirmedMatchSnapshot.MatchId,
-                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
-                    CardId = cardId,
-                    CardPlaySubmissionId = Guid.NewGuid(),
-                    ExpectedMatchStateVersion = MatchStateVersion
-                };
-                await SynchronizeMatchAsync();
+                    await ExecuteCardCommunicationFromHandAsync(cardId);
+                    return;
+                }
+
+                if (CanPlaySelectedCard(selectedCard))
+                {
+                    _pendingCardPlaySubmission = new CardPlaySubmission
+                    {
+                        LobbyCode = _lobbyCode,
+                        MatchId = _confirmedMatchSnapshot.MatchId,
+                        MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
+                        CardId = cardId,
+                        CardPlaySubmissionId = Guid.NewGuid(),
+                        ExpectedMatchStateVersion = MatchStateVersion
+                    };
+                    await SynchronizeMatchAsync();
+                }
             }
         }
 
@@ -304,6 +328,7 @@ namespace ViewModel.ViewModels
                         playableCardIds.Contains(cardId)));
                 }
             }
+            RefreshCommunicationHighlights();
         }
 
         private void UpdatePublicSeatStates(PlayerMatchSnapshot playerSnapshot)
@@ -369,6 +394,10 @@ namespace ViewModel.ViewModels
             if (IsSpecialPreparationVisible)
             {
                 feedbackResourceKey = SpecialPreparationFeedbackKey;
+            }
+            if (IsCommunicationModeActive)
+            {
+                feedbackResourceKey = "Match_Notice_CommunicationActive";
             }
             return feedbackResourceKey;
         }

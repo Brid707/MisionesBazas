@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Gameplay;
 using TrickTakingMissions.Rules.Enums;
+using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 using ViewModel.Base;
 
@@ -17,12 +18,27 @@ namespace ViewModel.ViewModels
         private RadioCommunicationSubmission _pendingRadioSubmission;
         private HandCardViewModel _selectedRadioCard;
         private RadioMarkerOptionViewModel _selectedRadioMarker;
+        private bool _isCommunicationModeActive;
 
         public ObservableCollection<RadioMarkerOptionViewModel> AvailableRadioMarkers { get; } =
             new ObservableCollection<RadioMarkerOptionViewModel>();
         public ObservableCollection<PlayerRadioCommunicationViewModel> RadioCommunications { get; } =
             new ObservableCollection<PlayerRadioCommunicationViewModel>();
         public ICommand SubmitRadioCommunicationCommand { get; private set; }
+        public ICommand ToggleCommunicationModeCommand { get; private set; }
+
+        public bool IsCommunicationModeActive
+        {
+            get => _isCommunicationModeActive;
+            set
+            {
+                if (SetProperty(ref _isCommunicationModeActive, value))
+                {
+                    RefreshCommunicationHighlights();
+                    MatchFeedbackResourceKey = GetCurrentMatchFeedback();
+                }
+            }
+        }
 
         public HandCardViewModel SelectedRadioCard
         {
@@ -43,14 +59,84 @@ namespace ViewModel.ViewModels
         }
 
         public bool CanChooseRadioCard => CanSubmitMatchRequest() && IsMissionPreparationComplete &&
-            !IsMissionAttemptFinished && (_confirmedMatchSnapshot?.OwnRadioAvailability?.IsAvailable ?? true) &&
+            !IsMissionAttemptFinished && !IsDistressSignalInProgress &&
+            (_confirmedMatchSnapshot?.OwnRadioAvailability?.IsAvailable ?? true) &&
             _confirmedMatchSnapshot?.CurrentTrickCardPlays?.Length == 0 &&
             !(_confirmedMatchSnapshot.RadioCommunications ?? Array.Empty<PlayerRadioCommunicationSnapshot>())
                 .Any(communication => communication.ParticipantUserId == _participantUserId);
 
+        public bool CanCommunicate => CanChooseRadioCard;
+
         private void InitializeRadioCommand()
         {
             SubmitRadioCommunicationCommand = new AsyncRelayCommand(SubmitRadioCommunicationAsync, CanSubmitRadio);
+            ToggleCommunicationModeCommand = new RelayCommand(ExecuteToggleCommunicationMode, CanToggleCommunicationMode);
+        }
+
+        private bool CanToggleCommunicationMode(object parameter) => CanCommunicate;
+
+        private void ExecuteToggleCommunicationMode(object parameter)
+        {
+            if (CanCommunicate)
+            {
+                IsCommunicationModeActive = !IsCommunicationModeActive;
+            }
+            else
+            {
+                IsCommunicationModeActive = false;
+            }
+        }
+
+        public IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(int cardId)
+        {
+            if (_confirmedMatchSnapshot?.OwnHandCardIds == null)
+            {
+                return Array.Empty<RadioTokenPosition>();
+            }
+
+            var handCards = OwnHandCards.Select(c => DeckRules.GetCardById(c.CardId)).ToArray();
+            Card candidateCard = DeckRules.GetCardById(cardId);
+            CommunicationRuleType mode = _confirmedMatchSnapshot.RadioMode == RadioCommunicationMode.Interference
+                ? CommunicationRuleType.Interference : CommunicationRuleType.Standard;
+
+            return RadioCommunicationRules.GetValidPositionsForCard(handCards, candidateCard, mode);
+        }
+
+        public void RefreshCommunicationHighlights()
+        {
+            if (OwnHandCards == null)
+            {
+                return;
+            }
+
+            foreach (HandCardViewModel handCard in OwnHandCards)
+            {
+                bool isEligible = _isCommunicationModeActive &&
+                    GetValidPositionsForCard(handCard.CardId).Count > 0;
+                handCard.UpdateCommunicationHighlight(_isCommunicationModeActive, isEligible);
+            }
+        }
+
+        public async Task ExecuteCardCommunicationFromHandAsync(int cardId)
+        {
+            IReadOnlyList<RadioTokenPosition> positions = GetValidPositionsForCard(cardId);
+            if (positions != null && positions.Count > 0)
+            {
+                RadioTokenPosition resolvedPosition = positions[0];
+                IsCommunicationModeActive = false;
+                RadioCommunicationMarker marker = s_radioMarkers[resolvedPosition];
+                _pendingRadioSubmission = new RadioCommunicationSubmission
+                {
+                    LobbyCode = _lobbyCode,
+                    MatchId = _confirmedMatchSnapshot.MatchId,
+                    MissionAttemptId = _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId,
+                    RadioCommunicationSubmissionId = Guid.NewGuid(),
+                    ExpectedMatchStateVersion = MatchStateVersion,
+                    CardId = cardId,
+                    SelectedMarker = marker
+                };
+                await SynchronizeMatchAsync();
+            }
         }
 
         private bool CanSubmitRadio()
@@ -137,7 +223,64 @@ namespace ViewModel.ViewModels
                 SelectedRadioCard = null;
             }
             RefreshRadioMarkerChoices();
+
+            PlayerRadioCommunicationSnapshot localComm = snapshot.RadioCommunications?
+                .FirstOrDefault(comm => comm.ParticipantUserId == _participantUserId);
+
+            foreach (HandCardViewModel handCard in OwnHandCards)
+            {
+                bool isComm = localComm != null && !localComm.HasCommunicatedCardBeenPlayed &&
+                    localComm.CommunicatedCardId == handCard.CardId;
+                handCard.IsCommunicated = isComm;
+                handCard.TokenPosition = isComm ? MapMarkerToPosition(localComm.Marker) : RadioTokenPosition.Highest;
+            }
+
+            UpdateSeatedPlayerCommunications(snapshot);
+
+            if (!CanCommunicate && IsCommunicationModeActive)
+            {
+                IsCommunicationModeActive = false;
+            }
+            RefreshCommunicationHighlights();
+
             OnPropertyChanged(nameof(CanChooseRadioCard));
+            OnPropertyChanged(nameof(CanCommunicate));
+            OnPropertyChanged(nameof(IsCommunicationModeActive));
+        }
+
+        private static RadioTokenPosition MapMarkerToPosition(RadioCommunicationMarker marker)
+        {
+            return marker switch
+            {
+                RadioCommunicationMarker.Highest => RadioTokenPosition.Highest,
+                RadioCommunicationMarker.Only => RadioTokenPosition.Only,
+                RadioCommunicationMarker.Lowest => RadioTokenPosition.Lowest,
+                RadioCommunicationMarker.Hidden => RadioTokenPosition.Interference,
+                _ => RadioTokenPosition.Highest
+            };
+        }
+
+        private void UpdateSeatedPlayerCommunications(PlayerMatchSnapshot playerSnapshot)
+        {
+            if (_seatedPlayers == null)
+            {
+                return;
+            }
+
+            foreach (LobbyPlayerItemViewModel participant in _seatedPlayers)
+            {
+                PlayerRadioCommunicationSnapshot comm = playerSnapshot.RadioCommunications?
+                    .FirstOrDefault(c => c.ParticipantUserId == participant.IdUser);
+
+                if (comm != null && !comm.HasCommunicatedCardBeenPlayed && comm.CommunicatedCardId > 0)
+                {
+                    participant.UpdateCommunicatedCard(comm.CommunicatedCardId, MapMarkerToPosition(comm.Marker));
+                }
+                else
+                {
+                    participant.UpdateCommunicatedCard(null, RadioTokenPosition.Highest);
+                }
+            }
         }
 
         private static readonly IReadOnlyDictionary<RadioTokenPosition, RadioCommunicationMarker> s_radioMarkers =
