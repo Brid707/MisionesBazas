@@ -62,8 +62,8 @@ namespace Domain
                 return DisconnectionResolutionOption.ReturnToLobby;
             }
 
-            bool allVotedRestart = votesBySeat.Count == remainingPlayerCount &&
-                                   votesBySeat.Values.All(vote => vote == DisconnectionResolutionOption.RestartMissionWithThreePlayers);
+            bool allVotedRestart = votesBySeat.Count == remainingPlayerCount && votesBySeat.Values.All(vote =>
+                                   vote == DisconnectionResolutionOption.RestartMissionWithThreePlayers);
 
             return allVotedRestart
                 ? DisconnectionResolutionOption.RestartMissionWithThreePlayers

@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/Shared/">
+    <Project Path="Shared/Gameplay/Gameplay.csproj" />
+    <Project Path="Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" />
+    <Project Path="Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" />
+    <Project Path="Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" />
+  </Folder>
+  <Folder Name="/Client/">
+    <Project Path="Client/Model/Model.csproj" />
+    <Project Path="Client/ViewModel/ViewModel.csproj" />
+    <Project Path="Client/ClientTrickTakingMissions/View.csproj" />
+  </Folder>
+  <Folder Name="/Server/">
+    <Project Path="Server/ServerTrickTakingMissions/Domain/Domain.csproj" />
+    <Project Path="Server/Application/Application.csproj" />
+    <Project Path="Server/Persistence/Persistence.csproj" />
+    <Project Path="Server/Services/Services.csproj" />
+    <Project Path="Server/Infrastructure.Email/Infrastructure.Email.csproj" />
+    <Project Path="Server/Infrastructure.Moderation/Infrastructure.Moderation.csproj" />
+    <Project Path="Server/Infrastructure.ProfileImages/Infrastructure.ProfileImages.csproj" />
+    <Project Path="Server/Host/Host.csproj" />
+  </Folder>
+</Solution>

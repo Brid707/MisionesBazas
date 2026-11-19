@@ -23,11 +23,13 @@ namespace Application.UseCases
         public DistressSignalCommit SubmitDistressSignal(DistressSignalRequest request, int participantUserId)
         {
             DistressSignalCommit result = RejectDistress(DistressSignalRejection.InvalidSubmission, 0);
+
             if (request != null && !string.IsNullOrWhiteSpace(request.LobbyCode) &&
                 request.LobbyCode.Length <= MaximumDistressLobbyCodeLength)
             {
                 MatchState matchState = _matchStateStore.FindMatch(request.LobbyCode);
                 result = RejectDistress(DistressSignalRejection.MatchUnavailable, 0);
+
                 if (matchState != null)
                 {
                     lock (matchState)
@@ -36,29 +38,33 @@ namespace Application.UseCases
                     }
                 }
             }
+
             return result;
         }
 
-        private static DistressSignalCommit ProcessDistressSignalUnderLock(
-            MatchState matchState, DistressSignalRequest request, int participantUserId)
+        private static DistressSignalCommit ProcessDistressSignalUnderLock(MatchState matchState,
+            DistressSignalRequest request, int participantUserId)
         {
             int participantSeat = Array.IndexOf(matchState.ParticipantUserIds, participantUserId);
-            DistressSignalRejection rejection = ValidateDistressIdentityAndAttempt(
-                matchState, request, participantSeat);
+            DistressSignalRejection rejection = ValidateDistressIdentityAndAttempt(matchState, request,
+                participantSeat);
             DistressSignalCommit result = RejectDistress(rejection, matchState.MatchStateVersion);
+
             if (rejection == DistressSignalRejection.None)
             {
                 var participantAction = new DistressParticipantAction(
                     request, (byte)participantSeat, participantUserId);
                 result = DispatchDistressAction(matchState, participantAction);
             }
+
             return result;
         }
 
-        private static DistressSignalRejection ValidateDistressIdentityAndAttempt(
-            MatchState matchState, DistressSignalRequest request, int participantSeat)
+        private static DistressSignalRejection ValidateDistressIdentityAndAttempt(MatchState matchState,
+            DistressSignalRequest request, int participantSeat)
         {
             DistressSignalRejection rejection;
+
             if (participantSeat < 0 || request.MatchId != matchState.MatchId)
             {
                 rejection = DistressSignalRejection.ParticipantNotAllowed;
@@ -72,13 +78,15 @@ namespace Application.UseCases
             {
                 rejection = ValidateDistressAttemptState(matchState, request);
             }
+
             return rejection;
         }
 
-        private static DistressSignalRejection ValidateDistressAttemptState(
-            MatchState matchState, DistressSignalRequest request)
+        private static DistressSignalRejection ValidateDistressAttemptState(MatchState matchState,
+            DistressSignalRequest request)
         {
             DistressSignalRejection rejection = DistressSignalRejection.None;
+
             if (matchState.MissionAttempt == null ||
                 request.MissionAttemptId != matchState.MissionAttempt.MissionAttemptId)
             {
@@ -96,12 +104,14 @@ namespace Application.UseCases
             {
                 rejection = ValidateDistressGameplayWindow(matchState);
             }
+
             return rejection;
         }
 
         private static DistressSignalRejection ValidateDistressGameplayWindow(MatchState matchState)
         {
             DistressSignalRejection rejection = DistressSignalRejection.None;
+
             if (matchState.MissionAttempt.HasUsedDistressSignal)
             {
                 rejection = DistressSignalRejection.DistressAlreadyUsed;
@@ -114,6 +124,7 @@ namespace Application.UseCases
             {
                 rejection = DistressSignalRejection.RadioAlreadyUsed;
             }
+
             return rejection;
         }
 
@@ -124,13 +135,15 @@ namespace Application.UseCases
             bool hasAttemptSeatRadio = matchState.MissionAttempt?.RadioCommunicationsBySeat != null &&
                 matchState.MissionAttempt.RadioCommunicationsBySeat.Any(
                     communication => communication.HasUsedCommunicationToken);
+
             return hasCommittedRadio || hasAttemptSeatRadio;
         }
 
-        private static DistressSignalCommit DispatchDistressAction(
-            MatchState matchState, DistressParticipantAction participantAction)
+        private static DistressSignalCommit DispatchDistressAction(MatchState matchState,
+            DistressParticipantAction participantAction)
         {
             DistressSignalCommit result;
+
             switch (participantAction.Request.ActionType)
             {
                 case DistressSignalActionType.ProposeUsage:
@@ -152,13 +165,15 @@ namespace Application.UseCases
                     result = RejectDistress(DistressSignalRejection.InvalidSubmission, matchState.MatchStateVersion);
                     break;
             }
+
             return result;
         }
 
-        private static DistressSignalCommit HandleProposeUsage(
-            MatchState matchState, DistressParticipantAction participantAction)
+        private static DistressSignalCommit HandleProposeUsage(MatchState matchState,
+            DistressParticipantAction participantAction)
         {
             DistressSignalCommit result;
+
             if (!participantAction.Request.IsVoteAccepted)
             {
                 result = RejectDistress(DistressSignalRejection.InvalidSubmission, matchState.MatchStateVersion);
@@ -177,6 +192,7 @@ namespace Application.UseCases
                 matchState.MatchStateVersion++;
                 result = CreateAcceptedCommit(matchState, false);
             }
+
             return result;
         }
 
@@ -207,13 +223,14 @@ namespace Application.UseCases
             return result;
         }
 
-        private static DistressSignalCommit HandleVoteDirection(
-            MatchState matchState, DistressParticipantAction participantAction)
+        private static DistressSignalCommit HandleVoteDirection(MatchState matchState,
+            DistressParticipantAction participantAction)
         {
             PassDirection selectedDirection = participantAction.Request.SelectedDirection;
             bool isDirectionValid = selectedDirection == PassDirection.Left ||
                 selectedDirection == PassDirection.Right;
             DistressSignalCommit result;
+
             if (!participantAction.Request.IsVoteAccepted || !isDirectionValid)
             {
                 result = RejectDistress(DistressSignalRejection.InvalidSubmission, matchState.MatchStateVersion);
@@ -227,6 +244,7 @@ namespace Application.UseCases
                 matchState.DistressDirectionVotesBySeat[participantAction.ParticipantSeat] = selectedDirection;
                 result = ResolveDirectionVotes(matchState);
             }
+
             return result;
         }
 
@@ -234,6 +252,7 @@ namespace Application.UseCases
         {
             DistressSignalCommit result;
             int requiredPlayers = matchState.ParticipantUserIds.Length;
+
             if (matchState.DistressDirectionVotesBySeat.Count < requiredPlayers)
             {
                 matchState.MatchStateVersion++;
@@ -247,6 +266,7 @@ namespace Application.UseCases
                     .Count(direction => direction == PassDirection.Right);
                 bool isUnanimousLeft = leftCount == requiredPlayers;
                 bool isUnanimousRight = rightCount == requiredPlayers;
+
                 if (isUnanimousLeft || isUnanimousRight)
                 {
                     matchState.DistressAgreedDirection = isUnanimousLeft ? PassDirection.Left : PassDirection.Right;
@@ -260,13 +280,15 @@ namespace Application.UseCases
                     result = HandleDistressRejection(matchState);
                 }
             }
+
             return result;
         }
 
-        private static DistressSignalCommit HandleSubmitPassCard(
-            MatchState matchState, DistressParticipantAction participantAction)
+        private static DistressSignalCommit HandleSubmitPassCard(MatchState matchState,
+            DistressParticipantAction participantAction)
         {
             DistressSignalCommit result;
+
             if (!participantAction.Request.IsVoteAccepted)
             {
                 result = RejectDistress(DistressSignalRejection.InvalidSubmission, matchState.MatchStateVersion);
@@ -279,6 +301,7 @@ namespace Application.UseCases
             {
                 DistressSignalRejection cardRejection = ValidateDistressCard(
                     matchState, participantAction.Request.CardIdToPass, participantAction.ParticipantSeat);
+
                 if (cardRejection != DistressSignalRejection.None)
                 {
                     result = RejectDistress(cardRejection, matchState.MatchStateVersion);
@@ -288,11 +311,12 @@ namespace Application.UseCases
                     result = RecordCardAndExecuteIfComplete(matchState, participantAction);
                 }
             }
+
             return result;
         }
 
-        private static DistressSignalCommit RecordCardAndExecuteIfComplete(
-            MatchState matchState, DistressParticipantAction participantAction)
+        private static DistressSignalCommit RecordCardAndExecuteIfComplete(MatchState matchState,
+            DistressParticipantAction participantAction)
         {
             DistressSignalCommit result;
             PassDirection direction = matchState.DistressAgreedDirection ?? PassDirection.Left;
@@ -300,6 +324,7 @@ namespace Application.UseCases
                 participantAction.Request.CardIdToPass;
             matchState.PendingDistressDirectionsBySeat[participantAction.ParticipantSeat] = direction;
             int requiredPlayers = matchState.ParticipantUserIds.Length;
+
             if (matchState.PendingDistressPassCardIdsBySeat.Count >= requiredPlayers)
             {
                 result = ExecuteDistressExchange(matchState, direction);
@@ -309,6 +334,7 @@ namespace Application.UseCases
                 matchState.MatchStateVersion++;
                 result = CreateAcceptedCommit(matchState, false);
             }
+
             return result;
         }
 
@@ -316,6 +342,7 @@ namespace Application.UseCases
         {
             bool isDistressInProgress = matchState.DistressStep != DistressSignalStep.None &&
                 matchState.DistressStep != DistressSignalStep.Completed;
+
             return isDistressInProgress
                 ? HandleDistressRejection(matchState)
                 : RejectDistress(DistressSignalRejection.InvalidStepTransition, matchState.MatchStateVersion);
@@ -329,11 +356,12 @@ namespace Application.UseCases
             return CreateAcceptedCommit(matchState, false);
         }
 
-        private static DistressSignalRejection ValidateDistressCard(
-            MatchState matchState, int cardIdToPass, int participantSeat)
+        private static DistressSignalRejection ValidateDistressCard(MatchState matchState, int cardIdToPass,
+            int participantSeat)
         {
             DistressSignalRejection rejection = DistressSignalRejection.None;
             List<int> playerHand = matchState.PlayerHandCardIdsBySeat[participantSeat];
+
             if (cardIdToPass < 1 || cardIdToPass > DeckRules.TotalDeckSize || !playerHand.Contains(cardIdToPass))
             {
                 rejection = DistressSignalRejection.CardNotInHand;
@@ -342,14 +370,16 @@ namespace Application.UseCases
             {
                 rejection = DistressSignalRejection.SpecialCardNotAllowed;
             }
+
             return rejection;
         }
 
-        private static DistressSignalCommit ExecuteDistressExchange(
-            MatchState matchState, PassDirection agreedDirection)
+        private static DistressSignalCommit ExecuteDistressExchange(MatchState matchState,
+            PassDirection agreedDirection)
         {
             DistressSignalContext distressContext = BuildDistressContext(matchState, agreedDirection);
             DistressSignalCommit result;
+
             if (!DistressSignalRules.CanExecuteDistressSignal(distressContext))
             {
                 result = RejectDistress(DistressSignalRejection.InvalidSubmission, matchState.MatchStateVersion);
@@ -359,26 +389,29 @@ namespace Application.UseCases
                 ApplyDistressExchange(matchState, distressContext);
                 result = CreateAcceptedCommit(matchState, true);
             }
+
             return result;
         }
 
-        private static DistressSignalContext BuildDistressContext(
-            MatchState matchState, PassDirection agreedDirection)
+        private static DistressSignalContext BuildDistressContext(MatchState matchState, PassDirection agreedDirection)
         {
             int requiredPlayers = matchState.ParticipantUserIds.Length;
             var hands = new List<IReadOnlyList<Card>>(requiredPlayers);
+
             for (int seatIndex = 0; seatIndex < requiredPlayers; seatIndex++)
             {
-                List<Card> seatHand = matchState.PlayerHandCardIdsBySeat[seatIndex]
-                    .Select(DeckRules.GetCardById)
+                List<Card> seatHand = matchState.PlayerHandCardIdsBySeat[seatIndex].Select(DeckRules.GetCardById)
                     .ToList();
                 hands.Add(seatHand.AsReadOnly());
             }
+
             var selectedCards = new Dictionary<byte, Card>();
+
             foreach (KeyValuePair<byte, int> entry in matchState.PendingDistressPassCardIdsBySeat)
             {
                 selectedCards[entry.Key] = DeckRules.GetCardById(entry.Value);
             }
+
             return new DistressSignalContext
             {
                 CurrentTrickNumber = matchState.CurrentTrickNumber,
@@ -391,18 +424,18 @@ namespace Application.UseCases
             };
         }
 
-        private static void ApplyDistressExchange(
-            MatchState matchState, DistressSignalContext distressContext)
+        private static void ApplyDistressExchange(MatchState matchState, DistressSignalContext distressContext)
         {
             IReadOnlyList<IReadOnlyList<Card>> newHands =
                 DistressSignalRules.ExecuteCardPass(distressContext);
             int requiredPlayers = matchState.ParticipantUserIds.Length;
+
             for (int seatIndex = 0; seatIndex < requiredPlayers; seatIndex++)
             {
-                matchState.PlayerHandCardIdsBySeat[seatIndex] = newHands[seatIndex]
-                    .Select(card => card.IdCard)
+                matchState.PlayerHandCardIdsBySeat[seatIndex] = newHands[seatIndex].Select(card => card.IdCard)
                     .ToList();
             }
+
             int updatedAttemptNumber = matchState.HasAppliedDistressPenaltyInCurrentMission
                 ? matchState.MissionAttempt.AttemptNumber
                 : matchState.MissionAttempt.AttemptNumber + 1;
@@ -427,8 +460,8 @@ namespace Application.UseCases
             };
         }
 
-        private static DistressSignalCommit RejectDistress(
-            DistressSignalRejection rejection, long committedMatchStateVersion)
+        private static DistressSignalCommit RejectDistress(DistressSignalRejection rejection,
+            long committedMatchStateVersion)
         {
             return new DistressSignalCommit
             {

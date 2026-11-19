@@ -36,39 +36,30 @@ namespace Domain
             return missionEvaluation;
         }
 
-        private static MissionEvaluationResult EvaluateSpecialRule(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateSpecialRule(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
-            MissionEvaluationResult countResult = EvaluateTrickCountConstraints(context, updatedObjectives);
-            if (countResult != null)
+            MissionEvaluationResult result = EvaluateTrickCountConstraints(context, updatedObjectives);
+            if (result == null)
             {
-                return countResult;
+                result = EvaluateCardNumberConstraints(context, updatedObjectives);
             }
-
-            MissionEvaluationResult cardNumResult = EvaluateCardNumberConstraints(context, updatedObjectives);
-            if (cardNumResult != null)
+            if (result == null)
             {
-                return cardNumResult;
+                result = EvaluateSpecialCardConstraints(context, updatedObjectives);
             }
-
-            MissionEvaluationResult specialCardResult = EvaluateSpecialCardConstraints(context, updatedObjectives);
-            if (specialCardResult != null)
+            if (result == null)
             {
-                return specialCardResult;
+                result = EvaluateAssignedPlayerConstraints(context, updatedObjectives);
             }
-
-            MissionEvaluationResult assignedPlayerResult = EvaluateAssignedPlayerConstraints(context, updatedObjectives);
-            if (assignedPlayerResult != null)
+            if (result == null)
             {
-                return assignedPlayerResult;
+                result = EvaluateDistributionConstraints(context, updatedObjectives);
             }
-
-            return EvaluateDistributionConstraints(context, updatedObjectives);
+            return result;
         }
 
-        private static MissionEvaluationResult EvaluateTrickCountConstraints(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateTrickCountConstraints(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = null;
@@ -97,8 +88,7 @@ namespace Domain
             return result;
         }
 
-        private static MissionEvaluationResult EvaluateCardNumberConstraints(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateCardNumberConstraints(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = null;
@@ -185,8 +175,7 @@ namespace Domain
             return result;
         }
 
-        private static MissionEvaluationResult EvaluateSpecialCardConstraints(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateSpecialCardConstraints(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = null;
@@ -199,7 +188,7 @@ namespace Domain
                     play.Card.Suit == CardSuit.Special && play != context.WinningPlay);
                 result = hasLostSpecialCard
                     ? MissionEvaluationResult.Fail(updatedObjectives,
-                        MissionFailureReasons.Mission13SpecialCardLostTrick)
+                    MissionFailureReasons.Mission13SpecialCardLostTrick)
                     : EvaluateSpecialCardProgress(context, updatedObjectives);
             }
             return result;
@@ -219,24 +208,25 @@ namespace Domain
             MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
+            MissionEvaluationResult result = null;
             switch (context.Definition.SpecialRule)
             {
                 case SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard:
-                    return EvaluateMission33(context, updatedObjectives);
-
+                    result = EvaluateMission33(context, updatedObjectives);
+                    break;
                 case SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo:
-                    return EvaluateMission34(context, updatedObjectives);
-
+                    result = EvaluateMission34(context, updatedObjectives);
+                    break;
                 case SpecialMissionRuleType.M41_SelectedPlayerWinsOnlyFirstAndLastTrickWithoutSpecialCard:
-                    return EvaluateMission41(context, updatedObjectives);
-
+                    result = EvaluateMission41(context, updatedObjectives);
+                    break;
                 default:
-                    return null;
+                    break;
             }
+            return result;
         }
 
-        private static MissionEvaluationResult EvaluateMission33(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateMission33(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = MissionEvaluationResult.Fail(updatedObjectives,
@@ -275,8 +265,7 @@ namespace Domain
             return result;
         }
 
-        private static MissionEvaluationResult EvaluateMission34(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateMission34(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = null;
@@ -294,8 +283,7 @@ namespace Domain
             return result;
         }
 
-        private static MissionEvaluationResult EvaluateMission41(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateMission41(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult result = MissionEvaluationResult.Fail(updatedObjectives,
@@ -332,36 +320,35 @@ namespace Domain
             string failureReason = null;
             if (!hasSelectedWinner)
             {
-                failureReason = isFirstTrick ? MissionFailureReasons.Mission41FirstTrickNotWonBySelected
+                failureReason = isFirstTrick
+                    ? MissionFailureReasons.Mission41FirstTrickNotWonBySelected
                     : MissionFailureReasons.Mission41LastTrickNotWonBySelected;
             }
             else if (context.WinningPlay.Card.Suit == CardSuit.Special)
             {
-                failureReason = isFirstTrick ? MissionFailureReasons.Mission41FirstTrickWonWithSpecial
+                failureReason = isFirstTrick
+                    ? MissionFailureReasons.Mission41FirstTrickWonWithSpecial
                     : MissionFailureReasons.Mission41LastTrickWonWithSpecial;
             }
             return failureReason;
         }
 
-        private static MissionEvaluationResult EvaluateDistributionConstraints(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateDistributionConstraints(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
+            MissionEvaluationResult result = null;
             if (context.Definition.SpecialRule == SpecialMissionRuleType.M46_SeatLeftOfHeartNineWinsAllHearts)
             {
-                return EvaluateMission46(context, updatedObjectives);
+                result = EvaluateMission46(context, updatedObjectives);
             }
-
-            if (context.Definition.SpecialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution)
+            else if (context.Definition.SpecialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution)
             {
-                return EvaluateMission50(context, updatedObjectives);
+                result = EvaluateMission50(context, updatedObjectives);
             }
-
-            return null;
+            return result;
         }
 
-        private static MissionEvaluationResult EvaluateMission46(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateMission46(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             string failureReason = null;
@@ -411,8 +398,7 @@ namespace Domain
             return failureReason;
         }
 
-        private static MissionEvaluationResult EvaluateMission50(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult EvaluateMission50(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
             string failureReason = MissionFailureReasons.Mission50RolesUnassigned;
@@ -471,10 +457,38 @@ namespace Domain
             return failureReason;
         }
 
-        private static MissionEvaluationResult DetermineOverallStatus(
-            MissionEvaluationContext context,
+        private static MissionEvaluationResult DetermineOverallStatus(MissionEvaluationContext context,
             List<MissionObjective> updatedObjectives)
         {
+            MissionEvaluationResult result = EvaluateMission48PenultimateTrick(context, updatedObjectives);
+            if (result == null)
+            {
+                bool allObjectivesCompleted = updatedObjectives.All(o => o.Status == ObjectiveStatus.Completed);
+                bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
+                if (!allObjectivesCompleted && isLastTrick)
+                {
+                    MissionObjective firstPending = updatedObjectives.First(o => o.Status != ObjectiveStatus.Completed);
+                    result = FailObjective(updatedObjectives, firstPending.CardId,
+                        MissionFailureReasons.ObjectivesIncompleteAtMissionEnd);
+                }
+                else if (allObjectivesCompleted &&
+                    (!HasOngoingSpecialRuleConstraints(context.Definition.SpecialRule) || isLastTrick))
+                {
+                    result = MissionEvaluationResult.Success(updatedObjectives,
+                        MissionFailureReasons.MissionSuccessMessage);
+                }
+                else
+                {
+                    result = MissionEvaluationResult.InProgress(updatedObjectives);
+                }
+            }
+            return result;
+        }
+
+        private static MissionEvaluationResult EvaluateMission48PenultimateTrick(MissionEvaluationContext context,
+            List<MissionObjective> updatedObjectives)
+        {
+            MissionEvaluationResult result = null;
             bool isPenultimateTrick = context.CurrentTrickNumber == context.TotalTricksInMission - 1;
             if (context.Definition.SpecialRule == SpecialMissionRuleType.M48_OmegaObjectiveCompletedInLastTrick &&
                 isPenultimateTrick)
@@ -483,35 +497,21 @@ namespace Domain
                     .FirstOrDefault(o => o.Token != ObjectiveTokenType.Omega && o.Status != ObjectiveStatus.Completed);
                 if (pendingNonOmega != null)
                 {
-                    return FailObjective(updatedObjectives, pendingNonOmega.CardId, MissionFailureReasons.Mission48PendingNonOmegaBeforeLastTrick);
+                    result = FailObjective(updatedObjectives, pendingNonOmega.CardId,
+                        MissionFailureReasons.Mission48PendingNonOmegaBeforeLastTrick);
                 }
             }
-
-            bool allObjectivesCompleted = updatedObjectives.All(o => o.Status == ObjectiveStatus.Completed);
-            bool isLastTrick = context.CurrentTrickNumber == context.TotalTricksInMission;
-
-            if (!allObjectivesCompleted && isLastTrick)
-            {
-                MissionObjective firstPending = updatedObjectives.First(o => o.Status != ObjectiveStatus.Completed);
-                return FailObjective(updatedObjectives, firstPending.CardId, MissionFailureReasons.ObjectivesIncompleteAtMissionEnd);
-            }
-
-            bool hasPendingSpecialRuleConstraints = HasOngoingSpecialRuleConstraints(context.Definition.SpecialRule);
-            if (allObjectivesCompleted && (!hasPendingSpecialRuleConstraints || isLastTrick))
-            {
-                return MissionEvaluationResult.Success(updatedObjectives, MissionFailureReasons.MissionSuccessMessage);
-            }
-
-            return MissionEvaluationResult.InProgress(updatedObjectives);
+            return result;
         }
 
         private static bool HasOngoingSpecialRuleConstraints(SpecialMissionRuleType specialRule)
         {
-            return specialRule != SpecialMissionRuleType.None &&
-                specialRule != SpecialMissionRuleType.M11_CaptainSilencesOnePlayer &&
-                specialRule != SpecialMissionRuleType.M17_NoTrickWonWithNumberNine &&
-                specialRule != SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer &&
-                specialRule != SpecialMissionRuleType.M27_CaptainAssignsAllObjectivesToOnePlayer;
+            bool isSetupOnlyRule = specialRule == SpecialMissionRuleType.M11_CaptainSilencesOnePlayer ||
+                specialRule == SpecialMissionRuleType.M20_CaptainAssignsAllObjectivesToOnePlayer ||
+                specialRule == SpecialMissionRuleType.M27_CaptainAssignsAllObjectivesToOnePlayer;
+            bool isPerTrickOnlyRule = specialRule == SpecialMissionRuleType.None ||
+                specialRule == SpecialMissionRuleType.M17_NoTrickWonWithNumberNine;
+            return !isSetupOnlyRule && !isPerTrickOnlyRule;
         }
 
         private static int CalculateTrickDifferenceSpread(IReadOnlyDictionary<int, int> tricksBySeat, int playerCount)
@@ -530,8 +530,7 @@ namespace Domain
         private static int CountSpecialCardsWon(MissionEvaluationContext context)
         {
             var wonSymbols = new HashSet<SpecialCardSymbol>(
-                (context.SpecialCardsWonSoFar ?? Array.Empty<Card>())
-                    .Where(c => c.Suit == CardSuit.Special)
+                (context.SpecialCardsWonSoFar ?? Array.Empty<Card>()).Where(c => c.Suit == CardSuit.Special)
                     .Select(c => c.SpecialSymbol));
 
             if (context.WinningPlay.Card.Suit == CardSuit.Special)
@@ -544,12 +543,12 @@ namespace Domain
 
         private static int GetTricksWon(IReadOnlyDictionary<int, int> tricksBySeat, int seat)
         {
+            int wonTrickCount = 0;
             if (tricksBySeat != null && tricksBySeat.TryGetValue(seat, out int count))
             {
-                return count;
+                wonTrickCount = count;
             }
-
-            return 0;
+            return wonTrickCount;
         }
     }
 }

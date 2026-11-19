@@ -1,6 +1,8 @@
 using System.ServiceModel;
 
-namespace Gameplay
+using Gameplay;
+
+namespace Services.Contracts
 {
     /// <summary>Exposes private match queries and identified play requests over the participant channel.</summary>
     [ServiceContract]

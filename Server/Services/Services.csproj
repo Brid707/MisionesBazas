@@ -63,6 +63,7 @@
     <Compile Include="Security\AccountSessionHeader.cs" />
     <Compile Include="Contracts\Lobby\ILobbyCallback.cs" />
     <Compile Include="Contracts\Lobby\ILobbyService.cs" />
+    <Compile Include="Contracts\Match\IMatchService.cs" />
     <Compile Include="Contracts\Account\IAccountManagementService.cs" />
     <Compile Include="Contracts\Account\IUserLoginService.cs" />
     <Compile Include="DataContracts\Friends\Friend.cs" />

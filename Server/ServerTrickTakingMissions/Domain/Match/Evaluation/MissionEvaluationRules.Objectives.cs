@@ -14,15 +14,20 @@ namespace Domain
             {
                 throw new ArgumentNullException(nameof(context));
             }
-            if (context.Definition == null || context.WinningPlay == null ||
-                context.CompletedTrickPlays == null || context.CurrentObjectives == null)
+
+            bool hasMissingRequiredReference = context.Definition == null || context.WinningPlay == null ||
+                context.CompletedTrickPlays == null || context.CurrentObjectives == null;
+
+            if (hasMissingRequiredReference)
             {
                 throw new ArgumentException(nameof(context));
             }
+
             ValidateRequiredWonTrickCounts(context);
             bool isTrickNumberValid = context.CurrentTrickNumber >= 1 &&
                 context.CurrentTrickNumber <= context.TotalTricksInMission;
             bool isWinningPlayIncluded = context.CompletedTrickPlays.Contains(context.WinningPlay);
+
             if (!isTrickNumberValid || !isWinningPlayIncluded)
             {
                 throw new ArgumentException(nameof(context));
@@ -33,41 +38,52 @@ namespace Domain
         {
             if (IsWonTrickCountValidationRequired(context.Definition.SpecialRule))
             {
-                if (!MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) ||
-                    context.TotalTricksWonBySeat == null ||
-                    context.TotalTricksWonBySeat.Count != context.PlayerCount)
+                bool hasValidTrickMapCount = context.TotalTricksWonBySeat != null &&
+                    context.TotalTricksWonBySeat.Count == context.PlayerCount;
+
+                if (!MatchPlayerCountRules.IsPlayerCountSupported(context.PlayerCount) || !hasValidTrickMapCount)
                 {
                     throw new ArgumentException(nameof(context.TotalTricksWonBySeat));
                 }
+
                 ValidateCompletedTrickCounts(context);
             }
         }
 
         private static bool IsWonTrickCountValidationRequired(SpecialMissionRuleType specialRule)
         {
-            return specialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks ||
+            bool isTrickSpreadRule = specialRule == SpecialMissionRuleType.M05_OnePlayerWinsNoTricks ||
                 specialRule == SpecialMissionRuleType.M29_MaxTrickDifferenceTwo ||
+                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo;
+            bool isDesignatedSeatRule =
                 specialRule == SpecialMissionRuleType.M33_SelectedPlayerWinsExactlyOneTrickWithoutSpecialCard ||
-                specialRule == SpecialMissionRuleType.M34_CaptainWinsFirstAndLastTrickAndMaxDifferenceTwo ||
                 specialRule == SpecialMissionRuleType.M41_SelectedPlayerWinsOnlyFirstAndLastTrickWithoutSpecialCard ||
                 specialRule == SpecialMissionRuleType.M50_SplitTrickWinsDistribution;
+
+            return isTrickSpreadRule || isDesignatedSeatRule;
         }
 
         private static void ValidateCompletedTrickCounts(MissionEvaluationContext context)
         {
-            bool hasInvalidCount = context.TotalTricksWonBySeat.Any(entry =>
-                entry.Key < 0 || entry.Key >= context.PlayerCount || entry.Value < 0);
+            bool hasInvalidCount = context.TotalTricksWonBySeat.Any(IsInvalidSeatTrickEntry);
             long countedTricks = context.TotalTricksWonBySeat.Sum(entry => (long)entry.Value);
             bool hasCountedWinningSeat = context.TotalTricksWonBySeat.TryGetValue(context.WinningPlay.Seat,
                 out int winningSeatTrickCount) && winningSeatTrickCount > 0;
+
             if (hasInvalidCount || countedTricks != context.CurrentTrickNumber || !hasCountedWinningSeat)
             {
                 throw new ArgumentException(nameof(context.TotalTricksWonBySeat));
             }
+
+            bool IsInvalidSeatTrickEntry(KeyValuePair<int, int> entry)
+            {
+                bool isSeatOutOfRange = entry.Key < 0 || entry.Key >= context.PlayerCount;
+                return isSeatOutOfRange || entry.Value < 0;
+            }
         }
 
-        private static MissionEvaluationResult EvaluateObjectivesInTrick(
-            MissionEvaluationContext context, List<MissionObjective> updatedObjectives)
+        private static MissionEvaluationResult EvaluateObjectivesInTrick(MissionEvaluationContext context,
+            List<MissionObjective> updatedObjectives)
         {
             MissionObjective[] capturedObjectives = updatedObjectives.Where(objective =>
                 objective.Status == ObjectiveStatus.Pending && context.CompletedTrickPlays.Any(play =>
@@ -75,6 +91,7 @@ namespace Domain
             MissionObjective wrongCapture = capturedObjectives.FirstOrDefault(objective =>
                 objective.AssignedSeat != context.WinningPlay.Seat);
             MissionEvaluationResult missionEvaluation = null;
+
             if (wrongCapture != null)
             {
                 missionEvaluation = FailObjective(updatedObjectives, wrongCapture.CardId,
@@ -92,6 +109,7 @@ namespace Domain
             {
                 ApplyCompletedObjectives(context.CurrentTrickNumber, capturedObjectives, updatedObjectives);
             }
+
             return missionEvaluation;
         }
 
@@ -121,6 +139,7 @@ namespace Domain
                         MissionFailureReasons.OmegaSimultaneousCompletion);
                 }
             }
+
             return missionEvaluation;
         }
 
@@ -131,6 +150,7 @@ namespace Domain
                 objective.Status == ObjectiveStatus.Completed);
             MissionEvaluationResult missionEvaluation = ValidateReservedNumericPositions(
                 capturedObjectives, updatedObjectives, completedObjectiveCount);
+
             foreach (MissionObjective capturedObjective in capturedObjectives)
             {
                 if (missionEvaluation == null)
@@ -143,6 +163,7 @@ namespace Domain
                     }
                 }
             }
+
             return missionEvaluation;
         }
 
@@ -152,16 +173,27 @@ namespace Domain
         {
             int finalCompletionPosition = completedObjectiveCount + capturedObjectives.Count;
             MissionObjective displacedObjective = updatedObjectives.FirstOrDefault(objective =>
-                IsNumericObjective(objective) && objective.Status == ObjectiveStatus.Pending &&
-                (int)objective.Token > completedObjectiveCount && (int)objective.Token <= finalCompletionPosition &&
+                IsDisplacedNumericObjective(objective, completedObjectiveCount, finalCompletionPosition) &&
                 !capturedObjectives.Contains(objective));
             MissionEvaluationResult missionEvaluation = null;
+
             if (displacedObjective != null)
             {
                 missionEvaluation = FailObjective(updatedObjectives, displacedObjective.CardId,
                     MissionFailureReasons.PrecedingOrderTokenNotCompleted);
             }
+
             return missionEvaluation;
+        }
+
+        private static bool IsDisplacedNumericObjective(MissionObjective objective, int completedObjectiveCount,
+            int finalCompletionPosition)
+        {
+            bool isPendingNumeric = IsNumericObjective(objective) && objective.Status == ObjectiveStatus.Pending;
+            bool isWithinCompletionWindow = (int)objective.Token > completedObjectiveCount &&
+                (int)objective.Token <= finalCompletionPosition;
+
+            return isPendingNumeric && isWithinCompletionWindow;
         }
 
         private static MissionEvaluationResult ValidateNumericTokenPosition(MissionObjective capturedObjective,
@@ -175,12 +207,14 @@ namespace Domain
                 objective.Status != ObjectiveStatus.Completed);
             bool isReservedPositionTaken = !IsNumericObjective(capturedObjective) && reservedObjective != null;
             MissionEvaluationResult missionEvaluation = null;
+
             if (isNumericPositionInvalid || isReservedPositionTaken)
             {
                 int failedCardId = isReservedPositionTaken ? reservedObjective.CardId : capturedObjective.CardId;
                 missionEvaluation = FailObjective(updatedObjectives, failedCardId,
                     MissionFailureReasons.PrecedingOrderTokenNotCompleted);
             }
+
             return missionEvaluation;
         }
 
@@ -188,10 +222,11 @@ namespace Domain
             MissionObjective capturedObjective, List<MissionObjective> updatedObjectives)
         {
             MissionEvaluationResult missionEvaluation = null;
+
             if (IsArrowObjective(capturedObjective))
             {
-                bool hasPendingPredecessor = updatedObjectives.Any(objective => IsArrowObjective(objective) &&
-                    objective.Token < capturedObjective.Token && objective.Status != ObjectiveStatus.Completed);
+                bool hasPendingPredecessor = updatedObjectives.Any(objective =>
+                    IsPendingArrowPredecessor(objective, capturedObjective.Token));
                 if (hasPendingPredecessor)
                 {
                     missionEvaluation = FailObjective(updatedObjectives, capturedObjective.CardId,
@@ -202,7 +237,14 @@ namespace Domain
             {
                 missionEvaluation = ValidateOmegaPrecedence(context, capturedObjective, updatedObjectives);
             }
+
             return missionEvaluation;
+        }
+
+        private static bool IsPendingArrowPredecessor(MissionObjective objective, ObjectiveTokenType targetToken)
+        {
+            bool isEarlierArrow = IsArrowObjective(objective) && objective.Token < targetToken;
+            return isEarlierArrow && objective.Status != ObjectiveStatus.Completed;
         }
 
         private static bool IsNumericObjective(MissionObjective objective)
@@ -221,6 +263,7 @@ namespace Domain
             MissionEvaluationResult missionEvaluation = null;
             bool hasOtherPendingObjective = updatedObjectives.Any(objective =>
                 objective.CardId != capturedObjective.CardId && objective.Status != ObjectiveStatus.Completed);
+
             if (hasOtherPendingObjective)
             {
                 missionEvaluation = FailObjective(updatedObjectives, capturedObjective.CardId,
@@ -232,6 +275,7 @@ namespace Domain
                 missionEvaluation = FailObjective(updatedObjectives, capturedObjective.CardId,
                     MissionFailureReasons.Mission48OmegaNotInLastTrick);
             }
+
             return missionEvaluation;
         }
 
@@ -239,6 +283,7 @@ namespace Domain
             int failedCardId, string failureReason)
         {
             int objectiveIndex = updatedObjectives.FindIndex(objective => objective.CardId == failedCardId);
+
             if (objectiveIndex >= 0)
             {
                 updatedObjectives[objectiveIndex] = updatedObjectives[objectiveIndex] with
@@ -246,6 +291,7 @@ namespace Domain
                     Status = ObjectiveStatus.Failed
                 };
             }
+
             return MissionEvaluationResult.Fail(updatedObjectives, failureReason);
         }
 
@@ -256,6 +302,7 @@ namespace Domain
             {
                 int objectiveIndex = updatedObjectives.FindIndex(objective =>
                     objective.CardId == capturedObjective.CardId);
+
                 updatedObjectives[objectiveIndex] = capturedObjective with
                 {
                     Status = ObjectiveStatus.Completed,

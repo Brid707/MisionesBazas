@@ -1067,8 +1067,59 @@ namespace Model.GameServices
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="Model.GameServices.ILobbyService", CallbackContract=typeof(Model.GameServices.ILobbyServiceCallback))]
-    public interface ILobbyService : Gameplay.IMatchService
+    public interface ILobbyService
     {
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:IdentifyHeartNineOwner", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
+        Gameplay.MissionPreparationConfirmation IdentifyHeartNineOwner(
+            Gameplay.HeartNineIdentificationSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:AssignMissionTrickDistribution", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
+        Gameplay.MissionPreparationConfirmation AssignMissionTrickDistribution(
+            Gameplay.MissionTrickDistributionSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:AssignMissionRole", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
+        Gameplay.MissionPreparationConfirmation AssignMissionRole(
+            Gameplay.MissionRoleAssignmentSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:RespondToBlindObjectives", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
+        Gameplay.MissionPreparationConfirmation RespondToBlindObjectives(
+            Gameplay.BlindObjectiveResponseSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:ProcessObjectiveDraftAction", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        Gameplay.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            Gameplay.MissionObjectiveDraftSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:GetPlayerMatch", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        Gameplay.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:ConfirmMissionRetry", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        Gameplay.MissionRetryDecision ConfirmMissionRetry(Gameplay.MissionRetrySubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:SubmitRadioCommunication", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.RadioCommunicationFault))]
+        Gameplay.RadioCommunicationConfirmation SubmitRadioCommunication(
+            Gameplay.RadioCommunicationSubmission submission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:PlayCard", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        Gameplay.CardPlayDecision PlayCard(Gameplay.CardPlaySubmission cardPlaySubmission, int participantUserId);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:SubmitDistressSignal", ReplyAction = "*")]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.DistressSignalFault))]
+        Gameplay.DistressSignalConfirmation SubmitDistressSignal(Gameplay.DistressSignalSubmission submission, int participantUserId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/UpdateLobbySettings", ReplyAction="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse")]
         Model.GameServices.LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings);

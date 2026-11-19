@@ -11,6 +11,7 @@ namespace Domain
     /// </summary>
     public static class MissionObjectiveDealRules
     {
+        private const string NineOfHeartsNotFoundMessage = "Heart 9 was not found in any dealt player hand.";
         private const int FirstNormalObjectiveCardId = 1;
         public const int NormalObjectiveDeckSize = 36;
         public const int HeartNineCardId = 27;
@@ -23,11 +24,10 @@ namespace Domain
         /// <returns>An immutable collection of drawn <see cref="MissionObjective"/> instances.</returns>
         /// <exception cref="ArgumentNullException">Thrown when a required argument is null.</exception>
         /// <exception cref="ArgumentException">Thrown when the definition or objective deck is invalid.</exception>
-        public static IReadOnlyList<MissionObjective> DrawObjectives(
-            MissionDefinition definition,
+        public static IReadOnlyList<MissionObjective> DrawObjectives(MissionDefinition definition,
             Random randomGenerator)
         {
-            if (randomGenerator is null)
+            if (randomGenerator == null)
             {
                 throw new ArgumentNullException(nameof(randomGenerator));
             }
@@ -53,6 +53,7 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(definition));
             }
+
             ValidateObjectiveDeck(definition, shuffledNormalCardIds);
             bool shouldStartRevealed = !MissionSetupRules.IsBlindObjectiveAssignmentRule(definition.SpecialRule);
             var drawnObjectives = new List<MissionObjective>(definition.ObjectiveCardCount);
@@ -87,21 +88,39 @@ namespace Domain
         /// <exception cref="InvalidOperationException">Thrown when Heart 9 is not present in any dealt hand.</exception>
         public static byte GetHeartNineOwnerSeat(IReadOnlyList<IReadOnlyList<Card>> handsBySeat)
         {
-            if (handsBySeat is null)
+            if (handsBySeat == null)
             {
                 throw new ArgumentNullException(nameof(handsBySeat));
             }
 
+            int heartNineOwnerSeat = -1;
             for (int seatIndex = 0; seatIndex < handsBySeat.Count; seatIndex++)
             {
                 IReadOnlyList<Card> hand = handsBySeat[seatIndex];
-                if (hand != null && hand.Any(card => card.Suit == CardSuit.Heart && card.Number == MissionFailureReasons.ForbiddenTrickWinnerCardNumber))
+                if (hand != null && ContainsHeartNine(hand))
                 {
-                    return (byte)seatIndex;
+                    heartNineOwnerSeat = seatIndex;
+                    break;
                 }
             }
 
-            throw new InvalidOperationException("Heart 9 was not found in any dealt player hand.");
+            if (heartNineOwnerSeat < 0)
+            {
+                throw new InvalidOperationException(NineOfHeartsNotFoundMessage);
+            }
+
+            return (byte)heartNineOwnerSeat;
+        }
+
+        private static bool ContainsHeartNine(IReadOnlyList<Card> hand)
+        {
+            return hand.Any(IsHeartNine);
+        }
+
+        private static bool IsHeartNine(Card card)
+        {
+            return card.Suit == CardSuit.Heart &&
+                card.Number == MissionFailureReasons.ForbiddenTrickWinnerCardNumber;
         }
 
         /// <summary>
@@ -121,17 +140,25 @@ namespace Domain
             return (byte)((heartNineOwnerSeat + 1) % playerCount);
         }
 
-        private static void ValidateObjectiveDeck(
-            MissionDefinition definition, IReadOnlyList<int> shuffledNormalCardIds)
+        private static void ValidateObjectiveDeck(MissionDefinition definition,
+            IReadOnlyList<int> shuffledNormalCardIds)
         {
-            if (definition.ObjectiveCardCount < 0 || definition.ObjectiveCardCount > NormalObjectiveDeckSize ||
-                shuffledNormalCardIds.Count != NormalObjectiveDeckSize ||
-                shuffledNormalCardIds.Distinct().Count() != NormalObjectiveDeckSize ||
-                shuffledNormalCardIds.Any(cardId =>
-                    cardId < FirstNormalObjectiveCardId || cardId > NormalObjectiveDeckSize))
+            bool isCardCountInRange = definition.ObjectiveCardCount >= 0 &&
+                definition.ObjectiveCardCount <= NormalObjectiveDeckSize;
+            bool isDeckSizeCorrect = shuffledNormalCardIds.Count == NormalObjectiveDeckSize &&
+                shuffledNormalCardIds.Distinct().Count() == NormalObjectiveDeckSize;
+            bool areCardIdsValid = shuffledNormalCardIds.All(IsNormalObjectiveCardId);
+
+            bool isDeckValid = isCardCountInRange && isDeckSizeCorrect && areCardIdsValid;
+            if (!isDeckValid)
             {
                 throw new ArgumentException(nameof(shuffledNormalCardIds));
             }
+        }
+
+        private static bool IsNormalObjectiveCardId(int cardId)
+        {
+            return cardId >= FirstNormalObjectiveCardId && cardId <= NormalObjectiveDeckSize;
         }
 
         private static void ShuffleCardIds(int[] cardIds, Random randomGenerator)

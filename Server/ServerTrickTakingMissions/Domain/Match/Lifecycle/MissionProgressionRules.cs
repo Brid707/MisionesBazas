@@ -33,10 +33,8 @@ namespace Domain
         /// <param name="votingSeat">The seat index casting the vote.</param>
         /// <param name="playerCount">The total number of seated participants.</param>
         /// <returns>An updated read-only collection containing all unique ready votes.</returns>
-        public static IReadOnlyCollection<byte> RegisterVote(
-            IReadOnlyCollection<byte> currentVotes,
-            byte votingSeat,
-            int playerCount)
+        public static IReadOnlyCollection<byte> RegisterVote(IReadOnlyCollection<byte> currentVotes,
+            byte votingSeat, int playerCount)
         {
             if (!MatchPlayerCountRules.IsPlayerCountSupported(playerCount) ||
                 votingSeat >= playerCount)
@@ -47,10 +45,12 @@ namespace Domain
             {
                 throw new ArgumentException(nameof(currentVotes));
             }
+
             var updatedVotes = new HashSet<byte>(currentVotes ?? Array.Empty<byte>())
             {
                 votingSeat
             };
+
             return updatedVotes.ToList().AsReadOnly();
         }
 

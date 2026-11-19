@@ -12,6 +12,7 @@ namespace Domain
     public static class DistressSignalRules
     {
         private const int FirstTrickNumber = 1;
+        private const string InvalidExecutionStateMessage = "Distress signal cannot be executed in the current state.";
 
         /// <summary>
         /// Validates whether a distress signal card pass can be executed under current attempt conditions.
@@ -21,26 +22,23 @@ namespace Domain
         /// non-special cards in hand; otherwise, false.</returns>
         public static bool CanExecuteDistressSignal(DistressSignalContext context)
         {
-            if (context is null || !AreTimingPrerequisitesMet(context))
+            bool canExecute = false;
+
+            if (context is not null && AreTimingPrerequisitesMet(context) && context.HandsBySeat is not null &&
+                context.SelectedPassCardBySeat is not null)
             {
-                return false;
+                int playerCount = context.HandsBySeat.Count;
+
+                if (MatchPlayerCountRules.IsPlayerCountSupported(playerCount) &&
+                    context.SelectedPassCardBySeat.Count == playerCount)
+                {
+                    canExecute = Enumerable.Range(0,
+                        playerCount).All(seat => IsValidPassSelection(context.HandsBySeat[seat],
+                        context.SelectedPassCardBySeat, (byte)seat));
+                }
             }
 
-            if (context.HandsBySeat is null || context.SelectedPassCardBySeat is null)
-            {
-                return false;
-            }
-
-            int playerCount = context.HandsBySeat.Count;
-            if (!MatchPlayerCountRules.IsPlayerCountSupported(playerCount) ||
-                context.SelectedPassCardBySeat.Count != playerCount)
-            {
-                return false;
-            }
-
-            return Enumerable.Range(0, playerCount)
-                .All(seat => IsValidPassSelection(
-                    context.HandsBySeat[seat], context.SelectedPassCardBySeat, (byte)seat));
+            return canExecute;
         }
 
         /// <summary>
@@ -61,18 +59,17 @@ namespace Domain
 
             if (!CanExecuteDistressSignal(context))
             {
-                throw new InvalidOperationException("Distress signal cannot be executed in the current state.");
+                throw new InvalidOperationException(InvalidExecutionStateMessage);
             }
 
             int playerCount = context.HandsBySeat.Count;
-            List<List<Card>> updatedHands = new List<List<Card>>(playerCount);
+            var updatedHands = new List<List<Card>>(playerCount);
 
             for (int seat = 0; seat < playerCount; seat++)
             {
-                Card passedOut = context.SelectedPassCardBySeat[(byte)seat];
-                List<Card> remainingCards = context.HandsBySeat[seat]
-                    .Where(card => card.IdCard != passedOut.IdCard)
-                    .ToList();
+                Card passedCard = context.SelectedPassCardBySeat[(byte)seat];
+                List<Card> remainingCards =
+                    context.HandsBySeat[seat].Where(card => card.IdCard != passedCard.IdCard).ToList();
                 updatedHands.Add(remainingCards);
             }
 
@@ -83,7 +80,10 @@ namespace Domain
                 updatedHands[receiverSeat].Add(passedCard);
             }
 
-            return updatedHands.Select(hand => (IReadOnlyList<Card>)hand.AsReadOnly()).ToList().AsReadOnly();
+            IReadOnlyList<IReadOnlyList<Card>> exchangedHands =
+                updatedHands.Select(hand => (IReadOnlyList<Card>)hand.AsReadOnly()).ToList().AsReadOnly();
+
+            return exchangedHands;
         }
 
         private static bool AreTimingPrerequisitesMet(DistressSignalContext context)
@@ -96,27 +96,40 @@ namespace Domain
             return isBeforeFirstTrick && isNotYetUsed && hasValidDirection;
         }
 
-        private static bool IsValidPassSelection(
-            IReadOnlyList<Card> hand,
-            IReadOnlyDictionary<byte, Card> selections,
+        private static bool IsValidPassSelection(IReadOnlyList<Card> hand, IReadOnlyDictionary<byte, Card> selections,
             byte seat)
         {
-            if (hand is null || !selections.TryGetValue(seat, out Card selectedCard) || selectedCard is null)
+            bool isValid = false;
+
+            if (hand is not null && selections.TryGetValue(seat, out Card selectedCard) && selectedCard is not null)
             {
-                return false;
+                bool isNonSpecial = selectedCard.Suit != CardSuit.Special;
+                bool isInHand = hand.Any(card => card.IdCard == selectedCard.IdCard);
+                isValid = isNonSpecial && isInHand;
             }
 
-            bool isNonSpecial = selectedCard.Suit != CardSuit.Special;
-            bool isInHand = hand.Any(card => card.IdCard == selectedCard.IdCard);
-
-            return isNonSpecial && isInHand;
+            return isValid;
         }
 
         private static int ResolveReceivingSeat(int senderSeat, int playerCount, PassDirection direction)
         {
-            return direction == PassDirection.Left
-                ? (senderSeat + 1) % playerCount
-                : (senderSeat - 1 + playerCount) % playerCount;
+            int receivingSeat;
+
+            switch (direction)
+            {
+                case PassDirection.Left:
+                    receivingSeat = (senderSeat + 1) % playerCount;
+                    break;
+
+                case PassDirection.Right:
+                    receivingSeat = (senderSeat - 1 + playerCount) % playerCount;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction));
+            }
+
+            return receivingSeat;
         }
     }
 }

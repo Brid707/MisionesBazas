@@ -56,7 +56,6 @@
     <Compile Include="Evaluation\MissionEvaluationFailureReason.cs" />
     <Compile Include="Evaluation\MissionEvaluationSnapshot.cs" />
     <Compile Include="Evaluation\MissionObjectiveStatus.cs" />
-    <Compile Include="IMatchService.cs" />
     <Compile Include="MatchAccessFault.cs" />
     <Compile Include="PlayerCapturedCardsSnapshot.cs" />
     <Compile Include="Preparation\MissionObjectiveDraftAction.cs" />

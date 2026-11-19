@@ -31,22 +31,40 @@ namespace TrickTakingMissions.Rules.Rules
 
             RadioCommunicationRejectionReason prerequisiteFailure = EvaluatePrerequisites(context);
             RadioCommunicationValidationResult result = RadioCommunicationValidationResult.Reject(prerequisiteFailure);
+
             if (prerequisiteFailure == RadioCommunicationRejectionReason.None)
             {
-                result = context.CommunicationRule == CommunicationRuleType.Interference
-                    ? EvaluateInterference(context) : EvaluateTokenPosition(context);
+                if (context.CommunicationRule == CommunicationRuleType.Interference)
+                {
+                    result = EvaluateInterference(context);
+                }
+                else
+                {
+                    result = EvaluateTokenPosition(context);
+                }
             }
+
             return result;
         }
 
         private static RadioCommunicationValidationResult EvaluateInterference(RadioCommunicationContext context)
         {
-            bool isEligibleCard =
-                ResolveNonInterferencePositions(context.HandCards, context.CardToCommunicate).Count > 0;
-            return isEligibleCard && context.SelectedPosition == RadioTokenPosition.Interference
-                ? RadioCommunicationValidationResult.Success(RadioTokenPosition.Interference)
-                : RadioCommunicationValidationResult.Reject(
+            bool isEligibleCard = ResolveNonInterferencePositions(context.HandCards,
+                context.CardToCommunicate).Count > 0;
+            RadioCommunicationValidationResult radioCommunicationValidationResult;
+
+            if (isEligibleCard && context.SelectedPosition == RadioTokenPosition.Interference)
+            {
+                radioCommunicationValidationResult = RadioCommunicationValidationResult.Success(
+                    RadioTokenPosition.Interference);
+            }
+            else
+            {
+                radioCommunicationValidationResult = RadioCommunicationValidationResult.Reject(
                     RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+            }
+
+            return radioCommunicationValidationResult;
         }
 
         /// <summary>
@@ -56,21 +74,21 @@ namespace TrickTakingMissions.Rules.Rules
         /// <param name="candidateCard">The candidate card intended to be revealed.</param>
         /// <param name="communicationRule">The active communication constraint for the mission.</param>
         /// <returns>A read-only collection of valid <see cref="RadioTokenPosition"/> placements.</returns>
-        public static IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(
-            IReadOnlyList<Card> handCards,
-            Card candidateCard,
-            CommunicationRuleType communicationRule)
+        public static IReadOnlyList<RadioTokenPosition> GetValidPositionsForCard(IReadOnlyList<Card> handCards,
+            Card candidateCard, CommunicationRuleType communicationRule)
         {
             IReadOnlyList<RadioTokenPosition> positions = Array.Empty<RadioTokenPosition>();
             if (handCards != null && candidateCard != null && candidateCard.Suit != CardSuit.Special &&
                 handCards.Any(card => card.IdCard == candidateCard.IdCard))
             {
                 positions = ResolveNonInterferencePositions(handCards, candidateCard);
+
                 if (communicationRule == CommunicationRuleType.Interference && positions.Count > 0)
                 {
                     positions = new[] { RadioTokenPosition.Interference };
                 }
             }
+
             return positions;
         }
 
@@ -84,19 +102,22 @@ namespace TrickTakingMissions.Rules.Rules
             return rejection;
         }
 
-        private static RadioCommunicationRejectionReason EvaluateCandidatePrerequisites(RadioCommunicationContext
-            context)
+        private static RadioCommunicationRejectionReason EvaluateCandidatePrerequisites(
+            RadioCommunicationContext context)
         {
             RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
+
             if (context.CardToCommunicate == null || context.HandCards == null ||
                 !context.HandCards.Any(card => card.IdCard == context.CardToCommunicate.IdCard))
             {
                 rejection = RadioCommunicationRejectionReason.CardNotInHand;
             }
+
             else if (context.CardToCommunicate.Suit == CardSuit.Special)
             {
                 rejection = RadioCommunicationRejectionReason.SpecialCardNotAllowed;
             }
+
             return rejection;
         }
 
@@ -107,7 +128,9 @@ namespace TrickTakingMissions.Rules.Rules
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
             RadioCommunicationRejectionReason rejection = RadioCommunicationRejectionReason.None;
+
             if (IsDisrupted(context.CommunicationRule, context.CurrentTrickNumber))
             {
                 rejection = RadioCommunicationRejectionReason.DisruptedUntilTrick;
@@ -124,81 +147,97 @@ namespace TrickTakingMissions.Rules.Rules
             {
                 rejection = RadioCommunicationRejectionReason.AlreadyCommunicatedThisAttempt;
             }
+
             return rejection;
         }
 
         private static bool IsDisrupted(CommunicationRuleType rule, int currentTrickNumber)
         {
             bool isDisruptedAtTrickTwo = rule == CommunicationRuleType.DisruptionUntilTrick2 &&
-                                         currentTrickNumber < DisruptionTrickTwoThreshold;
+                currentTrickNumber < DisruptionTrickTwoThreshold;
             bool isDisruptedAtTrickThree = rule == CommunicationRuleType.DisruptionUntilTrick3 &&
-                                           currentTrickNumber < DisruptionTrickThreeThreshold;
+                currentTrickNumber < DisruptionTrickThreeThreshold;
 
             return isDisruptedAtTrickTwo || isDisruptedAtTrickThree;
         }
 
         private static RadioCommunicationValidationResult EvaluateTokenPosition(RadioCommunicationContext context)
         {
-            List<Card> cardsOfSameSuit = context.HandCards
-                .Where(card => card.Suit == context.CardToCommunicate.Suit)
-                .ToList();
+            List<Card> cardsOfSameSuit =
+                context.HandCards.Where(card => card.Suit == context.CardToCommunicate.Suit).ToList();
+            RadioCommunicationValidationResult validationResult;
 
             if (cardsOfSameSuit.Count == 1)
             {
-                return context.SelectedPosition == RadioTokenPosition.Only
-                    ? RadioCommunicationValidationResult.Success(RadioTokenPosition.Only)
-                    : RadioCommunicationValidationResult.Reject(RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+                if (context.SelectedPosition == RadioTokenPosition.Only)
+                {
+                    validationResult = RadioCommunicationValidationResult.Success(RadioTokenPosition.Only);
+                }
+                else
+                {
+                    validationResult = RadioCommunicationValidationResult.Reject(
+                        RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+                }
             }
-
-            int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
-            int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
-
-            bool isHighest = context.CardToCommunicate.Number == highestNumberInSuit &&
-                             context.SelectedPosition == RadioTokenPosition.Highest;
-            bool isLowest = context.CardToCommunicate.Number == lowestNumberInSuit &&
-                            context.SelectedPosition == RadioTokenPosition.Lowest;
-
-            if (isHighest)
+            else
             {
-                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Highest);
+                int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
+                int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
+
+                bool isHighest = context.CardToCommunicate.Number == highestNumberInSuit &&
+                                 context.SelectedPosition == RadioTokenPosition.Highest;
+                bool isLowest = context.CardToCommunicate.Number == lowestNumberInSuit &&
+                                context.SelectedPosition == RadioTokenPosition.Lowest;
+
+                if (isHighest)
+                {
+                    validationResult = RadioCommunicationValidationResult.Success(RadioTokenPosition.Highest);
+                }
+                else if (isLowest)
+                {
+                    validationResult = RadioCommunicationValidationResult.Success(RadioTokenPosition.Lowest);
+                }
+                else
+                {
+                    validationResult = RadioCommunicationValidationResult.Reject(
+                        RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+                }
             }
 
-            if (isLowest)
-            {
-                return RadioCommunicationValidationResult.Success(RadioTokenPosition.Lowest);
-            }
-
-            return RadioCommunicationValidationResult.Reject(RadioCommunicationRejectionReason.InvalidTokenPositionForCard);
+            return validationResult;
         }
 
-        private static IReadOnlyList<RadioTokenPosition> ResolveNonInterferencePositions(
-            IReadOnlyList<Card> handCards,
+        private static IReadOnlyList<RadioTokenPosition> ResolveNonInterferencePositions(IReadOnlyList<Card> handCards,
             Card candidateCard)
         {
-            List<Card> cardsOfSameSuit = handCards
-                .Where(card => card.Suit == candidateCard.Suit)
-                .ToList();
+            List<Card> cardsOfSameSuit =
+                handCards.Where(card => card.Suit == candidateCard.Suit).ToList();
+            IReadOnlyList<RadioTokenPosition> validPositions;
 
             if (cardsOfSameSuit.Count == 1)
             {
-                return new[] { RadioTokenPosition.Only };
+                validPositions = new[] { RadioTokenPosition.Only };
             }
-
-            var validPositions = new List<RadioTokenPosition>(2);
-            int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
-            int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
-
-            if (candidateCard.Number == highestNumberInSuit)
+            else
             {
-                validPositions.Add(RadioTokenPosition.Highest);
+                var positions = new List<RadioTokenPosition>(2);
+                int highestNumberInSuit = cardsOfSameSuit.Max(card => card.Number);
+                int lowestNumberInSuit = cardsOfSameSuit.Min(card => card.Number);
+
+                if (candidateCard.Number == highestNumberInSuit)
+                {
+                    positions.Add(RadioTokenPosition.Highest);
+                }
+
+                if (candidateCard.Number == lowestNumberInSuit)
+                {
+                    positions.Add(RadioTokenPosition.Lowest);
+                }
+
+                validPositions = positions.AsReadOnly();
             }
 
-            if (candidateCard.Number == lowestNumberInSuit)
-            {
-                validPositions.Add(RadioTokenPosition.Lowest);
-            }
-
-            return validPositions.AsReadOnly();
+            return validPositions;
         }
     }
 }

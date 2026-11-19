@@ -8,7 +8,7 @@ namespace Services.Contracts
     /// Service contract defining operations for lobby management, player coordination, and match launching.
     /// </summary>
     [ServiceContract(CallbackContract = typeof(ILobbyCallback))]
-    public interface ILobbyService : Gameplay.IMatchService
+    public interface ILobbyService : IMatchService
     {
         /// <summary>Changes waiting-room configuration and returns the server-confirmed room or rejection.</summary>
         /// <param name="lobbyCode">The existing room invitation code.</param>
