@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Application.Models;
 using Application.Ports;
 using Domain;
 using Gameplay;
-using TrickTakingMissions.Logging.Abstractions;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
@@ -13,7 +13,7 @@ using TrickTakingMissions.Rules.Rules;
 namespace Application.UseCases
 {
     /// <summary>Serializes match mutations and retains decisions within their attempt scope.</summary>
-    public sealed partial class MatchUseCase : IMatchUseCase
+    public sealed class MatchUseCase : IMatchUseCase
     {
         private const int MaximumProcessedSubmissions = 4096;
         private const string MatchIdentityConflictMessage = "MatchIdentityConflict";
@@ -31,6 +31,14 @@ namespace Application.UseCases
         private readonly IMatchClock _matchClock;
         private readonly IMatchParticipantPresence _participantPresence;
 
+        private readonly MatchDistressSignalHandler _distressSignalHandler;
+        private readonly MatchObjectiveDraftHandler _objectiveDraftHandler;
+        private readonly MatchRadioCommunicationHandler _radioCommunicationHandler;
+        private readonly MatchSpecialPreparationHandler _specialPreparationHandler;
+        private readonly MatchMissionRetryHandler _missionRetryHandler;
+        private readonly MatchTransitionSchedulingHandler _transitionSchedulingHandler;
+        private readonly MatchTransitionExecutionHandler _transitionExecutionHandler;
+
         public MatchUseCase(IMatchStateStore matchStateStore, IMissionDeckDealer missionDeckDealer,
             MatchExecutionDependencies executionDependencies)
         {
@@ -46,6 +54,16 @@ namespace Application.UseCases
                 throw new ArgumentNullException(nameof(executionDependencies.MatchClock));
             _participantPresence = executionDependencies.ParticipantPresence ??
                 throw new ArgumentNullException(nameof(executionDependencies.ParticipantPresence));
+
+            _distressSignalHandler = new MatchDistressSignalHandler(_matchStateStore);
+            _objectiveDraftHandler = new MatchObjectiveDraftHandler(_matchStateStore);
+            _radioCommunicationHandler = new MatchRadioCommunicationHandler(_matchStateStore);
+            _specialPreparationHandler = new MatchSpecialPreparationHandler(_matchStateStore);
+            _missionRetryHandler = new MatchMissionRetryHandler(_matchStateStore);
+            _transitionSchedulingHandler = new MatchTransitionSchedulingHandler(
+                _matchStateStore, _matchClock, _participantPresence);
+            _transitionExecutionHandler = new MatchTransitionExecutionHandler(
+                _matchStateStore, _missionDeckDealer, _matchClock, _participantPresence, _logger);
         }
 
         public Guid StartMatch(MatchStartContext startContext)
@@ -128,6 +146,58 @@ namespace Application.UseCases
                 }
             }
             return playDecision;
+        }
+
+        public DistressSignalCommit SubmitDistressSignal(DistressSignalRequest request, int participantUserId)
+        {
+            return _distressSignalHandler.SubmitDistressSignal(request, participantUserId);
+        }
+
+        public ObjectiveDraftDecision ProcessObjectiveDraftAction(ObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return _objectiveDraftHandler.ProcessObjectiveDraftAction(submission, participantUserId);
+        }
+
+        public RadioCommunicationCommit SubmitRadioCommunication(RadioCommunicationRequest request, int participantUserId)
+        {
+            return _radioCommunicationHandler.SubmitRadioCommunication(request, participantUserId);
+        }
+
+        public MissionPreparationCommit ProcessMissionPreparation(MissionPreparationRequest request, int participantUserId)
+        {
+            return _specialPreparationHandler.ProcessMissionPreparation(request, participantUserId);
+        }
+
+        public MissionRetryConfirmation ConfirmMissionRetry(MissionRetryRequest missionRetryRequest, int participantUserId)
+        {
+            return _missionRetryHandler.ConfirmMissionRetry(missionRetryRequest, participantUserId);
+        }
+
+        public IReadOnlyList<MissionTransitionWork> TakeDueMissionTransitions(int maximumPreparations)
+        {
+            return _transitionSchedulingHandler.TakeDueMissionTransitions(maximumPreparations);
+        }
+
+        public MissionTransitionExecutionResult ReleaseMissionTransitionReservation(
+            MissionTransitionWork transitionWork, bool hasPreparationFailed)
+        {
+            return _transitionExecutionHandler.ReleaseMissionTransitionReservation(transitionWork, hasPreparationFailed);
+        }
+
+        public MissionTransitionExecutionResult ExecuteScheduledMissionTransition(
+            MissionTransitionWork transitionWork, CancellationToken cancellationToken)
+        {
+            return _transitionExecutionHandler.ExecuteScheduledMissionTransition(transitionWork, cancellationToken);
+        }
+
+        internal static MissionRoleAssignmentContext CreateRoleContext(MatchState matchState, int actorSeat, int targetSeat)
+        {
+            return MatchSpecialPreparationHandler.CreateRoleContext(matchState, actorSeat, targetSeat);
+        }
+
+        internal static int CountCapturedHearts(MatchState matchState)
+        {
+            return MatchFinalMissionPreparationHandler.CountCapturedHearts(matchState);
         }
 
         private MatchState CreateMatchState(MatchStartContext startContext)
@@ -256,7 +326,7 @@ namespace Application.UseCases
             CompletedTrickResolution completedTrick = null;
             if (candidateTrickPlays.Length == matchState.ParticipantUserIds.Length)
             {
-                completedTrick = PrepareCompletedTrick(matchState, candidateTrickPlays);
+                completedTrick = MatchMissionEvaluationHandler.PrepareCompletedTrick(matchState, candidateTrickPlays);
             }
             matchState.PlayerHandCardIdsBySeat[participantSeat].Remove(playedCardId);
             if (completedTrick != null)

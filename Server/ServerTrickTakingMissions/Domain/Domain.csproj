@@ -65,7 +65,7 @@
     <Compile Include="Match\Evaluation\MissionEvaluationFailureCode.cs" />
     <Compile Include="Match\Evaluation\MissionEvaluationResult.cs" />
     <Compile Include="Match\Evaluation\MissionEvaluationRules.cs" />
-    <Compile Include="Match\Evaluation\MissionEvaluationRules.Objectives.cs" />
+    <Compile Include="Match\Evaluation\MissionObjectiveEvaluationRules.cs" />
     <Compile Include="Match\Evaluation\MissionFailureReasons.cs" />
     <Compile Include="Match\Lifecycle\DisconnectionPolicyRules.cs" />
     <Compile Include="Match\Lifecycle\MissionAttemptState.cs" />
@@ -81,7 +81,7 @@
     <Compile Include="Match\Setup\MissionTrickDistributionContext.cs" />
     <Compile Include="Match\Setup\ParticipantSeatRules.cs" />
     <Compile Include="Match\SpecialPreparation\MissionSpecialPreparationRules.cs" />
-    <Compile Include="Match\SpecialPreparation\MissionSpecialPreparationRules.FinalMissions.cs" />
+    <Compile Include="Match\SpecialPreparation\FinalMissionSpecialPreparationRules.cs" />
     <Compile Include="Match\Tricks\TrickTurnRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

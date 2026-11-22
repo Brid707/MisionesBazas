@@ -5,7 +5,7 @@ using TrickTakingMissions.Rules.Models;
 namespace Domain
 {
     /// <summary>Controls special preparation without lobby-host or transport dependencies.</summary>
-    public static partial class MissionSpecialPreparationRules
+    public static class MissionSpecialPreparationRules
     {
         public static MissionAttemptPhase GetInitialPhase(MissionDefinition definition)
         {
@@ -87,6 +87,21 @@ namespace Domain
                 roles = roles with { FirstAndLastTrickWinnerSeat = selectedParticipantSeat };
             }
             return roles;
+        }
+
+        public static bool CanAssignTrickDistribution(MissionTrickDistributionContext context)
+        {
+            return FinalMissionSpecialPreparationRules.CanAssignTrickDistribution(context);
+        }
+
+        public static MissionAttemptState AssignTrickDistribution(MissionTrickDistributionContext context)
+        {
+            return FinalMissionSpecialPreparationRules.AssignTrickDistribution(context);
+        }
+
+        public static byte? GetRequiredHeartCaptureSeat(MissionRoleConfiguration roles, int participantCount)
+        {
+            return FinalMissionSpecialPreparationRules.GetRequiredHeartCaptureSeat(roles, participantCount);
         }
     }
 }

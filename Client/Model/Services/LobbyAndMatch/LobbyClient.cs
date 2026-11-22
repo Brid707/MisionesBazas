@@ -1,9 +1,10 @@
 using System;
 using System.ServiceModel;
 using System.Threading.Tasks;
-
+using Gameplay;
 using Model.GameServices;
 using Model.Security;
+using Model.Session;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
@@ -12,7 +13,7 @@ namespace Model.Services
     /// Manages client-side WCF duplex communication for lobby rooms and handles server push callbacks.
     /// </summary>
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, UseSynchronizationContext = false)]
-    public sealed partial class LobbyClient : ILobbyClient, ILobbyServiceCallback
+    public sealed class LobbyClient : ILobbyClient, ILobbyServiceCallback
     {
         private const string ChannelDisconnectedTemplate = "Lobby duplex channel disconnected unexpectedly.";
         private const string CloseFaultTemplate =
@@ -32,6 +33,7 @@ namespace Model.Services
 
         private readonly ILoggerService _logger;
         private readonly WcfFaultHandler _faultHandler;
+        private readonly LobbyMatchClient _matchClient;
         private LobbyServiceClient _client;
         private bool _isLobbyClientDisposed;
 
@@ -39,6 +41,8 @@ namespace Model.Services
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _faultHandler = new WcfFaultHandler(_logger, RaiseConnectionError);
+            _matchClient = new LobbyMatchClient(() => _client, EnsureClientIsOpen, _logger);
+            _matchClient.MatchStateChanged += version => MatchStateChanged?.Invoke(version);
             InitializeClient();
         }
 
@@ -59,6 +63,8 @@ namespace Model.Services
         public event Action<string> LobbyDisbanded;
 
         public event Action<AuthenticationErrorType> ConnectionErrorOccurred;
+
+        public event Action<long> MatchStateChanged;
 
         /// <summary>
         /// Sends an asynchronous request to create a new lobby room on the server.
@@ -385,9 +391,13 @@ namespace Model.Services
         private void Dispose(bool isDisposing)
         {
             _isLobbyClientDisposed = true;
-            if (isDisposing && _client != null)
+            if (isDisposing)
             {
-                CloseOrAbortClient();
+                _matchClient?.Dispose();
+                if (_client != null)
+                {
+                    CloseOrAbortClient();
+                }
             }
         }
 
@@ -426,6 +436,83 @@ namespace Model.Services
         private void RaiseConnectionError(AuthenticationErrorType errorType)
         {
             ConnectionErrorOccurred?.Invoke(errorType);
+        }
+
+        public void OnMatchStateChanged(long matchStateVersion)
+        {
+            _matchClient.NotifyMatchStateChanged(matchStateVersion);
+        }
+
+        public bool IsMatchParticipantConnected(Guid matchId, int missionAttemptId)
+        {
+            return _matchClient.IsMatchParticipantConnected(matchId, missionAttemptId);
+        }
+
+        public Task<MissionPreparationConfirmation> IdentifyHeartNineOwnerAsync(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return _matchClient.IdentifyHeartNineOwnerAsync(submission, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> AssignMissionTrickDistributionAsync(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return _matchClient.AssignMissionTrickDistributionAsync(submission, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> AssignMissionRoleAsync(
+            MissionRoleAssignmentSubmission submission, int participantUserId)
+        {
+            return _matchClient.AssignMissionRoleAsync(submission, participantUserId);
+        }
+
+        public Task<MissionPreparationConfirmation> RespondToBlindObjectivesAsync(
+            BlindObjectiveResponseSubmission submission, int participantUserId)
+        {
+            return _matchClient.RespondToBlindObjectivesAsync(submission, participantUserId);
+        }
+
+        public Task<PlayerMatchSnapshot> GetPlayerMatchAsync(string lobbyCode, int participantUserId)
+        {
+            return _matchClient.GetPlayerMatchAsync(lobbyCode, participantUserId);
+        }
+
+        public Task<RadioCommunicationConfirmation> SubmitRadioCommunicationAsync(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return _matchClient.SubmitRadioCommunicationAsync(submission, participantUserId);
+        }
+
+        public Task<CardPlayDecision> PlayCardAsync(CardPlaySubmission cardPlaySubmission, int participantUserId)
+        {
+            return _matchClient.PlayCardAsync(cardPlaySubmission, participantUserId);
+        }
+
+        public Task<MissionObjectiveDraftDecision> ProcessObjectiveDraftActionAsync(
+            MissionObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return _matchClient.ProcessObjectiveDraftActionAsync(submission, participantUserId);
+        }
+
+        public Task<MissionRetryDecision> ConfirmMissionRetryAsync(
+            MissionRetrySubmission submission, int participantUserId)
+        {
+            return _matchClient.ConfirmMissionRetryAsync(submission, participantUserId);
+        }
+
+        public Task<DistressSignalConfirmation> SubmitDistressSignalAsync(
+            DistressSignalSubmission submission, int participantUserId)
+        {
+            return _matchClient.SubmitDistressSignalAsync(submission, participantUserId);
+        }
+
+        private static void PreserveGuestCredential(LobbyResult entryDecision)
+        {
+            if (entryDecision != null && !string.IsNullOrEmpty(entryDecision.GuestSessionToken) &&
+                UserSession.Current.CurrentUser != null)
+            {
+                UserSession.Current.CurrentUser.GuestSessionToken = entryDecision.GuestSessionToken;
+            }
         }
     }
 }

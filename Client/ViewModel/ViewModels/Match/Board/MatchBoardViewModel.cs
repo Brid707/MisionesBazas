@@ -20,7 +20,7 @@ using ViewModel.Services;
 namespace ViewModel.ViewModels
 {
     /// <summary>Reconciles the local hand and preserves submission identity when retrying an uncertain play.</summary>
-    public sealed partial class MatchBoardViewModel : ViewModelBase, IDisposable
+    public sealed class MatchBoardViewModel : ViewModelBase, IDisposable
     {
         private const int CompletedTrickDisplayMilliseconds = 2500;
         private const string LogMatchSynchronizationFailed =
@@ -36,6 +36,7 @@ namespace ViewModel.ViewModels
         private readonly Timer _completedTrickDisplayTimer;
         private readonly Dictionary<int, string> _participantNamesByUserId = new Dictionary<int, string>();
         private readonly List<LobbyPlayerItemViewModel> _seatedPlayers = new List<LobbyPlayerItemViewModel>();
+
         private PlayerMatchSnapshot _confirmedMatchSnapshot;
         private CardPlaySubmission _pendingCardPlaySubmission;
         private string _matchFeedbackResourceKey = "Match_Connecting";
@@ -57,29 +58,89 @@ namespace ViewModel.ViewModels
             _matchClient = context.MatchClient;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _uiContext = SynchronizationContext.Current;
+
             OwnHandCards = new ObservableCollection<HandCardViewModel>();
             CurrentTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
             LastCompletedTrickCardPlays = new ObservableCollection<PlayedCardViewModel>();
-            InitializeObjectiveDraftCommands();
-            InitializeRadioCommand();
-            InitializeSpecialPreparationCommands();
-            InitializeFinalPreparationCommands();
-            InitializeDistressSignalCommands();
-            _missionTransitionCountdownTimer = new Timer(OnMissionTransitionCountdownTick, null, TimeSpan.Zero,
-                TimeSpan.FromMilliseconds(250));
+
+            Instructions = new MatchInstructionsViewModel();
+            Evaluation = new MatchEvaluationViewModel();
+            Transition = new MatchTransitionViewModel(_uiContext);
+
+            ObjectiveDraft = new MatchObjectiveDraftViewModel(
+                _lobbyCode, _participantUserId, _matchClient,
+                () => _confirmedMatchSnapshot, () => MatchStateVersion,
+                CanSubmitMatchRequest, () => IsSpecialPreparationVisible,
+                GetParticipantName, SynchronizeMatchAsync, _seatedPlayers,
+                () => _isDisposed);
+
+            FinalPreparation = new MatchFinalPreparationViewModel(
+                _lobbyCode, _participantUserId, _matchClient,
+                () => _confirmedMatchSnapshot, () => MatchStateVersion,
+                CanSubmitMatchRequest,
+                () => _confirmedMatchSnapshot?.MissionPreparation?.Stage ?? MissionPreparationStage.None,
+                () => IsMissionPreparationComplete,
+                new ObservableCollection<LobbyPlayerItemViewModel>(),
+                GetParticipantName, SynchronizeMatchAsync);
+
+            SpecialPreparation = new MatchSpecialPreparationViewModel(
+                _lobbyCode, _participantUserId, _matchClient,
+                () => _confirmedMatchSnapshot, () => MatchStateVersion,
+                CanSubmitMatchRequest, GetParticipantName, SynchronizeMatchAsync,
+                _seatedPlayers, FinalPreparation);
+
+            Radio = new MatchRadioCommunicationViewModel(
+                _lobbyCode, _participantUserId, _matchClient,
+                () => _confirmedMatchSnapshot, () => MatchStateVersion,
+                CanSubmitMatchRequest, () => IsMatchInPlayableState,
+                () => IsDistressSignalInProgress, () => IsMissionAttemptFinished,
+                () => IsMissionPreparationComplete, () => HasLocalPlayerCommunicated,
+                OwnHandCards, _seatedPlayers, GetParticipantName, SynchronizeMatchAsync,
+                () => MatchFeedbackResourceKey = GetCurrentMatchFeedback());
+
+            Distress = new MatchDistressViewModel(
+                _lobbyCode, _participantUserId, _matchClient,
+                () => _confirmedMatchSnapshot, () => MatchStateVersion,
+                CanSubmitMatchRequest, () => _isDisposed, () => _isMatchConnected,
+                () => IsMissionPreparationComplete, () => IsMissionAttemptFinished,
+                GetParticipantName, SynchronizeMatchAsync, _seatedPlayers,
+                key => MatchFeedbackResourceKey = key);
+
+            Instructions.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            Evaluation.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            Transition.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            ObjectiveDraft.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            FinalPreparation.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            SpecialPreparation.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            Radio.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+            Distress.PropertyChanged += (s, e) => OnPropertyChanged(e.PropertyName);
+
             PlayCardCommand = new AsyncRelayCommand(SubmitSelectedCardAsync, CanPlaySelectedCard);
             RetryPendingMatchRequestCommand = new AsyncRelayCommand(SynchronizeMatchAsync, CanRetryPendingMatchRequest);
+
             _matchClient.MatchStateChanged += OnMatchStateChanged;
             _completedTrickDisplayTimer = new Timer(OnCompletedTrickDisplayElapsed, null,
                 Timeout.Infinite, Timeout.Infinite);
             _matchRefreshTimer = new Timer(OnRefreshTimer, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
         }
 
+        // Sub-viewmodels
+        public MatchInstructionsViewModel Instructions { get; }
+        public MatchEvaluationViewModel Evaluation { get; }
+        public MatchTransitionViewModel Transition { get; }
+        public MatchObjectiveDraftViewModel ObjectiveDraft { get; }
+        public MatchFinalPreparationViewModel FinalPreparation { get; }
+        public MatchSpecialPreparationViewModel SpecialPreparation { get; }
+        public MatchRadioCommunicationViewModel Radio { get; }
+        public MatchDistressViewModel Distress { get; }
+
+        // Local Board collections and commands
         public ObservableCollection<HandCardViewModel> OwnHandCards { get; }
         public ObservableCollection<PlayedCardViewModel> CurrentTrickCardPlays { get; }
         public ObservableCollection<PlayedCardViewModel> LastCompletedTrickCardPlays { get; }
         public ICommand PlayCardCommand { get; }
         public ICommand RetryPendingMatchRequestCommand { get; }
+
         public long MatchStateVersion => _confirmedMatchSnapshot?.MatchStateVersion ?? 0;
         public int CurrentTrickNumber => _confirmedMatchSnapshot?.CurrentTrickNumber ?? 1;
         public int MaximumMissionTrickCount => _confirmedMatchSnapshot?.MaximumMissionTrickCount ?? 0;
@@ -106,6 +167,155 @@ namespace ViewModel.ViewModels
 
         private bool IsDealCompleted => _confirmedMatchSnapshot?.IsDealCompleted ?? false;
 
+        // Passthroughs: Instructions
+        public bool IsMissionInstructionVisible => Instructions.IsMissionInstructionVisible;
+        public string MissionInstructionResourceKey => Instructions.MissionInstructionResourceKey;
+
+        // Passthroughs: Evaluation
+        public bool IsMissionAttemptFinished => Evaluation.IsMissionAttemptFinished;
+        public bool IsMissionAttemptSucceeded => Evaluation.IsMissionAttemptSucceeded;
+        public bool IsMissionAttemptFailed => Evaluation.IsMissionAttemptFailed;
+        public bool IsTrickTurnVisible => Evaluation.IsTrickTurnVisible;
+        public string MissionEvaluationFeedbackResourceKey => Evaluation.MissionEvaluationFeedbackResourceKey;
+
+        // Passthroughs: Transition
+        public int CurrentMissionAttemptNumber => Transition.CurrentMissionAttemptNumber;
+        public string MissionProgressDisplay => Transition.MissionProgressDisplay;
+        public bool IsCampaignCompleted => Transition.IsCampaignCompleted;
+        public bool IsMissionTransitionVisible => Transition.IsMissionTransitionVisible;
+        public int MissionTransitionRemainingSeconds => Transition.MissionTransitionRemainingSeconds;
+        public bool HasMissionTransitionCountdown => Transition.HasMissionTransitionCountdown;
+        public string MissionTransitionStatusResourceKey => Transition.MissionTransitionStatusResourceKey;
+
+        // Passthroughs: ObjectiveDraft
+        public ObservableCollection<MissionObjectiveViewModel> UnassignedMissionObjectives => ObjectiveDraft.UnassignedMissionObjectives;
+        public ICommand SelectMissionObjectiveCommand => ObjectiveDraft.SelectMissionObjectiveCommand;
+        public ICommand PassObjectiveDraftCommand => ObjectiveDraft.PassObjectiveDraftCommand;
+        public bool IsMissionPreparationComplete => ObjectiveDraft.IsMissionPreparationComplete;
+        public bool IsObjectiveDraftVisible => ObjectiveDraft.IsObjectiveDraftVisible;
+        public string CurrentObjectiveDraftPlayerName => ObjectiveDraft.CurrentObjectiveDraftPlayerName;
+
+        // Passthroughs: FinalPreparation
+        public ObservableCollection<PublicMissionRoleViewModel> ConfirmedMissionRoles => FinalPreparation.ConfirmedMissionRoles;
+        public ICommand IdentifyHeartNineOwnerCommand => FinalPreparation.IdentifyHeartNineOwnerCommand;
+        public ICommand AssignTrickDistributionCommand => FinalPreparation.AssignTrickDistributionCommand;
+        public bool IsTrickDistributionSelection => FinalPreparation.IsTrickDistributionSelection;
+        public bool IsHeartNineIdentificationStage => FinalPreparation.IsHeartNineIdentificationStage;
+        public bool IsHeartCaptureProgressVisible => FinalPreparation.IsHeartCaptureProgressVisible;
+        public string HeartCaptureProgressDisplay => FinalPreparation.HeartCaptureProgressDisplay;
+        public bool CanIdentifyHeartNineOwnership => FinalPreparation.CanIdentifyHeartNineOwnership;
+        public LobbyPlayerItemViewModel SelectedFirstFourTrickWinner
+        {
+            get => FinalPreparation.SelectedFirstFourTrickWinner;
+            set => FinalPreparation.SelectedFirstFourTrickWinner = value;
+        }
+        public LobbyPlayerItemViewModel SelectedLastTrickWinner
+        {
+            get => FinalPreparation.SelectedLastTrickWinner;
+            set => FinalPreparation.SelectedLastTrickWinner = value;
+        }
+
+        // Passthroughs: SpecialPreparation
+        public ObservableCollection<LobbyPlayerItemViewModel> EligibleRoleParticipants => SpecialPreparation.EligibleRoleParticipants;
+        public ObservableCollection<BlindObjectiveResponseViewModel> BlindObjectiveResponseDescriptions => SpecialPreparation.BlindObjectiveResponseDescriptions;
+        public ICommand AssignMissionRoleCommand => SpecialPreparation.AssignMissionRoleCommand;
+        public ICommand RespondCapableCommand => SpecialPreparation.RespondCapableCommand;
+        public ICommand RespondNotCapableCommand => SpecialPreparation.RespondNotCapableCommand;
+        public bool IsSpecialPreparationVisible => SpecialPreparation.IsSpecialPreparationVisible;
+        public bool IsRoleAssignmentVisible => SpecialPreparation.IsRoleAssignmentVisible;
+        public bool IsBlindResponseChoiceVisible => SpecialPreparation.IsBlindResponseChoiceVisible;
+        public bool AreBlindResponsesVisible => SpecialPreparation.AreBlindResponsesVisible;
+        public bool CanRespondBlindObjectives => SpecialPreparation.CanRespondBlindObjectives;
+        public bool CanSelectRoleParticipant => SpecialPreparation.CanSelectRoleParticipant;
+        public string SpecialPreparationFeedbackKey => SpecialPreparation.SpecialPreparationFeedbackKey;
+        public bool HasSingleTrickWinner => SpecialPreparation.HasSingleTrickWinner;
+        public string SingleTrickWinnerParticipantName => SpecialPreparation.SingleTrickWinnerParticipantName;
+        public bool IsSpecialPreparationPanelOpen
+        {
+            get => SpecialPreparation.IsSpecialPreparationPanelOpen;
+            set => SpecialPreparation.IsSpecialPreparationPanelOpen = value;
+        }
+        public LobbyPlayerItemViewModel SelectedRoleParticipant
+        {
+            get => SpecialPreparation.SelectedRoleParticipant;
+            set => SpecialPreparation.SelectedRoleParticipant = value;
+        }
+
+        // Passthroughs: Radio
+        public ObservableCollection<RadioMarkerOptionViewModel> AvailableRadioMarkers => Radio.AvailableRadioMarkers;
+        public ObservableCollection<PlayerRadioCommunicationViewModel> RadioCommunications => Radio.RadioCommunications;
+        public ICommand SubmitRadioCommunicationCommand => Radio.SubmitRadioCommunicationCommand;
+        public ICommand ToggleCommunicationModeCommand => Radio.ToggleCommunicationModeCommand;
+        public bool IsCommunicationModeActive
+        {
+            get => Radio.IsCommunicationModeActive;
+            set => Radio.IsCommunicationModeActive = value;
+        }
+        public HandCardViewModel SelectedRadioCard
+        {
+            get => Radio.SelectedRadioCard;
+            set => Radio.SelectedRadioCard = value;
+        }
+        public RadioMarkerOptionViewModel SelectedRadioMarker
+        {
+            get => Radio.SelectedRadioMarker;
+            set => Radio.SelectedRadioMarker = value;
+        }
+        public bool CanCommunicate => Radio.CanCommunicate;
+        public bool CanChooseRadioCard => Radio.CanChooseRadioCard;
+
+        // Passthroughs: Distress
+        public ObservableCollection<int> EligibleDistressCardIds => Distress.EligibleDistressCardIds;
+        public ICommand OpenDistressSignalDialogCommand => Distress.OpenDistressSignalDialogCommand;
+        public ICommand CloseDistressSignalDialogCommand => Distress.CloseDistressSignalDialogCommand;
+        public ICommand SelectDistressCardCommand => Distress.SelectDistressCardCommand;
+        public ICommand ProposeDistressSignalUsageCommand => Distress.ProposeDistressSignalUsageCommand;
+        public ICommand VoteDistressUsageYesCommand => Distress.VoteDistressUsageYesCommand;
+        public ICommand VoteDistressUsageNoCommand => Distress.VoteDistressUsageNoCommand;
+        public ICommand VoteDistressDirectionLeftCommand => Distress.VoteDistressDirectionLeftCommand;
+        public ICommand VoteDistressDirectionRightCommand => Distress.VoteDistressDirectionRightCommand;
+        public ICommand ConfirmDistressCardSelectionCommand => Distress.ConfirmDistressCardSelectionCommand;
+        public ICommand CancelDistressProposalCommand => Distress.CancelDistressProposalCommand;
+        public DistressSignalSnapshot DistressSignal => Distress.DistressSignal;
+        public bool HasUsedDistressSignal => Distress.HasUsedDistressSignal;
+        public bool IsDistressSignalInProgress => Distress.IsDistressSignalInProgress;
+        public DistressSignalPhase CurrentDistressStep => Distress.CurrentDistressStep;
+        public bool IsLocalDistressUsageVoted => Distress.IsLocalDistressUsageVoted;
+        public bool IsLocalDistressDirectionVoted => Distress.IsLocalDistressDirectionVoted;
+        public bool IsLocalDistressCardSubmitted => Distress.IsLocalDistressCardSubmitted;
+        public bool IsDistressInitiatorConfirmVisible => Distress.IsDistressInitiatorConfirmVisible;
+        public bool IsDistressUsageVoteVisible => Distress.IsDistressUsageVoteVisible;
+        public bool IsDistressDirectionVoteVisible => Distress.IsDistressDirectionVoteVisible;
+        public bool IsDistressCardSelectionVisible => Distress.IsDistressCardSelectionVisible;
+        public bool IsDistressWaitingVisible => Distress.IsDistressWaitingVisible;
+        public string DistressInitiatorName => Distress.DistressInitiatorName;
+        public int DistressUsageYesVotesCount => Distress.DistressUsageYesVotesCount;
+        public int DistressDirectionVotesCount => Distress.DistressDirectionVotesCount;
+        public int DistressCardsSubmittedCount => Distress.DistressCardsSubmittedCount;
+        public int DistressTotalPlayersCount => Distress.DistressTotalPlayersCount;
+        public string DistressWaitingProgressText => Distress.DistressWaitingProgressText;
+        public string DistressStepWaitingResourceKey => Distress.DistressStepWaitingResourceKey;
+        public string DistressAgreedDirectionResourceKey => Distress.DistressAgreedDirectionResourceKey;
+        public bool IsDistressSignalDialogOpen
+        {
+            get => Distress.IsDistressSignalDialogOpen;
+            set => Distress.IsDistressSignalDialogOpen = value;
+        }
+        public DistressPassDirection SelectedDistressDirection
+        {
+            get => Distress.SelectedDistressDirection;
+            set => Distress.SelectedDistressDirection = value;
+        }
+        public int SelectedDistressCardId
+        {
+            get => Distress.SelectedDistressCardId;
+            set => Distress.SelectedDistressCardId = value;
+        }
+        public bool CanConfirmDistressCard => Distress.CanConfirmDistressCard;
+        public bool HasLocalPlayerCommunicated => Distress.HasLocalPlayerCommunicated;
+        public bool HasAnyPlayerCommunicated => Distress.HasAnyPlayerCommunicated;
+        public bool CanUseDistressSignal => Distress.CanUseDistressSignal;
+
         public void ConfigureParticipantNames(IEnumerable<LobbyPlayerItemViewModel> participants)
         {
             _seatedPlayers.Clear();
@@ -126,7 +336,8 @@ namespace ViewModel.ViewModels
                 }
                 catch (FaultException<MatchAccessFault> ex)
                 {
-                    string feedbackKey = GetMatchFaultFeedback(ex.Detail);
+                    string feedbackKey = Evaluation.GetMatchFaultFeedback(
+                        ex.Detail, Radio.HasPendingRadio, SpecialPreparation.HasPendingPreparation);
                     SetConnectionFailure(feedbackKey, ex);
                 }
                 catch (FaultException ex)
@@ -146,7 +357,7 @@ namespace ViewModel.ViewModels
                     Interlocked.Exchange(ref _isRequestInProgress, 0);
                     OnPropertyChanged(nameof(CanChooseRadioCard));
                     OnPropertyChanged(nameof(CanCommunicate));
-                    NotifySpecialPreparationProperties();
+                    SpecialPreparation.NotifySpecialPreparationProperties();
                     UpdateHandCardRaisedStates();
                     CommandManager.InvalidateRequerySuggested();
                 }
@@ -157,7 +368,7 @@ namespace ViewModel.ViewModels
         {
             _isDisposed = true;
             _matchRefreshTimer.Dispose();
-            _missionTransitionCountdownTimer.Dispose();
+            Transition.Dispose();
             _completedTrickDisplayTimer.Dispose();
             _matchClient.MatchStateChanged -= OnMatchStateChanged;
         }
@@ -170,9 +381,9 @@ namespace ViewModel.ViewModels
 
         private async Task SynchronizeCoreAsync()
         {
-            string preparationFeedback = await ConfirmPendingPreparationAsync();
-            string rejectionResourceKey = await ConfirmPendingObjectiveDraftAsync() ?? preparationFeedback;
-            string radioFeedback = await ConfirmPendingRadioAsync();
+            string preparationFeedback = await SpecialPreparation.ConfirmPendingPreparationAsync();
+            string rejectionResourceKey = await ObjectiveDraft.ConfirmPendingObjectiveDraftAsync() ?? preparationFeedback;
+            string radioFeedback = await Radio.ConfirmPendingRadioAsync();
             if (radioFeedback != null)
             {
                 rejectionResourceKey = radioFeedback;
@@ -211,7 +422,7 @@ namespace ViewModel.ViewModels
             {
                 if (IsCommunicationModeActive)
                 {
-                    return CanCommunicate && GetValidPositionsForCard(cardId).Count > 0;
+                    return CanCommunicate && Radio.GetValidPositionsForCard(cardId).Count > 0;
                 }
 
                 return CanPlayCurrentTurn() && GetPlayableCardIds().Contains(cardId);
@@ -271,7 +482,7 @@ namespace ViewModel.ViewModels
             {
                 if (IsCommunicationModeActive)
                 {
-                    await ExecuteCardCommunicationFromHandAsync(cardId);
+                    await Radio.ExecuteCardCommunicationFromHandAsync(cardId);
                     return;
                 }
 
@@ -293,9 +504,16 @@ namespace ViewModel.ViewModels
 
         private bool CanRetryPendingMatchRequest()
         {
-            return !_isDisposed && (_pendingCardPlaySubmission != null || _pendingObjectiveDraftSubmission != null ||
-                _pendingRadioSubmission != null || HasPendingPreparation) &&
+            return !_isDisposed && (_pendingCardPlaySubmission != null || ObjectiveDraft.HasPendingSubmission ||
+                Radio.HasPendingRadio || SpecialPreparation.HasPendingPreparation) &&
                 _isRequestInProgress == 0;
+        }
+
+        private bool CanSubmitMatchRequest()
+        {
+            return !_isDisposed && _isMatchConnected && _isRequestInProgress == 0 &&
+                !ObjectiveDraft.HasPendingSubmission && _pendingCardPlaySubmission == null &&
+                !Radio.HasPendingRadio && !SpecialPreparation.HasPendingPreparation;
         }
 
         private void ApplyConfirmedSnapshot(PlayerMatchSnapshot playerSnapshot)
@@ -306,29 +524,45 @@ namespace ViewModel.ViewModels
             {
                 ResetAttemptPresentationIfChanged(playerSnapshot);
                 _confirmedMatchSnapshot = playerSnapshot;
-                ApplyMissionTransitionSnapshot(playerSnapshot.MissionTransition);
+                Transition.ApplyTransitionSnapshot(
+                    playerSnapshot.MissionTransition,
+                    playerSnapshot.MissionPreparation?.MissionNumber,
+                    _isMatchConnected);
                 _isMatchConnected = true;
                 HashSet<int> playableCardIds = new HashSet<int>(GetPlayableCardIds());
                 UpdatePublicSeatStates(playerSnapshot);
-                ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
-                ApplySpecialPreparationSnapshot(playerSnapshot.MissionPreparation);
+                ObjectiveDraft.ApplyObjectiveDraftSnapshot(playerSnapshot.MissionPreparation);
+                SpecialPreparation.ApplySpecialPreparationSnapshot(playerSnapshot.MissionPreparation);
                 ReplaceOwnHandIfChanged(playerSnapshot, playableCardIds);
                 UpdateHandCardRaisedStates();
-                ApplyRadioSnapshot(playerSnapshot);
-                ApplyDistressSignalState(playerSnapshot);
+                Radio.ApplyRadioSnapshot(playerSnapshot);
+                Distress.ApplyDistressSignalState(playerSnapshot);
                 ReplacePublicPlays(playerSnapshot);
                 RefreshCompletedTrickDisplay(playerSnapshot);
                 NotifyMatchProperties();
-                NotifyMissionEvaluationProperties();
-                NotifyMissionInstructionProperties();
-                NotifyMissionTransitionProperties();
-                NotifyDistressProperties();
+                Evaluation.ApplyEvaluation(playerSnapshot.MissionEvaluation, IsMissionPreparationComplete);
+                Instructions.UpdateMissionNumber(playerSnapshot.MissionPreparation?.MissionNumber);
+                Transition.NotifyMissionTransitionProperties();
+                Distress.NotifyDistressProperties();
                 MatchFeedbackResourceKey = GetCurrentMatchFeedback();
             }
             else if (!isSameMatch)
             {
                 _isMatchConnected = false;
                 MatchFeedbackResourceKey = "Match_AccessUnavailable";
+            }
+        }
+
+        private void ResetAttemptPresentationIfChanged(PlayerMatchSnapshot playerSnapshot)
+        {
+            bool hasAttemptChanged = _confirmedMatchSnapshot?.MissionPreparation != null &&
+                _confirmedMatchSnapshot.MissionPreparation.MissionAttemptId !=
+                    playerSnapshot.MissionPreparation?.MissionAttemptId;
+            if (hasAttemptChanged)
+            {
+                _announcedCompletedTrickCount = 0;
+                _isCompletedTrickDisplayActive = false;
+                _completedTrickDisplayTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
         }
 
@@ -345,7 +579,7 @@ namespace ViewModel.ViewModels
                         playableCardIds.Contains(cardId)));
                 }
             }
-            RefreshCommunicationHighlights();
+            Radio.RefreshCommunicationHighlights();
         }
 
         private void UpdatePublicSeatStates(PlayerMatchSnapshot playerSnapshot)

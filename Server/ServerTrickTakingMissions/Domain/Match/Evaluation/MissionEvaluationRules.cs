@@ -9,7 +9,7 @@ namespace Domain
     /// <summary>
     /// Evaluates completed tricks against active mission objectives and special mission victory conditions.
     /// </summary>
-    public static partial class MissionEvaluationRules
+    public static class MissionEvaluationRules
     {
         private const int FirstMissionTrickNumber = 1;
         private const int FirstSpecialCardRank = (int)SpecialCardSymbol.Diamond;
@@ -22,9 +22,9 @@ namespace Domain
         /// <exception cref="ArgumentNullException">Thrown when required context fields are null.</exception>
         public static MissionEvaluationResult EvaluateCompletedTrick(MissionEvaluationContext context)
         {
-            ValidateEvaluationContext(context);
+            MissionObjectiveEvaluationRules.ValidateEvaluationContext(context);
             var updatedObjectives = new List<MissionObjective>(context.CurrentObjectives);
-            MissionEvaluationResult missionEvaluation = EvaluateObjectivesInTrick(context, updatedObjectives);
+            MissionEvaluationResult missionEvaluation = MissionObjectiveEvaluationRules.EvaluateObjectivesInTrick(context, updatedObjectives);
             if (missionEvaluation == null)
             {
                 missionEvaluation = EvaluateSpecialRule(context, updatedObjectives);
@@ -470,7 +470,7 @@ namespace Domain
                 if (!allObjectivesCompleted && isLastTrick)
                 {
                     MissionObjective firstPending = updatedObjectives.First(o => o.Status != ObjectiveStatus.Completed);
-                    result = FailObjective(updatedObjectives, firstPending.CardId,
+                    result = MissionObjectiveEvaluationRules.FailObjective(updatedObjectives, firstPending.CardId,
                         MissionFailureReasons.ObjectivesIncompleteAtMissionEnd);
                 }
                 else if (allObjectivesCompleted &&
@@ -499,7 +499,7 @@ namespace Domain
                     .FirstOrDefault(o => o.Token != ObjectiveTokenType.Omega && o.Status != ObjectiveStatus.Completed);
                 if (pendingNonOmega != null)
                 {
-                    result = FailObjective(updatedObjectives, pendingNonOmega.CardId,
+                    result = MissionObjectiveEvaluationRules.FailObjective(updatedObjectives, pendingNonOmega.CardId,
                         MissionFailureReasons.Mission48PendingNonOmegaBeforeLastTrick);
                 }
             }

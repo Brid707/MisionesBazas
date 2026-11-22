@@ -133,12 +133,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\Match\LobbyService.Match.cs" />
+    <Compile Include="Services\Match\LobbyMatchGameplayService.cs" />
     <Compile Include="Security\GuestParticipantCredentials.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\MissionRetryMapper.cs" />
-    <Compile Include="Services\Match\LobbyService.MissionRetry.cs" />
+    <Compile Include="Services\Match\LobbyMissionRetryService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\Match\LobbyMatchPresence.cs" />
@@ -146,19 +146,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\MissionObjectiveDraftMapper.cs" />
-    <Compile Include="Services\Match\LobbyService.ObjectiveDraft.cs" />
+    <Compile Include="Services\Match\LobbyObjectiveDraftService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\RadioCommunicationMapper.cs" />
-    <Compile Include="Services\Match\LobbyService.RadioCommunication.cs" />
+    <Compile Include="Services\Match\LobbyRadioCommunicationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\DistressSignalMapper.cs" />
-    <Compile Include="Services\Match\LobbyService.DistressSignal.cs" />
+    <Compile Include="Services\Match\LobbyDistressSignalService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\MissionPreparationMapper.cs" />
-    <Compile Include="Services\Match\LobbyService.SpecialPreparation.cs" />
+    <Compile Include="Services\Match\LobbySpecialPreparationService.cs" />
     <ProjectReference Include="..\..\Shared\TrickTakingMissions.Rules\TrickTakingMissions.Rules.csproj">
       <Project>{439733C3-C43D-4C1A-BE6D-C25EDC280575}</Project>
       <Name>TrickTakingMissions.Rules</Name>

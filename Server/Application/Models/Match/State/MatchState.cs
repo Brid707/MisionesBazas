@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Gameplay;
+using TrickTakingMissions.Rules.Enums;
+
 namespace Application.Models
 {
     /// <summary>Owns server-only hands and decisions; never serialize or return this object.</summary>
-    public sealed partial class MatchState
+    public sealed class MatchState
     {
         public Domain.MissionAttemptState MissionAttempt { get; private set; }
         public Domain.MissionEvaluationResult LastMissionEvaluation { get; private set; }
@@ -56,6 +59,136 @@ namespace Application.Models
         public TrickTakingMissions.Rules.Enums.PassDirection? DistressAgreedDirection { get; set; }
         public bool HasDistressBeenRejected { get; set; }
         public bool HasAppliedDistressPenaltyInCurrentMission { get; set; }
+
+        public MatchRadioCommunicationState RadioState { get; } = new MatchRadioCommunicationState();
+        public MatchSpecialPreparationState SpecialPreparationState { get; } = new MatchSpecialPreparationState();
+        public MatchTransitionState TransitionState { get; } = new MatchTransitionState();
+
+        // Radio State Passthroughs
+        public Dictionary<int, CommittedRadioCommunication> RadioCommunicationsByParticipantUserId =>
+            RadioState.RadioCommunicationsByParticipantUserId;
+        public Dictionary<Guid, CommittedRadioCommunication> ProcessedRadioCommunicationsBySubmissionId =>
+            RadioState.ProcessedRadioCommunicationsBySubmissionId;
+        public Dictionary<int, MatchActionRequestBudget> RadioBudgetsByParticipantUserId =>
+            RadioState.RadioBudgetsByParticipantUserId;
+
+        internal RadioCommunicationCommit CommitRadioCommunication(CommittedRadioCommunication communication)
+        {
+            MatchStateVersion++;
+            return RadioState.CommitRadioCommunication(communication, MatchStateVersion);
+        }
+
+        // Special Preparation Passthroughs
+        public Guid MissionPreparationStageId => SpecialPreparationState.MissionPreparationStageId;
+        public long PreparationStageOpenedVersion => SpecialPreparationState.PreparationStageOpenedVersion;
+        public IReadOnlyDictionary<byte, BlindObjectiveCapableResponse> BlindResponsesBySeat =>
+            SpecialPreparationState.BlindResponsesBySeat;
+        public Dictionary<Guid, ProcessedMissionPreparation> ProcessedPreparationSubmissions =>
+            SpecialPreparationState.ProcessedPreparationSubmissions;
+        public Dictionary<int, MatchActionRequestBudget> PreparationBudgetsByParticipant =>
+            SpecialPreparationState.PreparationBudgetsByParticipant;
+
+        internal MissionPreparationCommit CommitSpecialPreparation(MissionPreparationRequest request,
+            int participantUserId, SpecialPreparationChange preparedChange)
+        {
+            long committedVersion = MatchStateVersion + 1;
+            MissionPreparationCommit commit = SpecialPreparationState.CommitSpecialPreparation(
+                request, participantUserId, preparedChange, committedVersion);
+            MissionAttempt = preparedChange.UpdatedAttempt;
+            MatchStateVersion = commit.CommittedMatchStateVersion;
+            return commit;
+        }
+
+        private void ResetSpecialPreparationState(bool isInitialAttempt)
+        {
+            TrickStatistics = new MissionTrickStatistics();
+            SpecialPreparationState.ResetSpecialPreparationState(MatchStateVersion, isInitialAttempt);
+        }
+
+        // Transition Passthroughs
+        public MissionTransitionScheduleStatus MissionTransitionStatus => TransitionState.MissionTransitionStatus;
+        public MissionTransitionAction TransitionAction => TransitionState.TransitionAction;
+        public int DestinationMissionNumber => TransitionState.DestinationMissionNumber;
+        public bool HasStartedTransitionExecution => TransitionState.HasStartedTransitionExecution;
+        public Guid MissionTransitionScheduleId => TransitionState.MissionTransitionScheduleId;
+        public long MissionTransitionDeadlineMilliseconds => TransitionState.MissionTransitionDeadlineMilliseconds;
+        public long MissionTransitionConnectionVersion => TransitionState.MissionTransitionConnectionVersion;
+        public int[] MissingTransitionParticipantUserIds => TransitionState.MissingTransitionParticipantUserIds;
+
+        internal void InitializePreparedMissionAttempt(PreparedMissionAttempt preparedAttempt)
+        {
+            if (MissionAttempt != null)
+            {
+                throw new InvalidOperationException(nameof(MissionAttempt));
+            }
+            ApplyPreparedMissionAttempt(preparedAttempt);
+        }
+
+        internal void ConfigureMissionTransition(MissionTransitionAction transitionAction, int destinationMissionNumber)
+        {
+            TransitionState.ConfigureMissionTransition(transitionAction, destinationMissionNumber);
+        }
+
+        internal void SetMissionTransitionSchedule(MissionTransitionScheduleStatus status,
+            MatchParticipantPresence presence,
+            long deadlineMilliseconds)
+        {
+            TransitionState.SetMissionTransitionSchedule(status, presence, deadlineMilliseconds);
+            MatchStateVersion++;
+        }
+
+        internal void ReserveMissionTransitionPreparation()
+        {
+            TransitionState.ReserveMissionTransitionPreparation();
+            MatchStateVersion++;
+        }
+
+        internal void MarkTransitionExecutionStarted()
+        {
+            TransitionState.MarkTransitionExecutionStarted();
+        }
+
+        internal void CommitScheduledMissionTransition(PreparedMissionAttempt preparedAttempt)
+        {
+            ApplyPreparedMissionAttempt(preparedAttempt);
+            MatchStateVersion++;
+        }
+
+        private void ApplyPreparedMissionAttempt(PreparedMissionAttempt preparedAttempt)
+        {
+            bool isInitialAttempt = MissionAttempt == null;
+            bool isSameMissionRetry = !isInitialAttempt &&
+                MissionAttempt.MissionNumber == preparedAttempt.MissionAttempt.MissionNumber;
+            if (!isSameMissionRetry)
+            {
+                HasAppliedDistressPenaltyInCurrentMission = false;
+            }
+            MissionAttempt = preparedAttempt.MissionAttempt;
+            ResetSpecialPreparationState(isInitialAttempt);
+            PlayerHandCardIdsBySeat = preparedAttempt.PlayerHandCardIdsBySeat;
+            WonCardIdsBySeat = preparedAttempt.WonCardIdsBySeat;
+            WonTrickCountsBySeat = preparedAttempt.WonTrickCountsBySeat;
+            ObjectiveCardIdsByObjectiveId = preparedAttempt.ObjectiveCardIdsByObjectiveId;
+            CurrentObjectiveDraftSubmissionId = preparedAttempt.ObjectiveDraftSubmissionId;
+            MaximumMissionTrickCount = preparedAttempt.MaximumMissionTrickCount;
+            MissionCaptainSeat = preparedAttempt.MissionAttempt.CaptainSeat;
+            CurrentTurnPlayerSeat = MissionCaptainSeat;
+            CurrentTrickNumber = 1;
+            LastTrickWinnerUserId = 0;
+            LastEvaluatedTrickNumber = 0;
+            LastMissionEvaluation = null;
+            IsDealCompleted = false;
+            TransitionState.Reset(MissionAttempt.MissionNumber);
+            LastCompletedTrickCardPlays = Array.Empty<MatchCardPlay>();
+            CurrentTrickCardPlays.Clear();
+            CapturedCardPlays.Clear();
+            ProcessedCardPlayDecisionsBySubmissionId.Clear();
+            RadioState.Clear();
+            ProcessedObjectiveDrafts.Clear();
+            ObjectiveDraftHistoryByParticipant.Clear();
+            ResetDistressState();
+            HasDistressBeenRejected = false;
+        }
 
         public void ResetDistressState()
         {

@@ -6,12 +6,13 @@ using Gameplay;
 namespace Application.UseCases
 {
     /// <summary>Builds fresh recipient-specific arrays; server-owned hands never cross this boundary.</summary>
-    internal static partial class MatchSnapshotProjection
+    internal static class MatchSnapshotProjection
     {
         internal static PlayerMatchSnapshot CreateSnapshot(MatchState matchState, int participantSeat,
             long serverTimestampMilliseconds)
         {
-            MissionTransitionSnapshot transition = CreateMissionTransition(matchState, serverTimestampMilliseconds);
+            MissionTransitionSnapshot transition = MatchTransitionSnapshotProjector.CreateMissionTransition(
+                matchState, serverTimestampMilliseconds);
             return new PlayerMatchSnapshot
             {
                 MatchId = matchState.MatchId,
@@ -29,18 +30,18 @@ namespace Application.UseCases
                 LastTrickWinnerUserId = matchState.LastTrickWinnerUserId,
                 CapturedCardsByPlayer = CreateCapturedCardsSnapshots(matchState),
                 MissionTransition = transition,
-                RadioCommunications = CreateRadioCommunications(matchState),
-                RadioMode = GetRadioMode(matchState),
-                OwnRadioAvailability = CreateRadioAvailability(matchState, participantSeat),
+                RadioCommunications = MatchRadioCommunicationSnapshotProjector.CreateRadioCommunications(matchState),
+                RadioMode = MatchRadioCommunicationSnapshotProjector.GetRadioMode(matchState),
+                OwnRadioAvailability = MatchRadioCommunicationSnapshotProjector.CreateRadioAvailability(matchState, participantSeat),
                 MissionConditionProgress = new MissionConditionProgressSnapshot
                 {
                     TricksWonWithNormalOneCount = matchState.TrickStatistics.TricksWonWithNormalOneCount,
                     SpecialWinningCardIds = matchState.TrickStatistics.SpecialWinningCardIds.ToArray(),
                     CapturedHeartCardCount = MatchUseCase.CountCapturedHearts(matchState)
                 },
-                MissionRetry = CreateMissionRetry(transition),
-                MissionEvaluation = CreateMissionEvaluation(matchState),
-                MissionPreparation = CreateMissionPreparation(matchState, participantSeat),
+                MissionRetry = MatchMissionRetrySnapshotProjector.CreateMissionRetry(transition),
+                MissionEvaluation = MatchEvaluationSnapshotProjector.CreateMissionEvaluation(matchState),
+                MissionPreparation = MatchObjectiveDraftSnapshotProjector.CreateMissionPreparation(matchState, participantSeat),
                 DistressSignal = CreateDistressSignalSnapshot(matchState)
             };
         }

@@ -166,6 +166,9 @@ namespace Model.GameServices
                 this.LobbyField = value;
             }
         }
+
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string GuestSessionToken { get; set; }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1186,6 +1189,9 @@ namespace Model.GameServices
         [System.ServiceModel.OperationContract(IsOneWay = true, Action = "urn:misiones-bazas:match:StateChanged")]
         void OnMatchStateChanged(long matchStateVersion);
 
+        [System.ServiceModel.OperationContract(Action = "urn:misiones-bazas:match:Presence", ReplyAction = "*")]
+        bool IsMatchParticipantConnected(System.Guid matchId, int missionAttemptId);
+
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/ILobbyService/OnLobbyStateChanged")]
         void OnLobbyStateChanged(Model.GameServices.Lobby lobby);
@@ -1335,6 +1341,65 @@ namespace Model.GameServices
         public System.Threading.Tasks.Task StartGameFromLobbyAsync(string lobbyCode, int hostUserId)
         {
             return base.Channel.StartGameFromLobbyAsync(lobbyCode, hostUserId);
+        }
+
+        public Gameplay.MissionPreparationConfirmation IdentifyHeartNineOwner(
+            Gameplay.HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return base.Channel.IdentifyHeartNineOwner(submission, participantUserId);
+        }
+
+        public Gameplay.MissionPreparationConfirmation AssignMissionTrickDistribution(
+            Gameplay.MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return base.Channel.AssignMissionTrickDistribution(submission, participantUserId);
+        }
+
+        public Gameplay.MissionPreparationConfirmation AssignMissionRole(
+            Gameplay.MissionRoleAssignmentSubmission submission, int participantUserId)
+        {
+            return base.Channel.AssignMissionRole(submission, participantUserId);
+        }
+
+        public Gameplay.MissionPreparationConfirmation RespondToBlindObjectives(
+            Gameplay.BlindObjectiveResponseSubmission submission, int participantUserId)
+        {
+            return base.Channel.RespondToBlindObjectives(submission, participantUserId);
+        }
+
+        public Gameplay.RadioCommunicationConfirmation SubmitRadioCommunication(
+            Gameplay.RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return base.Channel.SubmitRadioCommunication(submission, participantUserId);
+        }
+
+        public Gameplay.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
+        {
+            return base.Channel.GetPlayerMatch(lobbyCode, participantUserId);
+        }
+
+        public Gameplay.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            Gameplay.MissionObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return base.Channel.ProcessObjectiveDraftAction(submission, participantUserId);
+        }
+
+        public Gameplay.MissionRetryDecision ConfirmMissionRetry(
+            Gameplay.MissionRetrySubmission submission, int participantUserId)
+        {
+            return base.Channel.ConfirmMissionRetry(submission, participantUserId);
+        }
+
+        public Gameplay.CardPlayDecision PlayCard(
+            Gameplay.CardPlaySubmission cardPlaySubmission, int participantUserId)
+        {
+            return base.Channel.PlayCard(cardPlaySubmission, participantUserId);
+        }
+
+        public Gameplay.DistressSignalConfirmation SubmitDistressSignal(
+            Gameplay.DistressSignalSubmission submission, int participantUserId)
+        {
+            return base.Channel.SubmitDistressSignal(submission, participantUserId);
         }
     }
     

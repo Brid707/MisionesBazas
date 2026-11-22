@@ -8,6 +8,7 @@ using System.Threading;
 using Application.Models;
 using Application.Ports;
 using Domain;
+using Gameplay;
 using Services.Contracts;
 using Services.DataContracts;
 using Services.Mapping;
@@ -20,7 +21,7 @@ namespace Services.Services
     /// WCF service implementation for managing multiplayer lobby rooms and dispatching real-time callbacks.
     /// </summary>
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    public sealed partial class LobbyService : ILobbyService, IMatchStateChangePublisher
+    public sealed class LobbyService : ILobbyService, IMatchStateChangePublisher
     {
         private const string PlayerLeftReason = "Player left the lobby.";
         private const string PlayerKickedReason = "Player was kicked by the host.";
@@ -58,6 +59,7 @@ namespace Services.Services
             "Match access rejected for participant {UserId} in room {LobbyCode}.";
 
         private const byte UnspecifiedSettingValue = 0;
+        private const int MaximumMatchActionMessagesPerSecond = 8;
 
         private static readonly ConcurrentDictionary<string,
             ConcurrentDictionary<int, ILobbyCallback>> s_roomCallbacks =
@@ -68,6 +70,16 @@ namespace Services.Services
         private readonly ILobbyChatMessageUseCase _lobbyChatMessageUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
         private readonly ILoggerService _logger;
+
+        private readonly LobbyDistressSignalService _distressSignalService;
+        private readonly LobbyMatchGameplayService _matchGameplayService;
+        private readonly LobbyMissionRetryService _missionRetryService;
+        private readonly LobbyObjectiveDraftService _objectiveDraftService;
+        private readonly LobbyRadioCommunicationService _radioCommunicationService;
+        private readonly LobbySpecialPreparationService _specialPreparationService;
+
+        private readonly object _matchActionRequestGate = new object();
+        private MatchActionRequestBudget _matchActionSessionBudget;
 
         public LobbyService(ILobbyUseCase lobbyUseCase, ILobbyChatMessageUseCase lobbyChatMessageUseCase,
             IAccountAccessPolicy accountAccessPolicy, ILoggerService logger)
@@ -81,6 +93,19 @@ namespace Services.Services
             _lobbyChatMessageUseCase = lobbyChatMessageUseCase;
             _accountAccessPolicy = accountAccessPolicy;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            _distressSignalService = new LobbyDistressSignalService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchActionSessionBudget, EnsureMatchParticipantAllowed);
+            _matchGameplayService = new LobbyMatchGameplayService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchParticipantAllowed);
+            _missionRetryService = new LobbyMissionRetryService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchActionSessionBudget, EnsureMatchParticipantAllowed);
+            _objectiveDraftService = new LobbyObjectiveDraftService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchActionSessionBudget, EnsureMatchParticipantAllowed);
+            _radioCommunicationService = new LobbyRadioCommunicationService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchActionSessionBudget, EnsureMatchParticipantAllowed);
+            _specialPreparationService = new LobbySpecialPreparationService(
+                _lobbyUseCase, PublishMatchStateChange, EnsureMatchActionSessionBudget, EnsureMatchParticipantAllowed);
         }
 
         public LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, LobbySettings settings)
@@ -711,6 +736,99 @@ namespace Services.Services
                 IsHost = participant.IsHost,
                 IsReady = participant.IsReady
             };
+        }
+
+        public MissionPreparationConfirmation IdentifyHeartNineOwner(
+            HeartNineIdentificationSubmission submission, int participantUserId)
+        {
+            return _specialPreparationService.IdentifyHeartNineOwner(submission, participantUserId);
+        }
+
+        public MissionPreparationConfirmation AssignMissionTrickDistribution(
+            MissionTrickDistributionSubmission submission, int participantUserId)
+        {
+            return _specialPreparationService.AssignMissionTrickDistribution(submission, participantUserId);
+        }
+
+        public MissionPreparationConfirmation AssignMissionRole(
+            MissionRoleAssignmentSubmission submission, int participantUserId)
+        {
+            return _specialPreparationService.AssignMissionRole(submission, participantUserId);
+        }
+
+        public MissionPreparationConfirmation RespondToBlindObjectives(
+            BlindObjectiveResponseSubmission submission, int participantUserId)
+        {
+            return _specialPreparationService.RespondToBlindObjectives(submission, participantUserId);
+        }
+
+        public MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            MissionObjectiveDraftSubmission submission, int participantUserId)
+        {
+            return _objectiveDraftService.ProcessObjectiveDraftAction(submission, participantUserId);
+        }
+
+        public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
+        {
+            return _matchGameplayService.GetPlayerMatch(lobbyCode, participantUserId);
+        }
+
+        public MissionRetryDecision ConfirmMissionRetry(
+            MissionRetrySubmission submission, int participantUserId)
+        {
+            return _missionRetryService.ConfirmMissionRetry(submission, participantUserId);
+        }
+
+        public RadioCommunicationConfirmation SubmitRadioCommunication(
+            RadioCommunicationSubmission submission, int participantUserId)
+        {
+            return _radioCommunicationService.SubmitRadioCommunication(submission, participantUserId);
+        }
+
+        public CardPlayDecision PlayCard(
+            CardPlaySubmission cardPlaySubmission, int participantUserId)
+        {
+            return _matchGameplayService.PlayCard(cardPlaySubmission, participantUserId);
+        }
+
+        public DistressSignalConfirmation SubmitDistressSignal(
+            DistressSignalSubmission submission, int participantUserId)
+        {
+            return _distressSignalService.SubmitDistressSignal(submission, participantUserId);
+        }
+
+        private void EnsureMatchActionSessionBudget()
+        {
+            lock (_matchActionRequestGate)
+            {
+                MatchActionRequestBudget requestBudget = MatchActionRequestLimits.ConsumeWindow(
+                    _matchActionSessionBudget, MaximumMatchActionMessagesPerSecond);
+                if (requestBudget == null)
+                {
+                    throw new FaultException<MatchAccessFault>(new MatchAccessFault
+                    {
+                        FailureCode = nameof(MissionObjectiveDraftRejectionReason.RequestLimitReached)
+                    });
+                }
+                _matchActionSessionBudget = requestBudget;
+            }
+        }
+
+        private void EnsureMatchParticipantAllowed(string lobbyCode, int participantUserId)
+        {
+            try
+            {
+                EnsureParticipantOperationAllowed(participantUserId);
+                EnsureRegisteredRoomChannel(lobbyCode, participantUserId);
+            }
+            catch (FaultException)
+            {
+                _logger.Warning(MatchAccessRejectedTemplate, participantUserId, lobbyCode);
+                throw new FaultException<MatchAccessFault>(new MatchAccessFault
+                {
+                    FailureCode = FaultParticipantNotAllowed
+                });
+            }
         }
     }
 }

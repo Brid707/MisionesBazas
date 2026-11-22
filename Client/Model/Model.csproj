@@ -235,11 +235,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Services\Partials\ILobbyServiceCallback.MatchPresence.cs" />
     <Compile Include="Services\LobbyAndMatch\IMatchClient.cs" />
-    <Compile Include="Services\LobbyAndMatch\LobbyClient.Match.cs" />
-    <Compile Include="Services\Partials\LobbyServiceClient.Match.cs" />
-    <Compile Include="Services\Partials\LobbyResult.Guest.cs" />
+    <Compile Include="Services\LobbyAndMatch\LobbyMatchClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
