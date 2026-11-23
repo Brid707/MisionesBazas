@@ -1,24 +1,27 @@
 <Solution>
   <Folder Name="/Shared/">
-    <Project Path="Shared/PlayerProfiles/PlayerProfiles.csproj" />
-    <Project Path="Shared/Gameplay/Gameplay.csproj" />
-    <Project Path="Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" />
-    <Project Path="Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" />
-    <Project Path="Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" />
+    <Project Path="Shared/Gameplay/Gameplay.csproj" Id="9b4e4d71-29c3-4809-8c84-b835e37e31d6" />
+    <Project Path="Shared/PlayerProfiles/PlayerProfiles.csproj" Id="2e8ae0c2-979e-412a-9a95-861bc4d76f8e" />
+    <Project Path="Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" Id="22d2c703-3c64-40e3-bafe-f719ddc7d30f" />
+    <Project Path="Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" Id="78bb068a-8e30-499e-887f-1f6be4863672" />
+    <Project Path="Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" Id="439733c3-c43d-4c1a-be6d-c25edc280575" />
   </Folder>
   <Folder Name="/Client/">
-    <Project Path="Client/Model/Model.csproj" />
-    <Project Path="Client/ViewModel/ViewModel.csproj" />
-    <Project Path="Client/ClientTrickTakingMissions/View.csproj" />
+    <Project Path="Client/ClientTrickTakingMissions/View.csproj" Id="2ef9d0f2-99ee-43f7-851f-b0440c8585ed" />
+    <Project Path="Client/Model/Model.csproj" Id="32c771cd-15cc-4a90-b9b8-cb1004d90b79" />
+    <Project Path="Client/ViewModel/ViewModel.csproj" Id="67a5dcd0-c14d-4e90-bea7-1ff8c68e1b95" />
   </Folder>
   <Folder Name="/Server/">
-    <Project Path="Server/ServerTrickTakingMissions/Domain/Domain.csproj" />
-    <Project Path="Server/Application/Application.csproj" />
-    <Project Path="Server/Persistence/Persistence.csproj" />
-    <Project Path="Server/Services/Services.csproj" />
-    <Project Path="Server/Infrastructure.Email/Infrastructure.Email.csproj" />
-    <Project Path="Server/Infrastructure.Moderation/Infrastructure.Moderation.csproj" />
-    <Project Path="Server/Infrastructure.ProfileImages/Infrastructure.ProfileImages.csproj" />
-    <Project Path="Server/Host/Host.csproj" />
+    <Project Path="Server/Application/Application.csproj" Id="0bd0344e-3851-4f90-a9d1-298d169f966f" />
+    <Project Path="Server/Host/Host.csproj" Id="26ce1c4b-e520-4c14-b7e6-9e6f5a5805c2" />
+    <Project Path="Server/Infrastructure.Email/Infrastructure.Email.csproj" Id="84a9f63d-9b2e-4d1c-8a54-7e319c04e6b2" />
+    <Project Path="Server/Infrastructure.Moderation/Infrastructure.Moderation.csproj" Id="a53b0772-76df-4f1d-a540-b8c73e0f1f17" />
+    <Project Path="Server/Infrastructure.ProfileImages/Infrastructure.ProfileImages.csproj" Id="3a42c25b-7e6d-4fcc-968c-3a7641118b4e" />
+    <Project Path="Server/Persistence/Persistence.csproj" Id="c36681c2-acec-4779-b280-e9b8ce8fdab7" />
+    <Project Path="Server/ServerTrickTakingMissions/Domain/Domain.csproj" Id="b0c8e1ab-21b4-4a79-a2ce-6a48e177bb35" />
+    <Project Path="Server/Services/Services.csproj" Id="c3ce4b74-c003-42a1-9dbd-75f8213916eb" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Server.Application.Tests/Server.Application.Tests.csproj" Id="80a7d7b2-6f7f-469c-9129-1d6c88888d83" />
   </Folder>
 </Solution>
