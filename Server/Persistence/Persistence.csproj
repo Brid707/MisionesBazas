@@ -208,6 +208,9 @@
   <ItemGroup>
     <Compile Include="Repository\PlayerProfileRepository.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Repository\PlayerProfileDatabaseAccess.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

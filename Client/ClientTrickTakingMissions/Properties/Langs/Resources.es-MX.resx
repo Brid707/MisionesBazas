@@ -857,4 +857,20 @@
   <data name="Common_GameTitle_Title" xml:space="preserve">
     <value>Misiones de Bazas</value>
   </data>
+  <data name="Profile_Unavailable" xml:space="preserve"><value>No disponible</value></data>
+  <data name="Profile_NotLoaded" xml:space="preserve"><value>Carga los datos de tu perfil.</value></data>
+  <data name="Profile_GuestReadOnly" xml:space="preserve"><value>Los invitados no pueden guardar ni editar una biografía.</value></data>
+  <data name="Profile_Loading" xml:space="preserve"><value>Cargando perfil…</value></data>
+  <data name="Profile_Saving" xml:space="preserve"><value>Guardando biografía…</value></data>
+  <data name="Profile_ProfileUnavailable" xml:space="preserve"><value>No pudimos cargar o guardar los datos del perfil. Inténtalo nuevamente.</value></data>
+  <data name="Profile_AccessDenied" xml:space="preserve"><value>Tu sesión no permite esta operación. Inicia sesión nuevamente.</value></data>
+  <data name="Profile_InvalidBiography" xml:space="preserve"><value>La biografía contiene caracteres no permitidos o supera el límite.</value></data>
+  <data name="Profile_ProfileNotFound" xml:space="preserve"><value>No pudimos encontrar el perfil de tu cuenta.</value></data>
+  <data name="Profile_StatisticsPending" xml:space="preserve"><value>El contador de misiones completadas no está disponible.</value></data>
+  <data name="Profile_SaveSucceeded" xml:space="preserve"><value>Biografía guardada.</value></data>
+  <data name="Profile_SaveUnconfirmed" xml:space="preserve"><value>No pudimos confirmar el guardado. Pulsa Actualizar perfil antes de volver a guardar.</value></data>
+  <data name="Profile_DraftPreserved" xml:space="preserve"><value>Perfil actualizado. Conservamos tu borrador para que lo revises antes de guardar.</value></data>
+  <data name="Profile_SaveChanges" xml:space="preserve"><value>Guardar cambios</value></data>
+  <data name="Profile_CancelEditing" xml:space="preserve"><value>Cancelar</value></data>
+  <data name="Profile_RetryLoad" xml:space="preserve"><value>Actualizar perfil</value></data>
 </root>

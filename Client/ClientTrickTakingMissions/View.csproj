@@ -340,6 +340,10 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Converters\ProfileFeedbackKeyToStringConverter.cs" />
+    <Compile Include="Properties\Langs\PlayerProfileResources.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Resource Include="Assets\Images\ObjectiveCards\Card_Objective_Club_Eight.png" />

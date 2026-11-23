@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Model.Services;
@@ -29,18 +30,15 @@ namespace ViewModel.ViewModels
 
         private string _username;
         private string _email;
-        private string _accountCreationDate;
-        private int _missionsCount;
-        private string _biography;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProfileViewModel"/> class.
         /// </summary>
         /// <param name="navigationLogging">Grouped navigation and logging services.</param>
         /// <param name="profileImagePicker">Selects the local file through a presentation adapter.</param>
-        /// <param name="profileImageCache">Shares image versions with other player views.</param>
+        /// <param name="profileInteractions">Provides profile image and account data adapters.</param>
         public ProfileViewModel(ViewModelNavigationLogging navigationLogging, IProfileImagePicker profileImagePicker,
-            IProfileImageCache profileImageCache)
+            ProfileInteractionDependencies profileInteractions)
         {
             if (navigationLogging == null)
             {
@@ -51,14 +49,14 @@ namespace ViewModel.ViewModels
             _logger = navigationLogging.Logger;
 
             _profileImagePicker = profileImagePicker ?? throw new ArgumentNullException(nameof(profileImagePicker));
-            _profileImageCache = profileImageCache ?? throw new ArgumentNullException(nameof(profileImageCache));
+            _profileImageCache = profileInteractions.ProfileImages;
+            BiographyEditor = new ProfileBiographyViewModel(profileInteractions.PlayerProfileClient,
+                UserSession.Current.CurrentUser?.AccountSessionToken);
+            BiographyEditor.PropertyChanged += OnBiographyEditorPropertyChanged;
             ChangeProfilePhotoCommand = new AsyncRelayCommand(ChangeProfilePhotoAsync, CanChangeProfilePhoto);
             LoadCurrentProfile();
 
             CloseCommand = new RelayCommand(ExecuteClose);
-
-            // Editing remains unavailable until the profile update workflow is implemented.
-            PendingProfileEditingCommand = new RelayCommand(() => { }, () => false);
         }
 
         /// <summary>
@@ -80,38 +78,11 @@ namespace ViewModel.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the formatted account registration date.
-        /// </summary>
-        public string AccountCreationDate
-        {
-            get => _accountCreationDate;
-            set => SetProperty(ref _accountCreationDate, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the number of missions completed by the user.
-        /// </summary>
-        public int MissionsCount
-        {
-            get => _missionsCount;
-            set => SetProperty(ref _missionsCount, value);
-        }
-
-        /// <summary>
-        /// Gets or sets the user's custom biography text.
-        /// </summary>
-        public string Biography
-        {
-            get => _biography;
-            set => SetProperty(ref _biography, value);
-        }
-
-        /// <summary>
         /// Gets the command that navigates back from the profile view.
         /// </summary>
         public ICommand CloseCommand { get; }
 
-        public ICommand PendingProfileEditingCommand { get; }
+        public ProfileBiographyViewModel BiographyEditor { get; }
 
         public ICommand ChangeProfilePhotoCommand { get; }
 
@@ -204,13 +175,20 @@ namespace ViewModel.ViewModels
             }
             else
             {
-                Username = "Invitado";
+                Username = string.Empty;
                 Email = string.Empty;
             }
 
-            AccountCreationDate = DateTime.Now.ToString("dd/MM/yyyy");
-            MissionsCount = 0;
-            Biography = string.Empty;
+        }
+
+        private void OnBiographyEditorPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ProfileBiographyViewModel.ProfileDetails) &&
+                BiographyEditor.ProfileDetails != null)
+            {
+                Username = BiographyEditor.ProfileDetails.Username;
+                Email = BiographyEditor.ProfileDetails.Email;
+            }
         }
 
         private void ExecuteClose()

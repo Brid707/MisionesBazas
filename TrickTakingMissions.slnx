@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Shared/">
+    <Project Path="Shared/PlayerProfiles/PlayerProfiles.csproj" />
     <Project Path="Shared/Gameplay/Gameplay.csproj" />
     <Project Path="Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" />
     <Project Path="Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" />

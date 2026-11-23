@@ -1,4 +1,6 @@
 using System.Windows.Controls;
+using Model.Services;
+using ViewModel.Models;
 using View.Services;
 using ViewModel.ViewModels;
 
@@ -18,7 +20,12 @@ namespace View.Views
             : this(new ProfileViewModel(
                 ClientLoggingRuntime.CreateNavigationLogging<ProfileViewModel>(),
                 new WpfProfileImagePicker(),
-                ((App)System.Windows.Application.Current).ProfileImages))
+                new ProfileInteractionDependencies
+                {
+                    ProfileImages = ((App)System.Windows.Application.Current).ProfileImages,
+                    PlayerProfileClient = new PlayerProfileClient(
+                        ClientLoggingRuntime.CreateLogger<PlayerProfileClient>())
+                }))
         {
         }
 
@@ -33,6 +40,7 @@ namespace View.Views
             _viewModel = viewModel;
             DataContext = _viewModel;
             Loaded += (_, __) => _viewModel.ActivateProfileImage();
+            Loaded += (_, __) => _viewModel.BiographyEditor.ReloadProfileCommand.Execute(null);
             Unloaded += (_, __) => _viewModel.DeactivateProfileImage();
         }
     }

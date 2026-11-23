@@ -857,4 +857,20 @@
   <data name="Common_GameTitle_Title" xml:space="preserve">
     <value>Trick-Taking Missions</value>
   </data>
+  <data name="Profile_Unavailable" xml:space="preserve"><value>Unavailable</value></data>
+  <data name="Profile_NotLoaded" xml:space="preserve"><value>Load your profile details.</value></data>
+  <data name="Profile_GuestReadOnly" xml:space="preserve"><value>Guests cannot save or edit a biography.</value></data>
+  <data name="Profile_Loading" xml:space="preserve"><value>Loading profile…</value></data>
+  <data name="Profile_Saving" xml:space="preserve"><value>Saving biography…</value></data>
+  <data name="Profile_ProfileUnavailable" xml:space="preserve"><value>We could not load or save your profile details. Please try again.</value></data>
+  <data name="Profile_AccessDenied" xml:space="preserve"><value>Your session does not allow this operation. Please sign in again.</value></data>
+  <data name="Profile_InvalidBiography" xml:space="preserve"><value>The biography contains unsupported characters or exceeds the allowed length.</value></data>
+  <data name="Profile_ProfileNotFound" xml:space="preserve"><value>Your account profile could not be found.</value></data>
+  <data name="Profile_StatisticsPending" xml:space="preserve"><value>The completed mission count is unavailable.</value></data>
+  <data name="Profile_SaveSucceeded" xml:space="preserve"><value>Biography saved.</value></data>
+  <data name="Profile_SaveUnconfirmed" xml:space="preserve"><value>The save could not be confirmed. Select Refresh profile before saving again.</value></data>
+  <data name="Profile_DraftPreserved" xml:space="preserve"><value>Profile refreshed. Your draft was kept for review before saving.</value></data>
+  <data name="Profile_SaveChanges" xml:space="preserve"><value>Save changes</value></data>
+  <data name="Profile_CancelEditing" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Profile_RetryLoad" xml:space="preserve"><value>Refresh profile</value></data>
 </root>

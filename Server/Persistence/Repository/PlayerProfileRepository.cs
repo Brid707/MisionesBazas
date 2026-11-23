@@ -12,7 +12,7 @@ using TrickTakingMissions.Logging.Abstractions.Ports;
 namespace Persistence.Repository
 {
     /// <summary>
-    /// Maps generated image identifiers to the existing profile reference column.
+    /// Persists account profile fields and generated profile image references.
     /// </summary>
     public sealed class PlayerProfileRepository : IPlayerProfileRepository
     {
@@ -38,6 +38,68 @@ namespace Persistence.Repository
         public PlayerProfileRepository(ILoggerService logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public OwnPlayerProfile GetOwnProfile(int authenticatedAccountUserId)
+        {
+            return PlayerProfileDatabaseAccess.Execute(context => ReadOwnProfile(context, authenticatedAccountUserId),
+                _logger);
+        }
+
+        public string UpdateBiography(int authenticatedAccountUserId, string biography)
+        {
+            return PlayerProfileDatabaseAccess.Execute(context => SaveBiography(context,
+                authenticatedAccountUserId, biography), _logger);
+        }
+
+        private static OwnPlayerProfile ReadOwnProfile(TrickTakingMissionsBDEntities context, int accountUserId)
+        {
+            OwnPlayerProfile profile = context.User.AsNoTracking()
+                .Where(account => account.IdUser == accountUserId)
+                .Select(account => new OwnPlayerProfile
+                {
+                    Username = account.Username,
+                    Email = account.Email,
+                    AccountCreatedAtUtc = account.CreatedAt,
+                    Biography = account.PlayerProfile == null ? string.Empty : account.PlayerProfile.Biography
+                }).SingleOrDefault();
+            if (profile != null)
+            {
+                profile.AccountCreatedAtUtc = DateTime.SpecifyKind(profile.AccountCreatedAtUtc, DateTimeKind.Utc);
+                profile.Biography = profile.Biography ?? string.Empty;
+                // The schema does not document the persisted success status; do not invent mission statistics.
+                profile.CompletedMissionCount = null;
+            }
+            return profile;
+        }
+
+        private static string SaveBiography(TrickTakingMissionsBDEntities context, int accountUserId,
+            string biography)
+        {
+            PlayerProfile profile = context.PlayerProfile.Find(accountUserId);
+            if (profile == null)
+            {
+                User account = context.User.Find(accountUserId);
+                if (account != null)
+                {
+                    profile = new PlayerProfile
+                    {
+                        IdUser = accountUserId,
+                        DisplayName = account.Username,
+                        CreatedAt = DateTime.UtcNow
+                    };
+                    context.PlayerProfile.Add(profile);
+                }
+            }
+            string savedBiography = null;
+            if (profile != null)
+            {
+                profile.Biography = biography;
+                profile.UpdatedAt = DateTime.UtcNow;
+                context.SaveChanges();
+                savedBiography = profile.Biography;
+            }
+            return savedBiography;
         }
 
         public PlayerProfileImageData[] GetProfileImages(int[] profileOwnerUserIds)

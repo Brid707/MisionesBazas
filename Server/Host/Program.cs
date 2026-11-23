@@ -47,6 +47,7 @@ namespace Host
             CultureInfo.DefaultThreadCurrentCulture = serverCulture;
             CultureInfo.DefaultThreadCurrentUICulture = serverCulture;
 
+            ServiceHost playerProfileHost = null;
             ServiceHost profileImageHost = null;
             ServiceHost loginHost = null;
             ServiceHost lobbyHost = null;
@@ -87,6 +88,7 @@ namespace Host
                     moderationPreparation,
                     chatInfractionRepository,
                     loggerFactory.CreateLogger<LobbyChatMessageUseCase>());
+                playerProfileHost = PlayerProfileHosting.Create(accountAccessPolicy, loggerFactory);
                 profileImageHost = ProfileImageHosting.Create(accountAccessPolicy, loggerFactory);
                 loginHost = CreateUserLoginServiceHost(userRepository, accountAccessPolicy, loggerFactory);
                 lobbyHost = CreateLobbyServiceHost(new LobbyHostingContext
@@ -100,6 +102,7 @@ namespace Host
                 friendshipHost = CreateFriendshipServiceHost(friendshipUseCase, loggerFactory);
                 friendsRequestHost = CreateFriendsRequestServiceHost(friendshipUseCase, loggerFactory);
 
+                playerProfileHost.Open();
                 profileImageHost.Open();
                 loginHost.Open();
                 lobbyHost.Open();
@@ -118,6 +121,7 @@ namespace Host
                 Console.WriteLine("Press [Enter] to terminate the server.");
                 Console.ReadLine();
 
+                playerProfileHost.Close();
                 profileImageHost.Close();
                 friendsRequestHost.Close();
                 friendshipHost.Close();
@@ -129,6 +133,7 @@ namespace Host
             }
             catch (TimeoutException ex)
             {
+                playerProfileHost?.Abort();
                 profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
@@ -140,6 +145,7 @@ namespace Host
             }
             catch (CommunicationException ex)
             {
+                playerProfileHost?.Abort();
                 profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();
@@ -151,6 +157,7 @@ namespace Host
             }
             catch (InvalidOperationException ex)
             {
+                playerProfileHost?.Abort();
                 profileImageHost?.Abort();
                 friendsRequestHost?.Abort();
                 friendshipHost?.Abort();

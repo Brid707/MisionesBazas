@@ -75,5 +75,8 @@
     <Compile Include="Rules\TrickFollowSuitRules.cs" />
     <Compile Include="Rules\TrickWinnerRules.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Rules\PlayerBiographyRules.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

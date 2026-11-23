@@ -136,5 +136,14 @@
     <Compile Include="Gameplay\MissionTransitionScheduler.cs" />
     <Compile Include="LobbyHostingContext.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="PlayerProfileHosting.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\PlayerProfiles\PlayerProfiles.csproj">
+      <Project>{2E8AE0C2-979E-412A-9A95-861BC4D76F8E}</Project>
+      <Name>PlayerProfiles</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

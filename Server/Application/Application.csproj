@@ -236,5 +236,11 @@
     <Compile Include="UseCases\Match\Radio\RadioCommunicationContextFactory.cs" />
     <Compile Include="UseCases\Match\Preparation\MatchFinalMissionPreparationHandler.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\PlayerProfiles\OwnPlayerProfile.cs" />
+    <Compile Include="Models\PlayerProfiles\PlayerProfileUnavailableException.cs" />
+    <Compile Include="Ports\Account\IPlayerProfileUseCase.cs" />
+    <Compile Include="UseCases\PlayerProfiles\PlayerProfileUseCase.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,10 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:language="clr-namespace:View.Properties.Langs"
       xmlns:styles="clr-namespace:View.Styles"
+      xmlns:converters="clr-namespace:View.Converters"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1365"
-      Title="{x:Static language:Resources.Profile_Title}">
+      Title="{x:Static language:Resources.Profile_Title}"
+      Language="{x:Static language:PlayerProfileResources.InterfaceLanguage}">
     <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="ProfileBooleanVisibilityConverter" />
+        <converters:ProfileFeedbackKeyToStringConverter x:Key="ProfileFeedbackConverter" />
         <Style x:Key="ProfileActionButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource BrushGoldAccent}" />
             <Setter Property="Foreground" Value="{StaticResource BrushTextDark}" />
@@ -132,11 +136,15 @@
                 <WrapPanel Grid.Row="2" Margin="0,0,0,28">
                     <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,44,12">
                         <Run Text="{x:Static language:Resources.Profile_AccountCreation}" />
-                        <Run Text="{Binding AccountCreationDate, Mode=OneWay}" FontWeight="SemiBold" />
+                        <Run Text="{Binding BiographyEditor.ProfileDetails.AccountCreatedAtUtc, Mode=OneWay,
+                                   StringFormat={}{0:d}, TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                                   FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}" FontWeight="SemiBold" />
                     </TextBlock>
                     <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,0,12">
                         <Run Text="{x:Static language:Resources.Profile_Missions}" />
-                        <Run Text="{Binding MissionsCount, Mode=OneWay}" FontWeight="SemiBold" />
+                        <Run Text="{Binding BiographyEditor.ProfileDetails.CompletedMissionCount, Mode=OneWay,
+                                   TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                                   FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}" FontWeight="SemiBold" />
                     </TextBlock>
                 </WrapPanel>
                 <Grid Grid.Row="3" Margin="0,0,0,28">
@@ -149,7 +157,9 @@
                                VerticalAlignment="Center" Margin="0,0,160,12" />
                     <Button x:Name="EditBiographyButton" HorizontalAlignment="Right"
                             Style="{StaticResource ProfileActionButtonStyle}"
-                            Command="{Binding PendingProfileEditingCommand}" Margin="0,0,0,12"
+                            Command="{Binding BiographyEditor.EditBiographyCommand}"
+                            Visibility="{Binding BiographyEditor.IsRegisteredAccount, Mode=OneWay,
+                                Converter={StaticResource ProfileBooleanVisibilityConverter}}" Margin="0,0,0,12"
                             AutomationProperties.Name="{x:Static language:Resources.Profile_EditBiography}">
                         <StackPanel Orientation="Horizontal">
                             <Viewbox Width="18" Height="18" Margin="0,0,8,0">
@@ -161,22 +171,72 @@
                     </Button>
                     <Border Grid.Row="1" Background="{StaticResource BrushBurgundyDark}"
                             CornerRadius="6" Padding="20" MinHeight="132">
+                        <StackPanel>
                         <TextBlock x:Name="BiographyTextBlock">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource ProfileLabelStyle}">
-                                    <Setter Property="Text" Value="{Binding Biography, Mode=OneWay}" />
+                                    <Setter Property="Text" Value="{Binding BiographyEditor.Biography, Mode=OneWay}" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Biography}" Value="">
+                                        <DataTrigger Binding="{Binding BiographyEditor.IsBiographyEditing}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding BiographyEditor.Biography, Mode=OneWay}" Value="">
                                             <Setter Property="Text"
                                                     Value="{x:Static language:Resources.Profile_EmptyBiography}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding BiographyEditor.HasLoadedProfile}" Value="False">
+                                            <Setter Property="Text" Value="{x:Static language:PlayerProfileResources.Profile_Unavailable}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
+                        <StackPanel Visibility="{Binding BiographyEditor.IsBiographyEditing, Mode=OneWay,
+                                         Converter={StaticResource ProfileBooleanVisibilityConverter}}">
+                            <TextBox x:Name="BiographyDraftTextBox" AcceptsReturn="True" TextWrapping="Wrap"
+                                     MinHeight="100" VerticalScrollBarVisibility="Auto"
+                                     FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
+                                     FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
+                                     Foreground="{StaticResource BrushTextLight}"
+                                     Background="{StaticResource BrushBurgundyDark}"
+                                     MaxLength="{Binding BiographyEditor.MaximumBiographyLength, Mode=OneWay}"
+                                     Text="{Binding BiographyEditor.BiographyDraft, Mode=TwoWay,
+                                                    UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding BiographyEditor.IsBusy}" Value="True">
+                                                <Setter Property="IsReadOnly" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
+                            <WrapPanel Margin="0,12,0,0">
+                                <Button x:Name="SaveBiographyButton" Margin="0,0,12,0"
+                                        Style="{StaticResource ProfileActionButtonStyle}"
+                                        Command="{Binding BiographyEditor.SaveBiographyCommand}"
+                                        Content="{x:Static language:PlayerProfileResources.Profile_SaveChanges}" />
+                                <Button x:Name="CancelBiographyButton"
+                                        Style="{StaticResource ProfileActionButtonStyle}"
+                                        Command="{Binding BiographyEditor.CancelBiographyCommand}"
+                                        Content="{x:Static language:PlayerProfileResources.Profile_CancelEditing}" />
+                            </WrapPanel>
+                        </StackPanel>
+                        </StackPanel>
                     </Border>
                 </Grid>
                 <StackPanel Grid.Row="4">
+                    <TextBlock Margin="0,0,0,12" Style="{StaticResource ProfileLabelStyle}"
+                               Text="{Binding BiographyEditor.FeedbackResourceKey, Mode=OneWay,
+                                      Converter={StaticResource ProfileFeedbackConverter}}"
+                               AutomationProperties.LiveSetting="Polite" />
+                    <Button x:Name="ReloadProfileButton" HorizontalAlignment="Left" Margin="0,0,0,20"
+                            Style="{StaticResource ProfileActionButtonStyle}"
+                            Command="{Binding BiographyEditor.ReloadProfileCommand}"
+                            Visibility="{Binding BiographyEditor.IsRegisteredAccount, Mode=OneWay,
+                                         Converter={StaticResource ProfileBooleanVisibilityConverter}}"
+                            Content="{x:Static language:PlayerProfileResources.Profile_RetryLoad}" />
 
                     <TextBlock Text="{x:Static language:Resources.Profile_Email}"
                                Style="{StaticResource ProfileLabelStyle}" FontWeight="SemiBold" />
