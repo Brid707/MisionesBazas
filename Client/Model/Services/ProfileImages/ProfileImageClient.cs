@@ -2,19 +2,18 @@ using System;
 using System.Net.Security;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using Model.ProfileImageService;
 using Model.Security;
 using ProfileImages;
-using Services.Contracts;
-using Services.DataContracts;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services
 {
     /// <summary>
-    /// Adapts the profile image contract to an authenticated encrypted WCF channel.
+    /// Adapts the profile image contract to an authenticated WCF channel.
     /// </summary>
     [CallbackBehavior(UseSynchronizationContext = false, ConcurrencyMode = ConcurrencyMode.Multiple)]
-    public sealed class ProfileImageClient : IProfileImageClient, IProfileImageCallback
+    public sealed class ProfileImageClient : IProfileImageClient, IProfileImageServiceCallback
     {
         private const string ConnectionFailedLogTemplate = "Profile image connection failed: {ExceptionType}.";
         private const string ConnectionTimedOutLogTemplate = "Profile image connection timed out: {ExceptionType}.";

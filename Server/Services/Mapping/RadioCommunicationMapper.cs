@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
+using Contract = Services.DataContracts;
 
 namespace Services.Mapping
 {
     internal static class RadioCommunicationMapper
     {
-        internal static RadioCommunicationRequest MapSubmission(RadioCommunicationSubmission submission)
+        internal static RadioCommunicationRequest MapSubmission(Contract.RadioCommunicationSubmission submission)
         {
             s_markers.TryGetValue(submission.SelectedMarker, out RadioPublicMarker marker);
             return new RadioCommunicationRequest
@@ -21,54 +21,54 @@ namespace Services.Mapping
             };
         }
 
-        internal static RadioCommunicationFailureReason MapRejection(RadioCommunicationRejection rejection)
+        internal static Contract.RadioCommunicationFailureReason MapRejection(RadioCommunicationRejection rejection)
         {
             return s_failures[rejection];
         }
 
-        private static readonly IReadOnlyDictionary<RadioCommunicationMarker, RadioPublicMarker> s_markers =
-            new Dictionary<RadioCommunicationMarker, RadioPublicMarker>
+        private static readonly IReadOnlyDictionary<Contract.RadioCommunicationMarker, RadioPublicMarker> s_markers =
+            new Dictionary<Contract.RadioCommunicationMarker, RadioPublicMarker>
             {
-                { RadioCommunicationMarker.None, RadioPublicMarker.None },
-                { RadioCommunicationMarker.Highest, RadioPublicMarker.Highest },
-                { RadioCommunicationMarker.Only, RadioPublicMarker.Only },
-                { RadioCommunicationMarker.Lowest, RadioPublicMarker.Lowest },
-                { RadioCommunicationMarker.Hidden, RadioPublicMarker.Hidden }
+                { Contract.RadioCommunicationMarker.None, RadioPublicMarker.None },
+                { Contract.RadioCommunicationMarker.Highest, RadioPublicMarker.Highest },
+                { Contract.RadioCommunicationMarker.Only, RadioPublicMarker.Only },
+                { Contract.RadioCommunicationMarker.Lowest, RadioPublicMarker.Lowest },
+                { Contract.RadioCommunicationMarker.Hidden, RadioPublicMarker.Hidden }
             };
         private static readonly IReadOnlyDictionary<RadioCommunicationRejection,
-            RadioCommunicationFailureReason> s_failures =
-            new Dictionary<RadioCommunicationRejection, RadioCommunicationFailureReason>
+            Contract.RadioCommunicationFailureReason> s_failures =
+            new Dictionary<RadioCommunicationRejection, Contract.RadioCommunicationFailureReason>
             {
                 { RadioCommunicationRejection.DisruptedUntilTrick,
-                    RadioCommunicationFailureReason.DisruptedUntilTrick },
-                { RadioCommunicationRejection.SilencedByCaptain, RadioCommunicationFailureReason.SilencedByCaptain },
-                { RadioCommunicationRejection.None, RadioCommunicationFailureReason.None },
-                { RadioCommunicationRejection.InvalidSubmission, RadioCommunicationFailureReason.InvalidSubmission },
-                { RadioCommunicationRejection.MatchUnavailable, RadioCommunicationFailureReason.MatchUnavailable },
+                    Contract.RadioCommunicationFailureReason.DisruptedUntilTrick },
+                { RadioCommunicationRejection.SilencedByCaptain, Contract.RadioCommunicationFailureReason.SilencedByCaptain },
+                { RadioCommunicationRejection.None, Contract.RadioCommunicationFailureReason.None },
+                { RadioCommunicationRejection.InvalidSubmission, Contract.RadioCommunicationFailureReason.InvalidSubmission },
+                { RadioCommunicationRejection.MatchUnavailable, Contract.RadioCommunicationFailureReason.MatchUnavailable },
                 { RadioCommunicationRejection.ParticipantNotAllowed,
-                    RadioCommunicationFailureReason.ParticipantNotAllowed },
+                    Contract.RadioCommunicationFailureReason.ParticipantNotAllowed },
                 { RadioCommunicationRejection.WrongMissionAttempt,
-                    RadioCommunicationFailureReason.WrongMissionAttempt },
+                    Contract.RadioCommunicationFailureReason.WrongMissionAttempt },
                 { RadioCommunicationRejection.SubmissionIdentityReused,
-                    RadioCommunicationFailureReason.SubmissionIdentityReused },
-                { RadioCommunicationRejection.StaleMatchState, RadioCommunicationFailureReason.StaleMatchState },
+                    Contract.RadioCommunicationFailureReason.SubmissionIdentityReused },
+                { RadioCommunicationRejection.StaleMatchState, Contract.RadioCommunicationFailureReason.StaleMatchState },
                 { RadioCommunicationRejection.MissionPreparationRequired,
-                    RadioCommunicationFailureReason.MissionPreparationRequired },
+                    Contract.RadioCommunicationFailureReason.MissionPreparationRequired },
                 { RadioCommunicationRejection.MissionAttemptFinished,
-                    RadioCommunicationFailureReason.MissionAttemptFinished },
-                { RadioCommunicationRejection.CardNotInHand, RadioCommunicationFailureReason.CardNotInHand },
+                    Contract.RadioCommunicationFailureReason.MissionAttemptFinished },
+                { RadioCommunicationRejection.CardNotInHand, Contract.RadioCommunicationFailureReason.CardNotInHand },
                 { RadioCommunicationRejection.SpecialCardNotAllowed,
-                    RadioCommunicationFailureReason.SpecialCardNotAllowed },
+                    Contract.RadioCommunicationFailureReason.SpecialCardNotAllowed },
                 { RadioCommunicationRejection.AlreadyCommunicatedThisAttempt,
-                    RadioCommunicationFailureReason.AlreadyCommunicatedThisAttempt },
+                    Contract.RadioCommunicationFailureReason.AlreadyCommunicatedThisAttempt },
                 { RadioCommunicationRejection.CannotCommunicateDuringActiveTrick,
-                    RadioCommunicationFailureReason.CannotCommunicateDuringActiveTrick },
+                    Contract.RadioCommunicationFailureReason.CannotCommunicateDuringActiveTrick },
                 { RadioCommunicationRejection.InvalidTokenPositionForCard,
-                    RadioCommunicationFailureReason.InvalidTokenPositionForCard },
+                    Contract.RadioCommunicationFailureReason.InvalidTokenPositionForCard },
                 { RadioCommunicationRejection.RequestLimitReached,
-                    RadioCommunicationFailureReason.RequestLimitReached },
+                    Contract.RadioCommunicationFailureReason.RequestLimitReached },
                 { RadioCommunicationRejection.OperationUnavailable,
-                    RadioCommunicationFailureReason.OperationUnavailable }
+                    Contract.RadioCommunicationFailureReason.OperationUnavailable }
             };
     }
 }

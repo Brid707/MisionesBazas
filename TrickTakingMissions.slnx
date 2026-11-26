@@ -1,7 +1,5 @@
 <Solution>
   <Folder Name="/Shared/">
-    <Project Path="Shared/Gameplay/Gameplay.csproj" Id="9b4e4d71-29c3-4809-8c84-b835e37e31d6" />
-    <Project Path="Shared/PlayerProfiles/PlayerProfiles.csproj" Id="2e8ae0c2-979e-412a-9a95-861bc4d76f8e" />
     <Project Path="Shared/TrickTakingMissions.Logging.Abstractions/TrickTakingMissions.Logging.Abstractions.csproj" Id="22d2c703-3c64-40e3-bafe-f719ddc7d30f" />
     <Project Path="Shared/TrickTakingMissions.Logging/TrickTakingMissions.Logging.csproj" Id="78bb068a-8e30-499e-887f-1f6be4863672" />
     <Project Path="Shared/TrickTakingMissions.Rules/TrickTakingMissions.Rules.csproj" Id="439733c3-c43d-4c1a-be6d-c25edc280575" />

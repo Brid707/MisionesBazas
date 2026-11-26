@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Domain;
-using Gameplay;
+using Application.Models;
 using TrickTakingMissions.Rules.Enums;
 
 namespace Application.UseCases

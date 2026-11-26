@@ -6,7 +6,7 @@ namespace Application.Ports
     public interface IMissionDeckDealer
     {
         MissionDeal CreateMissionDeal(int participantCount);
-        System.Collections.Generic.IReadOnlyList<TrickTakingMissions.Rules.Models.MissionObjective>
-            CreateMissionObjectives(TrickTakingMissions.Rules.Models.MissionDefinition definition);
+        System.Collections.Generic.IReadOnlyList<Domain.MissionObjective>
+            CreateMissionObjectives(Domain.MissionDefinition definition);
     }
 }

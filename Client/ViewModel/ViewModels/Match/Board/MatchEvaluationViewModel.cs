@@ -1,4 +1,4 @@
-using Gameplay;
+using Model.GameServices;
 using ViewModel.Base;
 
 namespace ViewModel.ViewModels

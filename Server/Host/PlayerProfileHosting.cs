@@ -4,7 +4,7 @@ using System.ServiceModel.Description;
 using Application.Ports;
 using Application.UseCases;
 using Persistence.Repository;
-using PlayerProfiles;
+using Services.Contracts;
 using Services.Services;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
@@ -25,6 +25,12 @@ namespace Host
             var service = new PlayerProfileService(profileUseCase, accountAccessPolicy);
             var profileHost = new ServiceHost(service, new Uri(ProfileEndpointAddress));
             profileHost.AddServiceEndpoint(typeof(IPlayerProfileService), CreateBinding(), string.Empty);
+            if (profileHost.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
+            {
+                profileHost.Description.Behaviors.Add(new ServiceMetadataBehavior { HttpGetEnabled = false });
+            }
+            profileHost.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                MetadataExchangeBindings.CreateMexTcpBinding(), "mex");
             profileHost.Description.Behaviors.Add(new ServiceThrottlingBehavior
             {
                 MaxConcurrentCalls = MaximumConcurrentProfileCalls,

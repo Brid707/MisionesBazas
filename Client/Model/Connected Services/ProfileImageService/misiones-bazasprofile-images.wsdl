@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:tns="urn:misiones-bazas:profile-images" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" targetNamespace="urn:misiones-bazas:profile-images" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:misiones-bazas:profile-images/Imports">
+      <xsd:import namespace="urn:misiones-bazas:profile-images" />
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Services.DataContracts" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/Application.Models" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IProfileImageService_ChangeOwnProfileImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeOwnProfileImage" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_ChangeOwnProfileImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeOwnProfileImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_ChangeOwnProfileImage_ProfileImageFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ProfileImageFault" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetPlayerProfileImages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayerProfileImages" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetPlayerProfileImages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPlayerProfileImagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetPlayerProfileImages_ProfileImageFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ProfileImageFault" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetProfileImage_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProfileImage" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetProfileImage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProfileImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_GetProfileImage_ProfileImageFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ProfileImageFault" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_SubscribeProfileImageChanges_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubscribeProfileImageChanges" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_SubscribeProfileImageChanges_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubscribeProfileImageChangesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_SubscribeProfileImageChanges_ProfileImageFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ProfileImageFault" />
+  </wsdl:message>
+  <wsdl:message name="IProfileImageService_OnPlayerProfileImageChanged_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:OnPlayerProfileImageChanged" />
+  </wsdl:message>
+  <wsdl:portType name="IProfileImageService">
+    <wsdl:operation name="ChangeOwnProfileImage">
+      <wsdl:input wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/ChangeOwnProfileImage" message="tns:IProfileImageService_ChangeOwnProfileImage_InputMessage" />
+      <wsdl:output wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/ChangeOwnProfileImageResponse" message="tns:IProfileImageService_ChangeOwnProfileImage_OutputMessage" />
+      <wsdl:fault wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/ChangeOwnProfileImageProfileImageFaultFault" name="ProfileImageFaultFault" message="tns:IProfileImageService_ChangeOwnProfileImage_ProfileImageFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayerProfileImages">
+      <wsdl:input wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetPlayerProfileImages" message="tns:IProfileImageService_GetPlayerProfileImages_InputMessage" />
+      <wsdl:output wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetPlayerProfileImagesResponse" message="tns:IProfileImageService_GetPlayerProfileImages_OutputMessage" />
+      <wsdl:fault wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetPlayerProfileImagesProfileImageFaultFault" name="ProfileImageFaultFault" message="tns:IProfileImageService_GetPlayerProfileImages_ProfileImageFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProfileImage">
+      <wsdl:input wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetProfileImage" message="tns:IProfileImageService_GetProfileImage_InputMessage" />
+      <wsdl:output wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetProfileImageResponse" message="tns:IProfileImageService_GetProfileImage_OutputMessage" />
+      <wsdl:fault wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/GetProfileImageProfileImageFaultFault" name="ProfileImageFaultFault" message="tns:IProfileImageService_GetProfileImage_ProfileImageFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeProfileImageChanges">
+      <wsdl:input wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/SubscribeProfileImageChanges" message="tns:IProfileImageService_SubscribeProfileImageChanges_InputMessage" />
+      <wsdl:output wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/SubscribeProfileImageChangesResponse" message="tns:IProfileImageService_SubscribeProfileImageChanges_OutputMessage" />
+      <wsdl:fault wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/SubscribeProfileImageChangesProfileImageFaultFault" name="ProfileImageFaultFault" message="tns:IProfileImageService_SubscribeProfileImageChanges_ProfileImageFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="OnPlayerProfileImageChanged">
+      <wsdl:output wsaw:Action="urn:misiones-bazas:profile-images/IProfileImageService/OnPlayerProfileImageChanged" message="tns:IProfileImageService_OnPlayerProfileImageChanged_OutputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="DefaultBinding_IProfileImageService" type="tns:IProfileImageService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ChangeOwnProfileImage">
+      <soap:operation soapAction="urn:misiones-bazas:profile-images/IProfileImageService/ChangeOwnProfileImage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ProfileImageFaultFault">
+        <soap:fault name="ProfileImageFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPlayerProfileImages">
+      <soap:operation soapAction="urn:misiones-bazas:profile-images/IProfileImageService/GetPlayerProfileImages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ProfileImageFaultFault">
+        <soap:fault name="ProfileImageFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetProfileImage">
+      <soap:operation soapAction="urn:misiones-bazas:profile-images/IProfileImageService/GetProfileImage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ProfileImageFaultFault">
+        <soap:fault name="ProfileImageFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SubscribeProfileImageChanges">
+      <soap:operation soapAction="urn:misiones-bazas:profile-images/IProfileImageService/SubscribeProfileImageChanges" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ProfileImageFaultFault">
+        <soap:fault name="ProfileImageFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="OnPlayerProfileImageChanged">
+      <soap:operation soapAction="urn:misiones-bazas:profile-images/IProfileImageService/OnPlayerProfileImageChanged" style="document" />
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+</wsdl:definitions>

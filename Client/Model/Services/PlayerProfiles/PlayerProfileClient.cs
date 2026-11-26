@@ -2,7 +2,7 @@ using System;
 using System.Configuration;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using PlayerProfiles;
+using Model.PlayerProfileService;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Model.Services

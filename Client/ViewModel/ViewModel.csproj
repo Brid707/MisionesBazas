@@ -99,10 +99,6 @@
       <Project>{32c771cd-15cc-4a90-b9b8-cb1004d90b79}</Project>
       <Name>Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
-      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
-      <Name>Gameplay</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\IProfileImagePicker.cs" />
@@ -121,12 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\Match\Board\MatchTransitionViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\PlayerProfiles\PlayerProfiles.csproj">
-      <Project>{2E8AE0C2-979E-412A-9A95-861BC4D76F8E}</Project>
-      <Name>PlayerProfiles</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ViewModels\Profile\ProfileBiographyViewModel.cs" />

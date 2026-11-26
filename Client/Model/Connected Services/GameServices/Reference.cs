@@ -1073,56 +1073,56 @@ namespace Model.GameServices
     public interface ILobbyService
     {
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:IdentifyHeartNineOwner", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
-        Gameplay.MissionPreparationConfirmation IdentifyHeartNineOwner(
-            Gameplay.HeartNineIdentificationSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MissionPreparationFault))]
+        Model.GameServices.MissionPreparationConfirmation IdentifyHeartNineOwner(
+            Model.GameServices.HeartNineIdentificationSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:AssignMissionTrickDistribution", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
-        Gameplay.MissionPreparationConfirmation AssignMissionTrickDistribution(
-            Gameplay.MissionTrickDistributionSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MissionPreparationFault))]
+        Model.GameServices.MissionPreparationConfirmation AssignMissionTrickDistribution(
+            Model.GameServices.MissionTrickDistributionSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:AssignMissionRole", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
-        Gameplay.MissionPreparationConfirmation AssignMissionRole(
-            Gameplay.MissionRoleAssignmentSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MissionPreparationFault))]
+        Model.GameServices.MissionPreparationConfirmation AssignMissionRole(
+            Model.GameServices.MissionRoleAssignmentSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:RespondToBlindObjectives", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MissionPreparationFault))]
-        Gameplay.MissionPreparationConfirmation RespondToBlindObjectives(
-            Gameplay.BlindObjectiveResponseSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MissionPreparationFault))]
+        Model.GameServices.MissionPreparationConfirmation RespondToBlindObjectives(
+            Model.GameServices.BlindObjectiveResponseSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:ProcessObjectiveDraftAction", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        Gameplay.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
-            Gameplay.MissionObjectiveDraftSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        Model.GameServices.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            Model.GameServices.MissionObjectiveDraftSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:GetPlayerMatch", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        Gameplay.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        Model.GameServices.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:ConfirmMissionRetry", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        Gameplay.MissionRetryDecision ConfirmMissionRetry(Gameplay.MissionRetrySubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        Model.GameServices.MissionRetryDecision ConfirmMissionRetry(Model.GameServices.MissionRetrySubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:SubmitRadioCommunication", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.RadioCommunicationFault))]
-        Gameplay.RadioCommunicationConfirmation SubmitRadioCommunication(
-            Gameplay.RadioCommunicationSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.RadioCommunicationFault))]
+        Model.GameServices.RadioCommunicationConfirmation SubmitRadioCommunication(
+            Model.GameServices.RadioCommunicationSubmission submission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:PlayCard", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        Gameplay.CardPlayDecision PlayCard(Gameplay.CardPlaySubmission cardPlaySubmission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        Model.GameServices.CardPlayDecision PlayCard(Model.GameServices.CardPlaySubmission cardPlaySubmission, int participantUserId);
 
         [System.ServiceModel.OperationContractAttribute(Action = "urn:misiones-bazas:match:SubmitDistressSignal", ReplyAction = "*")]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.MatchAccessFault))]
-        [System.ServiceModel.FaultContractAttribute(typeof(Gameplay.DistressSignalFault))]
-        Gameplay.DistressSignalConfirmation SubmitDistressSignal(Gameplay.DistressSignalSubmission submission, int participantUserId);
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.MatchAccessFault))]
+        [System.ServiceModel.FaultContractAttribute(typeof(Model.GameServices.DistressSignalFault))]
+        Model.GameServices.DistressSignalConfirmation SubmitDistressSignal(Model.GameServices.DistressSignalSubmission submission, int participantUserId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILobbyService/UpdateLobbySettings", ReplyAction="http://tempuri.org/ILobbyService/UpdateLobbySettingsResponse")]
         Model.GameServices.LobbyResult UpdateLobbySettings(string lobbyCode, int requesterUserId, Model.GameServices.LobbySettings settings);
@@ -1343,61 +1343,61 @@ namespace Model.GameServices
             return base.Channel.StartGameFromLobbyAsync(lobbyCode, hostUserId);
         }
 
-        public Gameplay.MissionPreparationConfirmation IdentifyHeartNineOwner(
-            Gameplay.HeartNineIdentificationSubmission submission, int participantUserId)
+        public Model.GameServices.MissionPreparationConfirmation IdentifyHeartNineOwner(
+            Model.GameServices.HeartNineIdentificationSubmission submission, int participantUserId)
         {
             return base.Channel.IdentifyHeartNineOwner(submission, participantUserId);
         }
 
-        public Gameplay.MissionPreparationConfirmation AssignMissionTrickDistribution(
-            Gameplay.MissionTrickDistributionSubmission submission, int participantUserId)
+        public Model.GameServices.MissionPreparationConfirmation AssignMissionTrickDistribution(
+            Model.GameServices.MissionTrickDistributionSubmission submission, int participantUserId)
         {
             return base.Channel.AssignMissionTrickDistribution(submission, participantUserId);
         }
 
-        public Gameplay.MissionPreparationConfirmation AssignMissionRole(
-            Gameplay.MissionRoleAssignmentSubmission submission, int participantUserId)
+        public Model.GameServices.MissionPreparationConfirmation AssignMissionRole(
+            Model.GameServices.MissionRoleAssignmentSubmission submission, int participantUserId)
         {
             return base.Channel.AssignMissionRole(submission, participantUserId);
         }
 
-        public Gameplay.MissionPreparationConfirmation RespondToBlindObjectives(
-            Gameplay.BlindObjectiveResponseSubmission submission, int participantUserId)
+        public Model.GameServices.MissionPreparationConfirmation RespondToBlindObjectives(
+            Model.GameServices.BlindObjectiveResponseSubmission submission, int participantUserId)
         {
             return base.Channel.RespondToBlindObjectives(submission, participantUserId);
         }
 
-        public Gameplay.RadioCommunicationConfirmation SubmitRadioCommunication(
-            Gameplay.RadioCommunicationSubmission submission, int participantUserId)
+        public Model.GameServices.RadioCommunicationConfirmation SubmitRadioCommunication(
+            Model.GameServices.RadioCommunicationSubmission submission, int participantUserId)
         {
             return base.Channel.SubmitRadioCommunication(submission, participantUserId);
         }
 
-        public Gameplay.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
+        public Model.GameServices.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
         {
             return base.Channel.GetPlayerMatch(lobbyCode, participantUserId);
         }
 
-        public Gameplay.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
-            Gameplay.MissionObjectiveDraftSubmission submission, int participantUserId)
+        public Model.GameServices.MissionObjectiveDraftDecision ProcessObjectiveDraftAction(
+            Model.GameServices.MissionObjectiveDraftSubmission submission, int participantUserId)
         {
             return base.Channel.ProcessObjectiveDraftAction(submission, participantUserId);
         }
 
-        public Gameplay.MissionRetryDecision ConfirmMissionRetry(
-            Gameplay.MissionRetrySubmission submission, int participantUserId)
+        public Model.GameServices.MissionRetryDecision ConfirmMissionRetry(
+            Model.GameServices.MissionRetrySubmission submission, int participantUserId)
         {
             return base.Channel.ConfirmMissionRetry(submission, participantUserId);
         }
 
-        public Gameplay.CardPlayDecision PlayCard(
-            Gameplay.CardPlaySubmission cardPlaySubmission, int participantUserId)
+        public Model.GameServices.CardPlayDecision PlayCard(
+            Model.GameServices.CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return base.Channel.PlayCard(cardPlaySubmission, participantUserId);
         }
 
-        public Gameplay.DistressSignalConfirmation SubmitDistressSignal(
-            Gameplay.DistressSignalSubmission submission, int participantUserId)
+        public Model.GameServices.DistressSignalConfirmation SubmitDistressSignal(
+            Model.GameServices.DistressSignalSubmission submission, int participantUserId)
         {
             return base.Channel.SubmitDistressSignal(submission, participantUserId);
         }

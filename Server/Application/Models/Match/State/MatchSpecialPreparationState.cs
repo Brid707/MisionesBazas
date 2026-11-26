@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using TrickTakingMissions.Rules.Enums;
 
+using Domain;
+
 namespace Application.Models
 {
     public sealed class MatchSpecialPreparationState

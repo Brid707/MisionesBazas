@@ -2,7 +2,8 @@ using System;
 using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
-using PlayerProfiles;
+using Services.Contracts;
+using Services.DataContracts;
 using TrickTakingMissions.Rules.Rules;
 
 namespace Services.Services

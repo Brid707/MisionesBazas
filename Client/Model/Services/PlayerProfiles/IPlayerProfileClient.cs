@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using PlayerProfiles;
+using Model.PlayerProfileService;
 
 namespace Model.Services
 {

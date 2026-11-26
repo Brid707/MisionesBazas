@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Model.ProfileImageService;
 using ProfileImages;
-using Services.DataContracts;
 
 namespace Model.Services
 {

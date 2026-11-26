@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using Application.Models;
-using Gameplay;
+
+using Domain;
 
 namespace Application.UseCases
 {
@@ -77,11 +78,11 @@ namespace Application.UseCases
         {
             bool hasUsed = matchState.MissionAttempt?.HasUsedDistressSignal ?? false;
             bool isInProgress = matchState.DistressStep !=
-                TrickTakingMissions.Rules.Enums.DistressSignalStep.None &&
+                Domain.DistressSignalStep.None &&
                 matchState.DistressStep !=
-                TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed && !hasUsed;
+                Domain.DistressSignalStep.Completed && !hasUsed;
 
-            TrickTakingMissions.Rules.Enums.PassDirection agreedDirection =
+            Domain.PassDirection agreedDirection =
                 matchState.DistressAgreedDirection ??
                 matchState.PendingDistressDirectionsBySeat.Values.FirstOrDefault();
 
@@ -101,9 +102,9 @@ namespace Application.UseCases
                 .ToArray();
 
             int leftVotes = matchState.DistressDirectionVotesBySeat.Values
-                .Count(direction => direction == TrickTakingMissions.Rules.Enums.PassDirection.Left);
+                .Count(direction => direction == Domain.PassDirection.Left);
             int rightVotes = matchState.DistressDirectionVotesBySeat.Values
-                .Count(direction => direction == TrickTakingMissions.Rules.Enums.PassDirection.Right);
+                .Count(direction => direction == Domain.PassDirection.Right);
 
             return new DistressSignalSnapshot
             {
@@ -122,14 +123,14 @@ namespace Application.UseCases
         }
 
         private static DistressPassDirection MapDistressPassDirection(
-            TrickTakingMissions.Rules.Enums.PassDirection direction)
+            Domain.PassDirection direction)
         {
             DistressPassDirection mappedDirection = DistressPassDirection.None;
-            if (direction == TrickTakingMissions.Rules.Enums.PassDirection.Left)
+            if (direction == Domain.PassDirection.Left)
             {
                 mappedDirection = DistressPassDirection.Left;
             }
-            else if (direction == TrickTakingMissions.Rules.Enums.PassDirection.Right)
+            else if (direction == Domain.PassDirection.Right)
             {
                 mappedDirection = DistressPassDirection.Right;
             }
@@ -137,24 +138,24 @@ namespace Application.UseCases
         }
 
         private static DistressSignalPhase MapDistressSignalPhase(
-            TrickTakingMissions.Rules.Enums.DistressSignalStep step)
+            Domain.DistressSignalStep step)
         {
             DistressSignalPhase mappedPhase;
             switch (step)
             {
-                case TrickTakingMissions.Rules.Enums.DistressSignalStep.VotingToUse:
+                case Domain.DistressSignalStep.VotingToUse:
                     mappedPhase = DistressSignalPhase.VotingToUse;
                     break;
-                case TrickTakingMissions.Rules.Enums.DistressSignalStep.VotingDirection:
+                case Domain.DistressSignalStep.VotingDirection:
                     mappedPhase = DistressSignalPhase.VotingDirection;
                     break;
-                case TrickTakingMissions.Rules.Enums.DistressSignalStep.SelectingCard:
+                case Domain.DistressSignalStep.SelectingCard:
                     mappedPhase = DistressSignalPhase.SelectingCard;
                     break;
-                case TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed:
+                case Domain.DistressSignalStep.Completed:
                     mappedPhase = DistressSignalPhase.Completed;
                     break;
-                case TrickTakingMissions.Rules.Enums.DistressSignalStep.None:
+                case Domain.DistressSignalStep.None:
                 default:
                     mappedPhase = DistressSignalPhase.None;
                     break;

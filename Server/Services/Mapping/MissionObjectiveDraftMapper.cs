@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
+using Services.DataContracts;
 
 namespace Services.Mapping
 {

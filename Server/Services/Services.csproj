@@ -63,7 +63,61 @@
     <Compile Include="Security\AccountSessionHeader.cs" />
     <Compile Include="Contracts\Lobby\ILobbyCallback.cs" />
     <Compile Include="Contracts\Lobby\ILobbyService.cs" />
-    <Compile Include="Contracts\Match\IMatchService.cs" />
+        <Compile Include="DataContracts\Match\Distress\DistressPassDirection.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalActionType.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalConfirmation.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalFailureReason.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalFault.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalPhase.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Distress\DistressSignalSubmission.cs" />
+    <Compile Include="DataContracts\Match\Evaluation\MissionAttemptEvaluationStatus.cs" />
+    <Compile Include="DataContracts\Match\Evaluation\MissionEvaluationFailureReason.cs" />
+    <Compile Include="DataContracts\Match\Evaluation\MissionEvaluationSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Evaluation\MissionObjectiveStatus.cs" />
+    <Compile Include="DataContracts\Match\MatchAccessFault.cs" />
+    <Compile Include="DataContracts\Match\PlayerCapturedCardsSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveDraftAction.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveDraftDecision.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveDraftRejectionReason.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveDraftSubmission.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Preparation\MissionObjectiveToken.cs" />
+    <Compile Include="DataContracts\Match\Preparation\PlayerMissionPreparationSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Progression\MissionTransitionKind.cs" />
+    <Compile Include="DataContracts\Match\Progression\MissionTransitionSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Progression\MissionTransitionStatus.cs" />
+    <Compile Include="DataContracts\Match\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationConfirmation.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationFault.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="DataContracts\Match\Radio\RadioCommunicationSubmission.cs" />
+    <Compile Include="DataContracts\Match\Retry\MissionRetryDecision.cs" />
+    <Compile Include="DataContracts\Match\Retry\MissionRetryRejectionReason.cs" />
+    <Compile Include="DataContracts\Match\Retry\MissionRetrySnapshot.cs" />
+    <Compile Include="DataContracts\Match\Retry\MissionRetryStatus.cs" />
+    <Compile Include="DataContracts\Match\Retry\MissionRetrySubmission.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\BlindObjectiveResponseSubmission.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\HeartNineIdentificationSubmission.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionPreparationConfirmation.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionPreparationFailureReason.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionPreparationFault.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionRoleAssignmentSubmission.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\MissionTrickDistributionSubmission.cs" />
+    <Compile Include="DataContracts\Match\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+    <Compile Include="DataContracts\Match\Tricks\CardPlayDecision.cs" />
+    <Compile Include="DataContracts\Match\Tricks\CardPlaySubmission.cs" />
+    <Compile Include="DataContracts\Match\Tricks\MatchCardPlay.cs" />
+    <Compile Include="DataContracts\Match\Tricks\MatchRejectionReason.cs" />
+    <Compile Include="DataContracts\Match\Tricks\PlayerMatchSnapshot.cs" />
+    <Compile Include="Mapping\MatchGameplayMapper.cs" />
+<Compile Include="Contracts\Match\IMatchService.cs" />
     <Compile Include="Contracts\Account\IAccountManagementService.cs" />
     <Compile Include="Contracts\Account\IUserLoginService.cs" />
     <Compile Include="DataContracts\Friends\Friend.cs" />
@@ -93,10 +147,6 @@
     <ProjectReference Include="..\Application\Application.csproj">
       <Project>{0BD0344E-3851-4F90-A9D1-298D169F966F}</Project>
       <Name>Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
-      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
-      <Name>Gameplay</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -165,13 +215,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contracts\PlayerProfiles\IPlayerProfileService.cs" />
+    <Compile Include="DataContracts\PlayerProfiles\PlayerProfileDetails.cs" />
+    <Compile Include="DataContracts\PlayerProfiles\PlayerProfileFailureReason.cs" />
+    <Compile Include="DataContracts\PlayerProfiles\PlayerProfileFault.cs" />
+    <Compile Include="DataContracts\PlayerProfiles\ProfileBiographyUpdate.cs" />
     <Compile Include="Services\PlayerProfiles\PlayerProfileService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Shared\PlayerProfiles\PlayerProfiles.csproj">
-      <Project>{2E8AE0C2-979E-412A-9A95-861BC4D76F8E}</Project>
-      <Name>PlayerProfiles</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
+using Services.DataContracts;
 using TrickTakingMissions.Rules.Enums;
+using ContractBlindResponse = Services.DataContracts.BlindObjectiveResponse;
+
+using Domain;
 
 namespace Services.Mapping
 {
@@ -63,7 +66,7 @@ namespace Services.Mapping
                 MissionPreparationSubmissionId = submission.MissionPreparationSubmissionId,
                 ExpectedMatchStateVersion = submission.ExpectedMatchStateVersion,
                 Action = MissionPreparationAction.RecordBlindResponse,
-                Response = submission.Response == BlindObjectiveResponse.Yes
+                Response = submission.Response == ContractBlindResponse.Yes
                     ? BlindObjectiveCapableResponse.Yes : BlindObjectiveCapableResponse.No
             };
         }

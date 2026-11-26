@@ -7,7 +7,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Gameplay;
+using Model.GameServices;
 using Model.Services;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 using TrickTakingMissions.Rules.Enums;

@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
-using Gameplay;
+using Model.GameServices;
 using ViewModel.Base;
 
 namespace ViewModel.ViewModels

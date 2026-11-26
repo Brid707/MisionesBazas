@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using TrickTakingMissions.Rules.Models;
 
 namespace TrickTakingMissions.Rules.Rules
 {
-    internal static class LeadCardResolver
+    public static class LeadCardResolver
     {
-        internal static TrickCardPlay GetLeadPlay(IReadOnlyList<TrickCardPlay> trickPlays)
+        public static TrickCardPlay GetLeadPlay(IReadOnlyList<TrickCardPlay> trickPlays)
         {
             TrickCardPlay leadPlay = null;
 

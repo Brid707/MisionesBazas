@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Model.PlayerProfileService;
 using Model.Services;
-using PlayerProfiles;
 using TrickTakingMissions.Rules.Rules;
 using ViewModel.Base;
 

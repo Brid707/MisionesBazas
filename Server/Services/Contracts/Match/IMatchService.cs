@@ -1,6 +1,6 @@
 using System.ServiceModel;
 
-using Gameplay;
+using Services.DataContracts;
 
 namespace Services.Contracts
 {

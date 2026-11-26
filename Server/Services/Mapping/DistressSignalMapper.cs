@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
+using Services.DataContracts;
 using TrickTakingMissions.Rules.Enums;
+using ContractDirection = Services.DataContracts.DistressPassDirection;
+
+using Domain;
 
 namespace Services.Mapping
 {
     internal static class DistressSignalMapper
     {
-        private static readonly IReadOnlyDictionary<DistressPassDirection, PassDirection> DirectionsByContract =
-            new Dictionary<DistressPassDirection, PassDirection>
+        private static readonly IReadOnlyDictionary<ContractDirection, PassDirection> DirectionsByContract =
+            new Dictionary<ContractDirection, PassDirection>
             {
-                { DistressPassDirection.None, PassDirection.None },
-                { DistressPassDirection.Left, PassDirection.Left },
-                { DistressPassDirection.Right, PassDirection.Right }
+                { ContractDirection.None, PassDirection.None },
+                { ContractDirection.Left, PassDirection.Left },
+                { ContractDirection.Right, PassDirection.Right }
             };
 
         private static readonly IReadOnlyDictionary<DistressSignalRejection, DistressSignalFailureReason>
@@ -46,7 +49,7 @@ namespace Services.Mapping
                 CardIdToPass = submission.CardIdToPass,
                 SelectedDirection = selectedDirection,
                 IsVoteAccepted = submission.IsVoteAccepted,
-                ActionType = submission.ActionType
+                ActionType = (Application.Models.DistressSignalActionType)(int)submission.ActionType
             };
         }
 

@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Gameplay;
+using Model.GameServices;
 
 namespace Model.Services
 {

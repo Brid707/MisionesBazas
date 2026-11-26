@@ -82,7 +82,20 @@
     <Compile Include="Match\Setup\ParticipantSeatRules.cs" />
     <Compile Include="Match\SpecialPreparation\MissionSpecialPreparationRules.cs" />
     <Compile Include="Match\SpecialPreparation\FinalMissionSpecialPreparationRules.cs" />
-    <Compile Include="Match\Tricks\TrickTurnRules.cs" />
+        <Compile Include="Match\Rules\Enums\BlindObjectiveCapableResponse.cs" />
+    <Compile Include="Match\Rules\Enums\DisconnectionResolutionOption.cs" />
+    <Compile Include="Match\Rules\Enums\DistressSignalStep.cs" />
+    <Compile Include="Match\Rules\Enums\MissionAttemptPhase.cs" />
+    <Compile Include="Match\Rules\Enums\ObjectiveStatus.cs" />
+    <Compile Include="Match\Rules\Enums\ObjectiveTokenType.cs" />
+    <Compile Include="Match\Rules\Enums\PassDirection.cs" />
+    <Compile Include="Match\Rules\Enums\SpecialMissionRuleType.cs" />
+    <Compile Include="Match\Rules\Models\MissionDefinition.cs" />
+    <Compile Include="Match\Rules\Models\MissionObjective.cs" />
+    <Compile Include="Match\Rules\Models\PlayerRadioCommunicationState.cs" />
+    <Compile Include="Match\Rules\Rules\MissionCatalog.cs" />
+    <Compile Include="Match\Rules\Rules\TrickWinnerRules.cs" />
+<Compile Include="Match\Tricks\TrickTurnRules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

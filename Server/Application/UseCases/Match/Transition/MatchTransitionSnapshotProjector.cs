@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
 
 namespace Application.UseCases
 {

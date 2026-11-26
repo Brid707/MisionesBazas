@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Application.Models;
-using Gameplay;
+using Contract = Services.DataContracts;
 using RetryRejection = Application.Models.MissionRetryRejectionReason;
 
 namespace Services.Mapping
@@ -8,24 +8,24 @@ namespace Services.Mapping
     /// <summary>Translates retry requests and decisions without publishing the core transition marker.</summary>
     internal static class MissionRetryMapper
     {
-        private static readonly IReadOnlyDictionary<RetryRejection, Gameplay.MissionRetryRejectionReason>
-            s_rejectionReasons = new Dictionary<RetryRejection, Gameplay.MissionRetryRejectionReason>
+        private static readonly IReadOnlyDictionary<RetryRejection, Contract.MissionRetryRejectionReason>
+            s_rejectionReasons = new Dictionary<RetryRejection, Contract.MissionRetryRejectionReason>
             {
-                { RetryRejection.None, Gameplay.MissionRetryRejectionReason.None },
-                { RetryRejection.MatchUnavailable, Gameplay.MissionRetryRejectionReason.MatchUnavailable },
-                { RetryRejection.ParticipantNotAllowed, Gameplay.MissionRetryRejectionReason.ParticipantNotAllowed },
-                { RetryRejection.InvalidSubmission, Gameplay.MissionRetryRejectionReason.InvalidSubmission },
+                { RetryRejection.None, Contract.MissionRetryRejectionReason.None },
+                { RetryRejection.MatchUnavailable, Contract.MissionRetryRejectionReason.MatchUnavailable },
+                { RetryRejection.ParticipantNotAllowed, Contract.MissionRetryRejectionReason.ParticipantNotAllowed },
+                { RetryRejection.InvalidSubmission, Contract.MissionRetryRejectionReason.InvalidSubmission },
                 { RetryRejection.SubmissionIdentityReused,
-                    Gameplay.MissionRetryRejectionReason.SubmissionIdentityReused },
-                { RetryRejection.WrongMissionAttempt, Gameplay.MissionRetryRejectionReason.WrongMissionAttempt },
-                { RetryRejection.RetryUnavailable, Gameplay.MissionRetryRejectionReason.RetryUnavailable },
-                { RetryRejection.StaleMatchState, Gameplay.MissionRetryRejectionReason.StaleMatchState },
-                { RetryRejection.SubmissionExpired, Gameplay.MissionRetryRejectionReason.SubmissionExpired },
-                { RetryRejection.RequestLimitReached, Gameplay.MissionRetryRejectionReason.RequestLimitReached },
-                { RetryRejection.AttemptLimitReached, Gameplay.MissionRetryRejectionReason.AttemptLimitReached }
+                    Contract.MissionRetryRejectionReason.SubmissionIdentityReused },
+                { RetryRejection.WrongMissionAttempt, Contract.MissionRetryRejectionReason.WrongMissionAttempt },
+                { RetryRejection.RetryUnavailable, Contract.MissionRetryRejectionReason.RetryUnavailable },
+                { RetryRejection.StaleMatchState, Contract.MissionRetryRejectionReason.StaleMatchState },
+                { RetryRejection.SubmissionExpired, Contract.MissionRetryRejectionReason.SubmissionExpired },
+                { RetryRejection.RequestLimitReached, Contract.MissionRetryRejectionReason.RequestLimitReached },
+                { RetryRejection.AttemptLimitReached, Contract.MissionRetryRejectionReason.AttemptLimitReached }
             };
 
-        internal static MissionRetryRequest MapRequest(MissionRetrySubmission submission)
+        internal static MissionRetryRequest MapRequest(Contract.MissionRetrySubmission submission)
         {
             return new MissionRetryRequest
             {
@@ -37,9 +37,9 @@ namespace Services.Mapping
             };
         }
 
-        internal static MissionRetryDecision MapDecision(MissionRetryConfirmation confirmation)
+        internal static Contract.MissionRetryDecision MapDecision(MissionRetryConfirmation confirmation)
         {
-            return new MissionRetryDecision
+            return new Contract.MissionRetryDecision
             {
                 MissionRetrySubmissionId = confirmation.MissionRetrySubmissionId,
                 IsAccepted = confirmation.IsAccepted,

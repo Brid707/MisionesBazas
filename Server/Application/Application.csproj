@@ -104,10 +104,6 @@
       <Project>{B0C8E1AB-21B4-4A79-A2CE-6A48E177BB35}</Project>
       <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Shared\Gameplay\Gameplay.csproj">
-      <Project>{9B4E4D71-29C3-4809-8C84-B835E37E31D6}</Project>
-      <Name>Gameplay</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -132,17 +128,38 @@
     <Compile Include="UseCases\ProfileImages\ProfileImageUseCase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Shared\ProfileImages\ProfileImageLimits.cs">
-      <Link>ProfileImages\ProfileImageLimits.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Shared\ProfileImages\ProfileImageFailureCodes.cs">
-      <Link>ProfileImages\ProfileImageFailureCodes.cs</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Match\State\MatchState.cs" />
+        <Compile Include="Models\Match\Snapshots\Distress\DistressPassDirection.cs" />
+    <Compile Include="Models\Match\Snapshots\Distress\DistressSignalActionType.cs" />
+    <Compile Include="Models\Match\Snapshots\Distress\DistressSignalPhase.cs" />
+    <Compile Include="Models\Match\Snapshots\Distress\DistressSignalSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Evaluation\MissionAttemptEvaluationStatus.cs" />
+    <Compile Include="Models\Match\Snapshots\Evaluation\MissionEvaluationFailureReason.cs" />
+    <Compile Include="Models\Match\Snapshots\Evaluation\MissionEvaluationSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Evaluation\MissionObjectiveStatus.cs" />
+    <Compile Include="Models\Match\Snapshots\PlayerCapturedCardsSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Preparation\MissionObjectiveSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Preparation\MissionObjectiveToken.cs" />
+    <Compile Include="Models\Match\Snapshots\Preparation\PlayerMissionPreparationSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Progression\MissionTransitionKind.cs" />
+    <Compile Include="Models\Match\Snapshots\Progression\MissionTransitionSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Progression\MissionTransitionStatus.cs" />
+    <Compile Include="Models\Match\Snapshots\Radio\PlayerRadioCommunicationSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Radio\RadioCommunicationFailureReason.cs" />
+    <Compile Include="Models\Match\Snapshots\Radio\RadioCommunicationMarker.cs" />
+    <Compile Include="Models\Match\Snapshots\Radio\RadioCommunicationMode.cs" />
+    <Compile Include="Models\Match\Snapshots\Retry\MissionRetrySnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Retry\MissionRetryStatus.cs" />
+    <Compile Include="Models\Match\Snapshots\SpecialPreparation\BlindObjectiveParticipantSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\SpecialPreparation\BlindObjectiveResponse.cs" />
+    <Compile Include="Models\Match\Snapshots\SpecialPreparation\MissionConditionProgressSnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\SpecialPreparation\MissionPreparationStage.cs" />
+    <Compile Include="Models\Match\Snapshots\SpecialPreparation\RadioAvailabilitySnapshot.cs" />
+    <Compile Include="Models\Match\Snapshots\Tricks\CardPlayDecision.cs" />
+    <Compile Include="Models\Match\Snapshots\Tricks\CardPlaySubmission.cs" />
+    <Compile Include="Models\Match\Snapshots\Tricks\MatchCardPlay.cs" />
+    <Compile Include="Models\Match\Snapshots\Tricks\MatchRejectionReason.cs" />
+    <Compile Include="Models\Match\Snapshots\Tricks\PlayerMatchSnapshot.cs" />
+<Compile Include="Models\Match\State\MatchState.cs" />
     <Compile Include="Models\Match\Tricks\ProcessedCardPlay.cs" />
     <Compile Include="Ports\Match\IMatchStateStore.cs" />
     <Compile Include="Ports\Match\IMissionDeckDealer.cs" />

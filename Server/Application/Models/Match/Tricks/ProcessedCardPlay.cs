@@ -1,4 +1,3 @@
-using Gameplay;
 
 namespace Application.Models
 {

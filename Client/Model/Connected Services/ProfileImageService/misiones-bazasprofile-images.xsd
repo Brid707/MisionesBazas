@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="urn:misiones-bazas:profile-images" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="ChangeOwnProfileImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="profileImageUpload" nillable="true" xmlns:q1="urn:misiones-bazas:profile-images" type="q1:ProfileImageUpload" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ProfileImageUpload">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SelectedProfileImageBytes" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileImageUpload" nillable="true" xmlns:q2="urn:misiones-bazas:profile-images" type="q2:ProfileImageUpload" />
+  <xs:element name="ChangeOwnProfileImageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ChangeOwnProfileImageResult" nillable="true" xmlns:q3="urn:misiones-bazas:profile-images" type="q3:PlayerProfileImageReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="PlayerProfileImageReference">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProfileOwnerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="ProfileImageId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerProfileImageReference" nillable="true" xmlns:q4="urn:misiones-bazas:profile-images" type="q4:PlayerProfileImageReference" />
+  <xs:complexType name="ProfileImageFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FailureCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileImageFault" nillable="true" xmlns:q5="urn:misiones-bazas:profile-images" type="q5:ProfileImageFault" />
+  <xs:element name="GetPlayerProfileImages">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="profileOwnerUserIds" nillable="true" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q6:ArrayOfint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPlayerProfileImagesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetPlayerProfileImagesResult" nillable="true" xmlns:q7="urn:misiones-bazas:profile-images" type="q7:ArrayOfPlayerProfileImageReference" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfPlayerProfileImageReference">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PlayerProfileImageReference" nillable="true" xmlns:q8="urn:misiones-bazas:profile-images" type="q8:PlayerProfileImageReference" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPlayerProfileImageReference" nillable="true" xmlns:q9="urn:misiones-bazas:profile-images" type="q9:ArrayOfPlayerProfileImageReference" />
+  <xs:element name="GetProfileImage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="profileImageId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProfileImageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetProfileImageResult" nillable="true" xmlns:q10="urn:misiones-bazas:profile-images" type="q10:ProfileImageContent" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ProfileImageContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProfileImageId" type="ser:guid" />
+      <xs:element minOccurs="0" name="NormalizedProfileImageBytes" nillable="true" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileImageContent" nillable="true" xmlns:q11="urn:misiones-bazas:profile-images" type="q11:ProfileImageContent" />
+  <xs:element name="SubscribeProfileImageChanges">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="profileOwnerUserIds" nillable="true" xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" type="q12:ArrayOfint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubscribeProfileImageChangesResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnPlayerProfileImageChanged">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="profileOwnerUserId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

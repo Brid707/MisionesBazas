@@ -1,4 +1,4 @@
-using PlayerProfiles;
+using Model.PlayerProfileService;
 
 namespace Model.Services
 {

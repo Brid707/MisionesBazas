@@ -2,8 +2,9 @@ using System;
 using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
-using Gameplay;
+using Services.DataContracts;
 using Services.Mapping;
+using ContractBlindResponse = Services.DataContracts.BlindObjectiveResponse;
 
 namespace Services.Services
 {
@@ -61,8 +62,8 @@ namespace Services.Services
         public MissionPreparationConfirmation RespondToBlindObjectives(BlindObjectiveResponseSubmission submission,
             int participantUserId)
         {
-            if (submission == null || (submission.Response != BlindObjectiveResponse.Yes &&
-                submission.Response != BlindObjectiveResponse.No))
+            if (submission == null || (submission.Response != ContractBlindResponse.Yes &&
+                submission.Response != ContractBlindResponse.No))
             {
                 throw CreatePreparationFault(MissionPreparationFailureReason.InvalidSubmission);
             }

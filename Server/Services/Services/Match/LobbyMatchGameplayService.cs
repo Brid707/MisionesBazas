@@ -1,7 +1,8 @@
 using System;
 using System.ServiceModel;
 using Application.Ports;
-using Gameplay;
+using Services.DataContracts;
+using Services.Mapping;
 
 namespace Services.Services
 {
@@ -30,7 +31,8 @@ namespace Services.Services
             _ensureParticipantAllowed(lobbyCode, participantUserId);
             LobbyMatchPresence.Touch(lobbyCode.Trim().ToUpperInvariant(), participantUserId,
                 OperationContext.Current?.SessionId);
-            PlayerMatchSnapshot participantSnapshot = _lobbyUseCase.Match.GetPlayerMatch(lobbyCode, participantUserId);
+            Application.Models.PlayerMatchSnapshot participantSnapshot = _lobbyUseCase.Match.GetPlayerMatch(
+                lobbyCode, participantUserId);
             if (participantSnapshot == null)
             {
                 throw new FaultException<MatchAccessFault>(new MatchAccessFault
@@ -38,7 +40,7 @@ namespace Services.Services
                     FailureCode = FaultMatchUnavailable
                 });
             }
-            return participantSnapshot;
+            return MatchGameplayMapper.MapSnapshot(participantSnapshot);
         }
 
         public CardPlayDecision PlayCard(CardPlaySubmission cardPlaySubmission, int participantUserId)
@@ -57,7 +59,9 @@ namespace Services.Services
             CardPlayDecision playDecision;
             try
             {
-                playDecision = _lobbyUseCase.Match.PlayCard(cardPlaySubmission, participantUserId);
+                playDecision = MatchGameplayMapper.MapCardPlayDecision(
+                    _lobbyUseCase.Match.PlayCard(MatchGameplayMapper.MapCardPlaySubmission(cardPlaySubmission),
+                        participantUserId));
             }
             catch (ArgumentException ex)
             {

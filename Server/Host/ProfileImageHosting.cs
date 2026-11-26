@@ -48,6 +48,12 @@ namespace Host
             };
             binding.ReaderQuotas.MaxArrayLength = ProfileImageLimits.MaximumUploadBytes;
             host.AddServiceEndpoint(typeof(IProfileImageService), binding, string.Empty);
+            if (host.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)
+            {
+                host.Description.Behaviors.Add(new ServiceMetadataBehavior { HttpGetEnabled = false });
+            }
+            host.AddServiceEndpoint(ServiceMetadataBehavior.MexContractName,
+                MetadataExchangeBindings.CreateMexTcpBinding(), "mex");
             host.Description.Behaviors.Add(new ServiceThrottlingBehavior
             {
                 MaxConcurrentCalls = 8,

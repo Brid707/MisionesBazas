@@ -5,6 +5,8 @@ using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 
+using Domain;
+
 namespace Application.UseCases
 {
     internal sealed class MatchRadioCommunicationHandler

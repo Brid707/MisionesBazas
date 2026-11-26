@@ -2,8 +2,10 @@ using System;
 using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
-using Gameplay;
+using Services.DataContracts;
 using Services.Mapping;
+using ContractActionType = Services.DataContracts.DistressSignalActionType;
+using ContractPassDirection = Services.DataContracts.DistressPassDirection;
 
 namespace Services.Services
 {
@@ -87,9 +89,9 @@ namespace Services.Services
             return submission is not null
                 && !string.IsNullOrWhiteSpace(submission.LobbyCode)
                 && submission.LobbyCode.Length <= MaximumMatchActionLobbyCodeLength
-                && Enum.IsDefined(typeof(DistressSignalActionType), submission.ActionType)
-                && submission.ActionType != DistressSignalActionType.None
-                && Enum.IsDefined(typeof(DistressPassDirection), submission.SelectedDirection);
+                && Enum.IsDefined(typeof(ContractActionType), submission.ActionType)
+                && submission.ActionType != ContractActionType.None
+                && Enum.IsDefined(typeof(ContractPassDirection), submission.SelectedDirection);
         }
 
         private static FaultException<DistressSignalFault> CreateDistressFault(DistressSignalFailureReason reason)

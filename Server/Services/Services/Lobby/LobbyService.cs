@@ -8,7 +8,6 @@ using System.Threading;
 using Application.Models;
 using Application.Ports;
 using Domain;
-using Gameplay;
 using Services.Contracts;
 using Services.DataContracts;
 using Services.Mapping;
@@ -768,7 +767,7 @@ namespace Services.Services
             return _objectiveDraftService.ProcessObjectiveDraftAction(submission, participantUserId);
         }
 
-        public PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
+        public global::Services.DataContracts.PlayerMatchSnapshot GetPlayerMatch(string lobbyCode, int participantUserId)
         {
             return _matchGameplayService.GetPlayerMatch(lobbyCode, participantUserId);
         }
@@ -785,8 +784,8 @@ namespace Services.Services
             return _radioCommunicationService.SubmitRadioCommunication(submission, participantUserId);
         }
 
-        public CardPlayDecision PlayCard(
-            CardPlaySubmission cardPlaySubmission, int participantUserId)
+        public global::Services.DataContracts.CardPlayDecision PlayCard(
+            global::Services.DataContracts.CardPlaySubmission cardPlaySubmission, int participantUserId)
         {
             return _matchGameplayService.PlayCard(cardPlaySubmission, participantUserId);
         }

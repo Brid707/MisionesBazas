@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="a7b8c9d0-1234-4567-89ab-cdef01234567" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.tcp://localhost:8090/ProfileImageService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="misiones-bazasprofile-images.wsdl" MetadataType="Wsdl" ID="b1c2d3e4-1111-4222-8333-444455556666" SourceId="1" SourceUrl="net.tcp://localhost:8090/ProfileImageService/mex" />
+    <MetadataFile FileName="misiones-bazasprofile-images.xsd" MetadataType="Schema" ID="c2d3e4f5-2222-4333-8444-555566667777" SourceId="1" SourceUrl="net.tcp://localhost:8090/ProfileImageService/mex" />
+    <MetadataFile FileName="schemas.microsoft.com.2003.10.Serialization.xsd" MetadataType="Schema" ID="d3e4f5a6-3333-4444-8555-666677778888" SourceId="1" SourceUrl="net.tcp://localhost:8090/ProfileImageService/mex" />
+    <MetadataFile FileName="schemas.microsoft.com.2003.10.Serialization.Arrays.xsd" MetadataType="Schema" ID="e4f5a6b7-4444-4555-8666-777788889999" SourceId="1" SourceUrl="net.tcp://localhost:8090/ProfileImageService/mex" />
+  </Metadata>
+  <Extensions />
+</ReferenceGroup>

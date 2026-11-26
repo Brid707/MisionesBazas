@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Services.DataContracts;
+using Model.ProfileImageService;
 
 namespace Model.Services
 {

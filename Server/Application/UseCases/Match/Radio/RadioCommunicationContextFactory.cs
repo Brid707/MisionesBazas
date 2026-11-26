@@ -4,6 +4,8 @@ using Application.Models;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
 
+using Domain;
+
 namespace Application.UseCases
 {
     internal static class RadioCommunicationContextFactory

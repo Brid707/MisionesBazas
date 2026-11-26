@@ -6,7 +6,6 @@
       xmlns:styles="clr-namespace:View.Styles"
       xmlns:language="clr-namespace:View.Properties.Langs"
       xmlns:constants="clr-namespace:ViewModel.Constants;assembly=ViewModel"
-      xmlns:gameplay="clr-namespace:Gameplay;assembly=Gameplay"
       Title="GameMatch">
     <Page.Resources>
         <converters:MatchFeedbackKeyToStringConverter x:Key="MatchTextConverter" />

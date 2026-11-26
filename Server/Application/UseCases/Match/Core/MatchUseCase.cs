@@ -5,7 +5,6 @@ using System.Threading;
 using Application.Models;
 using Application.Ports;
 using Domain;
-using Gameplay;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;

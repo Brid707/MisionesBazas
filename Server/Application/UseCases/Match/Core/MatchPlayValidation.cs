@@ -1,10 +1,11 @@
 using System;
 using System.Linq;
 using Application.Models;
-using Gameplay;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 using TrickTakingMissions.Rules.Rules;
+
+using Domain;
 
 namespace Application.UseCases
 {
@@ -20,16 +21,16 @@ namespace Application.UseCases
                 playRejectionReason = MatchRejectionReason.MissionAttemptFinished;
             }
             else if (matchState.MissionAttempt?.Phase !=
-                TrickTakingMissions.Rules.Enums.MissionAttemptPhase.PlayingTricks)
+                Domain.MissionAttemptPhase.PlayingTricks)
             {
                 playRejectionReason = MatchRejectionReason.MissionPreparationRequired;
             }
             if (playRejectionReason == MatchRejectionReason.None)
             {
                 bool isDistressActive = (matchState.DistressStep !=
-                    TrickTakingMissions.Rules.Enums.DistressSignalStep.None &&
+                    Domain.DistressSignalStep.None &&
                     matchState.DistressStep !=
-                    TrickTakingMissions.Rules.Enums.DistressSignalStep.Completed) ||
+                    Domain.DistressSignalStep.Completed) ||
                     matchState.PendingDistressPassCardIdsBySeat.Count > 0;
                 if (isDistressActive)
                 {

@@ -1,5 +1,5 @@
 using System;
-using Gameplay;
+using Application.Models;
 
 namespace Application.Ports
 {

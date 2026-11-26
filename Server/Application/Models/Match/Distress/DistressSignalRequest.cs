@@ -1,6 +1,7 @@
 using System;
-using Gameplay;
 using TrickTakingMissions.Rules.Enums;
+
+using Domain;
 
 namespace Application.Models
 {

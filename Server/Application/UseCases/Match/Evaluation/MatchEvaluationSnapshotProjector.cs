@@ -1,5 +1,4 @@
 using Application.Models;
-using Gameplay;
 
 namespace Application.UseCases
 {

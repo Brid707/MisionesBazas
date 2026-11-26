@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gameplay;
 using TrickTakingMissions.Rules.Enums;
+
+using Domain;
 
 namespace Application.Models
 {
@@ -46,17 +47,17 @@ namespace Application.Models
             new Dictionary<Guid, ProcessedCardPlay>();
         public Dictionary<byte, int> PendingDistressPassCardIdsBySeat { get; } =
             new Dictionary<byte, int>();
-        public Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>
+        public Dictionary<byte, Domain.PassDirection>
             PendingDistressDirectionsBySeat { get; } =
-            new Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>();
-        public TrickTakingMissions.Rules.Enums.DistressSignalStep DistressStep { get; set; }
+            new Dictionary<byte, Domain.PassDirection>();
+        public Domain.DistressSignalStep DistressStep { get; set; }
         public HashSet<byte> DistressUsageYesVotesBySeat { get; } =
             new HashSet<byte>();
-        public Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>
+        public Dictionary<byte, Domain.PassDirection>
             DistressDirectionVotesBySeat { get; } =
-            new Dictionary<byte, TrickTakingMissions.Rules.Enums.PassDirection>();
+            new Dictionary<byte, Domain.PassDirection>();
         public int? DistressInitiatorUserId { get; set; }
-        public TrickTakingMissions.Rules.Enums.PassDirection? DistressAgreedDirection { get; set; }
+        public Domain.PassDirection? DistressAgreedDirection { get; set; }
         public bool HasDistressBeenRejected { get; set; }
         public bool HasAppliedDistressPenaltyInCurrentMission { get; set; }
 
@@ -192,7 +193,7 @@ namespace Application.Models
 
         public void ResetDistressState()
         {
-            DistressStep = TrickTakingMissions.Rules.Enums.DistressSignalStep.None;
+            DistressStep = Domain.DistressSignalStep.None;
             PendingDistressPassCardIdsBySeat.Clear();
             PendingDistressDirectionsBySeat.Clear();
             DistressUsageYesVotesBySeat.Clear();

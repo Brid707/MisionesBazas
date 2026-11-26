@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="f1e2d3c4-5678-90ab-cdef-112233445566" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.tcp://localhost:8090/PlayerProfileService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="11112222-3333-4444-5555-666677778888" SourceId="1" SourceUrl="net.tcp://localhost:8090/PlayerProfileService/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="22223333-4444-5555-6666-777788889999" SourceId="1" SourceUrl="net.tcp://localhost:8090/PlayerProfileService/mex" />
+    <MetadataFile FileName="PlayerProfiles.xsd" MetadataType="Schema" ID="33334444-5555-6666-7777-88889999aaaa" SourceId="1" SourceUrl="net.tcp://localhost:8090/PlayerProfileService/mex" />
+    <MetadataFile FileName="serialization.xsd" MetadataType="Schema" ID="44445555-6666-7777-8888-9999aaaabbbb" SourceId="1" SourceUrl="net.tcp://localhost:8090/PlayerProfileService/mex" />
+  </Metadata>
+  <Extensions />
+</ReferenceGroup>

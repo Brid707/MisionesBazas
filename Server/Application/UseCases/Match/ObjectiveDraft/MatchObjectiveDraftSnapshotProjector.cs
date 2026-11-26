@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Models;
 using Domain;
-using Gameplay;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;
 

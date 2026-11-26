@@ -5,7 +5,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Gameplay;
+using Model.GameServices;
 using Model.Services;
 using TrickTakingMissions.Rules.Enums;
 using TrickTakingMissions.Rules.Models;

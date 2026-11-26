@@ -16,8 +16,9 @@ namespace Application.UseCases
         private const int ErrorCodeSuccess = 0;
         private const int ErrorCodeValidationFailed = 101;
         private const int ErrorCodeUserNotFound = 102;
-        private const int ErrorCodeDuplicateOrInvalidState = 103;
+        private const int ErrorCodeDuplicate = 103;
         private const int ErrorCodePlayerBlocked = 104;
+        private const int ErrorCodeInvalidState = 105;
         private const int ErrorCodePersistenceFailure = 201;
 
         private const string MessageFriendRequestSent = "Friend request sent successfully.";
@@ -117,9 +118,10 @@ namespace Application.UseCases
                 }
                 catch (InvalidOperationException)
                 {
-                    _logger.Warning(FriendshipActionPersistenceFailureTemplate, ActionAccept, senderUserId, receiverUserId);
-                    friendshipActionOutcome = CreateFriendshipActionOutcome(false,
-                        ErrorCodePersistenceFailure, ErrorMessagePersistenceFailure);
+                    _logger.Warning(FriendshipActionPersistenceFailureTemplate, ActionAccept, senderUserId,
+                        receiverUserId);
+                    friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodePersistenceFailure,
+                        ErrorMessagePersistenceFailure);
                 }
             }
             else
@@ -143,8 +145,8 @@ namespace Application.UseCases
                 {
                     _friendshipRepository.BlockPlayer(blockerUserId, targetUserId);
                     _logger.Information(PlayerBlockedSuccessfullyTemplate, targetUserId, blockerUserId);
-                    friendshipActionOutcome = CreateFriendshipActionOutcome(true,
-                        ErrorCodeSuccess, MessagePlayerBlocked);
+                    friendshipActionOutcome = CreateFriendshipActionOutcome(true, ErrorCodeSuccess,
+                        MessagePlayerBlocked);
                 }
                 catch (InvalidOperationException)
                 {
@@ -156,8 +158,8 @@ namespace Application.UseCases
             else
             {
                 _logger.Warning(FriendshipValidationFailedTemplate, blockerUserId, targetUserId);
-                friendshipActionOutcome = CreateFriendshipActionOutcome(false,
-                    ErrorCodeValidationFailed, ErrorMessageInvalidParameters);
+                friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeValidationFailed,
+                    ErrorMessageInvalidParameters);
             }
 
             return friendshipActionOutcome;
@@ -172,10 +174,9 @@ namespace Application.UseCases
             {
                 try
                 {
-                    friendshipActionOutcome = await ProcessRemovePendingRequestAsync(
-                        receiverUserId,
-                        senderUserId,
+                    friendshipActionOutcome = await ProcessRemovePendingRequestAsync(receiverUserId, senderUserId,
                         MessageFriendRequestCancelled);
+
                     if (friendshipActionOutcome.IsSuccess)
                     {
                         _logger.Information(FriendRequestCancelledTemplate, senderUserId, receiverUserId);
@@ -183,9 +184,10 @@ namespace Application.UseCases
                 }
                 catch (InvalidOperationException)
                 {
-                    _logger.Warning(FriendshipActionPersistenceFailureTemplate, ActionCancel, senderUserId, receiverUserId);
-                    friendshipActionOutcome = CreateFriendshipActionOutcome(false,
-                        ErrorCodePersistenceFailure, ErrorMessagePersistenceFailure);
+                    _logger.Warning(FriendshipActionPersistenceFailureTemplate, ActionCancel, senderUserId,
+                        receiverUserId);
+                    friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodePersistenceFailure,
+                        ErrorMessagePersistenceFailure);
                 }
             }
             else
@@ -415,17 +417,15 @@ namespace Application.UseCases
             else
             {
                 _logger.Warning(FriendRequestNotFoundWarningTemplate, receiverUserId, senderUserId);
-                friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeDuplicateOrInvalidState,
+                friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeInvalidState,
                     ErrorMessageRequestNotFound);
             }
 
             return friendshipActionOutcome;
         }
 
-        private async Task<FriendshipActionOutcome> ProcessRemovePendingRequestAsync(
-            int receiverUserId,
-            int senderUserId,
-            string successMessage)
+        private async Task<FriendshipActionOutcome> ProcessRemovePendingRequestAsync(int receiverUserId,
+            int senderUserId, string successMessage)
         {
             FriendshipActionOutcome friendshipActionOutcome;
             FriendshipRecordData friendshipRecordData = await
@@ -440,7 +440,7 @@ namespace Application.UseCases
             else
             {
                 _logger.Warning(FriendRequestNotFoundWarningTemplate, receiverUserId, senderUserId);
-                friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeDuplicateOrInvalidState,
+                friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeInvalidState,
                     ErrorMessageRequestNotFound);
             }
 
@@ -465,7 +465,8 @@ namespace Application.UseCases
                 friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeValidationFailed,
                     ErrorMessageInvalidParameters);
             }
-            else if (_friendshipRepository.IsPlayerBlockedByPlayerA(senderUserId, targetUser.IdUser))
+            else if (_friendshipRepository.IsPlayerBlockedByPlayerA(senderUserId, targetUser.IdUser)
+                || _friendshipRepository.IsPlayerBlockedByPlayerA(targetUser.IdUser, senderUserId))
             {
                 _logger.Warning(FriendRequestBlockedPlayerTemplate, senderUserId, targetUser.IdUser);
                 friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodePlayerBlocked,
@@ -479,7 +480,7 @@ namespace Application.UseCases
                 if (existingFriendship != null)
                 {
                     _logger.Warning(FriendRequestAlreadyExistsTemplate, senderUserId, targetUser.IdUser);
-                    friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeDuplicateOrInvalidState,
+                    friendshipActionOutcome = CreateFriendshipActionOutcome(false, ErrorCodeDuplicate,
                         ErrorMessageAlreadyFriendsOrPending);
                 }
                 else
@@ -504,8 +505,8 @@ namespace Application.UseCases
             return userId1 != userId2;
         }
 
-        private static FriendshipActionOutcome CreateFriendshipActionOutcome(bool isSuccess,
-            int errorCode, string message)
+        private static FriendshipActionOutcome CreateFriendshipActionOutcome(bool isSuccess, int errorCode,
+            string message)
         {
             return new FriendshipActionOutcome
             {

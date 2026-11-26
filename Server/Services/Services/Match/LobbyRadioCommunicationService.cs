@@ -2,8 +2,10 @@ using System;
 using System.ServiceModel;
 using Application.Models;
 using Application.Ports;
-using Gameplay;
+using Services.DataContracts;
 using Services.Mapping;
+using ContractRadioFailure = Services.DataContracts.RadioCommunicationFailureReason;
+using ContractRadioMarker = Services.DataContracts.RadioCommunicationMarker;
 
 namespace Services.Services
 {
@@ -33,9 +35,9 @@ namespace Services.Services
         {
             if (submission == null || string.IsNullOrWhiteSpace(submission.LobbyCode) ||
                 submission.LobbyCode.Length > MaximumMatchActionLobbyCodeLength ||
-                !Enum.IsDefined(typeof(RadioCommunicationMarker), submission.SelectedMarker))
+                !Enum.IsDefined(typeof(ContractRadioMarker), submission.SelectedMarker))
             {
-                throw CreateRadioFault(RadioCommunicationFailureReason.InvalidSubmission);
+                throw CreateRadioFault(ContractRadioFailure.InvalidSubmission);
             }
 
             _ensureSessionBudget();
@@ -72,20 +74,20 @@ namespace Services.Services
             {
                 throw new FaultException<MatchAccessFault>(new MatchAccessFault
                 {
-                    FailureCode = nameof(RadioCommunicationFailureReason.OperationUnavailable)
+                    FailureCode = nameof(ContractRadioFailure.OperationUnavailable)
                 }, new FaultReason(ex.Message));
             }
             catch (InvalidOperationException ex)
             {
                 throw new FaultException<MatchAccessFault>(new MatchAccessFault
                 {
-                    FailureCode = nameof(RadioCommunicationFailureReason.OperationUnavailable)
+                    FailureCode = nameof(ContractRadioFailure.OperationUnavailable)
                 }, new FaultReason(ex.Message));
             }
             return result;
         }
 
-        private static FaultException<RadioCommunicationFault> CreateRadioFault(RadioCommunicationFailureReason reason)
+        private static FaultException<RadioCommunicationFault> CreateRadioFault(ContractRadioFailure reason)
         {
             return new FaultException<RadioCommunicationFault>(new RadioCommunicationFault { FailureReason = reason });
         }

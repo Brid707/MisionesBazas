@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Gameplay;
+using Model.GameServices;
 using Model.Services;
 using ViewModel.Base;
 
