@@ -19,5 +19,20 @@ namespace View.Properties.Langs
 
         public static string Profile_RetryLoad =>
             Resources.ResourceManager.GetString("Profile_RetryLoad", Resources.Culture);
+
+        public static string Profile_PublicTitle =>
+            Resources.ResourceManager.GetString("Profile_PublicTitle", Resources.Culture);
+
+        public static string Profile_ClosePublicProfile =>
+            Resources.ResourceManager.GetString("Profile_ClosePublicProfile", Resources.Culture);
+
+        public static string Profile_ViewPublicProfile =>
+            Resources.ResourceManager.GetString("Profile_ViewPublicProfile", Resources.Culture);
+
+        public static string Profile_PublicReadOnly =>
+            Resources.ResourceManager.GetString("Profile_PublicReadOnly", Resources.Culture);
+
+        public static string Profile_GuestHasNoPublicProfile =>
+            Resources.ResourceManager.GetString("Profile_GuestHasNoPublicProfile", Resources.Culture);
     }
 }

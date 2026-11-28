@@ -58,6 +58,7 @@ namespace ViewModel.ViewModels
             }
 
             _navigationService = uiServices.NavigationService;
+            PlayerProfiles = uiServices.PlayerProfiles;
             _dialogService = uiServices.DialogService;
             _logger = uiServices.Logger;
             _friendshipSession = friendshipSession ?? throw new ArgumentNullException(nameof(friendshipSession));
@@ -71,6 +72,9 @@ namespace ViewModel.ViewModels
 
             _ = LoadSentRequestsAsync();
         }
+
+        /// <summary>Gets the shared profile-opening actions for this screen.</summary>
+        public PlayerProfileCommands PlayerProfiles { get; }
 
         /// <summary>
         /// Gets the observable collection of pending outgoing friend requests sent by the current player.

@@ -8,6 +8,8 @@ namespace Application.Ports
     /// </summary>
     public interface IPlayerProfileRepository
     {
+        PublicPlayerProfile GetPublicProfile(int profileOwnerUserId, string profileOwnerUsername);
+
         OwnPlayerProfile GetOwnProfile(int authenticatedAccountUserId);
 
         string UpdateBiography(int authenticatedAccountUserId, string biography);

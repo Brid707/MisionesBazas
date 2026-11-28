@@ -30,6 +30,13 @@ namespace ViewModel.ViewModels
         private readonly SynchronizationContext _uiSyncContext;
         private bool _hasPendingRequests;
 
+        /// <summary>Initializes social actions and profile navigation from the shared UI dependencies.</summary>
+        public ManageFriendRequestViewModel(IFriendshipSession friendshipSession, ViewModelUiServices uiServices)
+            : this(friendshipSession, uiServices.DialogService, uiServices.Logger)
+        {
+            PlayerProfiles = uiServices.PlayerProfiles;
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ManageFriendRequestViewModel"/> class using default session state.
         /// </summary>
@@ -76,6 +83,9 @@ namespace ViewModel.ViewModels
             _friendshipSession.Client.FriendRequestReceived += OnServerFriendRequestReceived;
             _ = LoadPendingRequestsAsync();
         }
+
+        /// <summary>Gets the shared profile-opening actions for this screen.</summary>
+        public PlayerProfileCommands PlayerProfiles { get; } = new PlayerProfileCommands(null, false);
 
         /// <summary>
         /// Occurs when the dialog window requests to close.

@@ -68,4 +68,7 @@
     <Compile Include="Rules\PlayerBiographyRules.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Rules\PlayerProfileLookupRules.cs" />
+  </ItemGroup>
 </Project>

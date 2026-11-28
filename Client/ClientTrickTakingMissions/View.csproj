@@ -417,4 +417,19 @@
       <Name>TrickTakingMissions.Rules</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\WpfPlayerProfileNavigation.cs" />
+    <Compile Include="Views\Profile\PlayerProfileWindow.xaml.cs">
+      <DependentUpon>PlayerProfileWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\Profile\PlayerProfileWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\PlayerProfileStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Controls\PlayerProfileAvatar.cs" />
+  </ItemGroup>
 </Project>

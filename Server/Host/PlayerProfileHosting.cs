@@ -6,6 +6,7 @@ using Application.UseCases;
 using Persistence.Repository;
 using Services.Contracts;
 using Services.Services;
+using Services.Security;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 
 namespace Host
@@ -22,7 +23,8 @@ namespace Host
         {
             var repository = new PlayerProfileRepository(loggerFactory.CreateLogger<PlayerProfileRepository>());
             var profileUseCase = new PlayerProfileUseCase(repository);
-            var service = new PlayerProfileService(profileUseCase, accountAccessPolicy);
+            var service = new PlayerProfileService(profileUseCase, accountAccessPolicy,
+                new GuestLobbyProfileAccessPolicy());
             var profileHost = new ServiceHost(service, new Uri(ProfileEndpointAddress));
             profileHost.AddServiceEndpoint(typeof(IPlayerProfileService), CreateBinding(), string.Empty);
             if (profileHost.Description.Behaviors.Find<ServiceMetadataBehavior>() == null)

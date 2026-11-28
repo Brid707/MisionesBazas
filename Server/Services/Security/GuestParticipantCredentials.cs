@@ -34,6 +34,18 @@ namespace Services.Security
             }
         }
 
+        internal static bool IsGuestCredentialValid(int guestUserId, string presentedCredential)
+        {
+            bool isValidCredential;
+            lock (s_credentialsByGuestId)
+            {
+                isValidCredential = guestUserId < 0 && !string.IsNullOrEmpty(presentedCredential) &&
+                    s_credentialsByGuestId.TryGetValue(guestUserId, out string expectedCredential) &&
+                    string.Equals(expectedCredential, presentedCredential, StringComparison.Ordinal);
+            }
+            return isValidCredential;
+        }
+
         internal static string GetCredential(int guestUserId)
         {
             string guestCredential;

@@ -1,1 +1,81 @@
-﻿<?xml version="1.0" encoding="utf-8"?><xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/PlayerProfiles" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PlayerProfiles" xmlns:xs="http://www.w3.org/2001/XMLSchema"><xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" /><xs:complexType name="PlayerProfileDetails"><xs:sequence><xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" /><xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" /><xs:element minOccurs="0" name="AccountCreatedAtUtc" type="xs:dateTime" /><xs:element minOccurs="0" name="Biography" nillable="true" type="xs:string" /><xs:element minOccurs="0" name="CompletedMissionCount" nillable="true" type="xs:int" /></xs:sequence></xs:complexType><xs:element name="PlayerProfileDetails" nillable="true" type="tns:PlayerProfileDetails" /><xs:complexType name="PlayerProfileFault"><xs:sequence><xs:element minOccurs="0" name="FailureReason" type="tns:PlayerProfileFailureReason" /></xs:sequence></xs:complexType><xs:element name="PlayerProfileFault" nillable="true" type="tns:PlayerProfileFault" /><xs:simpleType name="PlayerProfileFailureReason"><xs:restriction base="xs:string"><xs:enumeration value="AccessDenied"><xs:annotation><xs:appinfo><EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue></xs:appinfo></xs:annotation></xs:enumeration><xs:enumeration value="InvalidBiography"><xs:annotation><xs:appinfo><EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue></xs:appinfo></xs:annotation></xs:enumeration><xs:enumeration value="ProfileUnavailable"><xs:annotation><xs:appinfo><EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue></xs:appinfo></xs:annotation></xs:enumeration><xs:enumeration value="ProfileNotFound"><xs:annotation><xs:appinfo><EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue></xs:appinfo></xs:annotation></xs:enumeration></xs:restriction></xs:simpleType><xs:element name="PlayerProfileFailureReason" nillable="true" type="tns:PlayerProfileFailureReason" /><xs:complexType name="ProfileBiographyUpdate"><xs:sequence><xs:element minOccurs="0" name="AccountSessionToken" nillable="true" type="xs:string" /><xs:element minOccurs="0" name="Biography" nillable="true" type="xs:string" /></xs:sequence></xs:complexType><xs:element name="ProfileBiographyUpdate" nillable="true" type="tns:ProfileBiographyUpdate" /></xs:schema>
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/PlayerProfiles" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/PlayerProfiles" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="PlayerProfileDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountCreatedAtUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Biography" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompletedMissionCount" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerProfileDetails" nillable="true" type="tns:PlayerProfileDetails" />
+  <xs:complexType name="PlayerProfileFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FailureReason" type="tns:PlayerProfileFailureReason" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PlayerProfileFault" nillable="true" type="tns:PlayerProfileFault" />
+  <xs:simpleType name="PlayerProfileFailureReason">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AccessDenied">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="InvalidBiography">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ProfileUnavailable">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="ProfileNotFound">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PlayerProfileFailureReason" nillable="true" type="tns:PlayerProfileFailureReason" />
+  <xs:complexType name="PublicPlayerProfileLookup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProfileOwnerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="ProfileOwnerUsername" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountSessionToken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GuestViewerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="GuestSessionToken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LobbyCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PublicPlayerProfileLookup" nillable="true" type="tns:PublicPlayerProfileLookup" />
+  <xs:complexType name="PublicPlayerProfileDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ProfileOwnerUserId" type="xs:int" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Biography" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccountCreatedAtUtc" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CompletedMissionCount" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PublicPlayerProfileDetails" nillable="true" type="tns:PublicPlayerProfileDetails" />
+  <xs:complexType name="ProfileBiographyUpdate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountSessionToken" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Biography" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileBiographyUpdate" nillable="true" type="tns:ProfileBiographyUpdate" />
+</xs:schema>

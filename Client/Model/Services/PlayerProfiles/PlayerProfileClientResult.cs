@@ -5,6 +5,8 @@ namespace Model.Services
     /// <summary>Separates confirmed server data from public failures and uncertain write delivery.</summary>
     public sealed class PlayerProfileClientResult
     {
+        public PublicPlayerProfileDetails PublicProfile { get; set; }
+
         public PlayerProfileDetails Profile { get; set; }
 
         public string SavedBiography { get; set; }

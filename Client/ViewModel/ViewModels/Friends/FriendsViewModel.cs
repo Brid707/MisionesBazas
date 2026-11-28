@@ -67,6 +67,7 @@ namespace ViewModel.ViewModels
             }
 
             _navigationService = uiServices.NavigationService;
+            PlayerProfiles = uiServices.PlayerProfiles;
             _dialogService = uiServices.DialogService;
             _logger = uiServices.Logger;
             _friendshipSession = friendshipSession ?? throw new ArgumentNullException(nameof(friendshipSession));
@@ -79,9 +80,10 @@ namespace ViewModel.ViewModels
             _isInLobby = false;
             _isFilteringOnlineOnly = false;
 
-            OpenManageFriendRequestsCommand = new AsyncRelayCommand(ExecuteOpenManageFriendRequestsAsync);
-            AddFriendCommand = new RelayCommand(ExecuteAddFriend);
-            ViewProfileCommand = new RelayCommand(ExecuteViewProfile);
+            OpenManageFriendRequestsCommand = new AsyncRelayCommand(
+                ExecuteOpenManageFriendRequestsAsync, CanUseSocialFeatures);
+            AddFriendCommand = new RelayCommand(ExecuteAddFriend, CanUseSocialFeatures);
+
             DeleteFriendCommand = new AsyncRelayCommand(ExecuteDeleteFriendAsync);
             InviteFriendCommand = new AsyncRelayCommand(ExecuteInviteFriendAsync);
             AcceptGameInvitationCommand = new AsyncRelayCommand(ExecuteAcceptGameInvitationAsync);
@@ -91,6 +93,9 @@ namespace ViewModel.ViewModels
             SubscribeToSocialEvents();
             _ = InitializeSocialStateAsync();
         }
+
+        /// <summary>Gets the shared profile-opening actions for this screen.</summary>
+        public PlayerProfileCommands PlayerProfiles { get; }
 
         /// <summary>
         /// Gets the observable collection of friends currently displayed in the sidebar.
@@ -124,7 +129,7 @@ namespace ViewModel.ViewModels
         /// <summary>
         /// Gets the command that navigates to a selected user profile.
         /// </summary>
-        public ICommand ViewProfileCommand { get; }
+        public ICommand ViewProfileCommand => PlayerProfiles.OpenByUserIdCommand;
 
         /// <summary>
         /// Gets the command that removes a friendship connection.
@@ -366,7 +371,20 @@ namespace ViewModel.ViewModels
             return found;
         }
 
+        private bool CanUseSocialFeatures()
+        {
+            return PlayerProfiles.CanUseSocialFeatures;
+        }
+
         private async Task ExecuteOpenManageFriendRequestsAsync()
+        {
+            if (CanUseSocialFeatures())
+            {
+                await OpenFriendRequestsAndRefreshAsync();
+            }
+        }
+
+        private async Task OpenFriendRequestsAndRefreshAsync()
         {
             try
             {
@@ -381,12 +399,10 @@ namespace ViewModel.ViewModels
 
         private void ExecuteAddFriend()
         {
-            _navigationService.NavigateTo(ViewId.SendFriendRequest);
-        }
-
-        private void ExecuteViewProfile()
-        {
-            _navigationService.NavigateTo(ViewId.Profile);
+            if (CanUseSocialFeatures())
+            {
+                _navigationService.NavigateTo(ViewId.SendFriendRequest);
+            }
         }
 
         private async Task ExecuteDeleteFriendAsync(object parameter)

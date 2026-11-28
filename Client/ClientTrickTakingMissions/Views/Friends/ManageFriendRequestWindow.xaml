@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:language="clr-namespace:View.Properties.Langs"
-        xmlns:styles="clr-namespace:View.Styles"
+        xmlns:controls="clr-namespace:View.Controls"
+             xmlns:styles="clr-namespace:View.Styles"
         mc:Ignorable="d"
         Title="ManageFriendRequestWindow"
         Height="550" Width="440"
@@ -48,7 +49,7 @@
 
                     <Border Grid.Column="0" Width="44" />
 
-                    <TextBlock Grid.Column="1"
+                    <TextBlock
                                Text="{x:Static language:Resources.ManageFriendRequest_Title}"
                                FontFamily="{x:Static styles:FontTypography.TitleFontFamily}"
                                FontSize="{x:Static styles:FontTypography.LargeTitleFontSize}"
@@ -71,7 +72,7 @@
                         <Grid Width="36" Height="36">
                             <Ellipse Stroke="{StaticResource BrushTextDark}"
                                      StrokeThickness="3.5" Fill="{StaticResource BrushTransparent}" />
-                            <TextBlock Text="✕"
+                            <TextBlock Text="ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢"
                                        FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                        FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
                                        FontWeight="Bold"
@@ -102,16 +103,20 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <Grid Grid.Column="0" Width="48" Height="48">
-                                            <Ellipse Fill="{StaticResource BrushTextDark}" />
-                                            <Ellipse Width="16" Height="16"
-                                                     Fill="{StaticResource BrushTextLight}"
-                                                     Margin="0,7,0,0" VerticalAlignment="Top" />
-                                            <Path Data="M 8 40 C 8 29 14 25 24 25 C 34 25 40 29 40 40"
-                                                  Fill="{StaticResource BrushTextLight}" />
-                                        </Grid>
+                                        <Button Grid.Column="0" Width="48" Height="48" Margin="0,0,8,0"
+                                                Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                    RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding SenderUserId, Mode=OneWay}">
+                                            <controls:PlayerProfileAvatar Width="44" Height="44"
+                                                ProfileOwnerUserId="{Binding SenderUserId, Mode=OneWay}" />
+                                        </Button>
 
-                                        <TextBlock Grid.Column="1"
+                                        <Button Grid.Column="1" Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                        Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                            RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding SenderUserId, Mode=OneWay}">
+                                                    <TextBlock Grid.Column="1"
                                                    Text="{Binding SenderUsername}"
                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                    FontSize="{x:Static styles:FontTypography.SecondaryButtonFontSize}"
@@ -120,6 +125,7 @@
                                                    VerticalAlignment="Center"
                                                    Margin="14,0,8,0"
                                                    TextTrimming="CharacterEllipsis" />
+                                                </Button>
 
                                         <Button Grid.Column="2"
                                                 Width="38" Height="38"

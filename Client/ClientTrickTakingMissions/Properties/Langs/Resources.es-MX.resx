@@ -873,4 +873,9 @@
   <data name="Profile_SaveChanges" xml:space="preserve"><value>Guardar cambios</value></data>
   <data name="Profile_CancelEditing" xml:space="preserve"><value>Cancelar</value></data>
   <data name="Profile_RetryLoad" xml:space="preserve"><value>Actualizar perfil</value></data>
+  <data name="Profile_PublicTitle" xml:space="preserve"><value>Perfil del jugador</value></data>
+  <data name="Profile_ClosePublicProfile" xml:space="preserve"><value>Cerrar</value></data>
+  <data name="Profile_ViewPublicProfile" xml:space="preserve"><value>Ver perfil</value></data>
+  <data name="Profile_PublicReadOnly" xml:space="preserve"><value>Este perfil es de solo lectura.</value></data>
+  <data name="Profile_GuestHasNoPublicProfile" xml:space="preserve"><value>Los invitados no tienen un perfil permanente.</value></data>
 </root>

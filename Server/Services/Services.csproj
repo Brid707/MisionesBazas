@@ -223,4 +223,11 @@
     <Compile Include="Services\PlayerProfiles\PlayerProfileService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Security\GuestLobbyProfileAccessPolicy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataContracts\PlayerProfiles\PublicPlayerProfileLookup.cs" />
+    <Compile Include="DataContracts\PlayerProfiles\PublicPlayerProfileDetails.cs" />
+  </ItemGroup>
 </Project>

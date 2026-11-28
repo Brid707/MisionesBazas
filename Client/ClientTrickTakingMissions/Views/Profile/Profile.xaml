@@ -13,49 +13,8 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="ProfileBooleanVisibilityConverter" />
         <converters:ProfileFeedbackKeyToStringConverter x:Key="ProfileFeedbackConverter" />
-        <Style x:Key="ProfileActionButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource BrushGoldAccent}" />
-            <Setter Property="Foreground" Value="{StaticResource BrushTextDark}" />
-            <Setter Property="BorderBrush" Value="{StaticResource BrushTextDark}" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="Padding" Value="18,10" />
-            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
-            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.ActionButtonFontSize}" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="ActionBorder" Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
-                            <ContentPresenter Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ActionBorder" Property="Opacity" Value="0.9" />
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="ActionBorder" Property="BorderBrush"
-                                        Value="{StaticResource BrushTextLight}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="ActionBorder" Property="Opacity" Value="0.7" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-            <Setter Property="ToolTip" Value="{x:Static language:Resources.Profile_EditingPending}" />
-        </Style>
-        <Style x:Key="ProfileLabelStyle" TargetType="TextBlock">
-            <Setter Property="FontFamily" Value="{x:Static styles:FontTypography.BodyFontFamily}" />
-            <Setter Property="FontSize" Value="{x:Static styles:FontTypography.SubtitleFontSize}" />
-            <Setter Property="Foreground" Value="{StaticResource BrushTextLight}" />
-            <Setter Property="TextWrapping" Value="Wrap" />
-        </Style>
+
+
     </Page.Resources>
     <Grid Background="{StaticResource BrushBurgundySurface}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">

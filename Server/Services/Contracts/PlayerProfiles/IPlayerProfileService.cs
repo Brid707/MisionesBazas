@@ -13,6 +13,10 @@ namespace Services.Contracts
 
         [OperationContract]
         [FaultContract(typeof(PlayerProfileFault))]
+        PublicPlayerProfileDetails GetPublicProfile(PublicPlayerProfileLookup profileLookup);
+
+        [OperationContract]
+        [FaultContract(typeof(PlayerProfileFault))]
         string UpdateOwnBiography(ProfileBiographyUpdate biographyUpdate);
     }
 }

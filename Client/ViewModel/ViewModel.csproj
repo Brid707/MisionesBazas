@@ -155,4 +155,9 @@
     <Compile Include="ViewModels\Match\Objectives\PublicMissionRoleViewModel.cs" />
     <Compile Include="ViewModels\Match\Board\MatchFinalPreparationViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\IPlayerProfileNavigation.cs" />
+    <Compile Include="ViewModels\Profile\PlayerProfileCommands.cs" />
+    <Compile Include="ViewModels\Profile\PlayerProfileViewModel.cs" />
+  </ItemGroup>
 </Project>

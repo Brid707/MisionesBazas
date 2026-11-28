@@ -4,6 +4,7 @@ using System.Windows;
 using TrickTakingMissions.Logging.Abstractions;
 using TrickTakingMissions.Logging.Abstractions.Ports;
 using ViewModel.Services;
+using ViewModel.ViewModels;
 
 namespace View.Services
 {
@@ -50,19 +51,30 @@ namespace View.Services
             throw new InvalidOperationException(RuntimeNotInitializedMessage);
         }
 
+        public static PlayerProfileCommands CreatePlayerProfileCommands(bool allowsGuestLobbyAccess)
+        {
+            return new PlayerProfileCommands(new WpfPlayerProfileNavigation(), allowsGuestLobbyAccess);
+        }
+
         public static ViewModelUiServices CreateUiServices<TCaller>()
         {
             return new ViewModelUiServices(
                 new WpfNavigationService(),
                 new WpfDialogService(),
-                CreateLogger<TCaller>());
+                CreateLogger<TCaller>())
+            {
+                PlayerProfiles = CreatePlayerProfileCommands(false)
+            };
         }
 
         public static ViewModelNavigationLogging CreateNavigationLogging<TCaller>()
         {
             return new ViewModelNavigationLogging(
                 new WpfNavigationService(),
-                CreateLogger<TCaller>());
+                CreateLogger<TCaller>())
+            {
+                PlayerProfiles = CreatePlayerProfileCommands(true)
+            };
         }
     }
 }

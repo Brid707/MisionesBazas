@@ -1,5 +1,6 @@
 using System;
 using TrickTakingMissions.Logging.Abstractions.Ports;
+using ViewModel.ViewModels;
 
 namespace ViewModel.Services
 {
@@ -15,6 +16,8 @@ namespace ViewModel.Services
             DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
+        public PlayerProfileCommands PlayerProfiles { get; set; } = new PlayerProfileCommands(null, false);
 
         public INavigationService NavigationService { get; }
 

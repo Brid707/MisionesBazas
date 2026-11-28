@@ -8,25 +8,89 @@ using TrickTakingMissions.Rules.Rules;
 
 namespace Services.Services
 {
-    /// <summary>Authorizes own-profile requests and translates persistence failures into declared WCF faults.</summary>
+    /// <summary>Authorizes profile operations and translates persistence failures into declared WCF faults.</summary>
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     public sealed class PlayerProfileService : IPlayerProfileService
     {
+        private const int MaximumProfileLobbyCodeLength = 16;
         private const int MaximumAccountSessionTokenLength = 256;
         private const string ProfileFaultMessage = "Profile operation could not be completed.";
         private readonly IPlayerProfileUseCase _playerProfileUseCase;
         private readonly IAccountAccessPolicy _accountAccessPolicy;
+        private readonly IGuestLobbyProfileAccess _guestLobbyProfileAccess;
 
         public PlayerProfileService(IPlayerProfileUseCase playerProfileUseCase,
-            IAccountAccessPolicy accountAccessPolicy)
+            IAccountAccessPolicy accountAccessPolicy, IGuestLobbyProfileAccess guestLobbyProfileAccess)
         {
             _playerProfileUseCase = playerProfileUseCase;
             _accountAccessPolicy = accountAccessPolicy;
+            _guestLobbyProfileAccess = guestLobbyProfileAccess;
         }
 
         public PlayerProfileDetails GetOwnProfile(string accountSessionToken)
         {
             return ExecuteProfileOperation(accountSessionToken, ReadOwnProfile);
+        }
+
+        public PublicPlayerProfileDetails GetPublicProfile(PublicPlayerProfileLookup profileLookup)
+        {
+            ValidatePublicLookup(profileLookup);
+            return ExecuteProfileBoundary(() => ReadAuthorizedPublicProfile(profileLookup));
+        }
+
+        private PublicPlayerProfileDetails ReadAuthorizedPublicProfile(PublicPlayerProfileLookup profileLookup)
+        {
+            if (!string.IsNullOrEmpty(profileLookup.AccountSessionToken))
+            {
+                ResolveAccountUserId(profileLookup.AccountSessionToken);
+            }
+            else
+            {
+                EnsureGuestProfileAllowed(profileLookup);
+            }
+            PublicPlayerProfile profile = _playerProfileUseCase.GetPublicProfile(profileLookup.ProfileOwnerUserId,
+                profileLookup.ProfileOwnerUsername);
+            if (profile == null)
+            {
+                throw CreateFault(PlayerProfileFailureReason.ProfileNotFound);
+            }
+            return new PublicPlayerProfileDetails
+            {
+                ProfileOwnerUserId = profile.ProfileOwnerUserId,
+                Username = profile.Username,
+                Biography = profile.Biography,
+                AccountCreatedAtUtc = profile.AccountCreatedAtUtc,
+                CompletedMissionCount = profile.CompletedMissionCount
+            };
+        }
+
+        private static void ValidatePublicLookup(PublicPlayerProfileLookup profileLookup)
+        {
+            if (profileLookup == null || !PlayerProfileLookupRules.IsProfileLookupValid(
+                profileLookup.ProfileOwnerUserId, profileLookup.ProfileOwnerUsername))
+            {
+                throw CreateFault(PlayerProfileFailureReason.ProfileNotFound);
+            }
+        }
+
+        private void EnsureGuestProfileAllowed(PublicPlayerProfileLookup profileLookup)
+        {
+            bool hasGuestContext = profileLookup.GuestViewerUserId < 0 && profileLookup.ProfileOwnerUserId > 0 &&
+                string.IsNullOrEmpty(profileLookup.ProfileOwnerUsername) &&
+                !string.IsNullOrEmpty(profileLookup.GuestSessionToken) &&
+                profileLookup.GuestSessionToken.Length <= MaximumAccountSessionTokenLength &&
+                !string.IsNullOrWhiteSpace(profileLookup.LobbyCode) &&
+                profileLookup.LobbyCode.Length <= MaximumProfileLobbyCodeLength;
+            if (!hasGuestContext || !_guestLobbyProfileAccess.CanViewProfile(new GuestLobbyProfileAccessRequest
+            {
+                GuestViewerUserId = profileLookup.GuestViewerUserId,
+                GuestSessionToken = profileLookup.GuestSessionToken,
+                LobbyCode = profileLookup.LobbyCode,
+                ProfileOwnerUserId = profileLookup.ProfileOwnerUserId
+            }))
+            {
+                throw CreateFault(PlayerProfileFailureReason.AccessDenied);
+            }
         }
 
         public string UpdateOwnBiography(ProfileBiographyUpdate biographyUpdate)
@@ -41,11 +105,15 @@ namespace Services.Services
 
         private T ExecuteProfileOperation<T>(string accountSessionToken, Func<int, T> profileOperation)
         {
+            return ExecuteProfileBoundary(() => profileOperation(ResolveAccountUserId(accountSessionToken)));
+        }
+
+        private static T ExecuteProfileBoundary<T>(Func<T> profileOperation)
+        {
             T operationResult;
             try
             {
-                int accountUserId = ResolveAccountUserId(accountSessionToken);
-                operationResult = profileOperation(accountUserId);
+                operationResult = profileOperation();
             }
             catch (PlayerProfileUnavailableException)
             {

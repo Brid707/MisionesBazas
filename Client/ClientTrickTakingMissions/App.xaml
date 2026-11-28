@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/Colors.xaml" />
                 <ResourceDictionary Source="Themes/ProfileImages.xaml" />
+                <ResourceDictionary Source="Themes/PlayerProfileStyles.xaml" />
                 <ResourceDictionary Source="Themes/GameBranding.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

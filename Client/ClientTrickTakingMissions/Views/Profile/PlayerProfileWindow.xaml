@@ -1,0 +1,73 @@
+<Window x:Class="View.Views.PlayerProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:language="clr-namespace:View.Properties.Langs"
+        xmlns:converters="clr-namespace:View.Converters"
+        Title="{x:Static language:PlayerProfileResources.Profile_PublicTitle}"
+        Language="{x:Static language:PlayerProfileResources.InterfaceLanguage}"
+        Width="760" Height="700" MinWidth="540" MinHeight="480"
+        WindowStartupLocation="CenterOwner" Background="{StaticResource BrushBurgundySurface}">
+    <Window.Resources>
+        <converters:ProfileFeedbackKeyToStringConverter x:Key="PublicProfileFeedbackConverter" />
+    </Window.Resources>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
+                  Background="{StaticResource BrushBurgundySurface}">
+        <StackPanel Margin="28">
+            <DockPanel Margin="0,0,0,20">
+                <Button x:Name="ClosePlayerProfileButton" DockPanel.Dock="Right"
+                        Style="{StaticResource ProfileActionButtonStyle}"
+                        Content="{x:Static language:PlayerProfileResources.Profile_ClosePublicProfile}"
+                        Command="{Binding CloseCommand}" />
+                <TextBlock Text="{x:Static language:PlayerProfileResources.Profile_PublicTitle}"
+                           Style="{StaticResource ProfileLabelStyle}" FontWeight="Bold" />
+            </DockPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                <ContentControl Width="112" Height="112" Content="{Binding ProfileImage, Mode=OneWay}"
+                                ContentTemplate="{StaticResource ProfileAvatarTemplate}" />
+                <TextBlock Margin="20,0,0,0" VerticalAlignment="Center"
+                           Text="{Binding ProfileDetails.Username, Mode=OneWay,
+                           TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                           FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}"
+                           Style="{StaticResource ProfileLabelStyle}" FontWeight="Bold" />
+            </StackPanel>
+            <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,0,12">
+                <Run Text="{x:Static language:Resources.Profile_AccountCreation}" />
+                <Run Text="{Binding ProfileDetails.AccountCreatedAtUtc, Mode=OneWay, StringFormat={}{0:d},
+                           TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                           FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}" />
+            </TextBlock>
+            <TextBlock Style="{StaticResource ProfileLabelStyle}" Margin="0,0,0,20">
+                <Run Text="{x:Static language:Resources.Profile_Missions}" />
+                <Run Text="{Binding ProfileDetails.CompletedMissionCount, Mode=OneWay,
+                           TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                           FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}" />
+            </TextBlock>
+            <TextBlock Text="{x:Static language:Resources.Profile_Biography}"
+                       Style="{StaticResource ProfileLabelStyle}" FontWeight="Bold" Margin="0,0,0,10" />
+            <Border Background="{StaticResource BrushBurgundyDark}" Padding="18" CornerRadius="6" MinHeight="125">
+                <TextBlock x:Name="PublicBiographyTextBlock">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource ProfileLabelStyle}">
+                            <Setter Property="Text" Value="{Binding ProfileDetails.Biography, Mode=OneWay,
+                                TargetNullValue={x:Static language:PlayerProfileResources.Profile_Unavailable},
+                                FallbackValue={x:Static language:PlayerProfileResources.Profile_Unavailable}}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ProfileDetails.Biography}" Value="">
+                                    <Setter Property="Text" Value="{x:Static language:Resources.Profile_EmptyBiography}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Border>
+            <TextBlock Margin="0,18,0,14" Style="{StaticResource ProfileLabelStyle}"
+                       Text="{Binding FeedbackResourceKey, Mode=OneWay,
+                              Converter={StaticResource PublicProfileFeedbackConverter}}"
+                       AutomationProperties.LiveSetting="Polite" />
+            <Button x:Name="ReloadPlayerProfileButton" HorizontalAlignment="Left"
+                    Style="{StaticResource ProfileActionButtonStyle}"
+                    Content="{x:Static language:PlayerProfileResources.Profile_RetryLoad}"
+                    Command="{Binding ReloadProfileCommand}" />
+        </StackPanel>
+    </ScrollViewer>
+</Window>

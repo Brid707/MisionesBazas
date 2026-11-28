@@ -9,11 +9,22 @@ namespace Application.UseCases
     public sealed class PlayerProfileUseCase : IPlayerProfileUseCase
     {
         private const string InvalidBiographyMessage = "Biography exceeds the supported capacity.";
+        private const string InvalidProfileSelectorMessage =
+            "Select one account profile by identifier or exact username.";
         private readonly IPlayerProfileRepository _playerProfileRepository;
 
         public PlayerProfileUseCase(IPlayerProfileRepository playerProfileRepository)
         {
             _playerProfileRepository = playerProfileRepository;
+        }
+
+        public PublicPlayerProfile GetPublicProfile(int profileOwnerUserId, string profileOwnerUsername)
+        {
+            if (!PlayerProfileLookupRules.IsProfileLookupValid(profileOwnerUserId, profileOwnerUsername))
+            {
+                throw new ArgumentException(InvalidProfileSelectorMessage, nameof(profileOwnerUserId));
+            }
+            return _playerProfileRepository.GetPublicProfile(profileOwnerUserId, profileOwnerUsername);
         }
 
         public OwnPlayerProfile GetOwnProfile(int authenticatedAccountUserId)

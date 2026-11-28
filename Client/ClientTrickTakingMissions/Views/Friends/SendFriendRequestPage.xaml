@@ -4,6 +4,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:language="clr-namespace:View.Properties.Langs"
+      xmlns:controls="clr-namespace:View.Controls"
       xmlns:styles="clr-namespace:View.Styles"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="420"
@@ -59,7 +60,7 @@
                             Background="{StaticResource BrushTransparent}"
                             BorderBrush="{StaticResource BrushTextDark}"
                             BorderThickness="3" Cursor="Hand" Command="{Binding BackCommand}">
-                        <TextBlock Text="✕"
+                        <TextBlock Text="ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¢"
                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                    FontSize="{x:Static styles:FontTypography.ActionButtonFontSize}"
                                    HorizontalAlignment="Center"
@@ -82,6 +83,12 @@
                              BorderBrush="{StaticResource BrushTextDark}"
                              BorderThickness="3" Padding="8"
                              Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <Button x:Name="PreviewPlayerProfileButton" HorizontalAlignment="Left" Margin="0,12,0,0"
+                            Style="{StaticResource ProfileActionButtonStyle}"
+                            Content="{x:Static language:PlayerProfileResources.Profile_ViewPublicProfile}"
+                            Command="{Binding PlayerProfiles.OpenByUsernameCommand, Mode=OneWay}"
+                            CommandParameter="{Binding Username}" />
 
                     <Button x:Name="SendButton"
                             Content="{x:Static language:Resources.SendFriendRequest_SendButton}"
@@ -127,20 +134,26 @@
                                                 <ColumnDefinition Width="56" />
                                             </Grid.ColumnDefinitions>
 
-                                            <Grid Grid.Column="0" HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center">
-                                                <Ellipse Width="44" Height="44"
-                                                         Fill="{StaticResource BrushTextDark}"
-                                                         Stroke="{StaticResource BrushTextLight}"
-                                                         StrokeThickness="2" />
-                                            </Grid>
+                                            <Button Grid.Column="0" Width="48" Height="48" Margin="0,0,8,0"
+                                                Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                    RelativeSource={RelativeSource AncestorType=Page}}"
+                                                CommandParameter="{Binding ReceiverUserId, Mode=OneWay}">
+                                            <controls:PlayerProfileAvatar Width="44" Height="44"
+                                                ProfileOwnerUserId="{Binding ReceiverUserId, Mode=OneWay}" />
+                                        </Button>
 
                                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding ReceiverUsername}"
+                                                <Button Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                        Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                            RelativeSource={RelativeSource AncestorType=Page}}"
+                                                        CommandParameter="{Binding ReceiverUserId, Mode=OneWay}">
+                                                    <TextBlock Text="{Binding ReceiverUsername}"
                                                            FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                            Foreground="{StaticResource BrushTextDark}"
                                                            FontSize="{x:Static styles:FontTypography.FormLabelFontSize}"
                                                            VerticalAlignment="Center" />
+                                                </Button>
                                             </StackPanel>
 
                                             <StackPanel Grid.Column="2" HorizontalAlignment="Center"

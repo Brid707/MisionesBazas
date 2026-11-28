@@ -61,6 +61,7 @@ namespace ViewModel.ViewModels
             }
 
             _navigationService = navigationLogging.NavigationService;
+            PlayerProfiles = navigationLogging.PlayerProfiles;
             _logger = navigationLogging.Logger;
             _lobbySession = lobbySession ?? throw new ArgumentNullException(nameof(lobbySession));
             _lobbyClient = lobbySession.Client;
@@ -83,6 +84,9 @@ namespace ViewModel.ViewModels
             LoadInitialLobbyState();
             SubscribeToLobbyEvents();
         }
+
+        /// <summary>Gets the shared profile-opening actions for this screen.</summary>
+        public PlayerProfileCommands PlayerProfiles { get; }
 
         /// <summary>
         /// Notifies the view that the local participant was removed by the host.

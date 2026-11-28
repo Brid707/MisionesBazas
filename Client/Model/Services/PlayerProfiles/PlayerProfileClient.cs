@@ -19,6 +19,17 @@ namespace Model.Services
             _logger = logger;
         }
 
+        public Task<PlayerProfileClientResult> GetPublicProfileAsync(PublicPlayerProfileLookup profileLookup)
+        {
+            return Task.Run(() => Execute(service => service.GetPublicProfile(profileLookup), CreatePublicReadResult,
+                false));
+        }
+
+        private static PlayerProfileClientResult CreatePublicReadResult(PublicPlayerProfileDetails profile)
+        {
+            return new PlayerProfileClientResult { PublicProfile = profile };
+        }
+
         public Task<PlayerProfileClientResult> GetOwnProfileAsync(string accountSessionToken)
         {
             return Task.Run(() => Execute(service => service.GetOwnProfile(accountSessionToken), CreateReadResult,

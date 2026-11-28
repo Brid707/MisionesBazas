@@ -1,1 +1,131 @@
-﻿<?xml version="1.0" encoding="utf-8"?><wsdl:definitions xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" name="service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"><wsp:Policy wsu:Id="NetTcpBinding_IPlayerProfileService_policy"><wsp:ExactlyOne><wsp:All><msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" /><sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"><wsp:Policy><sp:TransportToken><wsp:Policy><msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy"><msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel></msf:WindowsTransportSecurity></wsp:Policy></sp:TransportToken><sp:AlgorithmSuite><wsp:Policy><sp:Basic256 /></wsp:Policy></sp:AlgorithmSuite><sp:Layout><wsp:Policy><sp:Strict /></wsp:Policy></sp:Layout></wsp:Policy></sp:TransportBinding><wsaw:UsingAddressing /></wsp:All></wsp:ExactlyOne></wsp:Policy><wsdl:types><xsd:schema targetNamespace="http://tempuri.org/Imports"><xsd:import namespace="http://tempuri.org/" /><xsd:import namespace="http://schemas.datacontract.org/2004/07/PlayerProfiles" /><xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" /></xsd:schema></wsdl:types><wsdl:message name="IPlayerProfileService_GetOwnProfile_InputMessage"><wsdl:part name="parameters" element="tns:GetOwnProfile" /></wsdl:message><wsdl:message name="IPlayerProfileService_GetOwnProfile_OutputMessage"><wsdl:part name="parameters" element="tns:GetOwnProfileResponse" /></wsdl:message><wsdl:message name="IPlayerProfileService_GetOwnProfile_PlayerProfileFaultFault_FaultMessage"><wsdl:part name="detail" xmlns:q1="http://schemas.datacontract.org/2004/07/PlayerProfiles" element="q1:PlayerProfileFault" /></wsdl:message><wsdl:message name="IPlayerProfileService_UpdateOwnBiography_InputMessage"><wsdl:part name="parameters" element="tns:UpdateOwnBiography" /></wsdl:message><wsdl:message name="IPlayerProfileService_UpdateOwnBiography_OutputMessage"><wsdl:part name="parameters" element="tns:UpdateOwnBiographyResponse" /></wsdl:message><wsdl:message name="IPlayerProfileService_UpdateOwnBiography_PlayerProfileFaultFault_FaultMessage"><wsdl:part name="detail" xmlns:q2="http://schemas.datacontract.org/2004/07/PlayerProfiles" element="q2:PlayerProfileFault" /></wsdl:message><wsdl:portType name="IPlayerProfileService"><wsdl:operation name="GetOwnProfile"><wsdl:input wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfile" message="tns:IPlayerProfileService_GetOwnProfile_InputMessage" /><wsdl:output wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfileResponse" message="tns:IPlayerProfileService_GetOwnProfile_OutputMessage" /><wsdl:fault wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfilePlayerProfileFaultFault" name="PlayerProfileFaultFault" message="tns:IPlayerProfileService_GetOwnProfile_PlayerProfileFaultFault_FaultMessage" /></wsdl:operation><wsdl:operation name="UpdateOwnBiography"><wsdl:input wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiography" message="tns:IPlayerProfileService_UpdateOwnBiography_InputMessage" /><wsdl:output wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiographyResponse" message="tns:IPlayerProfileService_UpdateOwnBiography_OutputMessage" /><wsdl:fault wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiographyPlayerProfileFaultFault" name="PlayerProfileFaultFault" message="tns:IPlayerProfileService_UpdateOwnBiography_PlayerProfileFaultFault_FaultMessage" /></wsdl:operation></wsdl:portType><wsdl:binding name="NetTcpBinding_IPlayerProfileService" type="tns:IPlayerProfileService"><wsp:PolicyReference URI="#NetTcpBinding_IPlayerProfileService_policy" /><soap12:binding transport="http://schemas.microsoft.com/soap/tcp" /><wsdl:operation name="GetOwnProfile"><soap12:operation soapAction="http://tempuri.org/IPlayerProfileService/GetOwnProfile" style="document" /><wsdl:input><soap12:body use="literal" /></wsdl:input><wsdl:output><soap12:body use="literal" /></wsdl:output><wsdl:fault name="PlayerProfileFaultFault"><soap12:fault name="PlayerProfileFaultFault" use="literal" /></wsdl:fault></wsdl:operation><wsdl:operation name="UpdateOwnBiography"><soap12:operation soapAction="http://tempuri.org/IPlayerProfileService/UpdateOwnBiography" style="document" /><wsdl:input><soap12:body use="literal" /></wsdl:input><wsdl:output><soap12:body use="literal" /></wsdl:output><wsdl:fault name="PlayerProfileFaultFault"><soap12:fault name="PlayerProfileFaultFault" use="literal" /></wsdl:fault></wsdl:operation></wsdl:binding><wsdl:service name="service"><wsdl:port name="NetTcpBinding_IPlayerProfileService" binding="tns:NetTcpBinding_IPlayerProfileService"><soap12:address location="net.tcp://localhost:8090/PlayerProfileService" /><wsa10:EndpointReference><wsa10:Address>net.tcp://localhost:8090/PlayerProfileService</wsa10:Address></wsa10:EndpointReference></wsdl:port></wsdl:service></wsdl:definitions>
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" name="service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IPlayerProfileService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/PlayerProfiles" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IPlayerProfileService_GetOwnProfile_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOwnProfile" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_GetOwnProfile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOwnProfileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_GetOwnProfile_PlayerProfileFaultFault_FaultMessage">
+    <wsdl:part name="detail" xmlns:q1="http://schemas.datacontract.org/2004/07/PlayerProfiles" element="q1:PlayerProfileFault" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_GetPublicProfile_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPublicProfile" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_GetPublicProfile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPublicProfileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_GetPublicProfile_PlayerProfileFaultFault_FaultMessage">
+    <wsdl:part name="detail" xmlns:q2="http://schemas.datacontract.org/2004/07/PlayerProfiles" element="q2:PlayerProfileFault" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_UpdateOwnBiography_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOwnBiography" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_UpdateOwnBiography_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOwnBiographyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPlayerProfileService_UpdateOwnBiography_PlayerProfileFaultFault_FaultMessage">
+    <wsdl:part name="detail" xmlns:q3="http://schemas.datacontract.org/2004/07/PlayerProfiles" element="q3:PlayerProfileFault" />
+  </wsdl:message>
+  <wsdl:portType name="IPlayerProfileService">
+    <wsdl:operation name="GetOwnProfile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfile" message="tns:IPlayerProfileService_GetOwnProfile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfileResponse" message="tns:IPlayerProfileService_GetOwnProfile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IPlayerProfileService/GetOwnProfilePlayerProfileFaultFault" name="PlayerProfileFaultFault" message="tns:IPlayerProfileService_GetOwnProfile_PlayerProfileFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPublicProfile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPlayerProfileService/GetPublicProfile" message="tns:IPlayerProfileService_GetPublicProfile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPlayerProfileService/GetPublicProfileResponse" message="tns:IPlayerProfileService_GetPublicProfile_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IPlayerProfileService/GetPublicProfilePlayerProfileFaultFault" name="PlayerProfileFaultFault" message="tns:IPlayerProfileService_GetPublicProfile_PlayerProfileFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOwnBiography">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiography" message="tns:IPlayerProfileService_UpdateOwnBiography_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiographyResponse" message="tns:IPlayerProfileService_UpdateOwnBiography_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IPlayerProfileService/UpdateOwnBiographyPlayerProfileFaultFault" name="PlayerProfileFaultFault" message="tns:IPlayerProfileService_UpdateOwnBiography_PlayerProfileFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IPlayerProfileService" type="tns:IPlayerProfileService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IPlayerProfileService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="GetOwnProfile">
+      <soap12:operation soapAction="http://tempuri.org/IPlayerProfileService/GetOwnProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="PlayerProfileFaultFault">
+        <soap12:fault name="PlayerProfileFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPublicProfile">
+      <soap12:operation soapAction="http://tempuri.org/IPlayerProfileService/GetPublicProfile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="PlayerProfileFaultFault">
+        <soap12:fault name="PlayerProfileFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOwnBiography">
+      <soap12:operation soapAction="http://tempuri.org/IPlayerProfileService/UpdateOwnBiography" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="PlayerProfileFaultFault">
+        <soap12:fault name="PlayerProfileFaultFault" use="literal" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="service">
+    <wsdl:port name="NetTcpBinding_IPlayerProfileService" binding="tns:NetTcpBinding_IPlayerProfileService">
+      <soap12:address location="net.tcp://localhost:8090/PlayerProfileService" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:8090/PlayerProfileService</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:language="clr-namespace:View.Properties.Langs"
+             xmlns:controls="clr-namespace:View.Controls"
              xmlns:styles="clr-namespace:View.Styles"
              mc:Ignorable="d" 
              d:DesignHeight="768" d:DesignWidth="260">
@@ -11,7 +12,7 @@
     <Border BorderBrush="{StaticResource BrushTextDark}"
             BorderThickness="3,0,0,0"
             Background="{StaticResource BrushBurgundySurface}">
-        <Grid>
+        <Grid IsEnabled="{Binding PlayerProfiles.CanUseSocialFeatures, Mode=OneWay}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="120" />
                 <RowDefinition Height="80" />
@@ -204,11 +205,25 @@
                                         Padding="8"
                                         Margin="0,0,0,8">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Username}"
+                                        <Button Grid.Column="0" Width="48" Height="48" Margin="0,0,8,0"
+                                                HorizontalAlignment="Left"
+                                                Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                    RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding UserId, Mode=OneWay}">
+                                            <controls:PlayerProfileAvatar Width="44" Height="44"
+                                                ProfileOwnerUserId="{Binding UserId, Mode=OneWay}" />
+                                        </Button>
+                                        <Button Style="{StaticResource PlayerProfileLinkButtonStyle}"
+                                                Command="{Binding DataContext.PlayerProfiles.OpenByUserIdCommand, Mode=OneWay,
+                                                    RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding UserId, Mode=OneWay}">
+                                            <TextBlock Text="{Binding Username}"
                                                    Foreground="{StaticResource BrushTextLight}"
                                                    FontWeight="Bold"
                                                    FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                    FontSize="{x:Static styles:FontTypography.CaptionFontSize}" />
+                                        </Button>
                                         <TextBlock FontFamily="{x:Static styles:FontTypography.BodyFontFamily}"
                                                    FontSize="{x:Static styles:FontTypography.SmallFontSize}"
                                                    Margin="0,2,0,4">
@@ -239,7 +254,7 @@
                                                     Margin="0,0,4,4"
                                                     Command="{Binding DataContext.ViewProfileCommand,
                                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding}" />
+                                                    CommandParameter="{Binding UserId, Mode=OneWay}" />
                                             <Button Content="{x:Static language:Resources.FriendsBar_DeleteFriend}"
                                                     Background="{StaticResource BrushDeleteButtonBackground}"
                                                     Foreground="{StaticResource BrushTextLight}"

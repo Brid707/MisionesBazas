@@ -40,6 +40,34 @@ namespace Persistence.Repository
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        public PublicPlayerProfile GetPublicProfile(int profileOwnerUserId, string profileOwnerUsername)
+        {
+            return PlayerProfileDatabaseAccess.Execute(context => ReadPublicProfile(context, profileOwnerUserId,
+                profileOwnerUsername), _logger);
+        }
+
+        private static PublicPlayerProfile ReadPublicProfile(TrickTakingMissionsBDEntities context,
+            int profileOwnerUserId, string profileOwnerUsername)
+        {
+            IQueryable<User> accounts = context.User.AsNoTracking();
+            accounts = profileOwnerUserId > 0
+                ? accounts.Where(account => account.IdUser == profileOwnerUserId)
+                : accounts.Where(account => account.Username == profileOwnerUsername);
+            PublicPlayerProfile profile = accounts.Select(account => new PublicPlayerProfile
+            {
+                ProfileOwnerUserId = account.IdUser,
+                Username = account.Username,
+                AccountCreatedAtUtc = account.CreatedAt,
+                Biography = account.PlayerProfile == null ? string.Empty : account.PlayerProfile.Biography
+            }).SingleOrDefault();
+            if (profile != null)
+            {
+                profile.AccountCreatedAtUtc = DateTime.SpecifyKind(profile.AccountCreatedAtUtc, DateTimeKind.Utc);
+                profile.Biography = profile.Biography ?? string.Empty;
+            }
+            return profile;
+        }
+
         public OwnPlayerProfile GetOwnProfile(int authenticatedAccountUserId)
         {
             return PlayerProfileDatabaseAccess.Execute(context => ReadOwnProfile(context, authenticatedAccountUserId),

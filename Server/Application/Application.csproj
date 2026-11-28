@@ -260,4 +260,9 @@
     <Compile Include="UseCases\PlayerProfiles\PlayerProfileUseCase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Models\PlayerProfiles\PublicPlayerProfile.cs" />
+    <Compile Include="Models\PlayerProfiles\GuestLobbyProfileAccessRequest.cs" />
+    <Compile Include="Ports\Account\IGuestLobbyProfileAccess.cs" />
+  </ItemGroup>
 </Project>
